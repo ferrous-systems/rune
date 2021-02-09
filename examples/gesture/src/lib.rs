@@ -196,9 +196,9 @@ pub fn model_output_transform(model_output:&Vec<i32>) -> String {
 
     if model_output[0] > 0 {
         output_string = "Wing";
-    } else if model_output[0] > 0 {
+    } else if model_output[1] > 0 {
         output_string = "Ring";
-    } else if model_output[0] > 0 {
+    } else if model_output[2] > 0 {
         output_string = "Slope";
     } else {
         output_string = "Unknown";
