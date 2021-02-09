@@ -95,7 +95,7 @@ fn debug(s: &[u8]) -> u32 {
 #[no_mangle]
 pub extern "C" fn _manifest() -> u32 {
     unsafe {
-      tfm_preload_model(model::MODEL.as_ptr(), model::MODEL.len() as u32,  64*3, 64);
+      tfm_preload_model(model::MODEL.as_ptr(), model::MODEL.len() as u32,  128*3, 128);
  
         /// Sets the  `CAPABILITY ACCEL gesture_input -n 128`  
         // SET ACCEL CAPABILITY
@@ -120,6 +120,7 @@ pub extern "C" fn _manifest() -> u32 {
 [ [1f32 = 4 * u8s, 2, 3], ....] => [12 * u8] * 128 => [x1,y1,z1,x2,...]
 1f32
 */
+
 
 
 #[no_mangle]
@@ -184,6 +185,54 @@ pub extern "C" fn _call(capability_type:i32, input_type:i32, capability_idx:i32)
         }
 
         return 0 as i32;
+
+    }
+}
+
+
+pub fn model_output_transform(model_output:&Vec<i32>) -> String {
+
+    let mut output_string = String::new();
+
+    if model_output[0] > 0 {
+        output_string = "Wing";
+    } else if model_output[0] > 0 {
+        output_string = "Ring";
+    } else if model_output[0] > 0 {
+        output_string = "Slope";
+    } else {
+        output_string = "Unknown";
+    }
+
+    println!("{:?}", output_string);
+
+    return output_string;
+}
+
+
+#[cfg(test)]
+mod tests {
+
+    #[test]
+    fn test_model_output_transform() {
+        
+        println!("In test");
+
+        let mut model_output_values = vec![1, 0, 0, 0];
+        output = model_output_transform(&model_output_values);
+        assert_eq!(output, "Wing");
+
+        let mut model_output_values = vec![0, 1, 0, 0];
+        output = model_output_transform(&model_output_values);
+        assert_eq!(output, "Ring");
+
+        let mut model_output_values = vec![0, 0, 1, 0];
+        output = model_output_transform(&model_output_values);
+        assert_eq!(output, "Slope");
+
+        let mut model_output_values = vec![0, 0, 0, 1];
+        output = model_output_transform(&model_output_values);
+        assert_eq!(output, "Unknown");
 
     }
 }
