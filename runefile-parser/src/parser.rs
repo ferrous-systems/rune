@@ -2,10 +2,7 @@
 
 use log;
 use pest::Parser;
-use std::collections::HashMap;
-use std::env;
-use std::fs;
-use std::path::PathBuf;
+use std::{collections::HashMap, env, fs, path::PathBuf};
 
 use cargo::ops::VersionControl;
 use std::borrow::ToOwned;
@@ -35,23 +32,28 @@ pub enum Instruction {
     Run(instructions::run::RunInstruction),
     ProcBlock(instructions::proc_block::ProcBlockInstruction),
     Out(instructions::out::OutInstruction),
-    //Misc(MiscInstruction)
+    // Misc(MiscInstruction)
 }
 
 pub fn generate(contents: String) -> PathBuf {
     let instructions = parse(contents);
-    //Iterate through all instructions
+    // Iterate through all instructions
 
-    let (dependencies, proc_options, capability_manifest, models_manifest, outtype_manifest) =
-        process_instructions(instructions);
+    let (
+        dependencies,
+        proc_options,
+        capability_manifest,
+        models_manifest,
+        outtype_manifest,
+    ) = process_instructions(instructions);
 
-    //Get homedir
+    // Get homedir
     let mut homedir = match env::home_dir() {
         None => panic!(""),
         Some(p) => p,
     };
 
-    //add directories to homedir if not exist
+    // add directories to homedir if not exist
     homedir.push(".rune");
     homedir.push("runes");
 
@@ -62,19 +64,19 @@ pub fn generate(contents: String) -> PathBuf {
 
     match fs::create_dir_all(&runedir) {
         Ok(()) => (),
-        _ => {}
+        _ => {},
     }
 
-    //Cargo
+    // Cargo
 
-    //set up config
-    /// Here we are setting up the config for the cargo project
+    // set up config
+    // Here we are setting up the config for the cargo project
     let config = match cargo::util::Config::default() {
         Ok(con) => con,
         Err(err) => {
             log::error!("Config doesn't work {}", err);
             std::process::exit(1);
-        }
+        },
     };
 
     let mut runedir = PathBuf::from(runedir);
@@ -86,7 +88,24 @@ pub fn generate(contents: String) -> PathBuf {
         Some(p) => p,
         None => panic!("Cannot own rune_dir string"),
     };
-    //make cargo dir
+
+    // TODO: Work here on making cargo dir
+
+    let mut parent_dir = runedir.to_owned();
+
+    let cargo_dir: &str = ".cargo";
+
+    parent_dir.push(cargo_dir);
+
+    log::info!("Writing .cargo folder to {:?}", parent_dir);
+
+    match fs::create_dir_all(parent_dir) {
+        Ok(()) => {
+            log::info!("Created `.cargo`");
+        },
+        Err(_e) => (),
+    }
+
     let opts = match cargo::ops::NewOptions::new(
         Some(VersionControl::Git),
         false,
@@ -100,40 +119,48 @@ pub fn generate(contents: String) -> PathBuf {
         Err(err) => {
             log::error!("Failed to make rune cargo {}", err);
             std::process::exit(1);
-        }
+        },
     };
-    /// cargo init
+    // cargo init
     match cargo::ops::init(&opts, &config) {
         Ok(_) => log::debug!("Cargo project created"),
         Err(err) => {
             log::error!("Cargo init failed {:?}", err);
             std::process::exit(1);
-        }
+        },
     }
 
-    //Cargo.toml
+    // config file
+    let mut cargo_config = String::from("");
+
+    // Cargo.toml
     let mut cargo_toml = String::from("");
 
     // We need to use toml editor here
+    // Code which is appended below is displayed in reverse order in Cargo.toml
 
     cargo_toml = [
-        format!("\n[lib]\ncrate-type = [\"cdylib\"]\n"),
+        format!(concat!(
+            "\n[profile.release]\n",
+            "opt-level = \"s\"\n",
+            "codegen-units = 1\n",
+            "lto = true\n"
+        )),
         String::from(cargo_toml),
     ]
     .concat();
 
     cargo_toml = [
-        format!("\n[profile.dev]\npanic = \"abort\"\n"),
+        format!(concat!("\n[profile.dev]\n", "panic = \"abort\"\n")),
         String::from(cargo_toml),
     ]
     .concat();
 
     cargo_toml = [
-        format!("\n[profile.release]\nopt-level = \"s\"\ncodegen-units = 1\nlto = true\n"),
+        format!(concat!("\n[lib]\n", "crate-type = [\"cdylib\"]\n")),
         String::from(cargo_toml),
     ]
     .concat();
-    
 
     for key in dependencies.keys() {
         cargo_toml = [
@@ -143,6 +170,24 @@ pub fn generate(contents: String) -> PathBuf {
         .concat();
     }
 
+    // Concatenating to .cargo/config
+    cargo_config = [
+        format!(concat!("\n[target.wasm32-unknown-unknown]\n",
+                        "rustflags = [\"-C\", \"link-arg=-zstack-size=4096\", \"-C\", \"link-arg=-s\"]")),
+        String::from(cargo_config),
+    ]
+    .concat();
+
+    // writing to .cargo/config
+    write_to_file(
+        format!(
+            "{}/.cargo/config",
+            runedir.clone().as_path().display().to_string()
+        ),
+        cargo_config,
+    );
+
+    // Writing to Cargo.toml
     write_to_file(
         format!(
             "{}/Cargo.toml",
@@ -151,7 +196,16 @@ pub fn generate(contents: String) -> PathBuf {
         cargo_toml,
     );
 
-    // temp generate sine function
+    // Writing to wrapper.rs (from runegen.rs)
+    write_to_file(
+        format!(
+            "{}/src/wrapper.rs",
+            runedir.clone().as_path().display().to_string()
+        ),
+        runegen::wrapper(),
+    );
+
+    // temp generate sine function (from runegen.rs)
     write_to_file(
         format!(
             "{}/src/sine_model.rs",
@@ -160,30 +214,35 @@ pub fn generate(contents: String) -> PathBuf {
         runegen::sine_model(),
     );
 
-    //generate lib.rs
+    // generates lib.rs. Calls enums (Attributes, Header, etc...) from
+    // runegen.rs where code is setup using codegen:
     let lib_code: String = [
+        // Attrributes enum is blank, but `#[cfg(test)]...` is generated from
+        // cargo new. This has been overwritten by the following in lib.rs.
         runegen::generate_code(runegen::CodeChunk::Attributes, None),
         runegen::generate_code(runegen::CodeChunk::Header, None),
-        //how about this ugly temp fix
-        String::from("mod sine_model;\n\n"),
-        runegen::generate_code(runegen::CodeChunk::TfmModelInvoke, None),
-        runegen::generate_code(runegen::CodeChunk::Malloc, None),
-        runegen::generate_code(runegen::CodeChunk::RuneBufferPtr, None),
+        runegen::generate_code(runegen::CodeChunk::PanicHandler, None),
+        runegen::generate_code(runegen::CodeChunk::AllocErrorHandler, None),
         runegen::generate_code(runegen::CodeChunk::ProviderResponsePtr, None),
+        runegen::generate_code(runegen::CodeChunk::TfmModelInvoke, None),
+        runegen::generate_code(runegen::CodeChunk::Debug, None),
         runegen::generate_code(runegen::CodeChunk::ManifestFn, None),
-        runegen::generate_manifest_function(capability_manifest, models_manifest, outtype_manifest),
+        // runegen::generate_manifest_function(capability_manifest,
+        // models_manifest, outtype_manifest),
         runegen::generate_code(runegen::CodeChunk::Call, Some(proc_options)),
     ]
     .concat();
 
-    write_to_file(
+    // Overwrites generated code from runegen.rs (which is called to lib_code)
+    // to lib.rs in rune
+    overwrite_to_file(
         format!(
             "{}/src/lib.rs",
             runedir.clone().as_path().display().to_string()
         ),
         lib_code,
     );
-    log::info!("Succesfully generated rune container in {:?}", runedir);
+    log::info!("Successfully generated rune container in {:?}", runedir);
     return PathBuf::from(runedir_out);
 }
 
@@ -200,13 +259,24 @@ fn write_to_file(file: String, content: String) {
     }
 }
 
+fn overwrite_to_file(file: String, content: String) {
+    let mut file_ref = std::fs::OpenOptions::new()
+        .create(true)
+        .write(true)
+        .append(false)
+        .open(format!("{}", file))
+        .unwrap();
+    if let Err(e) = writeln!(file_ref, "{}\n", content) {
+        log::error!("Couldn't overwrite to file: {}", e);
+        std::process::exit(1);
+    }
+}
+
 pub fn parse(contents: String) -> HashMap<String, Instruction> {
-    /// Rule::runefile is the top level rule defined in the `runefile.pest` 
-    ///
-    ///  
-    /// 
-
-
+    // Rule::runefile is the top level rule defined in the `runefile.pest`
+    //
+    //
+    //
 
     let successful_parse = RunefileParser::parse(Rule::runefile, &contents)
         .expect("unsuccessful parse")
@@ -219,17 +289,15 @@ pub fn parse(contents: String) -> HashMap<String, Instruction> {
         match record.as_rule() {
             Rule::step => {
                 for step in record.into_inner() {
-
                     match step.as_rule() {
                         Rule::from => {
-                            
                             results.insert(
                                 counter.to_string(),
                                 Instruction::FromInstruction(
                                     instructions::from::FromInstruction::from_record(step),
                                 ),
                             );
-                        }
+                        },
                         Rule::model => {
                             results.insert(
                                 counter.to_string(),
@@ -237,7 +305,7 @@ pub fn parse(contents: String) -> HashMap<String, Instruction> {
                                     instructions::model::ModelInstruction::from_record(step),
                                 ),
                             );
-                        }
+                        },
                         Rule::capability => {
                             results.insert(
                                 counter.to_string(),
@@ -247,7 +315,7 @@ pub fn parse(contents: String) -> HashMap<String, Instruction> {
                                     ),
                                 ),
                             );
-                        }
+                        },
                         Rule::run => {
                             results.insert(
                                 counter.to_string(),
@@ -255,7 +323,7 @@ pub fn parse(contents: String) -> HashMap<String, Instruction> {
                                     step,
                                 )),
                             );
-                        }
+                        },
                         Rule::proc_line => {
                             results.insert(
                                 counter.to_string(),
@@ -265,7 +333,7 @@ pub fn parse(contents: String) -> HashMap<String, Instruction> {
                                     ),
                                 ),
                             );
-                        }
+                        },
                         Rule::out => {
                             results.insert(
                                 counter.to_string(),
@@ -273,16 +341,19 @@ pub fn parse(contents: String) -> HashMap<String, Instruction> {
                                     step,
                                 )),
                             );
-                        }
+                        },
                         _ => {
-                            log::error!("Step doesn't follow expected grammar: {}", step.as_str());
-                            //TODO: Let's add the original text
+                            log::error!(
+                                "Step doesn't follow expected grammar: {}",
+                                step.as_str()
+                            );
+                            // TODO: Let's add the original text
                             std::process::exit(1);
-                        }
+                        },
                     }
                     counter += 1;
                 }
-            }
+            },
             _ => (),
         }
     }
@@ -308,18 +379,20 @@ pub fn process_instructions(
     for elem in instructions.values() {
         match elem {
             Instruction::FromInstruction(value) => {
-                let from_instruction: &instructions::from::FromInstruction = value;
+                let from_instruction: &instructions::from::FromInstruction =
+                    value;
                 log::info!("{:?}", from_instruction);
-            }
+            },
             Instruction::Model(value) => {
-                let model_instruction: &instructions::model::ModelInstruction = value;
+                let model_instruction: &instructions::model::ModelInstruction =
+                    value;
                 log::info!("{:?}", model_instruction);
                 dependencies.extend(model_instruction.dependencies.clone());
                 models_manifest.insert(
                     model_instruction.model_name.clone(),
                     model_instruction.code.clone(),
                 );
-            }
+            },
             Instruction::Capability(value) => {
                 let capability_instruction: &instructions::capability::CapabilityInstruction =
                     value;
@@ -328,22 +401,22 @@ pub fn process_instructions(
                     capability_instruction.code.clone(),
                 );
                 log::info!("{:?}", capability_instruction);
-            }
+            },
             Instruction::Run(value) => {
                 let run_instruction: &instructions::run::RunInstruction = value;
                 log::info!("{:?}", run_instruction);
-            }
+            },
             Instruction::ProcBlock(value) => {
                 let proc_instruction: &instructions::proc_block::ProcBlockInstruction = value;
                 log::info!("{:?}", proc_instruction);
                 dependencies.extend(proc_instruction.dependencies.clone());
                 proc_options.extend(proc_instruction.params.clone());
-            }
+            },
             Instruction::Out(value) => {
                 let out_instruction: &instructions::out::OutInstruction = value;
                 log::info!("{:?}", out_instruction);
                 outtype_manifest = out_instruction.out_type.clone();
-            }
+            },
         }
     }
 

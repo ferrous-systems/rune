@@ -1,4 +1,3 @@
-
 #![no_std]
 #[macro_use]
 extern crate alloc;
@@ -6,13 +5,12 @@ pub mod marshall;
 pub mod proc_block;
 
 #[derive(Copy, Clone, Debug)]
-pub enum CAPABILITY
-{
+pub enum CAPABILITY {
     RAND = 1,
     SOUND = 2,
     ACCEL = 3,
     IMAGE = 4,
-    RAW = 5
+    RAW = 5,
 }
 
 impl CAPABILITY {
@@ -23,7 +21,18 @@ impl CAPABILITY {
             3 => CAPABILITY::ACCEL,
             4 => CAPABILITY::IMAGE,
             5 => CAPABILITY::RAW,
-            _ => CAPABILITY::RAW
+            _ => CAPABILITY::RAW,
+        }
+    }
+
+    pub fn from_str(value: &str) -> Option<CAPABILITY> {
+        match value {
+            "RAND" => Some(CAPABILITY::RAND),
+            "SOUND" => Some(CAPABILITY::SOUND),
+            "ACCEL" => Some(CAPABILITY::ACCEL),
+            "IMAGE" => Some(CAPABILITY::IMAGE),
+            "RAW" => Some(CAPABILITY::RAW),
+            _ => None,
         }
     }
 }
@@ -32,7 +41,7 @@ impl CAPABILITY {
 pub enum PARAM_TYPE {
     INT = 1,
     FLOAT = 2,
-    UTF8  = 3,
+    UTF8 = 3,
     BINARY = 4,
 }
 
@@ -43,18 +52,15 @@ impl PARAM_TYPE {
             2 => PARAM_TYPE::FLOAT,
             3 => PARAM_TYPE::UTF8,
             4 => PARAM_TYPE::BINARY,
-            _ => PARAM_TYPE::BINARY
+            _ => PARAM_TYPE::BINARY,
         }
     }
 }
-
 
 #[derive(Copy, Clone, Debug)]
 pub enum OUTPUT {
     SERIAL = 1,
     BLE = 2,
     PIN = 3,
-    WIFI = 4
+    WIFI = 4,
 }
-
-

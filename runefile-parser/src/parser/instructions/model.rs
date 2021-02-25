@@ -18,8 +18,12 @@ impl ModelInstruction {
 
         for args in record.into_inner() {
             match args.as_rule() {
-                Rule::model_file => model_file_param = args.as_str().to_string(),
-                Rule::model_name => model_name_param = args.as_str().to_string(),
+                Rule::model_file => {
+                    model_file_param = args.as_str().to_string()
+                },
+                Rule::model_name => {
+                    model_name_param = args.as_str().to_string()
+                },
                 Rule::model_args => {
                     for arg in args.into_inner() {
                         match arg.as_rule() {
@@ -28,45 +32,57 @@ impl ModelInstruction {
                                 for part in arg.into_inner() {
                                     match part.as_rule() {
                                         Rule::model_arg_variable => {
-                                            last_param_name = part.as_str().to_string();
-                                        }
+                                            last_param_name =
+                                                part.as_str().to_string();
+                                        },
                                         Rule::model_arg_value => {
-                                            let last_param_value = part.as_str().to_string();
-                                            let last_param_name_cloned = last_param_name.clone();
-                                            parameters_param
-                                                .insert(last_param_name_cloned, last_param_value);
-                                        }
-                                        _ => {}
+                                            let last_param_value =
+                                                part.as_str().to_string();
+                                            let last_param_name_cloned =
+                                                last_param_name.clone();
+                                            parameters_param.insert(
+                                                last_param_name_cloned,
+                                                last_param_value,
+                                            );
+                                        },
+                                        _ => {},
                                     }
                                 }
-                            }
-                            _ => {}
+                            },
+                            _ => {},
                         }
                     }
-                }
-                _ => {}
+                },
+                _ => {},
             }
         }
-        //default input & output is [-1,-1]
+        // default input & output is [-1,-1]
 
         let mut input_dims = String::from("[-1,-1]");
         let mut output_dims = String::from("[-1,-1]");
         if parameters_param.contains_key("input") {
             input_dims = parameters_param.get("input").unwrap().to_string();
-            //println!("{:?}",input_dims);
+            // println!("{:?}",input_dims);
         }
         if parameters_param.contains_key("output") {
             output_dims = parameters_param.get("output").unwrap().to_string();
-            //println!("{:?}",output_dims);
+            // println!("{:?}",output_dims);
         }
         let code_string = format!("ml::Model {{ name: String::from(\"{}\"), input_dims: vec!{}, output_dims: vec!{}, framework: ml::FRAMEWORK::TFLITE }}",model_name_param,input_dims,output_dims);
-        //add CARGO dependencies
+        // add CARGO dependencies
         dependencies_map.insert(
-            "runic-pb-mod".to_string(),
-            "{ git = \"ssh://git@github.com/hotg-ai/runic-pb-mod\" }".to_string(),
+            "runic-types".to_string(),
+            "{ git = \"ssh://git@github.com/hotg-ai/rune\", path = \"runic-types\" }".to_string()
         );
-        dependencies_map.insert("runic-types".to_string(),"{ git = \"ssh://git@github.com/hotg-ai/runic-types\" , branch = \"feature/generics_integration_lang\" }".to_string());
-        //generate some code
+        dependencies_map.insert(
+            "runic-transform".to_string(),
+            "{ git = \"ssh://git@github.com/hotg-ai/rune\", path = \"runic-transform\" }".to_string()
+        );
+        dependencies_map
+            .insert("no-std-compat".to_string(), "\"0.4.1\"".to_string());
+        dependencies_map
+            .insert("wee_alloc".to_string(), "\"0.4.5\"".to_string());
+        // generate some code
 
         Self {
             model_name: model_name_param,
