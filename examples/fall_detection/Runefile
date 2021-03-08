@@ -1,0 +1,21 @@
+FROM runicos/base
+
+CAPABILITY<F32[384]> audio AUDIO -hz 16000 -n 384
+
+CAPABILITY<U8[128, 128]> image IMAGE --dims=128,128 --grayscale 
+
+PROC_BLOCK<f32[384],f32[4096]> fft hotg-ai/rune#proc_blocks/fft --window 1
+
+MODEL<f32[4096, 1],f32[10]> audio_fall_detection ./fall_audio.tflite
+
+MODEL<U8[128, 128], f32[4]> fall_image_detection ./fall_image.tflite
+
+PROC_BLOCK<f32[14],UTF8> fall_label hotg-ai/rune#proc_blocks/fall_label 
+
+OUT SERIAL
+
+RUN fall_audio audio fft audio_fall_detection
+
+RUN fall_image image fall_image_detection
+
+RUN all fall_audio|fall_image fall_label serial
