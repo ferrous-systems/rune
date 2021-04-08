@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Serial",""]],"trait":[["Output","Something a Rune can send output to."]]});

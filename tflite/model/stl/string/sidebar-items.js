@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["String","This should be used as only (mutable) references. Small string optimization makes unsafe to move `String` instances. `String::drop` is also prohibited for this reason."]]});

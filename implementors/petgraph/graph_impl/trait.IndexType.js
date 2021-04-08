@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["rune_syntax"] = [{"text":"impl <a class=\"trait\" href=\"petgraph/graph_impl/trait.IndexType.html\" title=\"trait petgraph::graph_impl::IndexType\">IndexType</a> for <a class=\"struct\" href=\"rune_syntax/hir/struct.HirId.html\" title=\"struct rune_syntax::hir::HirId\">HirId</a>","synthetic":false,"types":["rune_syntax::hir::HirId"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

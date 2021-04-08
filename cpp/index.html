@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="This crate `cpp` provides macros that allow embedding arbitrary C++ code."><meta name="keywords" content="rust, rustlang, rust-lang, cpp"><title>cpp - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script id="default-settings"></script><script src="../storage.js"></script><script src="../crates.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc mod"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../cpp/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><p class="location">Crate cpp</p><div class="block version"><p>Version 0.5.6</p></div><div class="sidebar-elems"><a id="all-types" href="all.html"><p>See all cpp's items</p></a><div class="block items"><ul><li><a href="#macros">Macros</a></li></ul></div><p class="location"></p><div id="sidebar-vars" data-name="cpp" data-ty="mod" data-relpath="../"></div></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Crate <a class="mod" href="">cpp</a><button id="copy-path" onclick="copy_path(this)">⎘</button></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../src/cpp/lib.rs.html#1-396" title="goto source code">[src]</a></span></h1><div class="docblock"><p>This crate <code>cpp</code> provides macros that allow embedding arbitrary C++ code.</p>
+<h1 id="usage" class="section-header"><a href="#usage">Usage</a></h1>
+<p>This crate must be used in tandem with the <a href="https://docs.rs/cpp_build"><code>cpp_build</code></a> crate. A basic Cargo
+project which uses these projects would have a structure like the following:</p>
+<pre><code class="language-text">crate
+|-- Cargo.toml
+|-- src
+    |-- main.rs
+|-- build.rs
+</code></pre>
+<p>Where the files look like the following:</p>
+<h4 id="cargotoml" class="section-header"><a href="#cargotoml">Cargo.toml</a></h4>
+<pre><code class="language-toml">[package]
+build = &quot;build.rs&quot;
+
+[dependencies]
+cpp = &quot;0.5&quot;
+
+[build-dependencies]
+cpp_build = &quot;0.5&quot;
+</code></pre>
+<h4 id="buildrs" class="section-header"><a href="#buildrs">build.rs</a></h4>
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">cpp_build</span>;
+
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="ident">cpp_build</span>::<span class="ident">build</span>(<span class="string">&quot;src/main.rs&quot;</span>);
+}</pre></div>
+<h4 id="mainrs" class="section-header"><a href="#mainrs">main.rs</a></h4>
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
+<span class="kw">use</span> <span class="ident">cpp</span>::<span class="ident">cpp</span>;
+
+<span class="macro">cpp!</span>{{
+    #<span class="ident">include</span> <span class="op">&lt;</span><span class="ident">iostream</span><span class="op">&gt;</span>
+}}
+
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">CString</span>::<span class="ident">new</span>(<span class="string">&quot;World&quot;</span>).<span class="ident">unwrap</span>();
+    <span class="kw">let</span> <span class="ident">name_ptr</span> <span class="op">=</span> <span class="ident">name</span>.<span class="ident">as_ptr</span>();
+    <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="kw">unsafe</span> {
+        <span class="macro">cpp!</span>([<span class="ident">name_ptr</span> <span class="kw">as</span> <span class="string">&quot;const char *&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="string">&quot;int32_t&quot;</span> {
+            <span class="ident">std</span>::<span class="ident">cout</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="string">&quot;Hello, &quot;</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">name_ptr</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">std</span>::<span class="ident">endl</span>;
+            <span class="kw">return</span> <span class="number">42</span>;
+        })
+    };
+    <span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="number">42</span>)
+}</pre></div>
+<h1 id="build-script" class="section-header"><a href="#build-script">Build script</a></h1>
+<p>Use the <code>cpp_build</code> crates from your <code>build.rs</code> script.
+The same version of <code>cpp_build</code> and <code>cpp</code> crates should be used.
+You can simply use the <code>cpp_build::build</code> function, or the <code>cpp_build::Config</code>
+struct if you want more option.</p>
+<p>Behind the scene, it uses the <code>cc</code> crate.</p>
+<h2 id="using-external-libraries" class="section-header"><a href="#using-external-libraries">Using external libraries</a></h2>
+<p>Most likely you will want to link against external libraries. You need to tell cpp_build
+about the include path and other flags via <code>cpp_build::Config</code> and you need to let cargo
+know about the link. More info in the <a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">cargo docs</a>.</p>
+<p>Your <code>build.rs</code> could look like this:</p>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered">
+<span class="kw">fn</span> <span class="ident">main</span>() {
+    <span class="kw">let</span> <span class="ident">include_path</span> <span class="op">=</span> <span class="string">&quot;/usr/include/myexternallib&quot;</span>;
+    <span class="kw">let</span> <span class="ident">lib_path</span> <span class="op">=</span> <span class="string">&quot;/usr/lib/myexternallib&quot;</span>;
+    <span class="ident">cpp_build</span>::<span class="ident">Config</span>::<span class="ident">new</span>().<span class="ident">include</span>(<span class="ident">include_path</span>).<span class="ident">build</span>(<span class="string">&quot;src/lib.rs&quot;</span>);
+    <span class="macro">println!</span>(<span class="string">&quot;cargo:rustc-link-search={}&quot;</span>, <span class="ident">lib_path</span>);
+    <span class="macro">println!</span>(<span class="string">&quot;cargo:rustc-link-lib=myexternallib&quot;</span>);
+}</pre></div>
+<p>(But you probably want to allow to configure the path via environment variables or
+find them using some external tool such as the <code>pkg-config</code> crate, instead of hardcoding
+them in the source)</p>
+<h1 id="limitations" class="section-header"><a href="#limitations">Limitations</a></h1>
+<p>As with all procedure macro crates we also need to parse Rust source files to
+extract C++ code. That leads to the fact that some of the language features
+might not be supported in full. One example is the attributes. Only a limited
+number of attributes is supported, namely: <code>#[path = &quot;...&quot;]</code> for <code>mod</code>
+declarations to specify an alternative path to the module file and
+<code>#[cfg(feature = &quot;...&quot;)]</code> for <code>mod</code> declarations to conditionally include the
+module into the parsing process. Please note that the latter is only supported
+in its simplest form: straight-forward <code>feature = &quot;...&quot;</code> without any
+additional conditions, <code>cfg!</code> macros are also not supported at the moment.</p>
+<p>Since the C++ code is included within a rust file, the C++ code must obey both
+the Rust and the C++ lexing rules. For example, Rust supports nested block comments
+(<code>/* ... /* ... */ ... */</code>) while C++ does not, so nested comments not be used in the
+<code>cpp!</code> macro. Also the Rust lexer will not understand the C++ raw literal, nor all
+the C++ escape sequences within literal, so only string literals that are both valid
+in Rust and in C++ should be used. The same applies for group separators in numbers.
+Be careful to properly use <code>#if</code> / <code>#else</code> / <code>#endif</code>, and not have unbalanced delimiters.</p>
+</div><h2 id="macros" class="section-header"><a href="#macros">Macros</a></h2>
+<table><tr class="module-item"><td><a class="macro" href="macro.cpp.html" title="cpp::cpp macro">cpp</a></td><td class="docblock-short"><p>This macro is used to embed arbitrary C++ code.</p>
+</td></tr><tr class="module-item"><td><a class="macro" href="macro.cpp_class.html" title="cpp::cpp_class macro">cpp_class</a></td><td class="docblock-short"><p>This macro allows wrapping a relocatable C++ struct or class that might have
+a destructor or copy constructor, implementing the <code>Drop</code> and <code>Clone</code> trait
+appropriately.</p>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="cpp" data-search-js="../search-index.js"></div>
+    <script src="../main.js"></script></body></html>

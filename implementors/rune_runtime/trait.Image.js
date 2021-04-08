@@ -1,0 +1,4 @@
+(function() {var implementors = {};
+implementors["rune"] = [{"text":"impl <a class=\"trait\" href=\"rune_runtime/trait.Image.html\" title=\"trait rune_runtime::Image\">Image</a> for <a class=\"struct\" href=\"rune/struct.Callbacks.html\" title=\"struct rune::Callbacks\">Callbacks</a>","synthetic":false,"types":["rune::callbacks::Callbacks"]}];
+implementors["runicos_base"] = [{"text":"impl <a class=\"trait\" href=\"rune_runtime/trait.Image.html\" title=\"trait rune_runtime::Image\">Image</a> for <a class=\"struct\" href=\"runicos_base/struct.BaseImage.html\" title=\"struct runicos_base::BaseImage\">BaseImage</a>","synthetic":false,"types":["runicos_base::image::BaseImage"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

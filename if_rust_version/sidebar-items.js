@@ -1,0 +1,1 @@
+initSidebarItems({"macro":[["if_rust_version","This macro can enable or disable code depending on the rust version with which the program is compiled."]]});

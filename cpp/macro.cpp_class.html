@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="This macro allows wrapping a relocatable C++ struct or class that might have a destructor or copy constructor, implementing the `Drop` and `Clone` trait appropriately."><meta name="keywords" content="rust, rustlang, rust-lang, cpp_class"><title>cpp::cpp_class - Rust</title><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../ayu.css" disabled ><script id="default-settings"></script><script src="../storage.js"></script><script src="../crates.js"></script><noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../down-arrow.svg");}</style></head><body class="rustdoc macro"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../cpp/index.html'><div class='logo-container rust-logo'><img src='../rust-logo.png' alt='logo'></div></a><div class="sidebar-elems"><p class="location"><a href="index.html">cpp</a></p><div id="sidebar-vars" data-name="cpp_class" data-ty="macro" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+                <a id="settings-menu" href="../settings.html"><img src="../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><h1 class="fqn"><span class="in-band">Macro <a href="index.html">cpp</a>::<wbr><a class="macro" href="">cpp_class</a><button id="copy-path" onclick="copy_path(this)">⎘</button></span><span class="out-of-band"><span id="render-detail"><a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span><a class="srclink" href="../src/cpp/lib.rs.html#348-358" title="goto source code">[src]</a></span></h1><div class="docblock type-decl hidden-by-usual-hider"><div class="example-wrap"><pre class="rust macro">
+<span class="macro">macro_rules!</span> <span class="ident">cpp_class</span> {
+    ($(<span class="attribute">#[$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attrs</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>]</span>)<span class="op">*</span> <span class="kw">unsafe</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">expr</span>) <span class="op">=</span><span class="op">&gt;</span> { ... };
+    ($(<span class="attribute">#[$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attrs</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>]</span>)<span class="op">*</span> <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">expr</span>) <span class="op">=</span><span class="op">&gt;</span> { ... };
+    ($(<span class="attribute">#[$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">attrs</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>]</span>)<span class="op">*</span> <span class="kw">pub</span>($(<span class="macro-nonterminal">$</span><span class="kw">pub</span>:<span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>) <span class="kw">unsafe</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">expr</span>) <span class="op">=</span><span class="op">&gt;</span> { ... };
+}</pre></div>
+</div><div class="docblock"><p>This macro allows wrapping a relocatable C++ struct or class that might have
+a destructor or copy constructor, implementing the <code>Drop</code> and <code>Clone</code> trait
+appropriately.</p>
+
+<div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
+<span class="macro">cpp_class!</span>(<span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">struct</span> <span class="ident">MyClass</span> <span class="kw">as</span> <span class="string">&quot;MyClass&quot;</span>);
+<span class="kw">impl</span> <span class="ident">MyClass</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">unsafe</span> { <span class="macro">cpp!</span>([] <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MyClass</span> <span class="kw">as</span> <span class="string">&quot;MyClass&quot;</span> { <span class="kw">return</span> <span class="ident">MyClass</span>(); }) }
+    }
+    <span class="kw">fn</span> <span class="ident">member_function</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">param</span> : <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+        <span class="kw">unsafe</span> { <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const MyClass*&quot;</span>, <span class="ident">param</span> <span class="kw">as</span> <span class="string">&quot;int&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> <span class="kw">as</span> <span class="string">&quot;int&quot;</span> {
+            <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">member_function</span>(<span class="ident">param</span>);
+        }) }
+    }
+}</pre></div>
+<p>This will create a Rust struct <code>MyClass</code>, which has the same size and
+alignment as the C++ class <code>MyClass</code>. It will also implement the <code>Drop</code> trait
+calling the destructor, the <code>Clone</code> trait calling the copy constructor, if the
+class is copyable (or <code>Copy</code> if it is trivially copyable), and <code>Default</code> if the class
+is default constructible</p>
+<h2 id="derived-traits" class="section-header"><a href="#derived-traits">Derived Traits</a></h2>
+<p>The <code>Default</code>, <code>Clone</code> and <code>Copy</code> traits are implicitly implemented if the C++
+type has the corresponding constructors.</p>
+<p>You can add the <code>#[derive(...)]</code> attribute in the macro in order to get automatic
+implementation of the following traits:</p>
+<ul>
+<li>The trait <code>PartialEq</code> will call the C++ <code>operator==</code>.</li>
+<li>You can add the trait <code>Eq</code> if the semantics of the C++ operator are those of <code>Eq</code></li>
+<li>The trait <code>PartialOrd</code> need the C++ <code>operator&lt;</code> for that type. <code>lt</code>, <code>le</code>, <code>gt</code> and
+<code>ge</code> will use the corresponding C++ operator if it is defined, otherwise it will
+fallback to the less than operator. For PartialOrd::partial_cmp, the <code>operator&lt;</code> will
+be called twice. Note that it will never return <code>None</code>.</li>
+<li>The trait <code>Ord</code> can also be specified when the semantics of the <code>operator&lt;</code> corresponds
+to a total order</li>
+</ul>
+<h2 id="safety-warning" class="section-header"><a href="#safety-warning">Safety Warning</a></h2>
+<p>Use of this macro is highly unsafe. Only certain C++ classes can be bound
+to, C++ classes may perform arbitrary unsafe operations, and invariants are
+easy to break.</p>
+<p>A notable restriction is that this macro only works if the C++ class is
+relocatable.</p>
+<h2 id="relocatable-classes" class="section-header"><a href="#relocatable-classes">Relocatable classes</a></h2>
+<p>In order to be able to we wrapped the C++ class must be relocatable. That means
+that it can be moved in memory using <code>memcpy</code>. This restriction exists because
+safe Rust is allowed to move your types around.</p>
+<p>Most C++ types which do not contain self-references will be compatible,
+although this property cannot be statically checked by <code>rust-cpp</code>.
+All types that satisfy <code>std::is_trivially_copyable</code> are compatible.
+Maybe future version of the C++ standard would allow a comile-time check:
+<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2019/p1144r4.html">P1144</a></p>
+<p>Unfortunately, as the STL often uses internal self-references for
+optimization purposes, such as the small-string optimization, this disallows
+most std:: classes.
+But <code>std::unique_ptr&lt;T&gt;</code> and <code>std::shared_ptr&lt;T&gt;</code> works.</p>
+</div></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="cpp" data-search-js="../search-index.js"></div>
+    <script src="../main.js"></script></body></html>

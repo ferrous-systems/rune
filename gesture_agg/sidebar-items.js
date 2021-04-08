@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GestureAgg","Gesture Aggregator takes a list of confidences and returns the associated label of the most confident gesture so it identifies which gesture is occuring."]]});
