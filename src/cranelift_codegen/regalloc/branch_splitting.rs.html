@@ -175,14 +175,14 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! One of the reason for splitting edges is to be able to insert `copy` and `regmove` instructions</span>
 <span class="doccomment">//! between a conditional branch and the following terminator.</span>
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">EncCursor</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">dominator_tree</span>::<span class="ident">DominatorTree</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">flowgraph</span>::<span class="ident">ControlFlowGraph</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">Block</span>, <span class="ident">Function</span>, <span class="ident">Inst</span>, <span class="ident">InstBuilder</span>, <span class="ident">InstructionData</span>, <span class="ident">Opcode</span>, <span class="ident">ValueList</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">TargetIsa</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">topo_order</span>::<span class="ident">TopoOrder</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">EncCursor</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::dominator_tree::DominatorTree</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::flowgraph::ControlFlowGraph</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">Block</span>, <span class="ident">Function</span>, <span class="ident">Inst</span>, <span class="ident">InstBuilder</span>, <span class="ident">InstructionData</span>, <span class="ident">Opcode</span>, <span class="ident">ValueList</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::TargetIsa</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::topo_order::TopoOrder</span>;
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">run</span>(
     <span class="ident">isa</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span>,
@@ -193,7 +193,7 @@
 ) {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context</span> {
         <span class="ident">has_new_blocks</span>: <span class="bool-val">false</span>,
-        <span class="ident">cur</span>: <span class="ident">EncCursor</span>::<span class="ident">new</span>(<span class="ident">func</span>, <span class="ident">isa</span>),
+        <span class="ident">cur</span>: <span class="ident">EncCursor::new</span>(<span class="ident">func</span>, <span class="ident">isa</span>),
         <span class="ident">domtree</span>,
         <span class="ident">topo</span>,
         <span class="ident">cfg</span>,
@@ -243,10 +243,10 @@
     <span class="kw">fn</span> <span class="ident">visit_conditional_branch</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">branch</span>: <span class="ident">Inst</span>, <span class="ident">opcode</span>: <span class="ident">Opcode</span>) {
         <span class="comment">// TODO: target = dfg[branch].branch_destination().expect(&quot;conditional branch&quot;);</span>
         <span class="kw">let</span> <span class="ident">target</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">branch</span>] {
-            <span class="ident">InstructionData</span>::<span class="ident">Branch</span> { <span class="ident">destination</span>, .. }
-            <span class="op">|</span> <span class="ident">InstructionData</span>::<span class="ident">BranchIcmp</span> { <span class="ident">destination</span>, .. }
-            <span class="op">|</span> <span class="ident">InstructionData</span>::<span class="ident">BranchInt</span> { <span class="ident">destination</span>, .. }
-            <span class="op">|</span> <span class="ident">InstructionData</span>::<span class="ident">BranchFloat</span> { <span class="ident">destination</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">destination</span>,
+            <span class="ident">InstructionData::Branch</span> { <span class="ident">destination</span>, .. }
+            <span class="op">|</span> <span class="ident">InstructionData::BranchIcmp</span> { <span class="ident">destination</span>, .. }
+            <span class="op">|</span> <span class="ident">InstructionData::BranchInt</span> { <span class="ident">destination</span>, .. }
+            <span class="op">|</span> <span class="ident">InstructionData::BranchFloat</span> { <span class="ident">destination</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">destination</span>,
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unexpected instruction in visit_conditional_branch&quot;</span>),
         };
 
@@ -274,7 +274,7 @@
             <span class="comment">// Replace the branch destination by the new Block created with no parameters, and restore</span>
             <span class="comment">// the branch arguments, without the original Block parameters.</span>
             {
-                <span class="kw">let</span> <span class="ident">branch_args</span> <span class="op">=</span> <span class="ident">ValueList</span>::<span class="ident">from_slice</span>(<span class="ident">branch_args</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">dfg</span>.<span class="ident">value_lists</span>);
+                <span class="kw">let</span> <span class="ident">branch_args</span> <span class="op">=</span> <span class="ident">ValueList::from_slice</span>(<span class="ident">branch_args</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">dfg</span>.<span class="ident">value_lists</span>);
                 <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">dfg</span>[<span class="ident">branch</span>];
                 <span class="kw-2">*</span><span class="ident">data</span>.<span class="ident">branch_destination_mut</span>().<span class="ident">expect</span>(<span class="string">&quot;branch&quot;</span>) <span class="op">=</span> <span class="ident">new_block</span>;
                 <span class="ident">data</span>.<span class="ident">put_value_list</span>(<span class="ident">branch_args</span>);
@@ -294,16 +294,16 @@
     <span class="kw">fn</span> <span class="ident">visit_terminator_branch</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">inst</span>: <span class="ident">Inst</span>) {
         <span class="kw">let</span> <span class="ident">inst_data</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>];
         <span class="kw">let</span> <span class="ident">opcode</span> <span class="op">=</span> <span class="ident">inst_data</span>.<span class="ident">opcode</span>();
-        <span class="kw">if</span> <span class="ident">opcode</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Opcode</span>::<span class="ident">Jump</span> <span class="op">&amp;&amp;</span> <span class="ident">opcode</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Opcode</span>::<span class="ident">Fallthrough</span> {
+        <span class="kw">if</span> <span class="ident">opcode</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Opcode::Jump</span> <span class="op">&amp;&amp;</span> <span class="ident">opcode</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Opcode::Fallthrough</span> {
             <span class="comment">// This opcode is ignored as it does not have any block parameters.</span>
-            <span class="kw">if</span> <span class="ident">opcode</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Opcode</span>::<span class="ident">IndirectJumpTableBr</span> {
+            <span class="kw">if</span> <span class="ident">opcode</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Opcode::IndirectJumpTableBr</span> {
                 <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">opcode</span>.<span class="ident">is_branch</span>())
             }
             <span class="kw">return</span>;
         }
 
         <span class="kw">let</span> <span class="ident">target</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">inst_data</span> {
-            <span class="ident">InstructionData</span>::<span class="ident">Jump</span> { <span class="ident">destination</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">destination</span>,
+            <span class="ident">InstructionData::Jump</span> { <span class="ident">destination</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">destination</span>,
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(
                 <span class="string">&quot;Unexpected instruction {} in visit_terminator_branch&quot;</span>,
                 <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>)

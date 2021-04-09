@@ -1318,26 +1318,26 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Data flow graph tracking Instructions, Values, and blocks.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">entity</span>::{<span class="self">self</span>, <span class="ident">PrimaryMap</span>, <span class="ident">SecondaryMap</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">builder</span>::<span class="ident">ReplaceBuilder</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">extfunc</span>::<span class="ident">ExtFuncData</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">instructions</span>::{<span class="ident">BranchInfo</span>, <span class="ident">CallInfo</span>, <span class="ident">InstructionData</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">types</span>, <span class="ident">ConstantData</span>, <span class="ident">ConstantPool</span>, <span class="ident">Immediate</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::entity</span>::{<span class="self">self</span>, <span class="ident">PrimaryMap</span>, <span class="ident">SecondaryMap</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::builder::ReplaceBuilder</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::extfunc::ExtFuncData</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::instructions</span>::{<span class="ident">BranchInfo</span>, <span class="ident">CallInfo</span>, <span class="ident">InstructionData</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">types</span>, <span class="ident">ConstantData</span>, <span class="ident">ConstantPool</span>, <span class="ident">Immediate</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{
     <span class="ident">Block</span>, <span class="ident">FuncRef</span>, <span class="ident">Inst</span>, <span class="ident">SigRef</span>, <span class="ident">Signature</span>, <span class="ident">Type</span>, <span class="ident">Value</span>, <span class="ident">ValueLabelAssignments</span>, <span class="ident">ValueList</span>,
     <span class="ident">ValueListPool</span>,
 };
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">TargetIsa</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">packed_option</span>::<span class="ident">ReservedValue</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">write</span>::<span class="ident">write_operands</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">HashMap</span>;
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">iter</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">ops</span>::{<span class="ident">Index</span>, <span class="ident">IndexMut</span>};
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">u16</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::TargetIsa</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::packed_option::ReservedValue</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::write::write_operands</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::HashMap</span>;
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
+<span class="kw">use</span> <span class="ident">core::iter</span>;
+<span class="kw">use</span> <span class="ident">core::mem</span>;
+<span class="kw">use</span> <span class="ident">core::ops</span>::{<span class="ident">Index</span>, <span class="ident">IndexMut</span>};
+<span class="kw">use</span> <span class="ident">core::u16</span>;
 
 <span class="doccomment">/// A data flow graph defines all instructions and basic blocks in a function as well as</span>
 <span class="doccomment">/// the data flow dependencies between them. The DFG also tracks values which can be either</span>
@@ -1401,17 +1401,17 @@
     <span class="doccomment">/// Create a new empty `DataFlowGraph`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">insts</span>: <span class="ident">PrimaryMap</span>::<span class="ident">new</span>(),
-            <span class="ident">results</span>: <span class="ident">SecondaryMap</span>::<span class="ident">new</span>(),
-            <span class="ident">blocks</span>: <span class="ident">PrimaryMap</span>::<span class="ident">new</span>(),
-            <span class="ident">value_lists</span>: <span class="ident">ValueListPool</span>::<span class="ident">new</span>(),
-            <span class="ident">values</span>: <span class="ident">PrimaryMap</span>::<span class="ident">new</span>(),
-            <span class="ident">signatures</span>: <span class="ident">PrimaryMap</span>::<span class="ident">new</span>(),
-            <span class="ident">old_signatures</span>: <span class="ident">SecondaryMap</span>::<span class="ident">new</span>(),
-            <span class="ident">ext_funcs</span>: <span class="ident">PrimaryMap</span>::<span class="ident">new</span>(),
+            <span class="ident">insts</span>: <span class="ident">PrimaryMap::new</span>(),
+            <span class="ident">results</span>: <span class="ident">SecondaryMap::new</span>(),
+            <span class="ident">blocks</span>: <span class="ident">PrimaryMap::new</span>(),
+            <span class="ident">value_lists</span>: <span class="ident">ValueListPool::new</span>(),
+            <span class="ident">values</span>: <span class="ident">PrimaryMap::new</span>(),
+            <span class="ident">signatures</span>: <span class="ident">PrimaryMap::new</span>(),
+            <span class="ident">old_signatures</span>: <span class="ident">SecondaryMap::new</span>(),
+            <span class="ident">ext_funcs</span>: <span class="ident">PrimaryMap::new</span>(),
             <span class="ident">values_labels</span>: <span class="prelude-val">None</span>,
-            <span class="ident">constants</span>: <span class="ident">ConstantPool</span>::<span class="ident">new</span>(),
-            <span class="ident">immediates</span>: <span class="ident">PrimaryMap</span>::<span class="ident">new</span>(),
+            <span class="ident">constants</span>: <span class="ident">ConstantPool::new</span>(),
+            <span class="ident">immediates</span>: <span class="ident">PrimaryMap::new</span>(),
         }
     }
 
@@ -1464,7 +1464,7 @@
     <span class="doccomment">/// Starts collection of debug information.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">collect_debug_info</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">values_labels</span>.<span class="ident">is_none</span>() {
-            <span class="self">self</span>.<span class="ident">values_labels</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">HashMap</span>::<span class="ident">new</span>());
+            <span class="self">self</span>.<span class="ident">values_labels</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">HashMap::new</span>());
         }
     }
 }
@@ -1478,7 +1478,7 @@
 
     <span class="comment">// Note that values may be empty here.</span>
     <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="op">=</span><span class="ident">values</span>.<span class="ident">len</span>() {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueData</span>::<span class="ident">Alias</span> { <span class="ident">original</span>, .. } <span class="op">=</span> <span class="ident">values</span>[<span class="ident">v</span>] {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueData::Alias</span> { <span class="ident">original</span>, .. } <span class="op">=</span> <span class="ident">values</span>[<span class="ident">v</span>] {
             <span class="ident">v</span> <span class="op">=</span> <span class="ident">original</span>;
         } <span class="kw">else</span> {
             <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>);
@@ -1501,17 +1501,17 @@
 
 <span class="doccomment">/// Iterator over all Values in a DFG</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Values</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">inner</span>: <span class="ident">entity</span>::<span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Value</span>, <span class="ident">ValueData</span><span class="op">&gt;</span>,
+    <span class="ident">inner</span>: <span class="ident">entity::Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Value</span>, <span class="ident">ValueData</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// Check for non-values</span>
 <span class="kw">fn</span> <span class="ident">valid_valuedata</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">ValueData</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-    <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueData</span>::<span class="ident">Alias</span> {
-        <span class="ident">ty</span>: <span class="ident">types</span>::<span class="ident">INVALID</span>,
+    <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueData::Alias</span> {
+        <span class="ident">ty</span>: <span class="ident">types::INVALID</span>,
         <span class="ident">original</span>,
     } <span class="op">=</span> <span class="kw-2">*</span><span class="ident">data</span>
     {
-        <span class="kw">if</span> <span class="ident">original</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Value</span>::<span class="ident">reserved_value</span>() {
+        <span class="kw">if</span> <span class="ident">original</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Value::reserved_value</span>() {
             <span class="kw">return</span> <span class="bool-val">false</span>;
         }
     }
@@ -1521,7 +1521,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">Values</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Value</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>
             .<span class="ident">by_ref</span>()
             .<span class="ident">find</span>(<span class="op">|</span><span class="ident">kv</span><span class="op">|</span> <span class="ident">valid_valuedata</span>(<span class="ident">kv</span>.<span class="number">1</span>))
@@ -1561,9 +1561,9 @@
     <span class="doccomment">/// parameter.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">value_def</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">Value</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ValueDef</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">v</span>] {
-            <span class="ident">ValueData</span>::<span class="ident">Inst</span> { <span class="ident">inst</span>, <span class="ident">num</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ValueDef</span>::<span class="prelude-ty">Result</span>(<span class="ident">inst</span>, <span class="ident">num</span> <span class="kw">as</span> <span class="ident">usize</span>),
-            <span class="ident">ValueData</span>::<span class="ident">Param</span> { <span class="ident">block</span>, <span class="ident">num</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ValueDef</span>::<span class="ident">Param</span>(<span class="ident">block</span>, <span class="ident">num</span> <span class="kw">as</span> <span class="ident">usize</span>),
-            <span class="ident">ValueData</span>::<span class="ident">Alias</span> { <span class="ident">original</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ValueData::Inst</span> { <span class="ident">inst</span>, <span class="ident">num</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ValueDef::Result</span>(<span class="ident">inst</span>, <span class="ident">num</span> <span class="kw">as</span> <span class="ident">usize</span>),
+            <span class="ident">ValueData::Param</span> { <span class="ident">block</span>, <span class="ident">num</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ValueDef::Param</span>(<span class="ident">block</span>, <span class="ident">num</span> <span class="kw">as</span> <span class="ident">usize</span>),
+            <span class="ident">ValueData::Alias</span> { <span class="ident">original</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="comment">// Make sure we only recurse one level. `resolve_aliases` has safeguards to</span>
                 <span class="comment">// detect alias loops without overrunning the stack.</span>
                 <span class="self">self</span>.<span class="ident">value_def</span>(<span class="self">self</span>.<span class="ident">resolve_aliases</span>(<span class="ident">original</span>))
@@ -1578,7 +1578,7 @@
     <span class="doccomment">/// Value aliases are not considered to be attached to anything. Use `resolve_aliases()` to</span>
     <span class="doccomment">/// determine if the original aliased value is attached.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">value_is_attached</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">Value</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">ValueData</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="self">self</span><span class="ident">::ValueData</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">v</span>] {
             <span class="ident">Inst</span> { <span class="ident">inst</span>, <span class="ident">num</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">v</span>) <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">inst_results</span>(<span class="ident">inst</span>).<span class="ident">get</span>(<span class="ident">num</span> <span class="kw">as</span> <span class="ident">usize</span>),
             <span class="ident">Param</span> { <span class="ident">block</span>, <span class="ident">num</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">v</span>) <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">block_params</span>(<span class="ident">block</span>).<span class="ident">get</span>(<span class="ident">num</span> <span class="kw">as</span> <span class="ident">usize</span>),
@@ -1632,9 +1632,9 @@
             <span class="self">self</span>.<span class="ident">value_type</span>(<span class="ident">dest</span>),
             <span class="ident">ty</span>
         );
-        <span class="macro">debug_assert_ne!</span>(<span class="ident">ty</span>, <span class="ident">types</span>::<span class="ident">INVALID</span>);
+        <span class="macro">debug_assert_ne!</span>(<span class="ident">ty</span>, <span class="ident">types::INVALID</span>);
 
-        <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">dest</span>] <span class="op">=</span> <span class="ident">ValueData</span>::<span class="ident">Alias</span> { <span class="ident">ty</span>, <span class="ident">original</span> };
+        <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">dest</span>] <span class="op">=</span> <span class="ident">ValueData::Alias</span> { <span class="ident">ty</span>, <span class="ident">original</span> };
     }
 
     <span class="doccomment">/// Replace the results of one instruction with aliases to the results of another.</span>
@@ -1676,9 +1676,9 @@
                 <span class="self">self</span>.<span class="ident">value_type</span>(<span class="ident">dest</span>),
                 <span class="ident">ty</span>
             );
-            <span class="macro">debug_assert_ne!</span>(<span class="ident">ty</span>, <span class="ident">types</span>::<span class="ident">INVALID</span>);
+            <span class="macro">debug_assert_ne!</span>(<span class="ident">ty</span>, <span class="ident">types::INVALID</span>);
 
-            <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">dest</span>] <span class="op">=</span> <span class="ident">ValueData</span>::<span class="ident">Alias</span> { <span class="ident">ty</span>, <span class="ident">original</span> };
+            <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">dest</span>] <span class="op">=</span> <span class="ident">ValueData::Alias</span> { <span class="ident">ty</span>, <span class="ident">original</span> };
         }
 
         <span class="self">self</span>.<span class="ident">clear_results</span>(<span class="ident">dest_inst</span>);
@@ -1703,7 +1703,7 @@
     <span class="doccomment">/// Get the instruction where the value was defined, if any.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inst</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="self">Self</span>::<span class="prelude-ty">Result</span>(<span class="ident">inst</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">inst</span>),
+            <span class="self">Self</span><span class="ident">::Result</span>(<span class="ident">inst</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">inst</span>),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         }
     }
@@ -1711,13 +1711,13 @@
     <span class="doccomment">/// Unwrap the block there the parameter is defined, or panic.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unwrap_block</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Block</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Param</span>(<span class="ident">block</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">block</span>,
+            <span class="self">Self</span><span class="ident">::Param</span>(<span class="ident">block</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">block</span>,
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Value is not a block parameter&quot;</span>),
         }
     }
 
     <span class="doccomment">/// Get the program point where the value was defined.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pp</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ir</span>::<span class="ident">ExpandedProgramPoint</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pp</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ir::ExpandedProgramPoint</span> {
         <span class="self">self</span>.<span class="ident">into</span>()
     }
 
@@ -1727,7 +1727,7 @@
     <span class="doccomment">/// this value.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span>::<span class="prelude-ty">Result</span>(<span class="kw">_</span>, <span class="ident">n</span>) <span class="op">|</span> <span class="self">Self</span>::<span class="ident">Param</span>(<span class="kw">_</span>, <span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">n</span>,
+            <span class="self">Self</span><span class="ident">::Result</span>(<span class="kw">_</span>, <span class="ident">n</span>) <span class="op">|</span> <span class="self">Self</span><span class="ident">::Param</span>(<span class="kw">_</span>, <span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">n</span>,
         }
     }
 }
@@ -1750,9 +1750,9 @@
 <span class="kw">impl</span> <span class="ident">ValueData</span> {
     <span class="kw">fn</span> <span class="ident">ty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Type</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">ValueData</span>::<span class="ident">Inst</span> { <span class="ident">ty</span>, .. }
-            <span class="op">|</span> <span class="ident">ValueData</span>::<span class="ident">Param</span> { <span class="ident">ty</span>, .. }
-            <span class="op">|</span> <span class="ident">ValueData</span>::<span class="ident">Alias</span> { <span class="ident">ty</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ty</span>,
+            <span class="ident">ValueData::Inst</span> { <span class="ident">ty</span>, .. }
+            <span class="op">|</span> <span class="ident">ValueData::Param</span> { <span class="ident">ty</span>, .. }
+            <span class="op">|</span> <span class="ident">ValueData::Alias</span> { <span class="ident">ty</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ty</span>,
         }
     }
 }
@@ -1838,7 +1838,7 @@
     <span class="doccomment">/// `InstructionData` passed to `make_inst`. If this function is called with a single-result</span>
     <span class="doccomment">/// instruction, that is the only effect.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_inst_results</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">inst</span>: <span class="ident">Inst</span>, <span class="ident">ctrl_typevar</span>: <span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">make_inst_results_reusing</span>(<span class="ident">inst</span>, <span class="ident">ctrl_typevar</span>, <span class="ident">iter</span>::<span class="ident">empty</span>())
+        <span class="self">self</span>.<span class="ident">make_inst_results_reusing</span>(<span class="ident">inst</span>, <span class="ident">ctrl_typevar</span>, <span class="ident">iter::empty</span>())
     }
 
     <span class="doccomment">/// Create result values for `inst`, reusing the provided detached values.</span>
@@ -1896,7 +1896,7 @@
 
     <span class="doccomment">/// Create a `ReplaceBuilder` that will replace `inst` with a new instruction in place.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">inst</span>: <span class="ident">Inst</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ReplaceBuilder</span> {
-        <span class="ident">ReplaceBuilder</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">inst</span>)
+        <span class="ident">ReplaceBuilder::new</span>(<span class="self">self</span>, <span class="ident">inst</span>)
     }
 
     <span class="doccomment">/// Detach the list of result values from `inst` and return it.</span>
@@ -1924,9 +1924,9 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">attach_result</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">inst</span>: <span class="ident">Inst</span>, <span class="ident">res</span>: <span class="ident">Value</span>) {
         <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="self">self</span>.<span class="ident">value_is_attached</span>(<span class="ident">res</span>));
         <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">results</span>[<span class="ident">inst</span>].<span class="ident">push</span>(<span class="ident">res</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">value_lists</span>);
-        <span class="macro">debug_assert!</span>(<span class="ident">num</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">u16</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="string">&quot;Too many result values&quot;</span>);
+        <span class="macro">debug_assert!</span>(<span class="ident">num</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">u16::MAX</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="string">&quot;Too many result values&quot;</span>);
         <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">value_type</span>(<span class="ident">res</span>);
-        <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">res</span>] <span class="op">=</span> <span class="ident">ValueData</span>::<span class="ident">Inst</span> {
+        <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">res</span>] <span class="op">=</span> <span class="ident">ValueData::Inst</span> {
             <span class="ident">ty</span>,
             <span class="ident">num</span>: <span class="ident">num</span> <span class="kw">as</span> <span class="ident">u16</span>,
             <span class="ident">inst</span>,
@@ -1942,16 +1942,16 @@
     <span class="doccomment">/// Returns the new value.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">replace_result</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">old_value</span>: <span class="ident">Value</span>, <span class="ident">new_type</span>: <span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Value</span> {
         <span class="kw">let</span> (<span class="ident">num</span>, <span class="ident">inst</span>) <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">old_value</span>] {
-            <span class="ident">ValueData</span>::<span class="ident">Inst</span> { <span class="ident">num</span>, <span class="ident">inst</span>, .. } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">num</span>, <span class="ident">inst</span>),
+            <span class="ident">ValueData::Inst</span> { <span class="ident">num</span>, <span class="ident">inst</span>, .. } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">num</span>, <span class="ident">inst</span>),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;{} is not an instruction result value&quot;</span>, <span class="ident">old_value</span>),
         };
-        <span class="kw">let</span> <span class="ident">new_value</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">make_value</span>(<span class="ident">ValueData</span>::<span class="ident">Inst</span> {
+        <span class="kw">let</span> <span class="ident">new_value</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">make_value</span>(<span class="ident">ValueData::Inst</span> {
             <span class="ident">ty</span>: <span class="ident">new_type</span>,
             <span class="ident">num</span>,
             <span class="ident">inst</span>,
         });
         <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="ident">num</span> <span class="kw">as</span> <span class="ident">usize</span>;
-        <span class="kw">let</span> <span class="ident">attached</span> <span class="op">=</span> <span class="ident">mem</span>::<span class="ident">replace</span>(
+        <span class="kw">let</span> <span class="ident">attached</span> <span class="op">=</span> <span class="ident">mem::replace</span>(
             <span class="self">self</span>.<span class="ident">results</span>[<span class="ident">inst</span>]
                 .<span class="ident">get_mut</span>(<span class="ident">num</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">value_lists</span>)
                 .<span class="ident">expect</span>(<span class="string">&quot;Replacing detached result&quot;</span>),
@@ -1971,8 +1971,8 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">append_result</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">inst</span>: <span class="ident">Inst</span>, <span class="ident">ty</span>: <span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Value</span> {
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">values</span>.<span class="ident">next_key</span>();
         <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">results</span>[<span class="ident">inst</span>].<span class="ident">push</span>(<span class="ident">res</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">value_lists</span>);
-        <span class="macro">debug_assert!</span>(<span class="ident">num</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">u16</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="string">&quot;Too many result values&quot;</span>);
-        <span class="self">self</span>.<span class="ident">make_value</span>(<span class="ident">ValueData</span>::<span class="ident">Inst</span> {
+        <span class="macro">debug_assert!</span>(<span class="ident">num</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">u16::MAX</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="string">&quot;Too many result values&quot;</span>);
+        <span class="self">self</span>.<span class="ident">make_value</span>(<span class="ident">ValueData::Inst</span> {
             <span class="ident">ty</span>,
             <span class="ident">inst</span>,
             <span class="ident">num</span>: <span class="ident">num</span> <span class="kw">as</span> <span class="ident">u16</span>,
@@ -2013,9 +2013,9 @@
     <span class="doccomment">/// Returns `None` if `inst` is not a call instruction.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">call_signature</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">inst</span>: <span class="ident">Inst</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SigRef</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">insts</span>[<span class="ident">inst</span>].<span class="ident">analyze_call</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">value_lists</span>) {
-            <span class="ident">CallInfo</span>::<span class="ident">NotACall</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-            <span class="ident">CallInfo</span>::<span class="ident">Direct</span>(<span class="ident">f</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">ext_funcs</span>[<span class="ident">f</span>].<span class="ident">signature</span>),
-            <span class="ident">CallInfo</span>::<span class="ident">Indirect</span>(<span class="ident">s</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
+            <span class="ident">CallInfo::NotACall</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">CallInfo::Direct</span>(<span class="ident">f</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">ext_funcs</span>[<span class="ident">f</span>].<span class="ident">signature</span>),
+            <span class="ident">CallInfo::Indirect</span>(<span class="ident">s</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>),
         }
     }
 
@@ -2058,7 +2058,7 @@
         <span class="kw">let</span> <span class="ident">constraints</span> <span class="op">=</span> <span class="self">self</span>[<span class="ident">inst</span>].<span class="ident">opcode</span>().<span class="ident">constraints</span>();
 
         <span class="kw">if</span> <span class="op">!</span><span class="ident">constraints</span>.<span class="ident">is_polymorphic</span>() {
-            <span class="ident">types</span>::<span class="ident">INVALID</span>
+            <span class="ident">types::INVALID</span>
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">constraints</span>.<span class="ident">requires_typevar_operand</span>() {
             <span class="comment">// Not all instruction formats have a designated operand, but in that case</span>
             <span class="comment">// `requires_typevar_operand()` should never be true.</span>
@@ -2093,7 +2093,7 @@
 <span class="kw">impl</span> <span class="ident">DataFlowGraph</span> {
     <span class="doccomment">/// Create a new basic block.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_block</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Block</span> {
-        <span class="self">self</span>.<span class="ident">blocks</span>.<span class="ident">push</span>(<span class="ident">BlockData</span>::<span class="ident">new</span>())
+        <span class="self">self</span>.<span class="ident">blocks</span>.<span class="ident">push</span>(<span class="ident">BlockData::new</span>())
     }
 
     <span class="doccomment">/// Get the number of parameters on `block`.</span>
@@ -2118,8 +2118,8 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">append_block_param</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">block</span>: <span class="ident">Block</span>, <span class="ident">ty</span>: <span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Value</span> {
         <span class="kw">let</span> <span class="ident">param</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">values</span>.<span class="ident">next_key</span>();
         <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">blocks</span>[<span class="ident">block</span>].<span class="ident">params</span>.<span class="ident">push</span>(<span class="ident">param</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">value_lists</span>);
-        <span class="macro">debug_assert!</span>(<span class="ident">num</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">u16</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="string">&quot;Too many parameters on block&quot;</span>);
-        <span class="self">self</span>.<span class="ident">make_value</span>(<span class="ident">ValueData</span>::<span class="ident">Param</span> {
+        <span class="macro">debug_assert!</span>(<span class="ident">num</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">u16::MAX</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="string">&quot;Too many parameters on block&quot;</span>);
+        <span class="self">self</span>.<span class="ident">make_value</span>(<span class="ident">ValueData::Param</span> {
             <span class="ident">ty</span>,
             <span class="ident">num</span>: <span class="ident">num</span> <span class="kw">as</span> <span class="ident">u16</span>,
             <span class="ident">block</span>,
@@ -2135,7 +2135,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Panics if `val` is not a block parameter.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap_remove_block_param</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="ident">Value</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="kw">let</span> (<span class="ident">block</span>, <span class="ident">num</span>) <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueData</span>::<span class="ident">Param</span> { <span class="ident">num</span>, <span class="ident">block</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">val</span>] {
+        <span class="kw">let</span> (<span class="ident">block</span>, <span class="ident">num</span>) <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueData::Param</span> { <span class="ident">num</span>, <span class="ident">block</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">val</span>] {
             (<span class="ident">block</span>, <span class="ident">num</span>)
         } <span class="kw">else</span> {
             <span class="macro">panic!</span>(<span class="string">&quot;{} must be a block parameter&quot;</span>, <span class="ident">val</span>);
@@ -2148,7 +2148,7 @@
             .<span class="ident">get</span>(<span class="ident">num</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">value_lists</span>)
         {
             <span class="comment">// We update the position of the old last arg.</span>
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueData</span>::<span class="ident">Param</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueData::Param</span> {
                 <span class="ident">num</span>: <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">old_num</span>,
                 ..
             } <span class="op">=</span> <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">last_arg_val</span>]
@@ -2164,7 +2164,7 @@
     <span class="doccomment">/// Removes `val` from `block`&#39;s parameters by a standard linear time list removal which</span>
     <span class="doccomment">/// preserves ordering. Also updates the values&#39; data.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove_block_param</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">val</span>: <span class="ident">Value</span>) {
-        <span class="kw">let</span> (<span class="ident">block</span>, <span class="ident">num</span>) <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueData</span>::<span class="ident">Param</span> { <span class="ident">num</span>, <span class="ident">block</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">val</span>] {
+        <span class="kw">let</span> (<span class="ident">block</span>, <span class="ident">num</span>) <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueData::Param</span> { <span class="ident">num</span>, <span class="ident">block</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">val</span>] {
             (<span class="ident">block</span>, <span class="ident">num</span>)
         } <span class="kw">else</span> {
             <span class="macro">panic!</span>(<span class="string">&quot;{} must be a block parameter&quot;</span>, <span class="ident">val</span>);
@@ -2178,7 +2178,7 @@
                 .<span class="ident">get</span>(<span class="ident">index</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">value_lists</span>)
                 .<span class="ident">unwrap</span>()]
             {
-                <span class="ident">ValueData</span>::<span class="ident">Param</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">num</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ValueData::Param</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">num</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw-2">*</span><span class="ident">num</span> <span class="op">-</span><span class="op">=</span> <span class="number">1</span>;
                 }
                 <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(
@@ -2200,9 +2200,9 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">attach_block_param</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">block</span>: <span class="ident">Block</span>, <span class="ident">param</span>: <span class="ident">Value</span>) {
         <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="self">self</span>.<span class="ident">value_is_attached</span>(<span class="ident">param</span>));
         <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">blocks</span>[<span class="ident">block</span>].<span class="ident">params</span>.<span class="ident">push</span>(<span class="ident">param</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">value_lists</span>);
-        <span class="macro">debug_assert!</span>(<span class="ident">num</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">u16</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="string">&quot;Too many parameters on block&quot;</span>);
+        <span class="macro">debug_assert!</span>(<span class="ident">num</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">u16::MAX</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="string">&quot;Too many parameters on block&quot;</span>);
         <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">value_type</span>(<span class="ident">param</span>);
-        <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">param</span>] <span class="op">=</span> <span class="ident">ValueData</span>::<span class="ident">Param</span> {
+        <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">param</span>] <span class="op">=</span> <span class="ident">ValueData::Param</span> {
             <span class="ident">ty</span>,
             <span class="ident">num</span>: <span class="ident">num</span> <span class="kw">as</span> <span class="ident">u16</span>,
             <span class="ident">block</span>,
@@ -2220,12 +2220,12 @@
     <span class="doccomment">/// Returns the new value.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">replace_block_param</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">old_value</span>: <span class="ident">Value</span>, <span class="ident">new_type</span>: <span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Value</span> {
         <span class="comment">// Create new value identical to the old one except for the type.</span>
-        <span class="kw">let</span> (<span class="ident">block</span>, <span class="ident">num</span>) <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueData</span>::<span class="ident">Param</span> { <span class="ident">num</span>, <span class="ident">block</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">old_value</span>] {
+        <span class="kw">let</span> (<span class="ident">block</span>, <span class="ident">num</span>) <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueData::Param</span> { <span class="ident">num</span>, <span class="ident">block</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">old_value</span>] {
             (<span class="ident">block</span>, <span class="ident">num</span>)
         } <span class="kw">else</span> {
             <span class="macro">panic!</span>(<span class="string">&quot;{} must be a block parameter&quot;</span>, <span class="ident">old_value</span>);
         };
-        <span class="kw">let</span> <span class="ident">new_arg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">make_value</span>(<span class="ident">ValueData</span>::<span class="ident">Param</span> {
+        <span class="kw">let</span> <span class="ident">new_arg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">make_value</span>(<span class="ident">ValueData::Param</span> {
             <span class="ident">ty</span>: <span class="ident">new_type</span>,
             <span class="ident">num</span>,
             <span class="ident">block</span>,
@@ -2261,7 +2261,7 @@
 <span class="kw">impl</span> <span class="ident">BlockData</span> {
     <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">params</span>: <span class="ident">ValueList</span>::<span class="ident">new</span>(),
+            <span class="ident">params</span>: <span class="ident">ValueList::new</span>(),
         }
     }
 }
@@ -2269,8 +2269,8 @@
 <span class="doccomment">/// Object that can display an instruction.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DisplayInst</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">DataFlowGraph</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw">dyn</span> <span class="ident">TargetIsa</span><span class="op">&gt;</span>, <span class="ident">Inst</span>);
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">DisplayInst</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">DisplayInst</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="ident">dfg</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>;
         <span class="kw">let</span> <span class="ident">isa</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">1</span>;
         <span class="kw">let</span> <span class="ident">inst</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">2</span>;
@@ -2301,13 +2301,13 @@
     <span class="kw">fn</span> <span class="ident">set_value_type_for_parser</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">v</span>: <span class="ident">Value</span>, <span class="ident">t</span>: <span class="ident">Type</span>) {
         <span class="macro">assert_eq!</span>(
             <span class="self">self</span>.<span class="ident">value_type</span>(<span class="ident">v</span>),
-            <span class="ident">types</span>::<span class="ident">INVALID</span>,
+            <span class="ident">types::INVALID</span>,
             <span class="string">&quot;this function is only for assigning types to previously invalid values&quot;</span>
         );
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">v</span>] {
-            <span class="ident">ValueData</span>::<span class="ident">Inst</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">ty</span>, .. }
-            <span class="op">|</span> <span class="ident">ValueData</span>::<span class="ident">Param</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">ty</span>, .. }
-            <span class="op">|</span> <span class="ident">ValueData</span>::<span class="ident">Alias</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">ty</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="ident">ty</span> <span class="op">=</span> <span class="ident">t</span>,
+            <span class="ident">ValueData::Inst</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">ty</span>, .. }
+            <span class="op">|</span> <span class="ident">ValueData::Param</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">ty</span>, .. }
+            <span class="op">|</span> <span class="ident">ValueData::Alias</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">ty</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="ident">ty</span> <span class="op">=</span> <span class="ident">t</span>,
         }
     }
 
@@ -2352,8 +2352,8 @@
     <span class="attribute">#[<span class="ident">cold</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">append_block_param_for_parser</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">block</span>: <span class="ident">Block</span>, <span class="ident">ty</span>: <span class="ident">Type</span>, <span class="ident">val</span>: <span class="ident">Value</span>) {
         <span class="kw">let</span> <span class="ident">num</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">blocks</span>[<span class="ident">block</span>].<span class="ident">params</span>.<span class="ident">push</span>(<span class="ident">val</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">value_lists</span>);
-        <span class="macro">assert!</span>(<span class="ident">num</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">u16</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="string">&quot;Too many parameters on block&quot;</span>);
-        <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">val</span>] <span class="op">=</span> <span class="ident">ValueData</span>::<span class="ident">Param</span> {
+        <span class="macro">assert!</span>(<span class="ident">num</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">u16::MAX</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="string">&quot;Too many parameters on block&quot;</span>);
+        <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">val</span>] <span class="op">=</span> <span class="ident">ValueData::Param</span> {
             <span class="ident">ty</span>,
             <span class="ident">num</span>: <span class="ident">num</span> <span class="kw">as</span> <span class="ident">u16</span>,
             <span class="ident">block</span>,
@@ -2364,17 +2364,17 @@
     <span class="doccomment">/// aliases with specific values, and the printer for testing.</span>
     <span class="attribute">#[<span class="ident">cold</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_value_alias_for_serialization</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">src</span>: <span class="ident">Value</span>, <span class="ident">dest</span>: <span class="ident">Value</span>) {
-        <span class="macro">assert_ne!</span>(<span class="ident">src</span>, <span class="ident">Value</span>::<span class="ident">reserved_value</span>());
-        <span class="macro">assert_ne!</span>(<span class="ident">dest</span>, <span class="ident">Value</span>::<span class="ident">reserved_value</span>());
+        <span class="macro">assert_ne!</span>(<span class="ident">src</span>, <span class="ident">Value::reserved_value</span>());
+        <span class="macro">assert_ne!</span>(<span class="ident">dest</span>, <span class="ident">Value::reserved_value</span>());
 
         <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">values</span>.<span class="ident">is_valid</span>(<span class="ident">src</span>) {
             <span class="self">self</span>.<span class="ident">value_type</span>(<span class="ident">src</span>)
         } <span class="kw">else</span> {
             <span class="comment">// As a special case, if we can&#39;t resolve the aliasee yet, use INVALID</span>
             <span class="comment">// temporarily. It will be resolved later in parsing.</span>
-            <span class="ident">types</span>::<span class="ident">INVALID</span>
+            <span class="ident">types::INVALID</span>
         };
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">ValueData</span>::<span class="ident">Alias</span> { <span class="ident">ty</span>, <span class="ident">original</span>: <span class="ident">src</span> };
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">ValueData::Alias</span> { <span class="ident">ty</span>, <span class="ident">original</span>: <span class="ident">src</span> };
         <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">dest</span>] <span class="op">=</span> <span class="ident">data</span>;
     }
 
@@ -2383,7 +2383,7 @@
     <span class="doccomment">/// alias definitions, and the printer to identify an alias&#39;s immediate target.</span>
     <span class="attribute">#[<span class="ident">cold</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">value_alias_dest_for_serialization</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">v</span>: <span class="ident">Value</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueData</span>::<span class="ident">Alias</span> { <span class="ident">original</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">v</span>] {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueData::Alias</span> { <span class="ident">original</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">v</span>] {
             <span class="prelude-val">Some</span>(<span class="ident">original</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -2397,7 +2397,7 @@
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">resolved</span>) <span class="op">=</span> <span class="ident">maybe_resolve_aliases</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">values</span>, <span class="ident">v</span>) {
             <span class="kw">let</span> <span class="ident">old_ty</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">value_type</span>(<span class="ident">v</span>);
             <span class="kw">let</span> <span class="ident">new_ty</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">value_type</span>(<span class="ident">resolved</span>);
-            <span class="kw">if</span> <span class="ident">old_ty</span> <span class="op">=</span><span class="op">=</span> <span class="ident">types</span>::<span class="ident">INVALID</span> {
+            <span class="kw">if</span> <span class="ident">old_ty</span> <span class="op">=</span><span class="op">=</span> <span class="ident">types::INVALID</span> {
                 <span class="self">self</span>.<span class="ident">set_value_type_for_parser</span>(<span class="ident">v</span>, <span class="ident">new_ty</span>);
             } <span class="kw">else</span> {
                 <span class="macro">assert_eq!</span>(<span class="ident">old_ty</span>, <span class="ident">new_ty</span>);
@@ -2412,9 +2412,9 @@
     <span class="doccomment">/// the parser to pad out the value index space.</span>
     <span class="attribute">#[<span class="ident">cold</span>]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_invalid_value_for_parser</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">ValueData</span>::<span class="ident">Alias</span> {
-            <span class="ident">ty</span>: <span class="ident">types</span>::<span class="ident">INVALID</span>,
-            <span class="ident">original</span>: <span class="ident">Value</span>::<span class="ident">reserved_value</span>(),
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">ValueData::Alias</span> {
+            <span class="ident">ty</span>: <span class="ident">types::INVALID</span>,
+            <span class="ident">original</span>: <span class="ident">Value::reserved_value</span>(),
         };
         <span class="self">self</span>.<span class="ident">make_value</span>(<span class="ident">data</span>);
     }
@@ -2426,8 +2426,8 @@
         <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">value_is_valid</span>(<span class="ident">v</span>) {
             <span class="kw">return</span> <span class="bool-val">false</span>;
         }
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueData</span>::<span class="ident">Alias</span> { <span class="ident">ty</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">v</span>] {
-            <span class="ident">ty</span> <span class="op">!</span><span class="op">=</span> <span class="ident">types</span>::<span class="ident">INVALID</span>
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ValueData::Alias</span> { <span class="ident">ty</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">values</span>[<span class="ident">v</span>] {
+            <span class="ident">ty</span> <span class="op">!</span><span class="op">=</span> <span class="ident">types::INVALID</span>
         } <span class="kw">else</span> {
             <span class="bool-val">true</span>
         }
@@ -2437,22 +2437,22 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">FuncCursor</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">types</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">Function</span>, <span class="ident">InstructionData</span>, <span class="ident">Opcode</span>, <span class="ident">TrapCode</span>};
-    <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">string</span>::<span class="ident">ToString</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">FuncCursor</span>};
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::types</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">Function</span>, <span class="ident">InstructionData</span>, <span class="ident">Opcode</span>, <span class="ident">TrapCode</span>};
+    <span class="kw">use</span> <span class="ident">alloc::string::ToString</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">make_inst</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dfg</span> <span class="op">=</span> <span class="ident">DataFlowGraph</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dfg</span> <span class="op">=</span> <span class="ident">DataFlowGraph::new</span>();
 
-        <span class="kw">let</span> <span class="ident">idata</span> <span class="op">=</span> <span class="ident">InstructionData</span>::<span class="ident">UnaryImm</span> {
-            <span class="ident">opcode</span>: <span class="ident">Opcode</span>::<span class="ident">Iconst</span>,
+        <span class="kw">let</span> <span class="ident">idata</span> <span class="op">=</span> <span class="ident">InstructionData::UnaryImm</span> {
+            <span class="ident">opcode</span>: <span class="ident">Opcode::Iconst</span>,
             <span class="ident">imm</span>: <span class="number">0</span>.<span class="ident">into</span>(),
         };
         <span class="kw">let</span> <span class="ident">inst</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">make_inst</span>(<span class="ident">idata</span>);
 
-        <span class="ident">dfg</span>.<span class="ident">make_inst_results</span>(<span class="ident">inst</span>, <span class="ident">types</span>::<span class="ident">I32</span>);
+        <span class="ident">dfg</span>.<span class="ident">make_inst_results</span>(<span class="ident">inst</span>, <span class="ident">types::I32</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">inst</span>.<span class="ident">to_string</span>(), <span class="string">&quot;inst0&quot;</span>);
         <span class="macro">assert_eq!</span>(
             <span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>, <span class="prelude-val">None</span>).<span class="ident">to_string</span>(),
@@ -2463,33 +2463,33 @@
         {
             <span class="kw">let</span> <span class="ident">immdfg</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">dfg</span>;
             <span class="kw">let</span> <span class="ident">ins</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">immdfg</span>[<span class="ident">inst</span>];
-            <span class="macro">assert_eq!</span>(<span class="ident">ins</span>.<span class="ident">opcode</span>(), <span class="ident">Opcode</span>::<span class="ident">Iconst</span>);
+            <span class="macro">assert_eq!</span>(<span class="ident">ins</span>.<span class="ident">opcode</span>(), <span class="ident">Opcode::Iconst</span>);
         }
 
         <span class="comment">// Results.</span>
         <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">first_result</span>(<span class="ident">inst</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">inst_results</span>(<span class="ident">inst</span>), <span class="kw-2">&amp;</span>[<span class="ident">val</span>]);
 
-        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_def</span>(<span class="ident">val</span>), <span class="ident">ValueDef</span>::<span class="prelude-ty">Result</span>(<span class="ident">inst</span>, <span class="number">0</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">val</span>), <span class="ident">types</span>::<span class="ident">I32</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_def</span>(<span class="ident">val</span>), <span class="ident">ValueDef::Result</span>(<span class="ident">inst</span>, <span class="number">0</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">val</span>), <span class="ident">types::I32</span>);
 
         <span class="comment">// Replacing results.</span>
         <span class="macro">assert!</span>(<span class="ident">dfg</span>.<span class="ident">value_is_attached</span>(<span class="ident">val</span>));
-        <span class="kw">let</span> <span class="ident">v2</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">replace_result</span>(<span class="ident">val</span>, <span class="ident">types</span>::<span class="ident">F64</span>);
+        <span class="kw">let</span> <span class="ident">v2</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">replace_result</span>(<span class="ident">val</span>, <span class="ident">types::F64</span>);
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">dfg</span>.<span class="ident">value_is_attached</span>(<span class="ident">val</span>));
         <span class="macro">assert!</span>(<span class="ident">dfg</span>.<span class="ident">value_is_attached</span>(<span class="ident">v2</span>));
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">inst_results</span>(<span class="ident">inst</span>), <span class="kw-2">&amp;</span>[<span class="ident">v2</span>]);
-        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_def</span>(<span class="ident">v2</span>), <span class="ident">ValueDef</span>::<span class="prelude-ty">Result</span>(<span class="ident">inst</span>, <span class="number">0</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">v2</span>), <span class="ident">types</span>::<span class="ident">F64</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_def</span>(<span class="ident">v2</span>), <span class="ident">ValueDef::Result</span>(<span class="ident">inst</span>, <span class="number">0</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">v2</span>), <span class="ident">types::F64</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">no_results</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dfg</span> <span class="op">=</span> <span class="ident">DataFlowGraph</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dfg</span> <span class="op">=</span> <span class="ident">DataFlowGraph::new</span>();
 
-        <span class="kw">let</span> <span class="ident">idata</span> <span class="op">=</span> <span class="ident">InstructionData</span>::<span class="ident">Trap</span> {
-            <span class="ident">opcode</span>: <span class="ident">Opcode</span>::<span class="ident">Trap</span>,
-            <span class="ident">code</span>: <span class="ident">TrapCode</span>::<span class="ident">User</span>(<span class="number">0</span>),
+        <span class="kw">let</span> <span class="ident">idata</span> <span class="op">=</span> <span class="ident">InstructionData::Trap</span> {
+            <span class="ident">opcode</span>: <span class="ident">Opcode::Trap</span>,
+            <span class="ident">code</span>: <span class="ident">TrapCode::User</span>(<span class="number">0</span>),
         };
         <span class="kw">let</span> <span class="ident">inst</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">make_inst</span>(<span class="ident">idata</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>, <span class="prelude-val">None</span>).<span class="ident">to_string</span>(), <span class="string">&quot;trap user0&quot;</span>);
@@ -2500,7 +2500,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">block</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dfg</span> <span class="op">=</span> <span class="ident">DataFlowGraph</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dfg</span> <span class="op">=</span> <span class="ident">DataFlowGraph::new</span>();
 
         <span class="kw">let</span> <span class="ident">block</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">make_block</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">block</span>.<span class="ident">to_string</span>(), <span class="string">&quot;block0&quot;</span>);
@@ -2510,20 +2510,20 @@
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">num_block_params</span>(<span class="ident">block</span>), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">block_params</span>(<span class="ident">block</span>), <span class="kw-2">&amp;</span>[]);
 
-        <span class="kw">let</span> <span class="ident">arg1</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types</span>::<span class="ident">F32</span>);
+        <span class="kw">let</span> <span class="ident">arg1</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types::F32</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">arg1</span>.<span class="ident">to_string</span>(), <span class="string">&quot;v0&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">num_block_params</span>(<span class="ident">block</span>), <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">block_params</span>(<span class="ident">block</span>), <span class="kw-2">&amp;</span>[<span class="ident">arg1</span>]);
 
-        <span class="kw">let</span> <span class="ident">arg2</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types</span>::<span class="ident">I16</span>);
+        <span class="kw">let</span> <span class="ident">arg2</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types::I16</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">arg2</span>.<span class="ident">to_string</span>(), <span class="string">&quot;v1&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">num_block_params</span>(<span class="ident">block</span>), <span class="number">2</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">block_params</span>(<span class="ident">block</span>), <span class="kw-2">&amp;</span>[<span class="ident">arg1</span>, <span class="ident">arg2</span>]);
 
-        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_def</span>(<span class="ident">arg1</span>), <span class="ident">ValueDef</span>::<span class="ident">Param</span>(<span class="ident">block</span>, <span class="number">0</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_def</span>(<span class="ident">arg2</span>), <span class="ident">ValueDef</span>::<span class="ident">Param</span>(<span class="ident">block</span>, <span class="number">1</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">arg1</span>), <span class="ident">types</span>::<span class="ident">F32</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">arg2</span>), <span class="ident">types</span>::<span class="ident">I16</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_def</span>(<span class="ident">arg1</span>), <span class="ident">ValueDef::Param</span>(<span class="ident">block</span>, <span class="number">0</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_def</span>(<span class="ident">arg2</span>), <span class="ident">ValueDef::Param</span>(<span class="ident">block</span>, <span class="number">1</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">arg1</span>), <span class="ident">types::F32</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">arg2</span>), <span class="ident">types::I16</span>);
 
         <span class="comment">// Swap the two block parameters.</span>
         <span class="kw">let</span> <span class="ident">vlist</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">detach_block_params</span>(<span class="ident">block</span>);
@@ -2531,49 +2531,49 @@
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">block_params</span>(<span class="ident">block</span>), <span class="kw-2">&amp;</span>[]);
         <span class="macro">assert_eq!</span>(<span class="ident">vlist</span>.<span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="ident">dfg</span>.<span class="ident">value_lists</span>), <span class="kw-2">&amp;</span>[<span class="ident">arg1</span>, <span class="ident">arg2</span>]);
         <span class="ident">dfg</span>.<span class="ident">attach_block_param</span>(<span class="ident">block</span>, <span class="ident">arg2</span>);
-        <span class="kw">let</span> <span class="ident">arg3</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types</span>::<span class="ident">I32</span>);
+        <span class="kw">let</span> <span class="ident">arg3</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types::I32</span>);
         <span class="ident">dfg</span>.<span class="ident">attach_block_param</span>(<span class="ident">block</span>, <span class="ident">arg1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">block_params</span>(<span class="ident">block</span>), <span class="kw-2">&amp;</span>[<span class="ident">arg2</span>, <span class="ident">arg3</span>, <span class="ident">arg1</span>]);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">replace_block_params</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dfg</span> <span class="op">=</span> <span class="ident">DataFlowGraph</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dfg</span> <span class="op">=</span> <span class="ident">DataFlowGraph::new</span>();
 
         <span class="kw">let</span> <span class="ident">block</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">make_block</span>();
-        <span class="kw">let</span> <span class="ident">arg1</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types</span>::<span class="ident">F32</span>);
+        <span class="kw">let</span> <span class="ident">arg1</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types::F32</span>);
 
-        <span class="kw">let</span> <span class="ident">new1</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">replace_block_param</span>(<span class="ident">arg1</span>, <span class="ident">types</span>::<span class="ident">I64</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">arg1</span>), <span class="ident">types</span>::<span class="ident">F32</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">new1</span>), <span class="ident">types</span>::<span class="ident">I64</span>);
+        <span class="kw">let</span> <span class="ident">new1</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">replace_block_param</span>(<span class="ident">arg1</span>, <span class="ident">types::I64</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">arg1</span>), <span class="ident">types::F32</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">new1</span>), <span class="ident">types::I64</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">block_params</span>(<span class="ident">block</span>), <span class="kw-2">&amp;</span>[<span class="ident">new1</span>]);
 
         <span class="ident">dfg</span>.<span class="ident">attach_block_param</span>(<span class="ident">block</span>, <span class="ident">arg1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">block_params</span>(<span class="ident">block</span>), <span class="kw-2">&amp;</span>[<span class="ident">new1</span>, <span class="ident">arg1</span>]);
 
-        <span class="kw">let</span> <span class="ident">new2</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">replace_block_param</span>(<span class="ident">arg1</span>, <span class="ident">types</span>::<span class="ident">I8</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">arg1</span>), <span class="ident">types</span>::<span class="ident">F32</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">new2</span>), <span class="ident">types</span>::<span class="ident">I8</span>);
+        <span class="kw">let</span> <span class="ident">new2</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">replace_block_param</span>(<span class="ident">arg1</span>, <span class="ident">types::I8</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">arg1</span>), <span class="ident">types::F32</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">new2</span>), <span class="ident">types::I8</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">block_params</span>(<span class="ident">block</span>), <span class="kw-2">&amp;</span>[<span class="ident">new1</span>, <span class="ident">new2</span>]);
 
         <span class="ident">dfg</span>.<span class="ident">attach_block_param</span>(<span class="ident">block</span>, <span class="ident">arg1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">block_params</span>(<span class="ident">block</span>), <span class="kw-2">&amp;</span>[<span class="ident">new1</span>, <span class="ident">new2</span>, <span class="ident">arg1</span>]);
 
-        <span class="kw">let</span> <span class="ident">new3</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">replace_block_param</span>(<span class="ident">new2</span>, <span class="ident">types</span>::<span class="ident">I16</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">new1</span>), <span class="ident">types</span>::<span class="ident">I64</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">new2</span>), <span class="ident">types</span>::<span class="ident">I8</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">new3</span>), <span class="ident">types</span>::<span class="ident">I16</span>);
+        <span class="kw">let</span> <span class="ident">new3</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">replace_block_param</span>(<span class="ident">new2</span>, <span class="ident">types::I16</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">new1</span>), <span class="ident">types::I64</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">new2</span>), <span class="ident">types::I8</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">new3</span>), <span class="ident">types::I16</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">block_params</span>(<span class="ident">block</span>), <span class="kw-2">&amp;</span>[<span class="ident">new1</span>, <span class="ident">new3</span>, <span class="ident">arg1</span>]);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">swap_remove_block_params</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dfg</span> <span class="op">=</span> <span class="ident">DataFlowGraph</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dfg</span> <span class="op">=</span> <span class="ident">DataFlowGraph::new</span>();
 
         <span class="kw">let</span> <span class="ident">block</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">make_block</span>();
-        <span class="kw">let</span> <span class="ident">arg1</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types</span>::<span class="ident">F32</span>);
-        <span class="kw">let</span> <span class="ident">arg2</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types</span>::<span class="ident">F32</span>);
-        <span class="kw">let</span> <span class="ident">arg3</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types</span>::<span class="ident">F32</span>);
+        <span class="kw">let</span> <span class="ident">arg1</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types::F32</span>);
+        <span class="kw">let</span> <span class="ident">arg2</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types::F32</span>);
+        <span class="kw">let</span> <span class="ident">arg3</span> <span class="op">=</span> <span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types::F32</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dfg</span>.<span class="ident">block_params</span>(<span class="ident">block</span>), <span class="kw-2">&amp;</span>[<span class="ident">arg1</span>, <span class="ident">arg2</span>, <span class="ident">arg3</span>]);
 
         <span class="ident">dfg</span>.<span class="ident">swap_remove_block_param</span>(<span class="ident">arg1</span>);
@@ -2592,23 +2592,23 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">aliases</span>() {
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">InstBuilder</span>;
+        <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::InstBuilder</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">Function</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">Function::new</span>();
         <span class="kw">let</span> <span class="ident">block0</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">make_block</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">func</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">func</span>);
         <span class="ident">pos</span>.<span class="ident">insert_block</span>(<span class="ident">block0</span>);
 
         <span class="comment">// Build a little test program.</span>
-        <span class="kw">let</span> <span class="ident">v1</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">iconst</span>(<span class="ident">types</span>::<span class="ident">I32</span>, <span class="number">42</span>);
+        <span class="kw">let</span> <span class="ident">v1</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">iconst</span>(<span class="ident">types::I32</span>, <span class="number">42</span>);
 
         <span class="comment">// Make sure we can resolve value aliases even when values is empty.</span>
         <span class="macro">assert_eq!</span>(<span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">resolve_aliases</span>(<span class="ident">v1</span>), <span class="ident">v1</span>);
 
-        <span class="kw">let</span> <span class="ident">arg0</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block0</span>, <span class="ident">types</span>::<span class="ident">I32</span>);
+        <span class="kw">let</span> <span class="ident">arg0</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block0</span>, <span class="ident">types::I32</span>);
         <span class="kw">let</span> (<span class="ident">s</span>, <span class="ident">c</span>) <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">iadd_ifcout</span>(<span class="ident">v1</span>, <span class="ident">arg0</span>);
         <span class="kw">let</span> <span class="ident">iadd</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_def</span>(<span class="ident">s</span>) {
-            <span class="ident">ValueDef</span>::<span class="prelude-ty">Result</span>(<span class="ident">i</span>, <span class="number">0</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">i</span>,
+            <span class="ident">ValueDef::Result</span>(<span class="ident">i</span>, <span class="number">0</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">i</span>,
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
         };
 

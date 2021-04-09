@@ -126,10 +126,10 @@
 <span class="doccomment">//! Jump tables are declared in the preamble and assigned an `ir::entities::JumpTable` reference.</span>
 <span class="doccomment">//! The actual table of destinations is stored in a `JumpTableData` struct defined in this module.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">entities</span>::<span class="ident">Block</span>;
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>::{<span class="self">self</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>};
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">slice</span>::{<span class="ident">Iter</span>, <span class="ident">IterMut</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::entities::Block</span>;
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>::{<span class="self">self</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>};
+<span class="kw">use</span> <span class="ident">core::slice</span>::{<span class="ident">Iter</span>, <span class="ident">IterMut</span>};
 
 <span class="doccomment">/// Contents of a jump table.</span>
 <span class="doccomment">///</span>
@@ -143,13 +143,13 @@
 <span class="kw">impl</span> <span class="ident">JumpTableData</span> {
     <span class="doccomment">/// Create a new empty jump table.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span> { <span class="ident">table</span>: <span class="ident">Vec</span>::<span class="ident">new</span>() }
+        <span class="self">Self</span> { <span class="ident">table</span>: <span class="ident">Vec::new</span>() }
     }
 
     <span class="doccomment">/// Create a new empty jump table with the specified capacity.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_capacity</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">table</span>: <span class="ident">Vec</span>::<span class="ident">with_capacity</span>(<span class="ident">capacity</span>),
+            <span class="ident">table</span>: <span class="ident">Vec::with_capacity</span>(<span class="ident">capacity</span>),
         }
     }
 
@@ -190,7 +190,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">JumpTableData</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;jump_table [&quot;</span>)<span class="question-mark">?</span>;
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">table</span>.<span class="ident">first</span>() {
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> (),
@@ -205,14 +205,14 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">JumpTableData</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">entity</span>::<span class="ident">EntityRef</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">Block</span>;
-    <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">string</span>::<span class="ident">ToString</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::JumpTableData</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::entity::EntityRef</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::Block</span>;
+    <span class="kw">use</span> <span class="ident">alloc::string::ToString</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">empty</span>() {
-        <span class="kw">let</span> <span class="ident">jt</span> <span class="op">=</span> <span class="ident">JumpTableData</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="ident">jt</span> <span class="op">=</span> <span class="ident">JumpTableData::new</span>();
 
         <span class="macro">assert_eq!</span>(<span class="ident">jt</span>.<span class="ident">as_slice</span>().<span class="ident">get</span>(<span class="number">0</span>), <span class="prelude-val">None</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">jt</span>.<span class="ident">as_slice</span>().<span class="ident">get</span>(<span class="number">10</span>), <span class="prelude-val">None</span>);
@@ -225,10 +225,10 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">insert</span>() {
-        <span class="kw">let</span> <span class="ident">e1</span> <span class="op">=</span> <span class="ident">Block</span>::<span class="ident">new</span>(<span class="number">1</span>);
-        <span class="kw">let</span> <span class="ident">e2</span> <span class="op">=</span> <span class="ident">Block</span>::<span class="ident">new</span>(<span class="number">2</span>);
+        <span class="kw">let</span> <span class="ident">e1</span> <span class="op">=</span> <span class="ident">Block::new</span>(<span class="number">1</span>);
+        <span class="kw">let</span> <span class="ident">e2</span> <span class="op">=</span> <span class="ident">Block::new</span>(<span class="number">2</span>);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">jt</span> <span class="op">=</span> <span class="ident">JumpTableData</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">jt</span> <span class="op">=</span> <span class="ident">JumpTableData::new</span>();
 
         <span class="ident">jt</span>.<span class="ident">push_entry</span>(<span class="ident">e1</span>);
         <span class="ident">jt</span>.<span class="ident">push_entry</span>(<span class="ident">e2</span>);

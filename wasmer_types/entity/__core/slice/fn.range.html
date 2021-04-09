@@ -15,33 +15,33 @@ be a <a href="../../../../wasmer_types/entity/__core/ops/struct.RangeTo.html"><c
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">slice_range</span>)]</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">slice</span>;
+<span class="kw">use</span> <span class="ident">std::slice</span>;
 
 <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> [<span class="number">10</span>, <span class="number">40</span>, <span class="number">30</span>];
-<span class="macro">assert_eq!</span>(<span class="number">1</span>..<span class="number">2</span>, <span class="ident">slice</span>::<span class="ident">range</span>(<span class="number">1</span>..<span class="number">2</span>, ..<span class="ident">v</span>.<span class="ident">len</span>()));
-<span class="macro">assert_eq!</span>(<span class="number">0</span>..<span class="number">2</span>, <span class="ident">slice</span>::<span class="ident">range</span>(..<span class="number">2</span>, ..<span class="ident">v</span>.<span class="ident">len</span>()));
-<span class="macro">assert_eq!</span>(<span class="number">1</span>..<span class="number">3</span>, <span class="ident">slice</span>::<span class="ident">range</span>(<span class="number">1</span>.., ..<span class="ident">v</span>.<span class="ident">len</span>()));</pre></div>
+<span class="macro">assert_eq!</span>(<span class="number">1</span>..<span class="number">2</span>, <span class="ident">slice::range</span>(<span class="number">1</span>..<span class="number">2</span>, ..<span class="ident">v</span>.<span class="ident">len</span>()));
+<span class="macro">assert_eq!</span>(<span class="number">0</span>..<span class="number">2</span>, <span class="ident">slice::range</span>(..<span class="number">2</span>, ..<span class="ident">v</span>.<span class="ident">len</span>()));
+<span class="macro">assert_eq!</span>(<span class="number">1</span>..<span class="number">3</span>, <span class="ident">slice::range</span>(<span class="number">1</span>.., ..<span class="ident">v</span>.<span class="ident">len</span>()));</pre></div>
 <p>Panics when <a href="../../../../wasmer_types/entity/__core/ops/trait.Index.html#tymethod.index"><code>Index::index</code></a> would panic:</p>
 
 <div class='information'><div class='tooltip should_panic'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered should_panic">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">slice_range</span>)]</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">slice</span>;
+<span class="kw">use</span> <span class="ident">std::slice</span>;
 
-<span class="ident">slice</span>::<span class="ident">range</span>(<span class="number">2</span>..<span class="number">1</span>, ..<span class="number">3</span>);</pre></div>
-
-<div class='information'><div class='tooltip should_panic'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered should_panic">
-<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">slice_range</span>)]</span>
-
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">slice</span>;
-
-<span class="ident">slice</span>::<span class="ident">range</span>(<span class="number">1</span>..<span class="number">4</span>, ..<span class="number">3</span>);</pre></div>
+<span class="ident">slice::range</span>(<span class="number">2</span>..<span class="number">1</span>, ..<span class="number">3</span>);</pre></div>
 
 <div class='information'><div class='tooltip should_panic'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered should_panic">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">slice_range</span>)]</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">slice</span>;
+<span class="kw">use</span> <span class="ident">std::slice</span>;
 
-<span class="ident">slice</span>::<span class="ident">range</span>(<span class="number">1</span>..<span class="op">=</span><span class="ident">usize</span>::<span class="ident">MAX</span>, ..<span class="number">3</span>);</pre></div>
+<span class="ident">slice::range</span>(<span class="number">1</span>..<span class="number">4</span>, ..<span class="number">3</span>);</pre></div>
+
+<div class='information'><div class='tooltip should_panic'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered should_panic">
+<span class="attribute">#![<span class="ident">feature</span>(<span class="ident">slice_range</span>)]</span>
+
+<span class="kw">use</span> <span class="ident">std::slice</span>;
+
+<span class="ident">slice::range</span>(<span class="number">1</span>..<span class="op">=</span><span class="ident">usize::MAX</span>, ..<span class="number">3</span>);</pre></div>
 </div></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="wasmer_types" data-search-js="../../../../search-index.js"></div>
     <script src="../../../../main.js"></script></body></html>

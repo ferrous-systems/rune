@@ -27,30 +27,30 @@ exactly which argument was actually used at runtime.</p>
 the arguments from the specified group is present at runtime.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">App</span>::<span class="ident">new</span>(<span class="string">&quot;app&quot;</span>)
+<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">App::new</span>(<span class="string">&quot;app&quot;</span>)
     .<span class="ident">args_from_usage</span>(
         <span class="string">&quot;--set-ver [ver] &#39;set the version manually&#39;
          --major         &#39;auto increase major&#39;
          --minor         &#39;auto increase minor&#39;
          --patch         &#39;auto increase patch&#39;&quot;</span>)
-    .<span class="ident">group</span>(<span class="ident">ArgGroup</span>::<span class="ident">with_name</span>(<span class="string">&quot;vers&quot;</span>)
+    .<span class="ident">group</span>(<span class="ident">ArgGroup::with_name</span>(<span class="string">&quot;vers&quot;</span>)
          .<span class="ident">args</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;set-ver&quot;</span>, <span class="string">&quot;major&quot;</span>, <span class="string">&quot;minor&quot;</span>, <span class="string">&quot;patch&quot;</span>])
          .<span class="ident">required</span>(<span class="bool-val">true</span>))
     .<span class="ident">get_matches_from_safe</span>(<span class="macro">vec!</span>[<span class="string">&quot;app&quot;</span>, <span class="string">&quot;--major&quot;</span>, <span class="string">&quot;--patch&quot;</span>]);
 <span class="comment">// Because we used two args in the group it&#39;s an error</span>
 <span class="macro">assert!</span>(<span class="ident">result</span>.<span class="ident">is_err</span>());
 <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">result</span>.<span class="ident">unwrap_err</span>();
-<span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">kind</span>, <span class="ident">ErrorKind</span>::<span class="ident">ArgumentConflict</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">kind</span>, <span class="ident">ErrorKind::ArgumentConflict</span>);</pre></div>
 <p>This next example shows a passing parse of the same scenario</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">App</span>::<span class="ident">new</span>(<span class="string">&quot;app&quot;</span>)
+<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">App::new</span>(<span class="string">&quot;app&quot;</span>)
     .<span class="ident">args_from_usage</span>(
         <span class="string">&quot;--set-ver [ver] &#39;set the version manually&#39;
          --major         &#39;auto increase major&#39;
          --minor         &#39;auto increase minor&#39;
          --patch         &#39;auto increase patch&#39;&quot;</span>)
-    .<span class="ident">group</span>(<span class="ident">ArgGroup</span>::<span class="ident">with_name</span>(<span class="string">&quot;vers&quot;</span>)
+    .<span class="ident">group</span>(<span class="ident">ArgGroup::with_name</span>(<span class="string">&quot;vers&quot;</span>)
          .<span class="ident">args</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;set-ver&quot;</span>, <span class="string">&quot;major&quot;</span>, <span class="string">&quot;minor&quot;</span>,<span class="string">&quot;patch&quot;</span>])
          .<span class="ident">required</span>(<span class="bool-val">true</span>))
     .<span class="ident">get_matches_from_safe</span>(<span class="macro">vec!</span>[<span class="string">&quot;app&quot;</span>, <span class="string">&quot;--major&quot;</span>]);
@@ -63,16 +63,16 @@ the arguments from the specified group is present at runtime.</p>
 get values from the group or refer to the group inside of conflict and requirement rules.</p>
 <h1 id="examples-1" class="section-header"><a href="#examples-1">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="ident">ArgGroup</span>::<span class="ident">with_name</span>(<span class="string">&quot;config&quot;</span>)</pre></div>
+<span class="ident">ArgGroup::with_name</span>(<span class="string">&quot;config&quot;</span>)</pre></div>
 </div><h4 id="method.arg" class="method"><code>pub fn <a href="#method.arg" class="fnname">arg</a>(self, n: &amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; Self</code><a class="srclink" href="../src/clap/args/group.rs.html#158-166" title="goto source code">[src]</a></h4><div class="docblock"><p>Adds an <a href="./struct.Arg.html">argument</a> to this group by name</p>
 <h1 id="examples-2" class="section-header"><a href="#examples-2">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">App</span>::<span class="ident">new</span>(<span class="string">&quot;myprog&quot;</span>)
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;flag&quot;</span>)
+<span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">App::new</span>(<span class="string">&quot;myprog&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;flag&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;f&quot;</span>))
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;color&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;color&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;c&quot;</span>))
-    .<span class="ident">group</span>(<span class="ident">ArgGroup</span>::<span class="ident">with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
+    .<span class="ident">group</span>(<span class="ident">ArgGroup::with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
         .<span class="ident">arg</span>(<span class="string">&quot;flag&quot;</span>)
         .<span class="ident">arg</span>(<span class="string">&quot;color&quot;</span>))
     .<span class="ident">get_matches_from</span>(<span class="macro">vec!</span>[<span class="string">&quot;myprog&quot;</span>, <span class="string">&quot;-f&quot;</span>]);
@@ -83,12 +83,12 @@ get values from the group or refer to the group inside of conflict and requireme
 </div><h4 id="method.args" class="method"><code>pub fn <a href="#method.args" class="fnname">args</a>(self, ns: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">&amp;[</a>&amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">]</a>) -&gt; Self</code><a class="srclink" href="../src/clap/args/group.rs.html#188-193" title="goto source code">[src]</a></h4><div class="docblock"><p>Adds multiple <a href="./struct.Arg.html">arguments</a> to this group by name</p>
 <h1 id="examples-3" class="section-header"><a href="#examples-3">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">App</span>::<span class="ident">new</span>(<span class="string">&quot;myprog&quot;</span>)
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;flag&quot;</span>)
+<span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">App::new</span>(<span class="string">&quot;myprog&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;flag&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;f&quot;</span>))
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;color&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;color&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;c&quot;</span>))
-    .<span class="ident">group</span>(<span class="ident">ArgGroup</span>::<span class="ident">with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
+    .<span class="ident">group</span>(<span class="ident">ArgGroup::with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
         .<span class="ident">args</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;flag&quot;</span>, <span class="string">&quot;color&quot;</span>]))
     .<span class="ident">get_matches_from</span>(<span class="macro">vec!</span>[<span class="string">&quot;myprog&quot;</span>, <span class="string">&quot;-f&quot;</span>]);
 <span class="comment">// maybe we don&#39;t know which of the two flags was used...</span>
@@ -101,12 +101,12 @@ get values from the group or refer to the group inside of conflict and requireme
 group</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">App</span>::<span class="ident">new</span>(<span class="string">&quot;myprog&quot;</span>)
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;flag&quot;</span>)
+<span class="kw">let</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">App::new</span>(<span class="string">&quot;myprog&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;flag&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;f&quot;</span>))
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;color&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;color&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;c&quot;</span>))
-    .<span class="ident">group</span>(<span class="ident">ArgGroup</span>::<span class="ident">with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
+    .<span class="ident">group</span>(<span class="ident">ArgGroup::with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
         .<span class="ident">args</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;flag&quot;</span>, <span class="string">&quot;color&quot;</span>])
         .<span class="ident">multiple</span>(<span class="bool-val">true</span>))
     .<span class="ident">get_matches_from</span>(<span class="macro">vec!</span>[<span class="string">&quot;myprog&quot;</span>, <span class="string">&quot;-f&quot;</span>, <span class="string">&quot;-c&quot;</span>]);
@@ -116,18 +116,18 @@ group</p>
 an error if more than one of the args in the group was used.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">App</span>::<span class="ident">new</span>(<span class="string">&quot;myprog&quot;</span>)
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;flag&quot;</span>)
+<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">App::new</span>(<span class="string">&quot;myprog&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;flag&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;f&quot;</span>))
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;color&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;color&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;c&quot;</span>))
-    .<span class="ident">group</span>(<span class="ident">ArgGroup</span>::<span class="ident">with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
+    .<span class="ident">group</span>(<span class="ident">ArgGroup::with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
         .<span class="ident">args</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;flag&quot;</span>, <span class="string">&quot;color&quot;</span>]))
     .<span class="ident">get_matches_from_safe</span>(<span class="macro">vec!</span>[<span class="string">&quot;myprog&quot;</span>, <span class="string">&quot;-f&quot;</span>, <span class="string">&quot;-c&quot;</span>]);
 <span class="comment">// Because we used both args in the group it&#39;s an error</span>
 <span class="macro">assert!</span>(<span class="ident">result</span>.<span class="ident">is_err</span>());
 <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">result</span>.<span class="ident">unwrap_err</span>();
-<span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">kind</span>, <span class="ident">ErrorKind</span>::<span class="ident">ArgumentConflict</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">kind</span>, <span class="ident">ErrorKind::ArgumentConflict</span>);</pre></div>
 </div><h4 id="method.required" class="method"><code>pub fn <a href="#method.required" class="fnname">required</a>(self, r: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; Self</code><a class="srclink" href="../src/clap/args/group.rs.html#274-277" title="goto source code">[src]</a></h4><div class="docblock"><p>Sets the group as required or not. A required group will be displayed in the usage string
 of the application in the format <code>&lt;arg|arg2|arg3&gt;</code>. A required <code>ArgGroup</code> simply states
 that one argument from this group <em>must</em> be present at runtime (unless
@@ -140,19 +140,19 @@ Use of more than one arg is an error.” Vice setting <code>ArgGroup::multiple(t
 states, ’<em>At least</em> one arg from this group must be used. Using multiple is OK.“</p>
 <h1 id="examples-5" class="section-header"><a href="#examples-5">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">App</span>::<span class="ident">new</span>(<span class="string">&quot;myprog&quot;</span>)
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;flag&quot;</span>)
+<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">App::new</span>(<span class="string">&quot;myprog&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;flag&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;f&quot;</span>))
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;color&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;color&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;c&quot;</span>))
-    .<span class="ident">group</span>(<span class="ident">ArgGroup</span>::<span class="ident">with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
+    .<span class="ident">group</span>(<span class="ident">ArgGroup::with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
         .<span class="ident">args</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;flag&quot;</span>, <span class="string">&quot;color&quot;</span>])
         .<span class="ident">required</span>(<span class="bool-val">true</span>))
     .<span class="ident">get_matches_from_safe</span>(<span class="macro">vec!</span>[<span class="string">&quot;myprog&quot;</span>]);
 <span class="comment">// Because we didn&#39;t use any of the args in the group, it&#39;s an error</span>
 <span class="macro">assert!</span>(<span class="ident">result</span>.<span class="ident">is_err</span>());
 <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">result</span>.<span class="ident">unwrap_err</span>();
-<span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">kind</span>, <span class="ident">ErrorKind</span>::<span class="ident">MissingRequiredArgument</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">kind</span>, <span class="ident">ErrorKind::MissingRequiredArgument</span>);</pre></div>
 </div><h4 id="method.requires" class="method"><code>pub fn <a href="#method.requires" class="fnname">requires</a>(self, n: &amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; Self</code><a class="srclink" href="../src/clap/args/group.rs.html#309-316" title="goto source code">[src]</a></h4><div class="docblock"><p>Sets the requirement rules of this group. This is not to be confused with a
 <a href="./struct.ArgGroup.html#method.required">required group</a>. Requirement rules function just like <a href="./struct.Arg.html#method.requires">argument requirement rules</a>, you
 can name other arguments or groups that must be present when any one of the arguments from
@@ -160,14 +160,14 @@ this group is used.</p>
 <p><strong>NOTE:</strong> The name provided may be an argument, or group name</p>
 <h1 id="examples-6" class="section-header"><a href="#examples-6">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">App</span>::<span class="ident">new</span>(<span class="string">&quot;myprog&quot;</span>)
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;flag&quot;</span>)
+<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">App::new</span>(<span class="string">&quot;myprog&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;flag&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;f&quot;</span>))
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;color&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;color&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;c&quot;</span>))
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;debug&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;debug&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;d&quot;</span>))
-    .<span class="ident">group</span>(<span class="ident">ArgGroup</span>::<span class="ident">with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
+    .<span class="ident">group</span>(<span class="ident">ArgGroup::with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
         .<span class="ident">args</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;flag&quot;</span>, <span class="string">&quot;color&quot;</span>])
         .<span class="ident">requires</span>(<span class="string">&quot;debug&quot;</span>))
     .<span class="ident">get_matches_from_safe</span>(<span class="macro">vec!</span>[<span class="string">&quot;myprog&quot;</span>, <span class="string">&quot;-c&quot;</span>]);
@@ -175,7 +175,7 @@ this group is used.</p>
 <span class="comment">// error</span>
 <span class="macro">assert!</span>(<span class="ident">result</span>.<span class="ident">is_err</span>());
 <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">result</span>.<span class="ident">unwrap_err</span>();
-<span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">kind</span>, <span class="ident">ErrorKind</span>::<span class="ident">MissingRequiredArgument</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">kind</span>, <span class="ident">ErrorKind::MissingRequiredArgument</span>);</pre></div>
 </div><h4 id="method.requires_all" class="method"><code>pub fn <a href="#method.requires_all" class="fnname">requires_all</a>(self, ns: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">&amp;[</a>&amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">]</a>) -&gt; Self</code><a class="srclink" href="../src/clap/args/group.rs.html#350-355" title="goto source code">[src]</a></h4><div class="docblock"><p>Sets the requirement rules of this group. This is not to be confused with a
 <a href="./struct.ArgGroup.html#method.required">required group</a>. Requirement rules function just like <a href="./struct.Arg.html#method.requires_all">argument requirement rules</a>, you
 can name other arguments or groups that must be present when one of the arguments from this
@@ -183,16 +183,16 @@ group is used.</p>
 <p><strong>NOTE:</strong> The names provided may be an argument, or group name</p>
 <h1 id="examples-7" class="section-header"><a href="#examples-7">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">App</span>::<span class="ident">new</span>(<span class="string">&quot;myprog&quot;</span>)
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;flag&quot;</span>)
+<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">App::new</span>(<span class="string">&quot;myprog&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;flag&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;f&quot;</span>))
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;color&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;color&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;c&quot;</span>))
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;debug&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;debug&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;d&quot;</span>))
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;verb&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;verb&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;v&quot;</span>))
-    .<span class="ident">group</span>(<span class="ident">ArgGroup</span>::<span class="ident">with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
+    .<span class="ident">group</span>(<span class="ident">ArgGroup::with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
         .<span class="ident">args</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;flag&quot;</span>, <span class="string">&quot;color&quot;</span>])
         .<span class="ident">requires_all</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;debug&quot;</span>, <span class="string">&quot;verb&quot;</span>]))
     .<span class="ident">get_matches_from_safe</span>(<span class="macro">vec!</span>[<span class="string">&quot;myprog&quot;</span>, <span class="string">&quot;-c&quot;</span>, <span class="string">&quot;-d&quot;</span>]);
@@ -200,44 +200,44 @@ group is used.</p>
 <span class="comment">// yet we only used &quot;-d&quot; it&#39;s an error</span>
 <span class="macro">assert!</span>(<span class="ident">result</span>.<span class="ident">is_err</span>());
 <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">result</span>.<span class="ident">unwrap_err</span>();
-<span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">kind</span>, <span class="ident">ErrorKind</span>::<span class="ident">MissingRequiredArgument</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">kind</span>, <span class="ident">ErrorKind::MissingRequiredArgument</span>);</pre></div>
 </div><h4 id="method.conflicts_with" class="method"><code>pub fn <a href="#method.conflicts_with" class="fnname">conflicts_with</a>(self, n: &amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; Self</code><a class="srclink" href="../src/clap/args/group.rs.html#384-391" title="goto source code">[src]</a></h4><div class="docblock"><p>Sets the exclusion rules of this group. Exclusion (aka conflict) rules function just like
 <a href="./struct.Arg.html#method.conflicts_with">argument exclusion rules</a>, you can name other arguments or groups that must <em>not</em> be
 present when one of the arguments from this group are used.</p>
 <p><strong>NOTE:</strong> The name provided may be an argument, or group name</p>
 <h1 id="examples-8" class="section-header"><a href="#examples-8">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">App</span>::<span class="ident">new</span>(<span class="string">&quot;myprog&quot;</span>)
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;flag&quot;</span>)
+<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">App::new</span>(<span class="string">&quot;myprog&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;flag&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;f&quot;</span>))
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;color&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;color&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;c&quot;</span>))
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;debug&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;debug&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;d&quot;</span>))
-    .<span class="ident">group</span>(<span class="ident">ArgGroup</span>::<span class="ident">with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
+    .<span class="ident">group</span>(<span class="ident">ArgGroup::with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
         .<span class="ident">args</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;flag&quot;</span>, <span class="string">&quot;color&quot;</span>])
         .<span class="ident">conflicts_with</span>(<span class="string">&quot;debug&quot;</span>))
     .<span class="ident">get_matches_from_safe</span>(<span class="macro">vec!</span>[<span class="string">&quot;myprog&quot;</span>, <span class="string">&quot;-c&quot;</span>, <span class="string">&quot;-d&quot;</span>]);
 <span class="comment">// because we used an arg from the group, and the group conflicts with &quot;-d&quot;, it&#39;s an error</span>
 <span class="macro">assert!</span>(<span class="ident">result</span>.<span class="ident">is_err</span>());
 <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">result</span>.<span class="ident">unwrap_err</span>();
-<span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">kind</span>, <span class="ident">ErrorKind</span>::<span class="ident">ArgumentConflict</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">kind</span>, <span class="ident">ErrorKind::ArgumentConflict</span>);</pre></div>
 </div><h4 id="method.conflicts_with_all" class="method"><code>pub fn <a href="#method.conflicts_with_all" class="fnname">conflicts_with_all</a>(self, ns: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">&amp;[</a>&amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.slice.html">]</a>) -&gt; Self</code><a class="srclink" href="../src/clap/args/group.rs.html#423-428" title="goto source code">[src]</a></h4><div class="docblock"><p>Sets the exclusion rules of this group. Exclusion rules function just like
 <a href="./struct.Arg.html#method.conflicts_with_all">argument exclusion rules</a>, you can name other arguments or groups that must <em>not</em> be
 present when one of the arguments from this group are used.</p>
 <p><strong>NOTE:</strong> The names provided may be an argument, or group name</p>
 <h1 id="examples-9" class="section-header"><a href="#examples-9">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">App</span>::<span class="ident">new</span>(<span class="string">&quot;myprog&quot;</span>)
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;flag&quot;</span>)
+<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">App::new</span>(<span class="string">&quot;myprog&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;flag&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;f&quot;</span>))
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;color&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;color&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;c&quot;</span>))
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;debug&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;debug&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;d&quot;</span>))
-    .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">with_name</span>(<span class="string">&quot;verb&quot;</span>)
+    .<span class="ident">arg</span>(<span class="ident">Arg::with_name</span>(<span class="string">&quot;verb&quot;</span>)
         .<span class="ident">short</span>(<span class="string">&quot;v&quot;</span>))
-    .<span class="ident">group</span>(<span class="ident">ArgGroup</span>::<span class="ident">with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
+    .<span class="ident">group</span>(<span class="ident">ArgGroup::with_name</span>(<span class="string">&quot;req_flags&quot;</span>)
         .<span class="ident">args</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;flag&quot;</span>, <span class="string">&quot;color&quot;</span>])
         .<span class="ident">conflicts_with_all</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;debug&quot;</span>, <span class="string">&quot;verb&quot;</span>]))
     .<span class="ident">get_matches_from_safe</span>(<span class="macro">vec!</span>[<span class="string">&quot;myprog&quot;</span>, <span class="string">&quot;-c&quot;</span>, <span class="string">&quot;-v&quot;</span>]);
@@ -245,7 +245,7 @@ present when one of the arguments from this group are used.</p>
 <span class="comment">// it&#39;s an error</span>
 <span class="macro">assert!</span>(<span class="ident">result</span>.<span class="ident">is_err</span>());
 <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">result</span>.<span class="ident">unwrap_err</span>();
-<span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">kind</span>, <span class="ident">ErrorKind</span>::<span class="ident">ArgumentConflict</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">err</span>.<span class="ident">kind</span>, <span class="ident">ErrorKind::ArgumentConflict</span>);</pre></div>
 </div></div><h2 id="trait-implementations" class="small-section-header">Trait Implementations<a href="#trait-implementations" class="anchor"></a></h2><div id="trait-implementations-list"><h3 id="impl-Clone" class="impl"><code class="in-band">impl&lt;'a&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="struct" href="../clap/struct.ArgGroup.html" title="struct clap::ArgGroup">ArgGroup</a>&lt;'a&gt;</code><a href="#impl-Clone" class="anchor"></a><a class="srclink" href="../src/clap/args/group.rs.html#627-638" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.clone" class="method hidden"><code>fn <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone" class="fnname">clone</a>(&amp;self) -&gt; Self</code><a class="srclink" href="../src/clap/args/group.rs.html#628-637" title="goto source code">[src]</a></h4><div class='docblock hidden'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
 </div><h4 id="method.clone_from" class="method hidden"><code>pub fn <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from" class="fnname">clone_from</a>(&amp;mut self, source: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Self)</code><span class="since" title="Stable since Rust version 1.0.0">1.0.0</span><a class="srclink" href="https://doc.rust-lang.org/nightly/src/core/clone.rs.html#130" title="goto source code">[src]</a></h4><div class='docblock hidden'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
 </div></div><h3 id="impl-Debug" class="impl"><code class="in-band">impl&lt;'a&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="struct" href="../clap/struct.ArgGroup.html" title="struct clap::ArgGroup">ArgGroup</a>&lt;'a&gt;</code><a href="#impl-Debug" class="anchor"></a><a class="srclink" href="../src/clap/args/group.rs.html#431-445" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.fmt" class="method hidden"><code>fn <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt" class="fnname">fmt</a>(&amp;self, f: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>&lt;'_&gt;) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html" title="type core::fmt::Result">Result</a></code><a class="srclink" href="../src/clap/args/group.rs.html#432-444" title="goto source code">[src]</a></h4><div class='docblock hidden'><p>Formats the value using the given formatter. <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt">Read more</a></p>

@@ -208,7 +208,7 @@
 <span id="205">205</span>
 <span id="206">206</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">convert</span>::<span class="ident">TryFrom</span>, <span class="ident">fmt</span>::<span class="ident">Display</span>, <span class="ident">fmt</span>, <span class="ident">fmt</span>::<span class="ident">Formatter</span>};
+<span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">convert::TryFrom</span>, <span class="ident">fmt::Display</span>, <span class="ident">fmt</span>, <span class="ident">fmt::Formatter</span>};
 
 <span class="doccomment">/// A dynamically typed value that may be passed back and forth across the</span>
 <span class="doccomment">/// runtime.</span>
@@ -223,38 +223,38 @@
 
 <span class="kw">impl</span> <span class="ident">Value</span> {
     <span class="doccomment">/// Get a buffer big enough to be used with [`Value::to_le_bytes()`].</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">buffer</span>() <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">u8</span>; <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span>()] {
-        [<span class="number">0</span>; <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span>()]
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">buffer</span>() <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">u8</span>; <span class="ident">core::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span>()] {
+        [<span class="number">0</span>; <span class="ident">core::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span>()]
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_le_bytes</span>(<span class="ident">ty</span>: <span class="ident">Type</span>, <span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">ty</span> {
-            <span class="ident">Type</span>::<span class="ident">Byte</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bytes</span>.<span class="ident">get</span>(<span class="number">0</span>).<span class="ident">copied</span>().<span class="ident">map</span>(<span class="ident">Value</span>::<span class="ident">Byte</span>),
-            <span class="ident">Type</span>::<span class="ident">Short</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">const</span> <span class="ident">LEN</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">i16</span><span class="op">&gt;</span>();
+            <span class="ident">Type::Byte</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bytes</span>.<span class="ident">get</span>(<span class="number">0</span>).<span class="ident">copied</span>().<span class="ident">map</span>(<span class="ident">Value::Byte</span>),
+            <span class="ident">Type::Short</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">const</span> <span class="ident">LEN</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">core::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">i16</span><span class="op">&gt;</span>();
 
                 <span class="ident">bytes</span>.<span class="ident">get</span>(..<span class="ident">LEN</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">bytes</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> [<span class="number">0</span>; <span class="ident">LEN</span>];
                     <span class="ident">buffer</span>.<span class="ident">copy_from_slice</span>(<span class="ident">bytes</span>);
-                    <span class="ident">Value</span>::<span class="ident">Short</span>(<span class="ident">i16</span>::<span class="ident">from_le_bytes</span>(<span class="ident">buffer</span>))
+                    <span class="ident">Value::Short</span>(<span class="ident">i16::from_le_bytes</span>(<span class="ident">buffer</span>))
                 })
             },
-            <span class="ident">Type</span>::<span class="ident">Integer</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">const</span> <span class="ident">LEN</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>();
+            <span class="ident">Type::Integer</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">const</span> <span class="ident">LEN</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">core::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>();
 
                 <span class="ident">bytes</span>.<span class="ident">get</span>(..<span class="ident">LEN</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">bytes</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> [<span class="number">0</span>; <span class="ident">LEN</span>];
                     <span class="ident">buffer</span>.<span class="ident">copy_from_slice</span>(<span class="ident">bytes</span>);
-                    <span class="ident">Value</span>::<span class="ident">Integer</span>(<span class="ident">i32</span>::<span class="ident">from_le_bytes</span>(<span class="ident">buffer</span>))
+                    <span class="ident">Value::Integer</span>(<span class="ident">i32::from_le_bytes</span>(<span class="ident">buffer</span>))
                 })
             },
-            <span class="ident">Type</span>::<span class="ident">Float</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">const</span> <span class="ident">LEN</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>();
+            <span class="ident">Type::Float</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">const</span> <span class="ident">LEN</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">core::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>();
 
                 <span class="ident">bytes</span>.<span class="ident">get</span>(..<span class="ident">LEN</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">bytes</span><span class="op">|</span> {
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> [<span class="number">0</span>; <span class="ident">LEN</span>];
                     <span class="ident">buffer</span>.<span class="ident">copy_from_slice</span>(<span class="ident">bytes</span>);
-                    <span class="ident">Value</span>::<span class="ident">Float</span>(<span class="ident">f32</span>::<span class="ident">from_le_bytes</span>(<span class="ident">buffer</span>))
+                    <span class="ident">Value::Float</span>(<span class="ident">f32::from_le_bytes</span>(<span class="ident">buffer</span>))
                 })
             },
         }
@@ -268,21 +268,21 @@
     <span class="doccomment">/// sized buffer.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_le_bytes</span>(<span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Value</span>::<span class="ident">Byte</span>(<span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Value::Byte</span>(<span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">buffer</span>[<span class="number">0</span>] <span class="op">=</span> <span class="ident">b</span>;
                 <span class="number">1</span>
             },
-            <span class="ident">Value</span>::<span class="ident">Short</span>(<span class="ident">short</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Value::Short</span>(<span class="ident">short</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">short</span>.<span class="ident">to_le_bytes</span>();
                 <span class="ident">buffer</span>[..<span class="ident">bytes</span>.<span class="ident">len</span>()].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">bytes</span>);
                 <span class="ident">bytes</span>.<span class="ident">len</span>()
             },
-            <span class="ident">Value</span>::<span class="ident">Integer</span>(<span class="ident">int</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Value::Integer</span>(<span class="ident">int</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">int</span>.<span class="ident">to_le_bytes</span>();
                 <span class="ident">buffer</span>[..<span class="ident">bytes</span>.<span class="ident">len</span>()].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">bytes</span>);
                 <span class="ident">bytes</span>.<span class="ident">len</span>()
             },
-            <span class="ident">Value</span>::<span class="ident">Float</span>(<span class="ident">float</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Value::Float</span>(<span class="ident">float</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">float</span>.<span class="ident">to_le_bytes</span>();
                 <span class="ident">buffer</span>[..<span class="ident">bytes</span>.<span class="ident">len</span>()].<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">bytes</span>);
                 <span class="ident">bytes</span>.<span class="ident">len</span>()
@@ -292,21 +292,21 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Type</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Value</span>::<span class="ident">Byte</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type</span>::<span class="ident">Byte</span>,
-            <span class="ident">Value</span>::<span class="ident">Short</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type</span>::<span class="ident">Short</span>,
-            <span class="ident">Value</span>::<span class="ident">Integer</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type</span>::<span class="ident">Integer</span>,
-            <span class="ident">Value</span>::<span class="ident">Float</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type</span>::<span class="ident">Float</span>,
+            <span class="ident">Value::Byte</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type::Byte</span>,
+            <span class="ident">Value::Short</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type::Short</span>,
+            <span class="ident">Value::Integer</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type::Integer</span>,
+            <span class="ident">Value::Float</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type::Float</span>,
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Value</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Value</span>::<span class="ident">Byte</span>(<span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}_u8&quot;</span>, <span class="ident">b</span>),
-            <span class="ident">Value</span>::<span class="ident">Short</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}_i16&quot;</span>, <span class="ident">s</span>),
-            <span class="ident">Value</span>::<span class="ident">Integer</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}_i32&quot;</span>, <span class="ident">i</span>),
-            <span class="ident">Value</span>::<span class="ident">Float</span>(<span class="ident">float</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{:.1}&quot;</span>, <span class="ident">float</span>),
+            <span class="ident">Value::Byte</span>(<span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}_u8&quot;</span>, <span class="ident">b</span>),
+            <span class="ident">Value::Short</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}_i16&quot;</span>, <span class="ident">s</span>),
+            <span class="ident">Value::Integer</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}_i32&quot;</span>, <span class="ident">i</span>),
+            <span class="ident">Value::Float</span>(<span class="ident">float</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{:.1}&quot;</span>, <span class="ident">float</span>),
         }
     }
 }
@@ -343,12 +343,12 @@
 <span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Type</span> {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> ();
 
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">value</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">value</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">value</span> {
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type</span>::<span class="ident">Integer</span>),
-            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type</span>::<span class="ident">Float</span>),
-            <span class="number">5</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type</span>::<span class="ident">Byte</span>),
-            <span class="number">6</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type</span>::<span class="ident">Short</span>),
+            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type::Integer</span>),
+            <span class="number">2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type::Float</span>),
+            <span class="number">5</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type::Byte</span>),
+            <span class="number">6</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Type::Short</span>),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(()),
         }
     }
@@ -381,7 +381,7 @@
             <span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="kw">type</span> {
                 <span class="kw">type</span> <span class="macro-nonterminal">Error</span> <span class="op">=</span> <span class="ident">InvalidConversionError</span>;
 
-                <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">value</span>: <span class="ident">Value</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+                <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">value</span>: <span class="ident">Value</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span> {
                     <span class="kw">match</span> <span class="ident">value</span> {
                         <span class="ident">Value</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">variant</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">v</span>),
                         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">InvalidConversionError</span> {
@@ -404,7 +404,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">InvalidConversionError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(
             <span class="ident">f</span>,
             <span class="string">&quot;Unable to convert {} ({:?}) to a {:?}&quot;</span>,

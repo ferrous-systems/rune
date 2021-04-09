@@ -10,9 +10,9 @@ to be a Rust symbol, rather than “demangling” the given string as a no-op.</
 <span class="kw">let</span> <span class="ident">not_a_rust_symbol</span> <span class="op">=</span> <span class="string">&quot;la la la&quot;</span>;
 
 <span class="comment">// The `try_demangle` function will reject strings which are not Rust symbols.</span>
-<span class="macro">assert!</span>(<span class="ident">rustc_demangle</span>::<span class="ident">try_demangle</span>(<span class="ident">not_a_rust_symbol</span>).<span class="ident">is_err</span>());
+<span class="macro">assert!</span>(<span class="ident">rustc_demangle::try_demangle</span>(<span class="ident">not_a_rust_symbol</span>).<span class="ident">is_err</span>());
 
 <span class="comment">// While `demangle` will just pass the non-symbol through as a no-op.</span>
-<span class="macro">assert_eq!</span>(<span class="ident">rustc_demangle</span>::<span class="ident">demangle</span>(<span class="ident">not_a_rust_symbol</span>).<span class="ident">as_str</span>(), <span class="ident">not_a_rust_symbol</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">rustc_demangle::demangle</span>(<span class="ident">not_a_rust_symbol</span>).<span class="ident">as_str</span>(), <span class="ident">not_a_rust_symbol</span>);</pre></div>
 </div></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="rustc_demangle" data-search-js="../search-index.js"></div>
     <script src="../main.js"></script></body></html>

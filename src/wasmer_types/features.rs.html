@@ -562,7 +562,7 @@
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Features</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">new</span>()
+        <span class="self">Self</span><span class="ident">::new</span>()
     }
 }
 
@@ -571,7 +571,7 @@
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">default_features</span>() {
-        <span class="kw">let</span> <span class="ident">default</span> <span class="op">=</span> <span class="ident">Features</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="ident">default</span> <span class="op">=</span> <span class="ident">Features::default</span>();
         <span class="macro">assert_eq!</span>(
             <span class="ident">default</span>,
             <span class="ident">Features</span> {
@@ -590,7 +590,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">enable_threads</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features::new</span>();
         <span class="ident">features</span>.<span class="ident">bulk_memory</span>(<span class="bool-val">false</span>).<span class="ident">threads</span>(<span class="bool-val">true</span>);
 
         <span class="macro">assert!</span>(<span class="ident">features</span>.<span class="ident">threads</span>);
@@ -598,7 +598,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">enable_reference_types</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features::new</span>();
         <span class="ident">features</span>.<span class="ident">bulk_memory</span>(<span class="bool-val">false</span>).<span class="ident">reference_types</span>(<span class="bool-val">true</span>);
         <span class="macro">assert!</span>(<span class="ident">features</span>.<span class="ident">reference_types</span>);
         <span class="macro">assert!</span>(<span class="ident">features</span>.<span class="ident">bulk_memory</span>);
@@ -606,28 +606,28 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">enable_simd</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features::new</span>();
         <span class="ident">features</span>.<span class="ident">simd</span>(<span class="bool-val">true</span>);
         <span class="macro">assert!</span>(<span class="ident">features</span>.<span class="ident">simd</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">enable_multi_value</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features::new</span>();
         <span class="ident">features</span>.<span class="ident">multi_value</span>(<span class="bool-val">true</span>);
         <span class="macro">assert!</span>(<span class="ident">features</span>.<span class="ident">multi_value</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">enable_bulk_memory</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features::new</span>();
         <span class="ident">features</span>.<span class="ident">bulk_memory</span>(<span class="bool-val">true</span>);
         <span class="macro">assert!</span>(<span class="ident">features</span>.<span class="ident">bulk_memory</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">disable_bulk_memory</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features::new</span>();
         <span class="ident">features</span>
             .<span class="ident">threads</span>(<span class="bool-val">true</span>)
             .<span class="ident">reference_types</span>(<span class="bool-val">true</span>)
@@ -638,28 +638,28 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">enable_tail_call</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features::new</span>();
         <span class="ident">features</span>.<span class="ident">tail_call</span>(<span class="bool-val">true</span>);
         <span class="macro">assert!</span>(<span class="ident">features</span>.<span class="ident">tail_call</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">enable_module_linking</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features::new</span>();
         <span class="ident">features</span>.<span class="ident">module_linking</span>(<span class="bool-val">true</span>);
         <span class="macro">assert!</span>(<span class="ident">features</span>.<span class="ident">module_linking</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">enable_multi_memory</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features::new</span>();
         <span class="ident">features</span>.<span class="ident">multi_memory</span>(<span class="bool-val">true</span>);
         <span class="macro">assert!</span>(<span class="ident">features</span>.<span class="ident">multi_memory</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">enable_memory64</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">features</span> <span class="op">=</span> <span class="ident">Features::new</span>();
         <span class="ident">features</span>.<span class="ident">memory64</span>(<span class="bool-val">true</span>);
         <span class="macro">assert!</span>(<span class="ident">features</span>.<span class="ident">memory64</span>);
     }

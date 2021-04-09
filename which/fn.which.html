@@ -10,11 +10,11 @@ it exists and is executable.</p>
 file there, returns it.</p>
 <h1 id="example" class="section-header"><a href="#example">Example</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">which</span>::<span class="ident">which</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
+<span class="kw">use</span> <span class="ident">which::which</span>;
+<span class="kw">use</span> <span class="ident">std::path::PathBuf</span>;
 
-<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">which</span>::<span class="ident">which</span>(<span class="string">&quot;rustc&quot;</span>).<span class="ident">unwrap</span>();
-<span class="macro">assert_eq!</span>(<span class="ident">result</span>, <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="string">&quot;/usr/bin/rustc&quot;</span>));
+<span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">which::which</span>(<span class="string">&quot;rustc&quot;</span>).<span class="ident">unwrap</span>();
+<span class="macro">assert_eq!</span>(<span class="ident">result</span>, <span class="ident">PathBuf::from</span>(<span class="string">&quot;/usr/bin/rustc&quot;</span>));
 </pre></div>
 </div></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="which" data-search-js="../search-index.js"></div>
     <script src="../main.js"></script></body></html>

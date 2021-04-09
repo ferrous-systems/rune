@@ -1607,8 +1607,8 @@
 <span id="1604">1604</span>
 <span id="1605">1605</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::{<span class="self">self</span>, <span class="prelude-ty">Result</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">slice</span>;
+<span class="kw">use</span> <span class="ident">std::io</span>::{<span class="self">self</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="ident">std::slice</span>;
 
 <span class="kw">use</span> <span class="ident">ByteOrder</span>;
 
@@ -1634,7 +1634,7 @@
 <span class="doccomment">/// [`BigEndian`]: enum.BigEndian.html</span>
 <span class="doccomment">/// [`LittleEndian`]: enum.LittleEndian.html</span>
 <span class="doccomment">/// [`Read`]: https://doc.rust-lang.org/std/io/trait.Read.html</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ReadBytesExt</span>: <span class="ident">io</span>::<span class="ident">Read</span> {
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ReadBytesExt</span>: <span class="ident">io::Read</span> {
     <span class="doccomment">/// Reads an unsigned 8 bit integer from the underlying reader.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that since this reads a single byte, no byte order conversions</span>
@@ -1719,7 +1719,7 @@
     <span class="kw">fn</span> <span class="ident">read_u16</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">2</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_u16</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_u16</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
     }
 
     <span class="doccomment">/// Reads a signed 16 bit integer from the underlying reader.</span>
@@ -1746,7 +1746,7 @@
     <span class="kw">fn</span> <span class="ident">read_i16</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">i16</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">2</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_i16</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_i16</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
     }
 
     <span class="doccomment">/// Reads an unsigned 24 bit integer from the underlying reader.</span>
@@ -1772,7 +1772,7 @@
     <span class="kw">fn</span> <span class="ident">read_u24</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">3</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_u24</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_u24</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
     }
 
     <span class="doccomment">/// Reads a signed 24 bit integer from the underlying reader.</span>
@@ -1798,7 +1798,7 @@
     <span class="kw">fn</span> <span class="ident">read_i24</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">3</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_i24</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_i24</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
     }
 
     <span class="doccomment">/// Reads an unsigned 32 bit integer from the underlying reader.</span>
@@ -1824,7 +1824,7 @@
     <span class="kw">fn</span> <span class="ident">read_u32</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">4</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_u32</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_u32</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
     }
 
     <span class="doccomment">/// Reads a signed 32 bit integer from the underlying reader.</span>
@@ -1850,7 +1850,7 @@
     <span class="kw">fn</span> <span class="ident">read_i32</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">4</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_i32</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_i32</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
     }
 
     <span class="doccomment">/// Reads an unsigned 48 bit integer from the underlying reader.</span>
@@ -1876,7 +1876,7 @@
     <span class="kw">fn</span> <span class="ident">read_u48</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">6</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_u48</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_u48</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
     }
 
     <span class="doccomment">/// Reads a signed 48 bit integer from the underlying reader.</span>
@@ -1902,7 +1902,7 @@
     <span class="kw">fn</span> <span class="ident">read_i48</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">6</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_i48</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_i48</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
     }
 
     <span class="doccomment">/// Reads an unsigned 64 bit integer from the underlying reader.</span>
@@ -1928,7 +1928,7 @@
     <span class="kw">fn</span> <span class="ident">read_u64</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">8</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_u64</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_u64</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
     }
 
     <span class="doccomment">/// Reads a signed 64 bit integer from the underlying reader.</span>
@@ -1954,7 +1954,7 @@
     <span class="kw">fn</span> <span class="ident">read_i64</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">8</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_i64</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_i64</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
     }
 
     <span class="doccomment">/// Reads an unsigned 128 bit integer from the underlying reader.</span>
@@ -1984,7 +1984,7 @@
     <span class="kw">fn</span> <span class="ident">read_u128</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u128</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">16</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_u128</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_u128</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
     }
 
     <span class="doccomment">/// Reads a signed 128 bit integer from the underlying reader.</span>
@@ -2011,7 +2011,7 @@
     <span class="kw">fn</span> <span class="ident">read_i128</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">i128</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">16</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_i128</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_i128</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
     }
 
     <span class="doccomment">/// Reads an unsigned n-bytes integer from the underlying reader.</span>
@@ -2036,7 +2036,7 @@
     <span class="kw">fn</span> <span class="ident">read_uint</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">nbytes</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">8</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>[..<span class="ident">nbytes</span>]));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_uint</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>[..<span class="ident">nbytes</span>], <span class="ident">nbytes</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_uint</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>[..<span class="ident">nbytes</span>], <span class="ident">nbytes</span>))
     }
 
     <span class="doccomment">/// Reads a signed n-bytes integer from the underlying reader.</span>
@@ -2061,7 +2061,7 @@
     <span class="kw">fn</span> <span class="ident">read_int</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">nbytes</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">8</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>[..<span class="ident">nbytes</span>]));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_int</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>[..<span class="ident">nbytes</span>], <span class="ident">nbytes</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_int</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>[..<span class="ident">nbytes</span>], <span class="ident">nbytes</span>))
     }
 
     <span class="doccomment">/// Reads an unsigned n-bytes integer from the underlying reader.</span>
@@ -2070,7 +2070,7 @@
     <span class="kw">fn</span> <span class="ident">read_uint128</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">nbytes</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u128</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">16</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>[..<span class="ident">nbytes</span>]));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_uint128</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>[..<span class="ident">nbytes</span>], <span class="ident">nbytes</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_uint128</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>[..<span class="ident">nbytes</span>], <span class="ident">nbytes</span>))
     }
 
     <span class="doccomment">/// Reads a signed n-bytes integer from the underlying reader.</span>
@@ -2079,7 +2079,7 @@
     <span class="kw">fn</span> <span class="ident">read_int128</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">nbytes</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">i128</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">16</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>[..<span class="ident">nbytes</span>]));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_int128</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>[..<span class="ident">nbytes</span>], <span class="ident">nbytes</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_int128</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>[..<span class="ident">nbytes</span>], <span class="ident">nbytes</span>))
     }
 
     <span class="doccomment">/// Reads a IEEE754 single-precision (4 bytes) floating point number from</span>
@@ -2110,7 +2110,7 @@
     <span class="kw">fn</span> <span class="ident">read_f32</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">4</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_f32</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_f32</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
     }
 
     <span class="doccomment">/// Reads a IEEE754 double-precision (8 bytes) floating point number from</span>
@@ -2141,7 +2141,7 @@
     <span class="kw">fn</span> <span class="ident">read_f64</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">8</span>];
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>));
-        <span class="prelude-val">Ok</span>(<span class="ident">T</span>::<span class="ident">read_f64</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">T::read_f64</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>))
     }
 
     <span class="doccomment">/// Reads a sequence of unsigned 16 bit integers from the underlying</span>
@@ -2175,7 +2175,7 @@
             <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">slice_to_u8_mut</span>(<span class="ident">dst</span>) };
             <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="ident">buf</span>));
         }
-        <span class="ident">T</span>::<span class="ident">from_slice_u16</span>(<span class="ident">dst</span>);
+        <span class="ident">T::from_slice_u16</span>(<span class="ident">dst</span>);
         <span class="prelude-val">Ok</span>(())
     }
 
@@ -2210,7 +2210,7 @@
             <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">slice_to_u8_mut</span>(<span class="ident">dst</span>) };
             <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="ident">buf</span>));
         }
-        <span class="ident">T</span>::<span class="ident">from_slice_u32</span>(<span class="ident">dst</span>);
+        <span class="ident">T::from_slice_u32</span>(<span class="ident">dst</span>);
         <span class="prelude-val">Ok</span>(())
     }
 
@@ -2248,7 +2248,7 @@
             <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">slice_to_u8_mut</span>(<span class="ident">dst</span>) };
             <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="ident">buf</span>));
         }
-        <span class="ident">T</span>::<span class="ident">from_slice_u64</span>(<span class="ident">dst</span>);
+        <span class="ident">T::from_slice_u64</span>(<span class="ident">dst</span>);
         <span class="prelude-val">Ok</span>(())
     }
 
@@ -2290,7 +2290,7 @@
             <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">slice_to_u8_mut</span>(<span class="ident">dst</span>) };
             <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="ident">buf</span>));
         }
-        <span class="ident">T</span>::<span class="ident">from_slice_u128</span>(<span class="ident">dst</span>);
+        <span class="ident">T::from_slice_u128</span>(<span class="ident">dst</span>);
         <span class="prelude-val">Ok</span>(())
     }
 
@@ -2361,7 +2361,7 @@
             <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">slice_to_u8_mut</span>(<span class="ident">dst</span>) };
             <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="ident">buf</span>));
         }
-        <span class="ident">T</span>::<span class="ident">from_slice_i16</span>(<span class="ident">dst</span>);
+        <span class="ident">T::from_slice_i16</span>(<span class="ident">dst</span>);
         <span class="prelude-val">Ok</span>(())
     }
 
@@ -2396,7 +2396,7 @@
             <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">slice_to_u8_mut</span>(<span class="ident">dst</span>) };
             <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="ident">buf</span>));
         }
-        <span class="ident">T</span>::<span class="ident">from_slice_i32</span>(<span class="ident">dst</span>);
+        <span class="ident">T::from_slice_i32</span>(<span class="ident">dst</span>);
         <span class="prelude-val">Ok</span>(())
     }
 
@@ -2434,7 +2434,7 @@
             <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">slice_to_u8_mut</span>(<span class="ident">dst</span>) };
             <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="ident">buf</span>));
         }
-        <span class="ident">T</span>::<span class="ident">from_slice_i64</span>(<span class="ident">dst</span>);
+        <span class="ident">T::from_slice_i64</span>(<span class="ident">dst</span>);
         <span class="prelude-val">Ok</span>(())
     }
 
@@ -2476,7 +2476,7 @@
             <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">slice_to_u8_mut</span>(<span class="ident">dst</span>) };
             <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="ident">buf</span>));
         }
-        <span class="ident">T</span>::<span class="ident">from_slice_i128</span>(<span class="ident">dst</span>);
+        <span class="ident">T::from_slice_i128</span>(<span class="ident">dst</span>);
         <span class="prelude-val">Ok</span>(())
     }
 
@@ -2520,7 +2520,7 @@
             <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">slice_to_u8_mut</span>(<span class="ident">dst</span>) };
             <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="ident">buf</span>));
         }
-        <span class="ident">T</span>::<span class="ident">from_slice_f32</span>(<span class="ident">dst</span>);
+        <span class="ident">T::from_slice_f32</span>(<span class="ident">dst</span>);
         <span class="prelude-val">Ok</span>(())
     }
 
@@ -2608,7 +2608,7 @@
             <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">slice_to_u8_mut</span>(<span class="ident">dst</span>) };
             <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">read_exact</span>(<span class="ident">buf</span>));
         }
-        <span class="ident">T</span>::<span class="ident">from_slice_f64</span>(<span class="ident">dst</span>);
+        <span class="ident">T::from_slice_f64</span>(<span class="ident">dst</span>);
         <span class="prelude-val">Ok</span>(())
     }
 
@@ -2665,7 +2665,7 @@
 
 <span class="doccomment">/// All types that implement `Read` get methods defined in `ReadBytesExt`</span>
 <span class="doccomment">/// for free.</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">io</span>::<span class="ident">Read</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">ReadBytesExt</span> <span class="kw">for</span> <span class="ident">R</span> {}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">io::Read</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">ReadBytesExt</span> <span class="kw">for</span> <span class="ident">R</span> {}
 
 <span class="doccomment">/// Extends [`Write`] with methods for writing numbers. (For `std::io`.)</span>
 <span class="doccomment">///</span>
@@ -2689,7 +2689,7 @@
 <span class="doccomment">/// [`BigEndian`]: enum.BigEndian.html</span>
 <span class="doccomment">/// [`LittleEndian`]: enum.LittleEndian.html</span>
 <span class="doccomment">/// [`Write`]: https://doc.rust-lang.org/std/io/trait.Write.html</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">WriteBytesExt</span>: <span class="ident">io</span>::<span class="ident">Write</span> {
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">WriteBytesExt</span>: <span class="ident">io::Write</span> {
     <span class="doccomment">/// Writes an unsigned 8 bit integer to the underlying writer.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that since this writes a single byte, no byte order conversions</span>
@@ -2769,7 +2769,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">write_u16</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">2</span>];
-        <span class="ident">T</span>::<span class="ident">write_u16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
+        <span class="ident">T::write_u16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)
     }
 
@@ -2796,7 +2796,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">write_i16</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">i16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">2</span>];
-        <span class="ident">T</span>::<span class="ident">write_i16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
+        <span class="ident">T::write_i16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)
     }
 
@@ -2823,7 +2823,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">write_u24</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">3</span>];
-        <span class="ident">T</span>::<span class="ident">write_u24</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
+        <span class="ident">T::write_u24</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)
     }
 
@@ -2850,7 +2850,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">write_i24</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">3</span>];
-        <span class="ident">T</span>::<span class="ident">write_i24</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
+        <span class="ident">T::write_i24</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)
     }
 
@@ -2877,7 +2877,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">write_u32</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">4</span>];
-        <span class="ident">T</span>::<span class="ident">write_u32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
+        <span class="ident">T::write_u32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)
     }
 
@@ -2904,7 +2904,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">write_i32</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">4</span>];
-        <span class="ident">T</span>::<span class="ident">write_i32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
+        <span class="ident">T::write_i32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)
     }
 
@@ -2931,7 +2931,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">write_u48</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">6</span>];
-        <span class="ident">T</span>::<span class="ident">write_u48</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
+        <span class="ident">T::write_u48</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)
     }
 
@@ -2958,7 +2958,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">write_i48</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">i64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">6</span>];
-        <span class="ident">T</span>::<span class="ident">write_i48</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
+        <span class="ident">T::write_i48</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)
     }
 
@@ -2985,7 +2985,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">write_u64</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">8</span>];
-        <span class="ident">T</span>::<span class="ident">write_u64</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
+        <span class="ident">T::write_u64</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)
     }
 
@@ -3012,7 +3012,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">write_i64</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">i64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">8</span>];
-        <span class="ident">T</span>::<span class="ident">write_i64</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
+        <span class="ident">T::write_i64</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)
     }
 
@@ -3021,7 +3021,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">write_u128</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">u128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">16</span>];
-        <span class="ident">T</span>::<span class="ident">write_u128</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
+        <span class="ident">T::write_u128</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)
     }
 
@@ -3030,7 +3030,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">write_i128</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">i128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">16</span>];
-        <span class="ident">T</span>::<span class="ident">write_i128</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
+        <span class="ident">T::write_i128</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)
     }
 
@@ -3066,7 +3066,7 @@
         <span class="ident">nbytes</span>: <span class="ident">usize</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">8</span>];
-        <span class="ident">T</span>::<span class="ident">write_uint</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>, <span class="ident">nbytes</span>);
+        <span class="ident">T::write_uint</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>, <span class="ident">nbytes</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>[<span class="number">0</span>..<span class="ident">nbytes</span>])
     }
 
@@ -3102,7 +3102,7 @@
         <span class="ident">nbytes</span>: <span class="ident">usize</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">8</span>];
-        <span class="ident">T</span>::<span class="ident">write_int</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>, <span class="ident">nbytes</span>);
+        <span class="ident">T::write_int</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>, <span class="ident">nbytes</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>[<span class="number">0</span>..<span class="ident">nbytes</span>])
     }
 
@@ -3118,7 +3118,7 @@
         <span class="ident">nbytes</span>: <span class="ident">usize</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">16</span>];
-        <span class="ident">T</span>::<span class="ident">write_uint128</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>, <span class="ident">nbytes</span>);
+        <span class="ident">T::write_uint128</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>, <span class="ident">nbytes</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>[<span class="number">0</span>..<span class="ident">nbytes</span>])
     }
 
@@ -3134,7 +3134,7 @@
         <span class="ident">nbytes</span>: <span class="ident">usize</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">16</span>];
-        <span class="ident">T</span>::<span class="ident">write_int128</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>, <span class="ident">nbytes</span>);
+        <span class="ident">T::write_int128</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>, <span class="ident">nbytes</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>[<span class="number">0</span>..<span class="ident">nbytes</span>])
     }
 
@@ -3163,7 +3163,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">write_f32</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">4</span>];
-        <span class="ident">T</span>::<span class="ident">write_f32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
+        <span class="ident">T::write_f32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)
     }
 
@@ -3192,14 +3192,14 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">write_f64</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">n</span>: <span class="ident">f64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">8</span>];
-        <span class="ident">T</span>::<span class="ident">write_f64</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
+        <span class="ident">T::write_f64</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>, <span class="ident">n</span>);
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)
     }
 }
 
 <span class="doccomment">/// All types that implement `Write` get methods defined in `WriteBytesExt`</span>
 <span class="doccomment">/// for free.</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">W</span>: <span class="ident">io</span>::<span class="ident">Write</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">WriteBytesExt</span> <span class="kw">for</span> <span class="ident">W</span> {}
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">W</span>: <span class="ident">io::Write</span> <span class="op">+</span> <span class="question-mark">?</span><span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">WriteBytesExt</span> <span class="kw">for</span> <span class="ident">W</span> {}
 
 <span class="doccomment">/// Convert a slice of T (where T is plain old data) to its mutable binary</span>
 <span class="doccomment">/// representation.</span>
@@ -3207,10 +3207,10 @@
 <span class="doccomment">/// This function is wildly unsafe because it permits arbitrary modification of</span>
 <span class="doccomment">/// the binary representation of any `Copy` type. Use with care.</span>
 <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">slice_to_u8_mut</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] {
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>;
+    <span class="kw">use</span> <span class="ident">std::mem::size_of</span>;
 
     <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="ident">slice</span>.<span class="ident">len</span>();
-    <span class="ident">slice</span>::<span class="ident">from_raw_parts_mut</span>(<span class="ident">slice</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">len</span>)
+    <span class="ident">slice::from_raw_parts_mut</span>(<span class="ident">slice</span>.<span class="ident">as_mut_ptr</span>() <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="ident">len</span>)
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="byteorder" data-search-js="../../search-index.js"></div>

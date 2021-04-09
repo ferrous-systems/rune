@@ -318,8 +318,8 @@
 <span id="315">315</span>
 <span id="316">316</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">ObjectError</span>;
-<span class="kw">use</span> <span class="ident">object</span>::<span class="ident">write</span>::{<span class="ident">Object</span>, <span class="ident">Relocation</span>, <span class="ident">StandardSection</span>, <span class="ident">Symbol</span> <span class="kw">as</span> <span class="ident">ObjSymbol</span>, <span class="ident">SymbolSection</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error::ObjectError</span>;
+<span class="kw">use</span> <span class="ident">object::write</span>::{<span class="ident">Object</span>, <span class="ident">Relocation</span>, <span class="ident">StandardSection</span>, <span class="ident">Symbol</span> <span class="kw">as</span> <span class="ident">ObjSymbol</span>, <span class="ident">SymbolSection</span>};
 <span class="kw">use</span> <span class="ident">object</span>::{<span class="ident">RelocationEncoding</span>, <span class="ident">RelocationKind</span>, <span class="ident">SymbolFlags</span>, <span class="ident">SymbolKind</span>, <span class="ident">SymbolScope</span>};
 <span class="kw">use</span> <span class="ident">wasmer_compiler</span>::{
     <span class="ident">Architecture</span>, <span class="ident">BinaryFormat</span>, <span class="ident">Compilation</span>, <span class="ident">CustomSectionProtection</span>, <span class="ident">Endianness</span>, <span class="ident">RelocationTarget</span>,
@@ -343,21 +343,21 @@
 <span class="doccomment">/// ```</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_object_for_target</span>(<span class="ident">triple</span>: <span class="kw-2">&amp;</span><span class="ident">Triple</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Object</span>, <span class="ident">ObjectError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">obj_binary_format</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">triple</span>.<span class="ident">binary_format</span> {
-        <span class="ident">BinaryFormat</span>::<span class="ident">Elf</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">object</span>::<span class="ident">BinaryFormat</span>::<span class="ident">Elf</span>,
-        <span class="ident">BinaryFormat</span>::<span class="ident">Macho</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">object</span>::<span class="ident">BinaryFormat</span>::<span class="ident">MachO</span>,
-        <span class="ident">BinaryFormat</span>::<span class="ident">Coff</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">object</span>::<span class="ident">BinaryFormat</span>::<span class="ident">Coff</span>,
+        <span class="ident">BinaryFormat::Elf</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">object::BinaryFormat::Elf</span>,
+        <span class="ident">BinaryFormat::Macho</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">object::BinaryFormat::MachO</span>,
+        <span class="ident">BinaryFormat::Coff</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">object::BinaryFormat::Coff</span>,
         <span class="ident">binary_format</span> <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ObjectError</span>::<span class="ident">UnsupportedBinaryFormat</span>(<span class="macro">format!</span>(
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ObjectError::UnsupportedBinaryFormat</span>(<span class="macro">format!</span>(
                 <span class="string">&quot;{}&quot;</span>,
                 <span class="ident">binary_format</span>
             )));
         }
     };
     <span class="kw">let</span> <span class="ident">obj_architecture</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">triple</span>.<span class="ident">architecture</span> {
-        <span class="ident">Architecture</span>::<span class="ident">X86_64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">object</span>::<span class="ident">Architecture</span>::<span class="ident">X86_64</span>,
-        <span class="ident">Architecture</span>::<span class="ident">Aarch64</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">object</span>::<span class="ident">Architecture</span>::<span class="ident">Aarch64</span>,
+        <span class="ident">Architecture::X86_64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">object::Architecture::X86_64</span>,
+        <span class="ident">Architecture::Aarch64</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">object::Architecture::Aarch64</span>,
         <span class="ident">architecture</span> <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ObjectError</span>::<span class="ident">UnsupportedArchitecture</span>(<span class="macro">format!</span>(
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ObjectError::UnsupportedArchitecture</span>(<span class="macro">format!</span>(
                 <span class="string">&quot;{}&quot;</span>,
                 <span class="ident">architecture</span>
             )));
@@ -365,13 +365,13 @@
     };
     <span class="kw">let</span> <span class="ident">obj_endianness</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">triple</span>
         .<span class="ident">endianness</span>()
-        .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">ObjectError</span>::<span class="ident">UnknownEndianness</span>)<span class="question-mark">?</span>
+        .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">ObjectError::UnknownEndianness</span>)<span class="question-mark">?</span>
     {
-        <span class="ident">Endianness</span>::<span class="ident">Little</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">object</span>::<span class="ident">Endianness</span>::<span class="ident">Little</span>,
-        <span class="ident">Endianness</span>::<span class="ident">Big</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">object</span>::<span class="ident">Endianness</span>::<span class="ident">Big</span>,
+        <span class="ident">Endianness::Little</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">object::Endianness::Little</span>,
+        <span class="ident">Endianness::Big</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">object::Endianness::Big</span>,
     };
 
-    <span class="prelude-val">Ok</span>(<span class="ident">Object</span>::<span class="ident">new</span>(
+    <span class="prelude-val">Ok</span>(<span class="ident">Object::new</span>(
         <span class="ident">obj_binary_format</span>,
         <span class="ident">obj_architecture</span>,
         <span class="ident">obj_endianness</span>,
@@ -399,13 +399,13 @@
         <span class="ident">name</span>: <span class="ident">name</span>.<span class="ident">to_vec</span>(),
         <span class="ident">value</span>: <span class="number">0</span>,
         <span class="ident">size</span>: <span class="number">0</span>,
-        <span class="ident">kind</span>: <span class="ident">SymbolKind</span>::<span class="ident">Data</span>,
-        <span class="ident">scope</span>: <span class="ident">SymbolScope</span>::<span class="ident">Dynamic</span>,
+        <span class="ident">kind</span>: <span class="ident">SymbolKind::Data</span>,
+        <span class="ident">scope</span>: <span class="ident">SymbolScope::Dynamic</span>,
         <span class="ident">weak</span>: <span class="bool-val">false</span>,
-        <span class="ident">section</span>: <span class="ident">SymbolSection</span>::<span class="ident">Undefined</span>,
-        <span class="ident">flags</span>: <span class="ident">SymbolFlags</span>::<span class="prelude-val">None</span>,
+        <span class="ident">section</span>: <span class="ident">SymbolSection::Undefined</span>,
+        <span class="ident">flags</span>: <span class="ident">SymbolFlags::None</span>,
     });
-    <span class="kw">let</span> <span class="ident">section_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">section_id</span>(<span class="ident">StandardSection</span>::<span class="ident">Data</span>);
+    <span class="kw">let</span> <span class="ident">section_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">section_id</span>(<span class="ident">StandardSection::Data</span>);
     <span class="ident">obj</span>.<span class="ident">add_symbol_data</span>(<span class="ident">symbol_id</span>, <span class="ident">section_id</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>, <span class="number">1</span>);
 
     <span class="prelude-val">Ok</span>(())
@@ -447,21 +447,21 @@
     <span class="kw">for</span> (<span class="ident">section_index</span>, <span class="ident">custom_section</span>) <span class="kw">in</span> <span class="ident">custom_sections</span>.<span class="ident">iter</span>() {
         <span class="comment">// TODO: We need to rename the sections corresponding to the DWARF information</span>
         <span class="comment">// to the proper names (like `.eh_frame`)</span>
-        <span class="kw">let</span> <span class="ident">section_name</span> <span class="op">=</span> <span class="ident">symbol_registry</span>.<span class="ident">symbol_to_name</span>(<span class="ident">Symbol</span>::<span class="ident">Section</span>(<span class="ident">section_index</span>));
+        <span class="kw">let</span> <span class="ident">section_name</span> <span class="op">=</span> <span class="ident">symbol_registry</span>.<span class="ident">symbol_to_name</span>(<span class="ident">Symbol::Section</span>(<span class="ident">section_index</span>));
         <span class="kw">let</span> (<span class="ident">section_kind</span>, <span class="ident">standard_section</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">custom_section</span>.<span class="ident">protection</span> {
-            <span class="ident">CustomSectionProtection</span>::<span class="ident">ReadExecute</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">SymbolKind</span>::<span class="ident">Text</span>, <span class="ident">StandardSection</span>::<span class="ident">Text</span>),
+            <span class="ident">CustomSectionProtection::ReadExecute</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">SymbolKind::Text</span>, <span class="ident">StandardSection::Text</span>),
             <span class="comment">// TODO: Fix this to be StandardSection::Data</span>
-            <span class="ident">CustomSectionProtection</span>::<span class="ident">Read</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">SymbolKind</span>::<span class="ident">Data</span>, <span class="ident">StandardSection</span>::<span class="ident">Text</span>),
+            <span class="ident">CustomSectionProtection::Read</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">SymbolKind::Data</span>, <span class="ident">StandardSection::Text</span>),
         };
         <span class="kw">let</span> <span class="ident">symbol_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">add_symbol</span>(<span class="ident">ObjSymbol</span> {
             <span class="ident">name</span>: <span class="ident">section_name</span>.<span class="ident">into_bytes</span>(),
             <span class="ident">value</span>: <span class="number">0</span>,
             <span class="ident">size</span>: <span class="number">0</span>,
             <span class="ident">kind</span>: <span class="ident">section_kind</span>,
-            <span class="ident">scope</span>: <span class="ident">SymbolScope</span>::<span class="ident">Dynamic</span>,
+            <span class="ident">scope</span>: <span class="ident">SymbolScope::Dynamic</span>,
             <span class="ident">weak</span>: <span class="bool-val">false</span>,
-            <span class="ident">section</span>: <span class="ident">SymbolSection</span>::<span class="ident">Undefined</span>,
-            <span class="ident">flags</span>: <span class="ident">SymbolFlags</span>::<span class="prelude-val">None</span>,
+            <span class="ident">section</span>: <span class="ident">SymbolSection::Undefined</span>,
+            <span class="ident">flags</span>: <span class="ident">SymbolFlags::None</span>,
         });
         <span class="kw">let</span> <span class="ident">section_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">section_id</span>(<span class="ident">standard_section</span>);
         <span class="ident">obj</span>.<span class="ident">add_symbol_data</span>(<span class="ident">symbol_id</span>, <span class="ident">section_id</span>, <span class="ident">custom_section</span>.<span class="ident">bytes</span>.<span class="ident">as_slice</span>(), <span class="number">1</span>);
@@ -470,64 +470,64 @@
     <span class="comment">// Add functions</span>
     <span class="kw">for</span> (<span class="ident">function_local_index</span>, <span class="ident">function</span>) <span class="kw">in</span> <span class="ident">function_bodies</span>.<span class="ident">into_iter</span>() {
         <span class="kw">let</span> <span class="ident">function_name</span> <span class="op">=</span>
-            <span class="ident">symbol_registry</span>.<span class="ident">symbol_to_name</span>(<span class="ident">Symbol</span>::<span class="ident">LocalFunction</span>(<span class="ident">function_local_index</span>));
+            <span class="ident">symbol_registry</span>.<span class="ident">symbol_to_name</span>(<span class="ident">Symbol::LocalFunction</span>(<span class="ident">function_local_index</span>));
         <span class="kw">let</span> <span class="ident">symbol_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">add_symbol</span>(<span class="ident">ObjSymbol</span> {
             <span class="ident">name</span>: <span class="ident">function_name</span>.<span class="ident">into_bytes</span>(),
             <span class="ident">value</span>: <span class="number">0</span>,
             <span class="ident">size</span>: <span class="number">0</span>,
-            <span class="ident">kind</span>: <span class="ident">SymbolKind</span>::<span class="ident">Text</span>,
-            <span class="ident">scope</span>: <span class="ident">SymbolScope</span>::<span class="ident">Dynamic</span>,
+            <span class="ident">kind</span>: <span class="ident">SymbolKind::Text</span>,
+            <span class="ident">scope</span>: <span class="ident">SymbolScope::Dynamic</span>,
             <span class="ident">weak</span>: <span class="bool-val">false</span>,
-            <span class="ident">section</span>: <span class="ident">SymbolSection</span>::<span class="ident">Undefined</span>,
-            <span class="ident">flags</span>: <span class="ident">SymbolFlags</span>::<span class="prelude-val">None</span>,
+            <span class="ident">section</span>: <span class="ident">SymbolSection::Undefined</span>,
+            <span class="ident">flags</span>: <span class="ident">SymbolFlags::None</span>,
         });
 
-        <span class="kw">let</span> <span class="ident">section_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">section_id</span>(<span class="ident">StandardSection</span>::<span class="ident">Text</span>);
+        <span class="kw">let</span> <span class="ident">section_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">section_id</span>(<span class="ident">StandardSection::Text</span>);
         <span class="ident">obj</span>.<span class="ident">add_symbol_data</span>(<span class="ident">symbol_id</span>, <span class="ident">section_id</span>, <span class="kw-2">&amp;</span><span class="ident">function</span>.<span class="ident">body</span>, <span class="number">1</span>);
     }
 
     <span class="comment">// Add function call trampolines</span>
     <span class="kw">for</span> (<span class="ident">signature_index</span>, <span class="ident">function</span>) <span class="kw">in</span> <span class="ident">function_call_trampolines</span>.<span class="ident">into_iter</span>() {
         <span class="kw">let</span> <span class="ident">function_name</span> <span class="op">=</span>
-            <span class="ident">symbol_registry</span>.<span class="ident">symbol_to_name</span>(<span class="ident">Symbol</span>::<span class="ident">FunctionCallTrampoline</span>(<span class="ident">signature_index</span>));
+            <span class="ident">symbol_registry</span>.<span class="ident">symbol_to_name</span>(<span class="ident">Symbol::FunctionCallTrampoline</span>(<span class="ident">signature_index</span>));
         <span class="kw">let</span> <span class="ident">symbol_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">add_symbol</span>(<span class="ident">ObjSymbol</span> {
             <span class="ident">name</span>: <span class="ident">function_name</span>.<span class="ident">into_bytes</span>(),
             <span class="ident">value</span>: <span class="number">0</span>,
             <span class="ident">size</span>: <span class="number">0</span>,
-            <span class="ident">kind</span>: <span class="ident">SymbolKind</span>::<span class="ident">Text</span>,
-            <span class="ident">scope</span>: <span class="ident">SymbolScope</span>::<span class="ident">Dynamic</span>,
+            <span class="ident">kind</span>: <span class="ident">SymbolKind::Text</span>,
+            <span class="ident">scope</span>: <span class="ident">SymbolScope::Dynamic</span>,
             <span class="ident">weak</span>: <span class="bool-val">false</span>,
-            <span class="ident">section</span>: <span class="ident">SymbolSection</span>::<span class="ident">Undefined</span>,
-            <span class="ident">flags</span>: <span class="ident">SymbolFlags</span>::<span class="prelude-val">None</span>,
+            <span class="ident">section</span>: <span class="ident">SymbolSection::Undefined</span>,
+            <span class="ident">flags</span>: <span class="ident">SymbolFlags::None</span>,
         });
-        <span class="kw">let</span> <span class="ident">section_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">section_id</span>(<span class="ident">StandardSection</span>::<span class="ident">Text</span>);
+        <span class="kw">let</span> <span class="ident">section_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">section_id</span>(<span class="ident">StandardSection::Text</span>);
         <span class="ident">obj</span>.<span class="ident">add_symbol_data</span>(<span class="ident">symbol_id</span>, <span class="ident">section_id</span>, <span class="kw-2">&amp;</span><span class="ident">function</span>.<span class="ident">body</span>, <span class="number">1</span>);
     }
 
     <span class="comment">// Add dynamic function trampolines</span>
     <span class="kw">for</span> (<span class="ident">func_index</span>, <span class="ident">function</span>) <span class="kw">in</span> <span class="ident">dynamic_function_trampolines</span>.<span class="ident">into_iter</span>() {
         <span class="kw">let</span> <span class="ident">function_name</span> <span class="op">=</span>
-            <span class="ident">symbol_registry</span>.<span class="ident">symbol_to_name</span>(<span class="ident">Symbol</span>::<span class="ident">DynamicFunctionTrampoline</span>(<span class="ident">func_index</span>));
+            <span class="ident">symbol_registry</span>.<span class="ident">symbol_to_name</span>(<span class="ident">Symbol::DynamicFunctionTrampoline</span>(<span class="ident">func_index</span>));
         <span class="kw">let</span> <span class="ident">symbol_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">add_symbol</span>(<span class="ident">ObjSymbol</span> {
             <span class="ident">name</span>: <span class="ident">function_name</span>.<span class="ident">into_bytes</span>(),
             <span class="ident">value</span>: <span class="number">0</span>,
             <span class="ident">size</span>: <span class="number">0</span>,
-            <span class="ident">kind</span>: <span class="ident">SymbolKind</span>::<span class="ident">Text</span>,
-            <span class="ident">scope</span>: <span class="ident">SymbolScope</span>::<span class="ident">Dynamic</span>,
+            <span class="ident">kind</span>: <span class="ident">SymbolKind::Text</span>,
+            <span class="ident">scope</span>: <span class="ident">SymbolScope::Dynamic</span>,
             <span class="ident">weak</span>: <span class="bool-val">false</span>,
-            <span class="ident">section</span>: <span class="ident">SymbolSection</span>::<span class="ident">Undefined</span>,
-            <span class="ident">flags</span>: <span class="ident">SymbolFlags</span>::<span class="prelude-val">None</span>,
+            <span class="ident">section</span>: <span class="ident">SymbolSection::Undefined</span>,
+            <span class="ident">flags</span>: <span class="ident">SymbolFlags::None</span>,
         });
-        <span class="kw">let</span> <span class="ident">section_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">section_id</span>(<span class="ident">StandardSection</span>::<span class="ident">Text</span>);
+        <span class="kw">let</span> <span class="ident">section_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">section_id</span>(<span class="ident">StandardSection::Text</span>);
         <span class="ident">obj</span>.<span class="ident">add_symbol_data</span>(<span class="ident">symbol_id</span>, <span class="ident">section_id</span>, <span class="kw-2">&amp;</span><span class="ident">function</span>.<span class="ident">body</span>, <span class="number">1</span>);
     }
 
     <span class="comment">// Add relocations (function and sections)</span>
     <span class="kw">let</span> (<span class="ident">relocation_size</span>, <span class="ident">relocation_kind</span>, <span class="ident">relocation_encoding</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">triple</span>.<span class="ident">architecture</span> {
-        <span class="ident">Architecture</span>::<span class="ident">X86_64</span> <span class="op">=</span><span class="op">&gt;</span> (
+        <span class="ident">Architecture::X86_64</span> <span class="op">=</span><span class="op">&gt;</span> (
             <span class="number">32</span>,
-            <span class="ident">RelocationKind</span>::<span class="ident">PltRelative</span>,
-            <span class="ident">RelocationEncoding</span>::<span class="ident">X86Branch</span>,
+            <span class="ident">RelocationKind::PltRelative</span>,
+            <span class="ident">RelocationEncoding::X86Branch</span>,
         ),
         <span class="comment">// Object doesn&#39;t fully support it yet</span>
         <span class="comment">// Architecture::Aarch64(_) =&gt; (</span>
@@ -536,36 +536,36 @@
         <span class="comment">//     RelocationEncoding::Generic,</span>
         <span class="comment">// ),</span>
         <span class="ident">architecture</span> <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ObjectError</span>::<span class="ident">UnsupportedArchitecture</span>(
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">ObjectError::UnsupportedArchitecture</span>(
                 <span class="ident">architecture</span>.<span class="ident">to_string</span>(),
             ))
         }
     };
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">all_relocations</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">all_relocations</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
 
     <span class="kw">for</span> (<span class="ident">function_local_index</span>, <span class="ident">relocations</span>) <span class="kw">in</span> <span class="ident">function_relocations</span>.<span class="ident">into_iter</span>() {
         <span class="kw">let</span> <span class="ident">function_name</span> <span class="op">=</span>
-            <span class="ident">symbol_registry</span>.<span class="ident">symbol_to_name</span>(<span class="ident">Symbol</span>::<span class="ident">LocalFunction</span>(<span class="ident">function_local_index</span>));
+            <span class="ident">symbol_registry</span>.<span class="ident">symbol_to_name</span>(<span class="ident">Symbol::LocalFunction</span>(<span class="ident">function_local_index</span>));
         <span class="kw">let</span> <span class="ident">symbol_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">symbol_id</span>(<span class="ident">function_name</span>.<span class="ident">as_bytes</span>()).<span class="ident">unwrap</span>();
         <span class="ident">all_relocations</span>.<span class="ident">push</span>((<span class="ident">symbol_id</span>, <span class="ident">relocations</span>))
     }
 
     <span class="kw">for</span> (<span class="ident">section_index</span>, <span class="ident">relocations</span>) <span class="kw">in</span> <span class="ident">custom_section_relocations</span>.<span class="ident">into_iter</span>() {
-        <span class="kw">let</span> <span class="ident">section_name</span> <span class="op">=</span> <span class="ident">symbol_registry</span>.<span class="ident">symbol_to_name</span>(<span class="ident">Symbol</span>::<span class="ident">Section</span>(<span class="ident">section_index</span>));
+        <span class="kw">let</span> <span class="ident">section_name</span> <span class="op">=</span> <span class="ident">symbol_registry</span>.<span class="ident">symbol_to_name</span>(<span class="ident">Symbol::Section</span>(<span class="ident">section_index</span>));
         <span class="kw">let</span> <span class="ident">symbol_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">symbol_id</span>(<span class="ident">section_name</span>.<span class="ident">as_bytes</span>()).<span class="ident">unwrap</span>();
         <span class="ident">all_relocations</span>.<span class="ident">push</span>((<span class="ident">symbol_id</span>, <span class="ident">relocations</span>))
     }
 
     <span class="kw">for</span> (<span class="ident">symbol_id</span>, <span class="ident">relocations</span>) <span class="kw">in</span> <span class="ident">all_relocations</span>.<span class="ident">into_iter</span>() {
         <span class="kw">let</span> (<span class="ident">_symbol_id</span>, <span class="ident">section_offset</span>) <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">symbol_section_and_offset</span>(<span class="ident">symbol_id</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">section_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">section_id</span>(<span class="ident">StandardSection</span>::<span class="ident">Text</span>);
+        <span class="kw">let</span> <span class="ident">section_id</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">section_id</span>(<span class="ident">StandardSection::Text</span>);
 
         <span class="kw">for</span> <span class="ident">r</span> <span class="kw">in</span> <span class="ident">relocations</span> {
             <span class="kw">let</span> <span class="ident">relocation_address</span> <span class="op">=</span> <span class="ident">section_offset</span> <span class="op">+</span> <span class="ident">r</span>.<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">u64</span>;
 
             <span class="kw">match</span> <span class="ident">r</span>.<span class="ident">reloc_target</span> {
-                <span class="ident">RelocationTarget</span>::<span class="ident">LocalFunc</span>(<span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="kw">let</span> <span class="ident">target_name</span> <span class="op">=</span> <span class="ident">symbol_registry</span>.<span class="ident">symbol_to_name</span>(<span class="ident">Symbol</span>::<span class="ident">LocalFunction</span>(<span class="ident">index</span>));
+                <span class="ident">RelocationTarget::LocalFunc</span>(<span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="kw">let</span> <span class="ident">target_name</span> <span class="op">=</span> <span class="ident">symbol_registry</span>.<span class="ident">symbol_to_name</span>(<span class="ident">Symbol::LocalFunction</span>(<span class="ident">index</span>));
                     <span class="kw">let</span> <span class="ident">target_symbol</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">symbol_id</span>(<span class="ident">target_name</span>.<span class="ident">as_bytes</span>()).<span class="ident">unwrap</span>();
                     <span class="ident">obj</span>.<span class="ident">add_relocation</span>(
                         <span class="ident">section_id</span>,
@@ -578,9 +578,9 @@
                             <span class="ident">addend</span>: <span class="ident">r</span>.<span class="ident">addend</span>,
                         },
                     )
-                    .<span class="ident">map_err</span>(<span class="ident">ObjectError</span>::<span class="ident">Write</span>)<span class="question-mark">?</span>;
+                    .<span class="ident">map_err</span>(<span class="ident">ObjectError::Write</span>)<span class="question-mark">?</span>;
                 }
-                <span class="ident">RelocationTarget</span>::<span class="ident">LibCall</span>(<span class="ident">libcall</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">RelocationTarget::LibCall</span>(<span class="ident">libcall</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">libcall_fn_name</span> <span class="op">=</span> <span class="ident">libcall</span>.<span class="ident">to_function_name</span>().<span class="ident">as_bytes</span>();
                     <span class="comment">// We add the symols lazily as we see them</span>
                     <span class="kw">let</span> <span class="ident">target_symbol</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">symbol_id</span>(<span class="ident">libcall_fn_name</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> {
@@ -588,11 +588,11 @@
                             <span class="ident">name</span>: <span class="ident">libcall_fn_name</span>.<span class="ident">to_vec</span>(),
                             <span class="ident">value</span>: <span class="number">0</span>,
                             <span class="ident">size</span>: <span class="number">0</span>,
-                            <span class="ident">kind</span>: <span class="ident">SymbolKind</span>::<span class="ident">Unknown</span>,
-                            <span class="ident">scope</span>: <span class="ident">SymbolScope</span>::<span class="ident">Unknown</span>,
+                            <span class="ident">kind</span>: <span class="ident">SymbolKind::Unknown</span>,
+                            <span class="ident">scope</span>: <span class="ident">SymbolScope::Unknown</span>,
                             <span class="ident">weak</span>: <span class="bool-val">false</span>,
-                            <span class="ident">section</span>: <span class="ident">SymbolSection</span>::<span class="ident">Undefined</span>,
-                            <span class="ident">flags</span>: <span class="ident">SymbolFlags</span>::<span class="prelude-val">None</span>,
+                            <span class="ident">section</span>: <span class="ident">SymbolSection::Undefined</span>,
+                            <span class="ident">flags</span>: <span class="ident">SymbolFlags::None</span>,
                         })
                     });
                     <span class="ident">obj</span>.<span class="ident">add_relocation</span>(
@@ -606,11 +606,11 @@
                             <span class="ident">addend</span>: <span class="ident">r</span>.<span class="ident">addend</span>,
                         },
                     )
-                    .<span class="ident">map_err</span>(<span class="ident">ObjectError</span>::<span class="ident">Write</span>)<span class="question-mark">?</span>;
+                    .<span class="ident">map_err</span>(<span class="ident">ObjectError::Write</span>)<span class="question-mark">?</span>;
                 }
-                <span class="ident">RelocationTarget</span>::<span class="ident">CustomSection</span>(<span class="ident">section_index</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">RelocationTarget::CustomSection</span>(<span class="ident">section_index</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">target_name</span> <span class="op">=</span>
-                        <span class="ident">symbol_registry</span>.<span class="ident">symbol_to_name</span>(<span class="ident">Symbol</span>::<span class="ident">Section</span>(<span class="ident">section_index</span>));
+                        <span class="ident">symbol_registry</span>.<span class="ident">symbol_to_name</span>(<span class="ident">Symbol::Section</span>(<span class="ident">section_index</span>));
                     <span class="kw">let</span> <span class="ident">target_symbol</span> <span class="op">=</span> <span class="ident">obj</span>.<span class="ident">symbol_id</span>(<span class="ident">target_name</span>.<span class="ident">as_bytes</span>()).<span class="ident">unwrap</span>();
                     <span class="ident">obj</span>.<span class="ident">add_relocation</span>(
                         <span class="ident">section_id</span>,
@@ -623,9 +623,9 @@
                             <span class="ident">addend</span>: <span class="ident">r</span>.<span class="ident">addend</span>,
                         },
                     )
-                    .<span class="ident">map_err</span>(<span class="ident">ObjectError</span>::<span class="ident">Write</span>)<span class="question-mark">?</span>;
+                    .<span class="ident">map_err</span>(<span class="ident">ObjectError::Write</span>)<span class="question-mark">?</span>;
                 }
-                <span class="ident">RelocationTarget</span>::<span class="ident">JumpTable</span>(<span class="ident">_func_index</span>, <span class="ident">_jt</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">RelocationTarget::JumpTable</span>(<span class="ident">_func_index</span>, <span class="ident">_jt</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="comment">// do nothing</span>
                 }
             };

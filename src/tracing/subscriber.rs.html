@@ -71,11 +71,11 @@
 <span id="68">68</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Collects and records trace data.</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tracing_core</span>::<span class="ident">subscriber</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tracing_core::subscriber</span>::<span class="kw-2">*</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">docsrs</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)))]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tracing_core</span>::<span class="ident">dispatcher</span>::<span class="ident">DefaultGuard</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tracing_core::dispatcher::DefaultGuard</span>;
 
 <span class="doccomment">/// Sets this subscriber as the default for the duration of a closure.</span>
 <span class="doccomment">///</span>
@@ -93,7 +93,7 @@
 <span class="kw">where</span>
     <span class="ident">S</span>: <span class="ident">Subscriber</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-    <span class="kw">crate</span>::<span class="ident">dispatcher</span>::<span class="ident">with_default</span>(<span class="kw-2">&amp;</span><span class="kw">crate</span>::<span class="ident">Dispatch</span>::<span class="ident">new</span>(<span class="ident">subscriber</span>), <span class="ident">f</span>)
+    <span class="kw">crate</span><span class="ident">::dispatcher::with_default</span>(<span class="kw-2">&amp;</span><span class="kw">crate</span><span class="ident">::Dispatch::new</span>(<span class="ident">subscriber</span>), <span class="ident">f</span>)
 }
 
 <span class="doccomment">/// Sets this subscriber as the global default for the duration of the entire program.</span>
@@ -112,7 +112,7 @@
 <span class="kw">where</span>
     <span class="ident">S</span>: <span class="ident">Subscriber</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-    <span class="kw">crate</span>::<span class="ident">dispatcher</span>::<span class="ident">set_global_default</span>(<span class="kw">crate</span>::<span class="ident">Dispatch</span>::<span class="ident">new</span>(<span class="ident">subscriber</span>))
+    <span class="kw">crate</span><span class="ident">::dispatcher::set_global_default</span>(<span class="kw">crate</span><span class="ident">::Dispatch::new</span>(<span class="ident">subscriber</span>))
 }
 
 <span class="doccomment">/// Sets the subscriber as the default for the duration of the lifetime of the</span>
@@ -134,10 +134,10 @@
 <span class="kw">where</span>
     <span class="ident">S</span>: <span class="ident">Subscriber</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
 {
-    <span class="kw">crate</span>::<span class="ident">dispatcher</span>::<span class="ident">set_default</span>(<span class="kw-2">&amp;</span><span class="kw">crate</span>::<span class="ident">Dispatch</span>::<span class="ident">new</span>(<span class="ident">subscriber</span>))
+    <span class="kw">crate</span><span class="ident">::dispatcher::set_default</span>(<span class="kw-2">&amp;</span><span class="kw">crate</span><span class="ident">::Dispatch::new</span>(<span class="ident">subscriber</span>))
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tracing_core</span>::<span class="ident">dispatcher</span>::<span class="ident">SetGlobalDefaultError</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tracing_core::dispatcher::SetGlobalDefaultError</span>;
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="tracing" data-search-js="../../search-index.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>

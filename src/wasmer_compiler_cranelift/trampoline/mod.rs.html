@@ -66,16 +66,16 @@
 <span class="kw">mod</span> <span class="ident">dynamic_function</span>;
 <span class="kw">mod</span> <span class="ident">function_call</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">dynamic_function</span>::<span class="ident">make_trampoline_dynamic_function</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">function_call</span>::<span class="ident">make_trampoline_function_call</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::dynamic_function::make_trampoline_dynamic_function</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::function_call::make_trampoline_function_call</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cranelift_codegen</span>::<span class="ident">print_errors</span>::<span class="ident">pretty_error</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cranelift_codegen</span>::<span class="ident">Context</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cranelift_codegen::print_errors::pretty_error</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cranelift_codegen::Context</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cranelift_frontend</span>::{<span class="ident">FunctionBuilder</span>, <span class="ident">FunctionBuilderContext</span>};
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">binemit</span> {
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cranelift_codegen</span>::<span class="ident">binemit</span>::<span class="ident">NullTrapSink</span>;
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cranelift_codegen</span>::<span class="ident">binemit</span>::{<span class="ident">CodeOffset</span>, <span class="ident">NullStackMapSink</span>, <span class="ident">TrapSink</span>};
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cranelift_codegen::binemit::NullTrapSink</span>;
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cranelift_codegen::binemit</span>::{<span class="ident">CodeOffset</span>, <span class="ident">NullStackMapSink</span>, <span class="ident">TrapSink</span>};
 
     <span class="kw">use</span> <span class="ident">cranelift_codegen</span>::{<span class="ident">binemit</span>, <span class="ident">ir</span>};
 
@@ -83,38 +83,38 @@
     <span class="doccomment">/// this `RelocSink` just asserts that it doesn&#39;t recieve any.</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TrampolineRelocSink</span> {}
 
-    <span class="kw">impl</span> <span class="ident">binemit</span>::<span class="ident">RelocSink</span> <span class="kw">for</span> <span class="ident">TrampolineRelocSink</span> {
+    <span class="kw">impl</span> <span class="ident">binemit::RelocSink</span> <span class="kw">for</span> <span class="ident">TrampolineRelocSink</span> {
         <span class="kw">fn</span> <span class="ident">reloc_block</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">_offset</span>: <span class="ident">binemit</span>::<span class="ident">CodeOffset</span>,
-            <span class="ident">_reloc</span>: <span class="ident">binemit</span>::<span class="ident">Reloc</span>,
-            <span class="ident">_block_offset</span>: <span class="ident">binemit</span>::<span class="ident">CodeOffset</span>,
+            <span class="ident">_offset</span>: <span class="ident">binemit::CodeOffset</span>,
+            <span class="ident">_reloc</span>: <span class="ident">binemit::Reloc</span>,
+            <span class="ident">_block_offset</span>: <span class="ident">binemit::CodeOffset</span>,
         ) {
             <span class="macro">panic!</span>(<span class="string">&quot;trampoline compilation should not produce block relocs&quot;</span>);
         }
         <span class="kw">fn</span> <span class="ident">reloc_external</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">_offset</span>: <span class="ident">binemit</span>::<span class="ident">CodeOffset</span>,
-            <span class="ident">_source_loc</span>: <span class="ident">ir</span>::<span class="ident">SourceLoc</span>,
-            <span class="ident">_reloc</span>: <span class="ident">binemit</span>::<span class="ident">Reloc</span>,
-            <span class="ident">_name</span>: <span class="kw-2">&amp;</span><span class="ident">ir</span>::<span class="ident">ExternalName</span>,
-            <span class="ident">_addend</span>: <span class="ident">binemit</span>::<span class="ident">Addend</span>,
+            <span class="ident">_offset</span>: <span class="ident">binemit::CodeOffset</span>,
+            <span class="ident">_source_loc</span>: <span class="ident">ir::SourceLoc</span>,
+            <span class="ident">_reloc</span>: <span class="ident">binemit::Reloc</span>,
+            <span class="ident">_name</span>: <span class="kw-2">&amp;</span><span class="ident">ir::ExternalName</span>,
+            <span class="ident">_addend</span>: <span class="ident">binemit::Addend</span>,
         ) {
             <span class="macro">panic!</span>(<span class="string">&quot;trampoline compilation should not produce external symbol relocs&quot;</span>);
         }
         <span class="kw">fn</span> <span class="ident">reloc_constant</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">_code_offset</span>: <span class="ident">binemit</span>::<span class="ident">CodeOffset</span>,
-            <span class="ident">_reloc</span>: <span class="ident">binemit</span>::<span class="ident">Reloc</span>,
-            <span class="ident">_constant_offset</span>: <span class="ident">ir</span>::<span class="ident">ConstantOffset</span>,
+            <span class="ident">_code_offset</span>: <span class="ident">binemit::CodeOffset</span>,
+            <span class="ident">_reloc</span>: <span class="ident">binemit::Reloc</span>,
+            <span class="ident">_constant_offset</span>: <span class="ident">ir::ConstantOffset</span>,
         ) {
             <span class="macro">panic!</span>(<span class="string">&quot;trampoline compilation should not produce constant relocs&quot;</span>);
         }
         <span class="kw">fn</span> <span class="ident">reloc_jt</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">_offset</span>: <span class="ident">binemit</span>::<span class="ident">CodeOffset</span>,
-            <span class="ident">_reloc</span>: <span class="ident">binemit</span>::<span class="ident">Reloc</span>,
-            <span class="ident">_jt</span>: <span class="ident">ir</span>::<span class="ident">JumpTable</span>,
+            <span class="ident">_offset</span>: <span class="ident">binemit::CodeOffset</span>,
+            <span class="ident">_reloc</span>: <span class="ident">binemit::Reloc</span>,
+            <span class="ident">_jt</span>: <span class="ident">ir::JumpTable</span>,
         ) {
             <span class="macro">panic!</span>(<span class="string">&quot;trampoline compilation should not produce jump table relocs&quot;</span>);
         }

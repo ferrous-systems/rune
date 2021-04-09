@@ -126,8 +126,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see &lt;http://www.gnu.org/licenses/&gt;.
  */</span>
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">f32</span>;
+<span class="kw">use</span> <span class="ident">alloc::vec</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">core::f32</span>;
 
 <span class="doccomment">/// Colours required for a PNG file, includes the alpha channel.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
@@ -203,7 +203,7 @@
   }
 
   <span class="kw">fn</span> <span class="ident">interpolate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">start</span>: <span class="ident">u8</span>, <span class="ident">finish</span>: <span class="ident">u8</span>, <span class="ident">ratio</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
-    <span class="ident">libm</span>::<span class="ident">roundf</span>((<span class="ident">f32</span>::<span class="ident">from</span>(<span class="ident">finish</span>) <span class="op">-</span> <span class="ident">f32</span>::<span class="ident">from</span>(<span class="ident">start</span>)) <span class="op">*</span> <span class="ident">ratio</span> <span class="op">+</span> <span class="ident">f32</span>::<span class="ident">from</span>(<span class="ident">start</span>)) <span class="kw">as</span> <span class="ident">u8</span>
+    <span class="ident">libm::roundf</span>((<span class="ident">f32::from</span>(<span class="ident">finish</span>) <span class="op">-</span> <span class="ident">f32::from</span>(<span class="ident">start</span>)) <span class="op">*</span> <span class="ident">ratio</span> <span class="op">+</span> <span class="ident">f32::from</span>(<span class="ident">start</span>)) <span class="kw">as</span> <span class="ident">u8</span>
   }
 
   <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_max</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">max</span>: <span class="ident">f32</span>) {

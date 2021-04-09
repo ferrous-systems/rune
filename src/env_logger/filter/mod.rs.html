@@ -924,9 +924,9 @@
 <span class="doccomment">//! [`Filter::matches`]: struct.Filter.html#method.matches</span>
 
 <span class="kw">use</span> <span class="ident">log</span>::{<span class="ident">Level</span>, <span class="ident">LevelFilter</span>, <span class="ident">Metadata</span>, <span class="ident">Record</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">env</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>;
+<span class="kw">use</span> <span class="ident">std::env</span>;
+<span class="kw">use</span> <span class="ident">std::fmt</span>;
+<span class="kw">use</span> <span class="ident">std::mem</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;regex&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">path</span> <span class="op">=</span> <span class="string">&quot;regex.rs&quot;</span>]</span>
@@ -945,7 +945,7 @@
 <span class="doccomment">/// [`Builder`]: struct.Builder.html</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Filter</span> {
     <span class="ident">directives</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Directive</span><span class="op">&gt;</span>,
-    <span class="ident">filter</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">inner</span>::<span class="ident">Filter</span><span class="op">&gt;</span>,
+    <span class="ident">filter</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">inner::Filter</span><span class="op">&gt;</span>,
 }
 
 <span class="doccomment">/// A builder for a log filter.</span>
@@ -973,7 +973,7 @@
 <span class="doccomment">/// [`Filter`]: struct.Filter.html</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Builder</span> {
     <span class="ident">directives</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Directive</span><span class="op">&gt;</span>,
-    <span class="ident">filter</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">inner</span>::<span class="ident">Filter</span><span class="op">&gt;</span>,
+    <span class="ident">filter</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">inner::Filter</span><span class="op">&gt;</span>,
     <span class="ident">built</span>: <span class="ident">bool</span>,
 }
 
@@ -1005,7 +1005,7 @@
             .<span class="ident">iter</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> <span class="ident">d</span>.<span class="ident">level</span>)
             .<span class="ident">max</span>()
-            .<span class="ident">unwrap_or</span>(<span class="ident">LevelFilter</span>::<span class="ident">Off</span>)
+            .<span class="ident">unwrap_or</span>(<span class="ident">LevelFilter::Off</span>)
     }
 
     <span class="doccomment">/// Checks if this record matches the configured filter.</span>
@@ -1036,7 +1036,7 @@
     <span class="doccomment">/// Initializes the filter builder with defaults.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Builder</span> {
         <span class="ident">Builder</span> {
-            <span class="ident">directives</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
+            <span class="ident">directives</span>: <span class="ident">Vec::new</span>(),
             <span class="ident">filter</span>: <span class="prelude-val">None</span>,
             <span class="ident">built</span>: <span class="bool-val">false</span>,
         }
@@ -1044,9 +1044,9 @@
 
     <span class="doccomment">/// Initializes the filter builder from an environment.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_env</span>(<span class="ident">env</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Builder</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder::new</span>();
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">s</span>) <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="ident">env</span>) {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">s</span>) <span class="op">=</span> <span class="ident">env::var</span>(<span class="ident">env</span>) {
             <span class="ident">builder</span>.<span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="ident">s</span>);
         }
 
@@ -1100,7 +1100,7 @@
             <span class="comment">// Adds the default filter if none exist</span>
             <span class="self">self</span>.<span class="ident">directives</span>.<span class="ident">push</span>(<span class="ident">Directive</span> {
                 <span class="ident">name</span>: <span class="prelude-val">None</span>,
-                <span class="ident">level</span>: <span class="ident">LevelFilter</span>::<span class="ident">Error</span>,
+                <span class="ident">level</span>: <span class="ident">LevelFilter::Error</span>,
             });
         } <span class="kw">else</span> {
             <span class="comment">// Sort the directives by length of their name, this allows a</span>
@@ -1113,20 +1113,20 @@
         }
 
         <span class="ident">Filter</span> {
-            <span class="ident">directives</span>: <span class="ident">mem</span>::<span class="ident">replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">directives</span>, <span class="ident">Vec</span>::<span class="ident">new</span>()),
-            <span class="ident">filter</span>: <span class="ident">mem</span>::<span class="ident">replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">filter</span>, <span class="prelude-val">None</span>),
+            <span class="ident">directives</span>: <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">directives</span>, <span class="ident">Vec::new</span>()),
+            <span class="ident">filter</span>: <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">filter</span>, <span class="prelude-val">None</span>),
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Builder</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Builder</span>::<span class="ident">new</span>()
+        <span class="ident">Builder::new</span>()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Filter</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Filter</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Filter&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;filter&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">filter</span>)
             .<span class="ident">field</span>(<span class="string">&quot;directives&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">directives</span>)
@@ -1134,8 +1134,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Builder</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Builder</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">built</span> {
             <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Filter&quot;</span>).<span class="ident">field</span>(<span class="string">&quot;built&quot;</span>, <span class="kw-2">&amp;</span><span class="bool-val">true</span>).<span class="ident">finish</span>()
         } <span class="kw">else</span> {
@@ -1149,8 +1149,8 @@
 
 <span class="doccomment">/// Parse a logging specification string (e.g: &quot;crate1,crate2::mod3,crate3::x=error/foo&quot;)</span>
 <span class="doccomment">/// and return a vector with log directives.</span>
-<span class="kw">fn</span> <span class="ident">parse_spec</span>(<span class="ident">spec</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Directive</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">inner</span>::<span class="ident">Filter</span><span class="op">&gt;</span>) {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dirs</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+<span class="kw">fn</span> <span class="ident">parse_spec</span>(<span class="ident">spec</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Directive</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">inner::Filter</span><span class="op">&gt;</span>) {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dirs</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parts</span> <span class="op">=</span> <span class="ident">spec</span>.<span class="ident">split</span>(<span class="string">&#39;/&#39;</span>);
     <span class="kw">let</span> <span class="ident">mods</span> <span class="op">=</span> <span class="ident">parts</span>.<span class="ident">next</span>();
@@ -1176,10 +1176,10 @@
                         <span class="comment">// treat that as a global fallback</span>
                         <span class="kw">match</span> <span class="ident">part0</span>.<span class="ident">parse</span>() {
                             <span class="prelude-val">Ok</span>(<span class="ident">num</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">num</span>, <span class="prelude-val">None</span>),
-                            <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">LevelFilter</span>::<span class="ident">max</span>(), <span class="prelude-val">Some</span>(<span class="ident">part0</span>)),
+                            <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">LevelFilter::max</span>(), <span class="prelude-val">Some</span>(<span class="ident">part0</span>)),
                         }
                     }
-                    (<span class="prelude-val">Some</span>(<span class="ident">part0</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;&quot;</span>), <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">LevelFilter</span>::<span class="ident">max</span>(), <span class="prelude-val">Some</span>(<span class="ident">part0</span>)),
+                    (<span class="prelude-val">Some</span>(<span class="ident">part0</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;&quot;</span>), <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">LevelFilter::max</span>(), <span class="prelude-val">Some</span>(<span class="ident">part0</span>)),
                     (<span class="prelude-val">Some</span>(<span class="ident">part0</span>), <span class="prelude-val">Some</span>(<span class="ident">part1</span>), <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">part1</span>.<span class="ident">parse</span>() {
                         <span class="prelude-val">Ok</span>(<span class="ident">num</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">num</span>, <span class="prelude-val">Some</span>(<span class="ident">part0</span>)),
                         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
@@ -1207,7 +1207,7 @@
         }
     }
 
-    <span class="kw">let</span> <span class="ident">filter</span> <span class="op">=</span> <span class="ident">filter</span>.<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">filter</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">inner</span>::<span class="ident">Filter</span>::<span class="ident">new</span>(<span class="ident">filter</span>) {
+    <span class="kw">let</span> <span class="ident">filter</span> <span class="op">=</span> <span class="ident">filter</span>.<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">filter</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">inner::Filter::new</span>(<span class="ident">filter</span>) {
         <span class="prelude-val">Ok</span>(<span class="ident">re</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">re</span>),
         <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="macro">eprintln!</span>(<span class="string">&quot;warning: invalid regex filter - {}&quot;</span>, <span class="ident">e</span>);
@@ -1237,27 +1237,27 @@
     <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">enabled</span>, <span class="ident">parse_spec</span>, <span class="ident">Builder</span>, <span class="ident">Directive</span>, <span class="ident">Filter</span>};
 
     <span class="kw">fn</span> <span class="ident">make_logger_filter</span>(<span class="ident">dirs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Directive</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Filter</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">build</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">build</span>();
         <span class="ident">logger</span>.<span class="ident">directives</span> <span class="op">=</span> <span class="ident">dirs</span>;
         <span class="ident">logger</span>
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">filter_info</span>() {
-        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">filter</span>(<span class="prelude-val">None</span>, <span class="ident">LevelFilter</span>::<span class="ident">Info</span>).<span class="ident">build</span>();
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;crate1&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;crate1&quot;</span>));
+        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">filter</span>(<span class="prelude-val">None</span>, <span class="ident">LevelFilter::Info</span>).<span class="ident">build</span>();
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;crate1&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;crate1&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">filter_beginning_longest_match</span>() {
-        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>()
-            .<span class="ident">filter</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;crate2&quot;</span>), <span class="ident">LevelFilter</span>::<span class="ident">Info</span>)
-            .<span class="ident">filter</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;crate2::mod&quot;</span>), <span class="ident">LevelFilter</span>::<span class="ident">Debug</span>)
-            .<span class="ident">filter</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;crate1::mod1&quot;</span>), <span class="ident">LevelFilter</span>::<span class="ident">Warn</span>)
+        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>()
+            .<span class="ident">filter</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;crate2&quot;</span>), <span class="ident">LevelFilter::Info</span>)
+            .<span class="ident">filter</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;crate2::mod&quot;</span>), <span class="ident">LevelFilter::Debug</span>)
+            .<span class="ident">filter</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;crate1::mod1&quot;</span>), <span class="ident">LevelFilter::Warn</span>)
             .<span class="ident">build</span>();
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;crate2::mod1&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;crate2&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;crate2::mod1&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;crate2&quot;</span>));
     }
 
     <span class="comment">// Some of our tests are only correct or complete when they cover the full</span>
@@ -1274,137 +1274,137 @@
     <span class="comment">//         |               ^^^^^^^^^^^^^^ pattern `NewVariant` not covered</span>
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">ensure_tests_cover_level_universe</span>() {
-        <span class="kw">let</span> <span class="ident">level_universe</span>: <span class="ident">Level</span> <span class="op">=</span> <span class="ident">Level</span>::<span class="ident">Trace</span>; <span class="comment">// use of trace variant is arbitrary</span>
+        <span class="kw">let</span> <span class="ident">level_universe</span>: <span class="ident">Level</span> <span class="op">=</span> <span class="ident">Level::Trace</span>; <span class="comment">// use of trace variant is arbitrary</span>
         <span class="kw">match</span> <span class="ident">level_universe</span> {
-            <span class="ident">Level</span>::<span class="ident">Error</span> <span class="op">|</span> <span class="ident">Level</span>::<span class="ident">Warn</span> <span class="op">|</span> <span class="ident">Level</span>::<span class="ident">Info</span> <span class="op">|</span> <span class="ident">Level</span>::<span class="ident">Debug</span> <span class="op">|</span> <span class="ident">Level</span>::<span class="ident">Trace</span> <span class="op">=</span><span class="op">&gt;</span> (),
+            <span class="ident">Level::Error</span> <span class="op">|</span> <span class="ident">Level::Warn</span> <span class="op">|</span> <span class="ident">Level::Info</span> <span class="op">|</span> <span class="ident">Level::Debug</span> <span class="op">|</span> <span class="ident">Level::Trace</span> <span class="op">=</span><span class="op">&gt;</span> (),
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">parse_default</span>() {
-        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;info,crate1::mod1=warn&quot;</span>).<span class="ident">build</span>();
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;crate1::mod1&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;crate2::mod2&quot;</span>));
+        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;info,crate1::mod1=warn&quot;</span>).<span class="ident">build</span>();
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;crate1::mod1&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;crate2::mod2&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">parse_default_bare_level_off_lc</span>() {
-        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;off&quot;</span>).<span class="ident">build</span>();
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Trace</span>, <span class="string">&quot;&quot;</span>));
+        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;off&quot;</span>).<span class="ident">build</span>();
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Trace</span>, <span class="string">&quot;&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">parse_default_bare_level_off_uc</span>() {
-        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;OFF&quot;</span>).<span class="ident">build</span>();
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Trace</span>, <span class="string">&quot;&quot;</span>));
+        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;OFF&quot;</span>).<span class="ident">build</span>();
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Trace</span>, <span class="string">&quot;&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">parse_default_bare_level_error_lc</span>() {
-        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;error&quot;</span>).<span class="ident">build</span>();
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Trace</span>, <span class="string">&quot;&quot;</span>));
+        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;error&quot;</span>).<span class="ident">build</span>();
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Trace</span>, <span class="string">&quot;&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">parse_default_bare_level_error_uc</span>() {
-        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;ERROR&quot;</span>).<span class="ident">build</span>();
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Trace</span>, <span class="string">&quot;&quot;</span>));
+        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;ERROR&quot;</span>).<span class="ident">build</span>();
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Trace</span>, <span class="string">&quot;&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">parse_default_bare_level_warn_lc</span>() {
-        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;warn&quot;</span>).<span class="ident">build</span>();
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Trace</span>, <span class="string">&quot;&quot;</span>));
+        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;warn&quot;</span>).<span class="ident">build</span>();
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Trace</span>, <span class="string">&quot;&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">parse_default_bare_level_warn_uc</span>() {
-        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;WARN&quot;</span>).<span class="ident">build</span>();
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Trace</span>, <span class="string">&quot;&quot;</span>));
+        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;WARN&quot;</span>).<span class="ident">build</span>();
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Trace</span>, <span class="string">&quot;&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">parse_default_bare_level_info_lc</span>() {
-        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;info&quot;</span>).<span class="ident">build</span>();
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Trace</span>, <span class="string">&quot;&quot;</span>));
+        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;info&quot;</span>).<span class="ident">build</span>();
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Trace</span>, <span class="string">&quot;&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">parse_default_bare_level_info_uc</span>() {
-        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;INFO&quot;</span>).<span class="ident">build</span>();
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Trace</span>, <span class="string">&quot;&quot;</span>));
+        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;INFO&quot;</span>).<span class="ident">build</span>();
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Trace</span>, <span class="string">&quot;&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">parse_default_bare_level_debug_lc</span>() {
-        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;debug&quot;</span>).<span class="ident">build</span>();
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Trace</span>, <span class="string">&quot;&quot;</span>));
+        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;debug&quot;</span>).<span class="ident">build</span>();
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Trace</span>, <span class="string">&quot;&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">parse_default_bare_level_debug_uc</span>() {
-        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;DEBUG&quot;</span>).<span class="ident">build</span>();
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Trace</span>, <span class="string">&quot;&quot;</span>));
+        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;DEBUG&quot;</span>).<span class="ident">build</span>();
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Trace</span>, <span class="string">&quot;&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">parse_default_bare_level_trace_lc</span>() {
-        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;trace&quot;</span>).<span class="ident">build</span>();
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Trace</span>, <span class="string">&quot;&quot;</span>));
+        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;trace&quot;</span>).<span class="ident">build</span>();
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Trace</span>, <span class="string">&quot;&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">parse_default_bare_level_trace_uc</span>() {
-        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;TRACE&quot;</span>).<span class="ident">build</span>();
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Trace</span>, <span class="string">&quot;&quot;</span>));
+        <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;TRACE&quot;</span>).<span class="ident">build</span>();
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Trace</span>, <span class="string">&quot;&quot;</span>));
     }
 
     <span class="comment">// In practice, the desired log level is typically specified by a token</span>
@@ -1414,36 +1414,36 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">parse_default_bare_level_debug_mixed</span>() {
         {
-            <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;Debug&quot;</span>).<span class="ident">build</span>();
-            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;&quot;</span>));
-            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;&quot;</span>));
-            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;&quot;</span>));
-            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;&quot;</span>));
-            <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Trace</span>, <span class="string">&quot;&quot;</span>));
+            <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;Debug&quot;</span>).<span class="ident">build</span>();
+            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;&quot;</span>));
+            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;&quot;</span>));
+            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;&quot;</span>));
+            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;&quot;</span>));
+            <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Trace</span>, <span class="string">&quot;&quot;</span>));
         }
         {
-            <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;debuG&quot;</span>).<span class="ident">build</span>();
-            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;&quot;</span>));
-            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;&quot;</span>));
-            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;&quot;</span>));
-            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;&quot;</span>));
-            <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Trace</span>, <span class="string">&quot;&quot;</span>));
+            <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;debuG&quot;</span>).<span class="ident">build</span>();
+            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;&quot;</span>));
+            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;&quot;</span>));
+            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;&quot;</span>));
+            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;&quot;</span>));
+            <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Trace</span>, <span class="string">&quot;&quot;</span>));
         }
         {
-            <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;deBug&quot;</span>).<span class="ident">build</span>();
-            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;&quot;</span>));
-            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;&quot;</span>));
-            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;&quot;</span>));
-            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;&quot;</span>));
-            <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Trace</span>, <span class="string">&quot;&quot;</span>));
+            <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;deBug&quot;</span>).<span class="ident">build</span>();
+            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;&quot;</span>));
+            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;&quot;</span>));
+            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;&quot;</span>));
+            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;&quot;</span>));
+            <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Trace</span>, <span class="string">&quot;&quot;</span>));
         }
         {
-            <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>().<span class="ident">parse</span>(<span class="string">&quot;DeBuG&quot;</span>).<span class="ident">build</span>(); <span class="comment">// LaTeX flavor!</span>
-            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;&quot;</span>));
-            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;&quot;</span>));
-            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;&quot;</span>));
-            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;&quot;</span>));
-            <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Trace</span>, <span class="string">&quot;&quot;</span>));
+            <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">Builder::new</span>().<span class="ident">parse</span>(<span class="string">&quot;DeBuG&quot;</span>).<span class="ident">build</span>(); <span class="comment">// LaTeX flavor!</span>
+            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;&quot;</span>));
+            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;&quot;</span>));
+            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;&quot;</span>));
+            <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;&quot;</span>));
+            <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Trace</span>, <span class="string">&quot;&quot;</span>));
         }
     }
 
@@ -1452,17 +1452,17 @@
         <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">make_logger_filter</span>(<span class="macro">vec!</span>[
             <span class="ident">Directive</span> {
                 <span class="ident">name</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;crate2&quot;</span>.<span class="ident">to_string</span>()),
-                <span class="ident">level</span>: <span class="ident">LevelFilter</span>::<span class="ident">Info</span>,
+                <span class="ident">level</span>: <span class="ident">LevelFilter::Info</span>,
             },
             <span class="ident">Directive</span> {
                 <span class="ident">name</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;crate1::mod1&quot;</span>.<span class="ident">to_string</span>()),
-                <span class="ident">level</span>: <span class="ident">LevelFilter</span>::<span class="ident">Warn</span>,
+                <span class="ident">level</span>: <span class="ident">LevelFilter::Warn</span>,
             },
         ]);
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;crate1::mod1&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;crate1::mod1&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;crate2&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;crate2&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;crate1::mod1&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;crate1::mod1&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;crate2&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;crate2&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1470,14 +1470,14 @@
         <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">make_logger_filter</span>(<span class="macro">vec!</span>[
             <span class="ident">Directive</span> {
                 <span class="ident">name</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;crate2&quot;</span>.<span class="ident">to_string</span>()),
-                <span class="ident">level</span>: <span class="ident">LevelFilter</span>::<span class="ident">Info</span>,
+                <span class="ident">level</span>: <span class="ident">LevelFilter::Info</span>,
             },
             <span class="ident">Directive</span> {
                 <span class="ident">name</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;crate1::mod1&quot;</span>.<span class="ident">to_string</span>()),
-                <span class="ident">level</span>: <span class="ident">LevelFilter</span>::<span class="ident">Warn</span>,
+                <span class="ident">level</span>: <span class="ident">LevelFilter::Warn</span>,
             },
         ]);
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;crate3&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;crate3&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1485,14 +1485,14 @@
         <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">make_logger_filter</span>(<span class="macro">vec!</span>[
             <span class="ident">Directive</span> {
                 <span class="ident">name</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;crate2&quot;</span>.<span class="ident">to_string</span>()),
-                <span class="ident">level</span>: <span class="ident">LevelFilter</span>::<span class="ident">Info</span>,
+                <span class="ident">level</span>: <span class="ident">LevelFilter::Info</span>,
             },
             <span class="ident">Directive</span> {
                 <span class="ident">name</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;crate1::mod1&quot;</span>.<span class="ident">to_string</span>()),
-                <span class="ident">level</span>: <span class="ident">LevelFilter</span>::<span class="ident">Warn</span>,
+                <span class="ident">level</span>: <span class="ident">LevelFilter::Warn</span>,
             },
         ]);
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;crate2::mod1&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;crate2::mod1&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1500,19 +1500,19 @@
         <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">make_logger_filter</span>(<span class="macro">vec!</span>[
             <span class="ident">Directive</span> {
                 <span class="ident">name</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;crate2&quot;</span>.<span class="ident">to_string</span>()),
-                <span class="ident">level</span>: <span class="ident">LevelFilter</span>::<span class="ident">Info</span>,
+                <span class="ident">level</span>: <span class="ident">LevelFilter::Info</span>,
             },
             <span class="ident">Directive</span> {
                 <span class="ident">name</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;crate2::mod&quot;</span>.<span class="ident">to_string</span>()),
-                <span class="ident">level</span>: <span class="ident">LevelFilter</span>::<span class="ident">Debug</span>,
+                <span class="ident">level</span>: <span class="ident">LevelFilter::Debug</span>,
             },
             <span class="ident">Directive</span> {
                 <span class="ident">name</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;crate1::mod1&quot;</span>.<span class="ident">to_string</span>()),
-                <span class="ident">level</span>: <span class="ident">LevelFilter</span>::<span class="ident">Warn</span>,
+                <span class="ident">level</span>: <span class="ident">LevelFilter::Warn</span>,
             },
         ]);
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;crate2::mod1&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Debug</span>, <span class="string">&quot;crate2&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;crate2::mod1&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Debug</span>, <span class="string">&quot;crate2&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1520,15 +1520,15 @@
         <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">make_logger_filter</span>(<span class="macro">vec!</span>[
             <span class="ident">Directive</span> {
                 <span class="ident">name</span>: <span class="prelude-val">None</span>,
-                <span class="ident">level</span>: <span class="ident">LevelFilter</span>::<span class="ident">Info</span>,
+                <span class="ident">level</span>: <span class="ident">LevelFilter::Info</span>,
             },
             <span class="ident">Directive</span> {
                 <span class="ident">name</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;crate1::mod1&quot;</span>.<span class="ident">to_string</span>()),
-                <span class="ident">level</span>: <span class="ident">LevelFilter</span>::<span class="ident">Warn</span>,
+                <span class="ident">level</span>: <span class="ident">LevelFilter::Warn</span>,
             },
         ]);
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Warn</span>, <span class="string">&quot;crate1::mod1&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;crate2::mod2&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Warn</span>, <span class="string">&quot;crate1::mod1&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;crate2::mod2&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1536,15 +1536,15 @@
         <span class="kw">let</span> <span class="ident">logger</span> <span class="op">=</span> <span class="ident">make_logger_filter</span>(<span class="macro">vec!</span>[
             <span class="ident">Directive</span> {
                 <span class="ident">name</span>: <span class="prelude-val">None</span>,
-                <span class="ident">level</span>: <span class="ident">LevelFilter</span>::<span class="ident">Info</span>,
+                <span class="ident">level</span>: <span class="ident">LevelFilter::Info</span>,
             },
             <span class="ident">Directive</span> {
                 <span class="ident">name</span>: <span class="prelude-val">Some</span>(<span class="string">&quot;crate1::mod1&quot;</span>.<span class="ident">to_string</span>()),
-                <span class="ident">level</span>: <span class="ident">LevelFilter</span>::<span class="ident">Off</span>,
+                <span class="ident">level</span>: <span class="ident">LevelFilter::Off</span>,
             },
         ]);
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Error</span>, <span class="string">&quot;crate1::mod1&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level</span>::<span class="ident">Info</span>, <span class="string">&quot;crate2::mod2&quot;</span>));
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Error</span>, <span class="string">&quot;crate1::mod1&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">enabled</span>(<span class="kw-2">&amp;</span><span class="ident">logger</span>.<span class="ident">directives</span>, <span class="ident">Level::Info</span>, <span class="string">&quot;crate2::mod2&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1552,13 +1552,13 @@
         <span class="kw">let</span> (<span class="ident">dirs</span>, <span class="ident">filter</span>) <span class="op">=</span> <span class="ident">parse_spec</span>(<span class="string">&quot;crate1::mod1=error,crate1::mod2,crate2=debug&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>.<span class="ident">len</span>(), <span class="number">3</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">name</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;crate1::mod1&quot;</span>.<span class="ident">to_string</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">Error</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::Error</span>);
 
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">1</span>].<span class="ident">name</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;crate1::mod2&quot;</span>.<span class="ident">to_string</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">1</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">max</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">1</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::max</span>());
 
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">2</span>].<span class="ident">name</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;crate2&quot;</span>.<span class="ident">to_string</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">2</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">Debug</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">2</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::Debug</span>);
         <span class="macro">assert!</span>(<span class="ident">filter</span>.<span class="ident">is_none</span>());
     }
 
@@ -1568,7 +1568,7 @@
         <span class="kw">let</span> (<span class="ident">dirs</span>, <span class="ident">filter</span>) <span class="op">=</span> <span class="ident">parse_spec</span>(<span class="string">&quot;crate1::mod1=warn=info,crate2=debug&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>.<span class="ident">len</span>(), <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">name</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;crate2&quot;</span>.<span class="ident">to_string</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">Debug</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::Debug</span>);
         <span class="macro">assert!</span>(<span class="ident">filter</span>.<span class="ident">is_none</span>());
     }
 
@@ -1578,7 +1578,7 @@
         <span class="kw">let</span> (<span class="ident">dirs</span>, <span class="ident">filter</span>) <span class="op">=</span> <span class="ident">parse_spec</span>(<span class="string">&quot;crate1::mod1=noNumber,crate2=debug&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>.<span class="ident">len</span>(), <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">name</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;crate2&quot;</span>.<span class="ident">to_string</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">Debug</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::Debug</span>);
         <span class="macro">assert!</span>(<span class="ident">filter</span>.<span class="ident">is_none</span>());
     }
 
@@ -1588,7 +1588,7 @@
         <span class="kw">let</span> (<span class="ident">dirs</span>, <span class="ident">filter</span>) <span class="op">=</span> <span class="ident">parse_spec</span>(<span class="string">&quot;crate1::mod1=wrong,crate2=warn&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>.<span class="ident">len</span>(), <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">name</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;crate2&quot;</span>.<span class="ident">to_string</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">Warn</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::Warn</span>);
         <span class="macro">assert!</span>(<span class="ident">filter</span>.<span class="ident">is_none</span>());
     }
 
@@ -1598,7 +1598,7 @@
         <span class="kw">let</span> (<span class="ident">dirs</span>, <span class="ident">filter</span>) <span class="op">=</span> <span class="ident">parse_spec</span>(<span class="string">&quot;crate1::mod1=wrong,crate2=&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>.<span class="ident">len</span>(), <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">name</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;crate2&quot;</span>.<span class="ident">to_string</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">max</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::max</span>());
         <span class="macro">assert!</span>(<span class="ident">filter</span>.<span class="ident">is_none</span>());
     }
 
@@ -1657,9 +1657,9 @@
         <span class="kw">let</span> (<span class="ident">dirs</span>, <span class="ident">filter</span>) <span class="op">=</span> <span class="ident">parse_spec</span>(<span class="string">&quot;warn,crate2=debug&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>.<span class="ident">len</span>(), <span class="number">2</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">name</span>, <span class="prelude-val">None</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">Warn</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::Warn</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">1</span>].<span class="ident">name</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;crate2&quot;</span>.<span class="ident">to_string</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">1</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">Debug</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">1</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::Debug</span>);
         <span class="macro">assert!</span>(<span class="ident">filter</span>.<span class="ident">is_none</span>());
     }
 
@@ -1669,7 +1669,7 @@
         <span class="kw">let</span> (<span class="ident">dirs</span>, <span class="ident">filter</span>) <span class="op">=</span> <span class="ident">parse_spec</span>(<span class="string">&quot;warn&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>.<span class="ident">len</span>(), <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">name</span>, <span class="prelude-val">None</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">Warn</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::Warn</span>);
         <span class="macro">assert!</span>(<span class="ident">filter</span>.<span class="ident">is_none</span>());
     }
 
@@ -1679,7 +1679,7 @@
         <span class="kw">let</span> (<span class="ident">dirs</span>, <span class="ident">filter</span>) <span class="op">=</span> <span class="ident">parse_spec</span>(<span class="string">&quot;WARN&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>.<span class="ident">len</span>(), <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">name</span>, <span class="prelude-val">None</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">Warn</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::Warn</span>);
         <span class="macro">assert!</span>(<span class="ident">filter</span>.<span class="ident">is_none</span>());
     }
 
@@ -1689,7 +1689,7 @@
         <span class="kw">let</span> (<span class="ident">dirs</span>, <span class="ident">filter</span>) <span class="op">=</span> <span class="ident">parse_spec</span>(<span class="string">&quot;wArN&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>.<span class="ident">len</span>(), <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">name</span>, <span class="prelude-val">None</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">Warn</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::Warn</span>);
         <span class="macro">assert!</span>(<span class="ident">filter</span>.<span class="ident">is_none</span>());
     }
 
@@ -1698,13 +1698,13 @@
         <span class="kw">let</span> (<span class="ident">dirs</span>, <span class="ident">filter</span>) <span class="op">=</span> <span class="ident">parse_spec</span>(<span class="string">&quot;crate1::mod1=error,crate1::mod2,crate2=debug/abc&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>.<span class="ident">len</span>(), <span class="number">3</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">name</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;crate1::mod1&quot;</span>.<span class="ident">to_string</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">Error</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::Error</span>);
 
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">1</span>].<span class="ident">name</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;crate1::mod2&quot;</span>.<span class="ident">to_string</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">1</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">max</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">1</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::max</span>());
 
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">2</span>].<span class="ident">name</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;crate2&quot;</span>.<span class="ident">to_string</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">2</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">Debug</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">2</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::Debug</span>);
         <span class="macro">assert!</span>(<span class="ident">filter</span>.<span class="ident">is_some</span>() <span class="op">&amp;&amp;</span> <span class="ident">filter</span>.<span class="ident">unwrap</span>().<span class="ident">to_string</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;abc&quot;</span>);
     }
 
@@ -1713,7 +1713,7 @@
         <span class="kw">let</span> (<span class="ident">dirs</span>, <span class="ident">filter</span>) <span class="op">=</span> <span class="ident">parse_spec</span>(<span class="string">&quot;crate1::mod1=error=warn,crate2=debug/a.c&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>.<span class="ident">len</span>(), <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">name</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;crate2&quot;</span>.<span class="ident">to_string</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">Debug</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::Debug</span>);
         <span class="macro">assert!</span>(<span class="ident">filter</span>.<span class="ident">is_some</span>() <span class="op">&amp;&amp;</span> <span class="ident">filter</span>.<span class="ident">unwrap</span>().<span class="ident">to_string</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;a.c&quot;</span>);
     }
 
@@ -1722,7 +1722,7 @@
         <span class="kw">let</span> (<span class="ident">dirs</span>, <span class="ident">filter</span>) <span class="op">=</span> <span class="ident">parse_spec</span>(<span class="string">&quot;crate1/a*c&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>.<span class="ident">len</span>(), <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">name</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;crate1&quot;</span>.<span class="ident">to_string</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter</span>::<span class="ident">max</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>[<span class="number">0</span>].<span class="ident">level</span>, <span class="ident">LevelFilter::max</span>());
         <span class="macro">assert!</span>(<span class="ident">filter</span>.<span class="ident">is_some</span>() <span class="op">&amp;&amp;</span> <span class="ident">filter</span>.<span class="ident">unwrap</span>().<span class="ident">to_string</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&quot;a*c&quot;</span>);
     }
 }

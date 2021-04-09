@@ -286,7 +286,7 @@
     <span class="kw">where</span>
         <span class="lifetime">&#39;a</span>: <span class="lifetime">&#39;b</span>,
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">BinaryReader</span>::<span class="ident">new_with_offset</span>(<span class="self">self</span>.<span class="ident">data</span>, <span class="self">self</span>.<span class="ident">offset</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">BinaryReader::new_with_offset</span>(<span class="self">self</span>.<span class="ident">data</span>, <span class="self">self</span>.<span class="ident">offset</span>);
         <span class="ident">reader</span>.<span class="ident">read_string</span>()
     }
 
@@ -302,7 +302,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">NamingReader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">offset</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NamingReader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">BinaryReader</span>::<span class="ident">new_with_offset</span>(<span class="ident">data</span>, <span class="ident">offset</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">BinaryReader::new_with_offset</span>(<span class="ident">data</span>, <span class="ident">offset</span>);
         <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="ident">reader</span>.<span class="ident">read_var_u32</span>()<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">NamingReader</span> { <span class="ident">reader</span>, <span class="ident">count</span> })
     }
@@ -345,7 +345,7 @@
     <span class="kw">where</span>
         <span class="lifetime">&#39;a</span>: <span class="lifetime">&#39;b</span>,
     {
-        <span class="ident">NamingReader</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">data</span>, <span class="self">self</span>.<span class="ident">offset</span>)
+        <span class="ident">NamingReader::new</span>(<span class="self">self</span>.<span class="ident">data</span>, <span class="self">self</span>.<span class="ident">offset</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">original_position</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
@@ -365,7 +365,7 @@
     <span class="kw">where</span>
         <span class="lifetime">&#39;a</span>: <span class="lifetime">&#39;b</span>,
     {
-        <span class="ident">NamingReader</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">data</span>, <span class="self">self</span>.<span class="ident">offset</span>)
+        <span class="ident">NamingReader::new</span>(<span class="self">self</span>.<span class="ident">data</span>, <span class="self">self</span>.<span class="ident">offset</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">original_position</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
@@ -380,7 +380,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">FunctionLocalReader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">offset</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">FunctionLocalReader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">BinaryReader</span>::<span class="ident">new_with_offset</span>(<span class="ident">data</span>, <span class="ident">offset</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">BinaryReader::new_with_offset</span>(<span class="ident">data</span>, <span class="ident">offset</span>);
         <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="ident">reader</span>.<span class="ident">read_var_u32</span>()<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">FunctionLocalReader</span> { <span class="ident">reader</span>, <span class="ident">count</span> })
     }
@@ -399,7 +399,7 @@
     {
         <span class="kw">let</span> <span class="ident">func_index</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reader</span>.<span class="ident">read_var_u32</span>()<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reader</span>.<span class="ident">position</span>;
-        <span class="ident">NamingReader</span>::<span class="ident">skip</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">reader</span>)<span class="question-mark">?</span>;
+        <span class="ident">NamingReader::skip</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">reader</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reader</span>.<span class="ident">position</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">FunctionLocalName</span> {
             <span class="ident">func_index</span>,
@@ -420,7 +420,7 @@
     <span class="kw">where</span>
         <span class="lifetime">&#39;a</span>: <span class="lifetime">&#39;b</span>,
     {
-        <span class="ident">FunctionLocalReader</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">data</span>, <span class="self">self</span>.<span class="ident">offset</span>)
+        <span class="ident">FunctionLocalReader::new</span>(<span class="self">self</span>.<span class="ident">data</span>, <span class="self">self</span>.<span class="ident">offset</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">original_position</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
@@ -442,13 +442,13 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">NameSectionReader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">offset</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">NameSectionReader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="ident">NameSectionReader</span> {
-            <span class="ident">reader</span>: <span class="ident">BinaryReader</span>::<span class="ident">new_with_offset</span>(<span class="ident">data</span>, <span class="ident">offset</span>),
+            <span class="ident">reader</span>: <span class="ident">BinaryReader::new_with_offset</span>(<span class="ident">data</span>, <span class="ident">offset</span>),
         })
     }
 
     <span class="kw">fn</span> <span class="ident">verify_section_end</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">end</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">reader</span>.<span class="ident">buffer</span>.<span class="ident">len</span>() <span class="op">&lt;</span> <span class="ident">end</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">BinaryReaderError</span>::<span class="ident">new</span>(
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">BinaryReaderError::new</span>(
                 <span class="string">&quot;Name entry extends past end of the code section&quot;</span>,
                 <span class="self">self</span>.<span class="ident">reader</span>.<span class="ident">original_offset</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">reader</span>.<span class="ident">buffer</span>.<span class="ident">len</span>(),
             ));
@@ -477,23 +477,23 @@
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">reader</span>.<span class="ident">buffer</span>[<span class="ident">payload_start</span>..<span class="ident">payload_end</span>];
         <span class="self">self</span>.<span class="ident">reader</span>.<span class="ident">skip_to</span>(<span class="ident">payload_end</span>);
         <span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="ident">ty</span> {
-            <span class="ident">NameType</span>::<span class="ident">Module</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Name</span>::<span class="ident">Module</span>(<span class="ident">ModuleName</span> { <span class="ident">data</span>, <span class="ident">offset</span> }),
-            <span class="ident">NameType</span>::<span class="ident">Function</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Name</span>::<span class="ident">Function</span>(<span class="ident">FunctionName</span> { <span class="ident">data</span>, <span class="ident">offset</span> }),
-            <span class="ident">NameType</span>::<span class="ident">Local</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Name</span>::<span class="ident">Local</span>(<span class="ident">LocalName</span> { <span class="ident">data</span>, <span class="ident">offset</span> }),
+            <span class="ident">NameType::Module</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Name::Module</span>(<span class="ident">ModuleName</span> { <span class="ident">data</span>, <span class="ident">offset</span> }),
+            <span class="ident">NameType::Function</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Name::Function</span>(<span class="ident">FunctionName</span> { <span class="ident">data</span>, <span class="ident">offset</span> }),
+            <span class="ident">NameType::Local</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Name::Local</span>(<span class="ident">LocalName</span> { <span class="ident">data</span>, <span class="ident">offset</span> }),
         })
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">SectionReader</span> <span class="kw">for</span> <span class="ident">NameSectionReader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Name</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>;
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
-        <span class="ident">NameSectionReader</span>::<span class="ident">read</span>(<span class="self">self</span>)
+    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
+        <span class="ident">NameSectionReader::read</span>(<span class="self">self</span>)
     }
     <span class="kw">fn</span> <span class="ident">eof</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="ident">NameSectionReader</span>::<span class="ident">eof</span>(<span class="self">self</span>)
+        <span class="ident">NameSectionReader::eof</span>(<span class="self">self</span>)
     }
     <span class="kw">fn</span> <span class="ident">original_position</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="ident">NameSectionReader</span>::<span class="ident">original_position</span>(<span class="self">self</span>)
+        <span class="ident">NameSectionReader::original_position</span>(<span class="self">self</span>)
     }
     <span class="kw">fn</span> <span class="ident">range</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Range</span> {
         <span class="self">self</span>.<span class="ident">reader</span>.<span class="ident">range</span>()
@@ -504,8 +504,8 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Name</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">IntoIter</span> <span class="op">=</span> <span class="ident">SectionIterator</span><span class="op">&lt;</span><span class="ident">NameSectionReader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">IntoIter</span> {
-        <span class="ident">SectionIterator</span>::<span class="ident">new</span>(<span class="self">self</span>)
+    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::IntoIter</span> {
+        <span class="ident">SectionIterator::new</span>(<span class="self">self</span>)
     }
 }
 </pre></div>

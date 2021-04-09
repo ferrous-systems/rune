@@ -439,8 +439,8 @@
 <span class="comment">// Malicious JPEG files can cause operations in the idct to overflow.</span>
 <span class="comment">// One example is tests/crashtest/images/imagetestsuite/b0b8914cc5f7a6eff409f16d8cc236c5.jpg</span>
 <span class="comment">// That&#39;s why wrapping operators are needed.</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">parser</span>::<span class="ident">Dimensions</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert</span>::<span class="ident">TryFrom</span>, <span class="ident">num</span>::<span class="ident">Wrapping</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::parser::Dimensions</span>;
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">convert::TryFrom</span>, <span class="ident">num::Wrapping</span>};
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">choose_idct_size</span>(<span class="ident">full_size</span>: <span class="ident">Dimensions</span>, <span class="ident">requested_size</span>: <span class="ident">Dimensions</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
     <span class="kw">fn</span> <span class="ident">scaled</span>(<span class="ident">len</span>: <span class="ident">u16</span>, <span class="ident">scale</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> { ((<span class="ident">len</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">*</span> <span class="ident">scale</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">-</span> <span class="number">1</span>) <span class="op">/</span> <span class="number">8</span> <span class="op">+</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u16</span> }
@@ -501,7 +501,7 @@
     <span class="ident">output</span>: <span class="ident">I</span>,
 ) <span class="kw">where</span>
     <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]<span class="op">&gt;</span>,
-    <span class="ident">I</span>::<span class="ident">IntoIter</span>: <span class="ident">ExactSizeIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]<span class="op">&gt;</span>,
+    <span class="ident">I::IntoIter</span>: <span class="ident">ExactSizeIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]<span class="op">&gt;</span>,
 {
     <span class="kw">let</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">output</span>.<span class="ident">into_iter</span>();
     <span class="macro">debug_assert!</span>(
@@ -566,7 +566,7 @@
     }
 
     <span class="kw">for</span> (<span class="ident">chunk</span>, <span class="ident">output_chunk</span>) <span class="kw">in</span> <span class="ident">temp</span>.<span class="ident">chunks_exact</span>(<span class="number">8</span>).<span class="ident">zip</span>(<span class="ident">output</span>) {
-        <span class="kw">let</span> <span class="ident">chunk</span> <span class="op">=</span> <span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="kw">_</span>; <span class="number">8</span>]<span class="op">&gt;</span>::<span class="ident">try_from</span>(<span class="ident">chunk</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">chunk</span> <span class="op">=</span> <span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="kw">_</span>; <span class="number">8</span>]<span class="op">&gt;</span><span class="ident">::try_from</span>(<span class="ident">chunk</span>).<span class="ident">unwrap</span>();
 
         <span class="comment">// constants scaled things up by 1&lt;&lt;12, plus we had 1&lt;&lt;2 from first</span>
         <span class="comment">// loop, plus horizontal and vertical each scale by sqrt(8) so together</span>
@@ -686,7 +686,7 @@
 
 <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
 <span class="kw">fn</span> <span class="ident">dequantize</span>(<span class="ident">c</span>: <span class="ident">i16</span>, <span class="ident">q</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Wrapping</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> {
-    <span class="ident">Wrapping</span>(<span class="ident">i32</span>::<span class="ident">from</span>(<span class="ident">c</span>) <span class="op">*</span> <span class="ident">i32</span>::<span class="ident">from</span>(<span class="ident">q</span>))
+    <span class="ident">Wrapping</span>(<span class="ident">i32::from</span>(<span class="ident">c</span>) <span class="op">*</span> <span class="ident">i32::from</span>(<span class="ident">q</span>))
 }
 
 <span class="comment">// 4x4 and 2x2 IDCT based on Rakesh Dugad and Narendra Ahuja: &quot;A Fast Scheme for Image Size Change in the Compressed Domain&quot; (2001).</span>
@@ -855,8 +855,8 @@
 <span class="kw">fn</span> <span class="ident">test_dequantize_and_idct_block_8x8_saturated</span>() {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">output</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">8</span> <span class="op">*</span> <span class="number">8</span>];
     <span class="ident">dequantize_and_idct_block_8x8</span>(
-        <span class="kw-2">&amp;</span>[<span class="ident">std</span>::<span class="ident">i16</span>::<span class="ident">MAX</span>; <span class="number">8</span><span class="kw-2">*</span><span class="number">8</span>],
-        <span class="kw-2">&amp;</span>[<span class="ident">std</span>::<span class="ident">u16</span>::<span class="ident">MAX</span>; <span class="number">8</span><span class="kw-2">*</span><span class="number">8</span>],
+        <span class="kw-2">&amp;</span>[<span class="ident">std::i16::MAX</span>; <span class="number">8</span><span class="kw-2">*</span><span class="number">8</span>],
+        <span class="kw-2">&amp;</span>[<span class="ident">std::u16::MAX</span>; <span class="number">8</span><span class="kw-2">*</span><span class="number">8</span>],
         <span class="number">8</span>,
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">output</span>);
     <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> [

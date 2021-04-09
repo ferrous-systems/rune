@@ -1203,11 +1203,11 @@
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">app</span>::{<span class="ident">App</span>, <span class="ident">AppSettings</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">args</span>::{<span class="ident">Arg</span>, <span class="ident">ArgGroup</span>, <span class="ident">ArgMatches</span>, <span class="ident">ArgSettings</span>, <span class="ident">OsValues</span>, <span class="ident">SubCommand</span>, <span class="ident">Values</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">completions</span>::<span class="ident">Shell</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">completions::Shell</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">errors</span>::{<span class="ident">Error</span>, <span class="ident">ErrorKind</span>, <span class="prelude-ty">Result</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">fmt</span>::<span class="ident">Format</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">fmt::Format</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;yaml&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">yaml_rust</span>::<span class="ident">YamlLoader</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">yaml_rust::YamlLoader</span>;
 
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">mod</span> <span class="ident">macros</span>;
@@ -1235,7 +1235,7 @@
     <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ClapApp</span>: <span class="ident">IntoApp</span> <span class="op">+</span> <span class="ident">FromArgMatches</span> <span class="op">+</span> <span class="ident">Sized</span> {
         <span class="doccomment">/// @TODO @release @docs</span>
         <span class="kw">fn</span> <span class="ident">parse</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-            <span class="self">Self</span>::<span class="ident">from_argmatches</span>(<span class="self">Self</span>::<span class="ident">into_app</span>().<span class="ident">get_matches</span>())
+            <span class="self">Self</span><span class="ident">::from_argmatches</span>(<span class="self">Self</span><span class="ident">::into_app</span>().<span class="ident">get_matches</span>())
         }
 
         <span class="doccomment">/// @TODO @release @docs</span>
@@ -1244,37 +1244,37 @@
             <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span>,
             <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">OsString</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span>,
         {
-            <span class="self">Self</span>::<span class="ident">from_argmatches</span>(<span class="self">Self</span>::<span class="ident">into_app</span>().<span class="ident">get_matches_from</span>(<span class="ident">argv</span>))
+            <span class="self">Self</span><span class="ident">::from_argmatches</span>(<span class="self">Self</span><span class="ident">::into_app</span>().<span class="ident">get_matches_from</span>(<span class="ident">argv</span>))
         }
 
         <span class="doccomment">/// @TODO @release @docs</span>
-        <span class="kw">fn</span> <span class="ident">try_parse</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">clap</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
-            <span class="self">Self</span>::<span class="ident">try_from_argmatches</span>(<span class="self">Self</span>::<span class="ident">into_app</span>().<span class="ident">get_matches_safe</span>()<span class="question-mark">?</span>)
+        <span class="kw">fn</span> <span class="ident">try_parse</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">clap::Error</span><span class="op">&gt;</span> {
+            <span class="self">Self</span><span class="ident">::try_from_argmatches</span>(<span class="self">Self</span><span class="ident">::into_app</span>().<span class="ident">get_matches_safe</span>()<span class="question-mark">?</span>)
         }
 
         <span class="doccomment">/// @TODO @release @docs</span>
-        <span class="kw">fn</span> <span class="ident">try_parse_from</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">argv</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">clap</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+        <span class="kw">fn</span> <span class="ident">try_parse_from</span><span class="op">&lt;</span><span class="ident">I</span>, <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">argv</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">clap::Error</span><span class="op">&gt;</span>
         <span class="kw">where</span>
             <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span>,
             <span class="ident">T</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">OsString</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span>,
         {
-            <span class="self">Self</span>::<span class="ident">try_from_argmatches</span>(<span class="self">Self</span>::<span class="ident">into_app</span>().<span class="ident">get_matches_from_safe</span>(<span class="ident">argv</span>)<span class="question-mark">?</span>)
+            <span class="self">Self</span><span class="ident">::try_from_argmatches</span>(<span class="self">Self</span><span class="ident">::into_app</span>().<span class="ident">get_matches_from_safe</span>(<span class="ident">argv</span>)<span class="question-mark">?</span>)
         }
     }
 
     <span class="doccomment">/// @TODO @release @docs</span>
     <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">IntoApp</span> {
         <span class="doccomment">/// @TODO @release @docs</span>
-        <span class="kw">fn</span> <span class="ident">into_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">clap</span>::<span class="ident">App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span>;
+        <span class="kw">fn</span> <span class="ident">into_app</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">clap::App</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span><span class="op">&gt;</span>;
     }
 
     <span class="doccomment">/// @TODO @release @docs</span>
     <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FromArgMatches</span>: <span class="ident">Sized</span> {
         <span class="doccomment">/// @TODO @release @docs</span>
-        <span class="kw">fn</span> <span class="ident">from_argmatches</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">matches</span>: <span class="ident">clap</span>::<span class="ident">ArgMatches</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+        <span class="kw">fn</span> <span class="ident">from_argmatches</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">matches</span>: <span class="ident">clap::ArgMatches</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
 
         <span class="doccomment">/// @TODO @release @docs</span>
-        <span class="kw">fn</span> <span class="ident">try_from_argmatches</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">matches</span>: <span class="ident">clap</span>::<span class="ident">ArgMatches</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">clap</span>::<span class="ident">Error</span><span class="op">&gt;</span>;
+        <span class="kw">fn</span> <span class="ident">try_from_argmatches</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">matches</span>: <span class="ident">clap::ArgMatches</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">clap::Error</span><span class="op">&gt;</span>;
     }
 
     <span class="doccomment">/// @TODO @release @docs</span>

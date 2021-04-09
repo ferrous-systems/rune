@@ -68,7 +68,7 @@ the future yields.</p>
 <p><code>Instrument</code> can be used with an async block inside an async function:</p>
 
 <div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
-<span class="kw">use</span> <span class="ident">tracing</span>::<span class="ident">Instrument</span>;
+<span class="kw">use</span> <span class="ident">tracing::Instrument</span>;
 
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">my_async_function</span>() {
     <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="macro">info_span!</span>(<span class="string">&quot;my_async_function&quot;</span>);
@@ -89,7 +89,7 @@ the future yields.</p>
 callsite:</p>
 
 <div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
-<span class="kw">use</span> <span class="ident">tracing</span>::<span class="ident">Instrument</span>;
+<span class="kw">use</span> <span class="ident">tracing::Instrument</span>;
 
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">my_async_function</span>() {
     <span class="kw">let</span> <span class="ident">some_value</span> <span class="op">=</span> <span class="ident">some_other_async_function</span>()
@@ -104,7 +104,7 @@ callsite:</p>
 correct code when used on an async function:</p>
 
 <div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
-<span class="attribute">#[<span class="ident">tracing</span>::<span class="ident">instrument</span>(<span class="ident">level</span> <span class="op">=</span> <span class="string">&quot;info&quot;</span>)]</span>
+<span class="attribute">#[<span class="ident">tracing::instrument</span>(<span class="ident">level</span> <span class="op">=</span> <span class="string">&quot;info&quot;</span>)]</span>
 <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">my_async_function</span>() {
  
     <span class="comment">// This is correct! If we yield here, the span will be exited,</span>
@@ -119,7 +119,7 @@ correct code when used on an async function:</p>
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#[<span class="ident">macro_use</span>]</span> <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">tracing</span>;
-<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="macro">span!</span>(<span class="ident">Level</span>::<span class="ident">INFO</span>, <span class="string">&quot;my_span&quot;</span>);
+<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="macro">span!</span>(<span class="ident">Level::INFO</span>, <span class="string">&quot;my_span&quot;</span>);
 <span class="kw">let</span> <span class="ident">guard</span> <span class="op">=</span> <span class="ident">span</span>.<span class="ident">enter</span>();
 
 <span class="comment">// code here is within the span</span>
@@ -173,7 +173,7 @@ one).</p>
 <p>Returns the result of evaluating <code>f</code>.</p>
 <h1 id="examples-1" class="section-header"><a href="#examples-1">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">my_span</span> <span class="op">=</span> <span class="macro">span!</span>(<span class="ident">Level</span>::<span class="ident">TRACE</span>, <span class="string">&quot;my_span&quot;</span>);
+<span class="kw">let</span> <span class="ident">my_span</span> <span class="op">=</span> <span class="macro">span!</span>(<span class="ident">Level::TRACE</span>, <span class="string">&quot;my_span&quot;</span>);
 
 <span class="ident">my_span</span>.<span class="ident">in_scope</span>(<span class="op">|</span><span class="op">|</span> {
     <span class="comment">// this event occurs within the span.</span>
@@ -206,7 +206,7 @@ are not known when the span is created, and record them later:</p>
 
 <span class="comment">// Create a span with two fields: `greeting`, with the value &quot;hello world&quot;, and</span>
 <span class="comment">// `parting`, without a value.</span>
-<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="macro">trace_span!</span>(<span class="string">&quot;my_span&quot;</span>, <span class="ident">greeting</span> <span class="op">=</span> <span class="string">&quot;hello world&quot;</span>, <span class="ident">parting</span> <span class="op">=</span> <span class="ident">field</span>::<span class="ident">Empty</span>);
+<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="macro">trace_span!</span>(<span class="string">&quot;my_span&quot;</span>, <span class="ident">greeting</span> <span class="op">=</span> <span class="string">&quot;hello world&quot;</span>, <span class="ident">parting</span> <span class="op">=</span> <span class="ident">field::Empty</span>);
 
 <span class="comment">// ...</span>
 
@@ -217,7 +217,7 @@ are not known when the span is created, and record them later:</p>
 value was already recorded:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">tracing</span>::<span class="ident">info_span</span>;
+<span class="kw">use</span> <span class="ident">tracing::info_span</span>;
 
 <span class="comment">// Initially, let&#39;s assume that our attempt to do something is going okay...</span>
 <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="macro">info_span!</span>(<span class="string">&quot;doing_something&quot;</span>, <span class="ident">is_okay</span> <span class="op">=</span> <span class="bool-val">true</span>);
@@ -249,7 +249,7 @@ when the span was created:</pre></div>
 
 <span class="comment">// Create a span with two fields: `greeting`, with the value &quot;hello world&quot;, and</span>
 <span class="comment">// `parting`, without a value.</span>
-<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="macro">trace_span!</span>(<span class="string">&quot;my_span&quot;</span>, <span class="ident">greeting</span> <span class="op">=</span> <span class="string">&quot;hello world&quot;</span>, <span class="ident">parting</span> <span class="op">=</span> <span class="ident">field</span>::<span class="ident">Empty</span>);
+<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="macro">trace_span!</span>(<span class="string">&quot;my_span&quot;</span>, <span class="ident">greeting</span> <span class="op">=</span> <span class="string">&quot;hello world&quot;</span>, <span class="ident">parting</span> <span class="op">=</span> <span class="ident">field::Empty</span>);
 
 <span class="comment">// ...</span>
 
@@ -288,24 +288,24 @@ would be invalid, this function will do nothing.</p>
 <p>Setting a <code>follows_from</code> relationship with a <code>Span</code>:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">span1</span> <span class="op">=</span> <span class="macro">span!</span>(<span class="ident">Level</span>::<span class="ident">INFO</span>, <span class="string">&quot;span_1&quot;</span>);
-<span class="kw">let</span> <span class="ident">span2</span> <span class="op">=</span> <span class="macro">span!</span>(<span class="ident">Level</span>::<span class="ident">DEBUG</span>, <span class="string">&quot;span_2&quot;</span>);
+<span class="kw">let</span> <span class="ident">span1</span> <span class="op">=</span> <span class="macro">span!</span>(<span class="ident">Level::INFO</span>, <span class="string">&quot;span_1&quot;</span>);
+<span class="kw">let</span> <span class="ident">span2</span> <span class="op">=</span> <span class="macro">span!</span>(<span class="ident">Level::DEBUG</span>, <span class="string">&quot;span_2&quot;</span>);
 <span class="ident">span2</span>.<span class="ident">follows_from</span>(<span class="ident">span1</span>);</pre></div>
 <p>Setting a <code>follows_from</code> relationship with the current span:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="macro">span!</span>(<span class="ident">Level</span>::<span class="ident">INFO</span>, <span class="string">&quot;hello!&quot;</span>);
-<span class="ident">span</span>.<span class="ident">follows_from</span>(<span class="ident">Span</span>::<span class="ident">current</span>());</pre></div>
+<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="macro">span!</span>(<span class="ident">Level::INFO</span>, <span class="string">&quot;hello!&quot;</span>);
+<span class="ident">span</span>.<span class="ident">follows_from</span>(<span class="ident">Span::current</span>());</pre></div>
 <p>Setting a <code>follows_from</code> relationship with a <code>Span</code> reference:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="macro">span!</span>(<span class="ident">Level</span>::<span class="ident">INFO</span>, <span class="string">&quot;hello!&quot;</span>);
-<span class="kw">let</span> <span class="ident">curr</span> <span class="op">=</span> <span class="ident">Span</span>::<span class="ident">current</span>();
+<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="macro">span!</span>(<span class="ident">Level::INFO</span>, <span class="string">&quot;hello!&quot;</span>);
+<span class="kw">let</span> <span class="ident">curr</span> <span class="op">=</span> <span class="ident">Span::current</span>();
 <span class="ident">span</span>.<span class="ident">follows_from</span>(<span class="kw-2">&amp;</span><span class="ident">curr</span>);</pre></div>
 <p>Setting a <code>follows_from</code> relationship with an <code>Id</code>:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="macro">span!</span>(<span class="ident">Level</span>::<span class="ident">INFO</span>, <span class="string">&quot;hello!&quot;</span>);
+<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="macro">span!</span>(<span class="ident">Level::INFO</span>, <span class="string">&quot;hello!&quot;</span>);
 <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">span</span>.<span class="ident">id</span>();
 <span class="ident">span</span>.<span class="ident">follows_from</span>(<span class="ident">id</span>);</pre></div>
 </div><h4 id="method.id" class="method"><code>pub fn <a href="#method.id" class="fnname">id</a>(&amp;self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="../../tracing/span/struct.Id.html" title="struct tracing::span::Id">Id</a>&gt;</code><a class="srclink" href="../../src/tracing/span.rs.html#1198-1200" title="goto source code">[src]</a></h4><div class="docblock"><p>Returns this span’s <code>Id</code>, if it is enabled.</p>

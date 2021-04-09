@@ -10,7 +10,7 @@
 <p>There are lots of ways to chain results of steal operations together:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">crossbeam_deque</span>::<span class="ident">Steal</span>::{<span class="self">self</span>, <span class="ident">Empty</span>, <span class="ident">Retry</span>, <span class="ident">Success</span>};
+<span class="kw">use</span> <span class="ident">crossbeam_deque::Steal</span>::{<span class="self">self</span>, <span class="ident">Empty</span>, <span class="ident">Retry</span>, <span class="ident">Success</span>};
 
 <span class="kw">let</span> <span class="ident">collect</span> <span class="op">=</span> <span class="op">|</span><span class="ident">v</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Steal</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Steal</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span><span class="op">&gt;</span>();
 
@@ -28,7 +28,7 @@
 </div><h2 id="implementations" class="small-section-header">Implementations<a href="#implementations" class="anchor"></a></h2><h3 id="impl" class="impl"><code class="in-band">impl&lt;T&gt; <a class="enum" href="../crossbeam_deque/enum.Steal.html" title="enum crossbeam_deque::Steal">Steal</a>&lt;T&gt;</code><a href="#impl" class="anchor"></a><a class="srclink" href="../src/crossbeam_deque/deque.rs.html#1845-1959" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.is_empty" class="method"><code>pub fn <a href="#method.is_empty" class="fnname">is_empty</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code><a class="srclink" href="../src/crossbeam_deque/deque.rs.html#1858-1863" title="goto source code">[src]</a></h4><div class="docblock"><p>Returns <code>true</code> if the queue was empty at the time of stealing.</p>
 <h1 id="examples-1" class="section-header"><a href="#examples-1">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">crossbeam_deque</span>::<span class="ident">Steal</span>::{<span class="ident">Empty</span>, <span class="ident">Retry</span>, <span class="ident">Success</span>};
+<span class="kw">use</span> <span class="ident">crossbeam_deque::Steal</span>::{<span class="ident">Empty</span>, <span class="ident">Retry</span>, <span class="ident">Success</span>};
 
 <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Success</span>(<span class="number">7</span>).<span class="ident">is_empty</span>());
 <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Retry</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>.<span class="ident">is_empty</span>());
@@ -37,7 +37,7 @@
 </div><h4 id="method.is_success" class="method"><code>pub fn <a href="#method.is_success" class="fnname">is_success</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code><a class="srclink" href="../src/crossbeam_deque/deque.rs.html#1877-1882" title="goto source code">[src]</a></h4><div class="docblock"><p>Returns <code>true</code> if at least one task was stolen.</p>
 <h1 id="examples-2" class="section-header"><a href="#examples-2">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">crossbeam_deque</span>::<span class="ident">Steal</span>::{<span class="ident">Empty</span>, <span class="ident">Retry</span>, <span class="ident">Success</span>};
+<span class="kw">use</span> <span class="ident">crossbeam_deque::Steal</span>::{<span class="ident">Empty</span>, <span class="ident">Retry</span>, <span class="ident">Success</span>};
 
 <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Empty</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>.<span class="ident">is_success</span>());
 <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Retry</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>.<span class="ident">is_success</span>());
@@ -46,7 +46,7 @@
 </div><h4 id="method.is_retry" class="method"><code>pub fn <a href="#method.is_retry" class="fnname">is_retry</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code><a class="srclink" href="../src/crossbeam_deque/deque.rs.html#1896-1901" title="goto source code">[src]</a></h4><div class="docblock"><p>Returns <code>true</code> if the steal operation needs to be retried.</p>
 <h1 id="examples-3" class="section-header"><a href="#examples-3">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">crossbeam_deque</span>::<span class="ident">Steal</span>::{<span class="ident">Empty</span>, <span class="ident">Retry</span>, <span class="ident">Success</span>};
+<span class="kw">use</span> <span class="ident">crossbeam_deque::Steal</span>::{<span class="ident">Empty</span>, <span class="ident">Retry</span>, <span class="ident">Success</span>};
 
 <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Empty</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>.<span class="ident">is_retry</span>());
 <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">Success</span>(<span class="number">7</span>).<span class="ident">is_retry</span>());
@@ -55,7 +55,7 @@
 </div><h4 id="method.success" class="method"><code>pub fn <a href="#method.success" class="fnname">success</a>(self) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;T&gt;</code><a class="srclink" href="../src/crossbeam_deque/deque.rs.html#1915-1920" title="goto source code">[src]</a></h4><div class="docblock"><p>Returns the result of the operation, if successful.</p>
 <h1 id="examples-4" class="section-header"><a href="#examples-4">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">crossbeam_deque</span>::<span class="ident">Steal</span>::{<span class="ident">Empty</span>, <span class="ident">Retry</span>, <span class="ident">Success</span>};
+<span class="kw">use</span> <span class="ident">crossbeam_deque::Steal</span>::{<span class="ident">Empty</span>, <span class="ident">Retry</span>, <span class="ident">Success</span>};
 
 <span class="macro">assert_eq!</span>(<span class="ident">Empty</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>.<span class="ident">success</span>(), <span class="prelude-val">None</span>);
 <span class="macro">assert_eq!</span>(<span class="ident">Retry</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>.<span class="ident">success</span>(), <span class="prelude-val">None</span>);
@@ -70,7 +70,7 @@
 </ul>
 <h1 id="examples-5" class="section-header"><a href="#examples-5">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">crossbeam_deque</span>::<span class="ident">Steal</span>::{<span class="ident">Empty</span>, <span class="ident">Retry</span>, <span class="ident">Success</span>};
+<span class="kw">use</span> <span class="ident">crossbeam_deque::Steal</span>::{<span class="ident">Empty</span>, <span class="ident">Retry</span>, <span class="ident">Success</span>};
 
 <span class="macro">assert_eq!</span>(<span class="ident">Success</span>(<span class="number">1</span>).<span class="ident">or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Success</span>(<span class="number">2</span>)), <span class="ident">Success</span>(<span class="number">1</span>));
 <span class="macro">assert_eq!</span>(<span class="ident">Retry</span>.<span class="ident">or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Success</span>(<span class="number">2</span>)), <span class="ident">Success</span>(<span class="number">2</span>));

@@ -9,13 +9,13 @@
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">wasmparser</span>::{<span class="ident">Operator</span>, <span class="ident">CodeSectionReader</span>, <span class="prelude-ty">Result</span>};
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">code_reader</span> <span class="op">=</span> <span class="ident">CodeSectionReader</span>::<span class="ident">new</span>(<span class="ident">data</span>, <span class="number">0</span>).<span class="ident">unwrap</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">code_reader</span> <span class="op">=</span> <span class="ident">CodeSectionReader::new</span>(<span class="ident">data</span>, <span class="number">0</span>).<span class="ident">unwrap</span>();
 <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">code_reader</span>.<span class="ident">get_count</span>() {
     <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">code_reader</span>.<span class="ident">read</span>().<span class="ident">expect</span>(<span class="string">&quot;function body&quot;</span>);
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">op_reader</span> <span class="op">=</span> <span class="ident">body</span>.<span class="ident">get_operators_reader</span>().<span class="ident">expect</span>(<span class="string">&quot;op reader&quot;</span>);
     <span class="kw">let</span> <span class="ident">ops</span> <span class="op">=</span> <span class="ident">op_reader</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Operator</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>().<span class="ident">expect</span>(<span class="string">&quot;ops&quot;</span>);
     <span class="macro">assert!</span>(
-        <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">Operator</span>::<span class="ident">Nop</span>, <span class="ident">Operator</span>::<span class="ident">End</span>] <span class="op">=</span> <span class="ident">ops</span>.<span class="ident">as_slice</span>() { <span class="bool-val">true</span> } <span class="kw">else</span> { <span class="bool-val">false</span> },
+        <span class="kw">if</span> <span class="kw">let</span> [<span class="ident">Operator::Nop</span>, <span class="ident">Operator::End</span>] <span class="op">=</span> <span class="ident">ops</span>.<span class="ident">as_slice</span>() { <span class="bool-val">true</span> } <span class="kw">else</span> { <span class="bool-val">false</span> },
         <span class="string">&quot;found {:?}&quot;</span>,
         <span class="ident">ops</span>
     );

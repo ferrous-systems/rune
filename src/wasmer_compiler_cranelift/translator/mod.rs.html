@@ -28,14 +28,14 @@
 <span class="kw">mod</span> <span class="ident">translation_utils</span>;
 <span class="kw">mod</span> <span class="ident">unwind</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">func_environ</span>::{<span class="ident">FuncEnvironment</span>, <span class="ident">GlobalVariable</span>, <span class="ident">ReturnMode</span>, <span class="ident">TargetEnvironment</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">func_state</span>::<span class="ident">FuncTranslationState</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">func_translator</span>::<span class="ident">FuncTranslator</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">translation_utils</span>::{
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::func_environ</span>::{<span class="ident">FuncEnvironment</span>, <span class="ident">GlobalVariable</span>, <span class="ident">ReturnMode</span>, <span class="ident">TargetEnvironment</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::func_state::FuncTranslationState</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::func_translator::FuncTranslator</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::translation_utils</span>::{
     <span class="ident">get_vmctx_value_label</span>, <span class="ident">irlibcall_to_libcall</span>, <span class="ident">irreloc_to_relocationkind</span>,
     <span class="ident">signature_to_cranelift_ir</span>, <span class="ident">transform_jump_table</span>, <span class="ident">type_to_irtype</span>,
 };
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="self">self</span>::<span class="ident">unwind</span>::{<span class="ident">compiled_function_unwind_info</span>, <span class="ident">CraneliftUnwindInfo</span>};
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="self">self</span><span class="ident">::unwind</span>::{<span class="ident">compiled_function_unwind_info</span>, <span class="ident">CraneliftUnwindInfo</span>};
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="wasmer_compiler_cranelift" data-search-js="../../../search-index.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

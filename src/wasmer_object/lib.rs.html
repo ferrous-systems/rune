@@ -36,26 +36,26 @@
 
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>, <span class="ident">trivial_numeric_casts</span>, <span class="ident">unused_extern_crates</span>)]</span>
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">unused_import_braces</span>)]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>, <span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">new_without_default</span>))]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>, <span class="ident">allow</span>(<span class="ident">clippy::new_without_default</span>))]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>,
     <span class="ident">warn</span>(
-        <span class="ident">clippy</span>::<span class="ident">float_arithmetic</span>,
-        <span class="ident">clippy</span>::<span class="ident">mut_mut</span>,
-        <span class="ident">clippy</span>::<span class="ident">nonminimal_bool</span>,
-        <span class="ident">clippy</span>::<span class="ident">option_map_unwrap_or</span>,
-        <span class="ident">clippy</span>::<span class="ident">option_map_unwrap_or_else</span>,
-        <span class="ident">clippy</span>::<span class="ident">print_stdout</span>,
-        <span class="ident">clippy</span>::<span class="ident">unicode_not_nfc</span>,
-        <span class="ident">clippy</span>::<span class="ident">use_self</span>
+        <span class="ident">clippy::float_arithmetic</span>,
+        <span class="ident">clippy::mut_mut</span>,
+        <span class="ident">clippy::nonminimal_bool</span>,
+        <span class="ident">clippy::option_map_unwrap_or</span>,
+        <span class="ident">clippy::option_map_unwrap_or_else</span>,
+        <span class="ident">clippy::print_stdout</span>,
+        <span class="ident">clippy::unicode_not_nfc</span>,
+        <span class="ident">clippy::use_self</span>
     )
 )]</span>
 
 <span class="kw">mod</span> <span class="ident">error</span>;
 <span class="kw">mod</span> <span class="ident">module</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">ObjectError</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">module</span>::{<span class="ident">emit_compilation</span>, <span class="ident">emit_data</span>, <span class="ident">get_object_for_target</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error::ObjectError</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::module</span>::{<span class="ident">emit_compilation</span>, <span class="ident">emit_data</span>, <span class="ident">get_object_for_target</span>};
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="wasmer_object" data-search-js="../../search-index.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>

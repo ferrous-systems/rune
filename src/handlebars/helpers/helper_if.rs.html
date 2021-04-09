@@ -131,13 +131,13 @@
 <span id="128">128</span>
 <span id="129">129</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">context</span>::<span class="ident">Context</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">RenderError</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">helpers</span>::{<span class="ident">HelperDef</span>, <span class="ident">HelperResult</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">json</span>::<span class="ident">value</span>::<span class="ident">JsonTruthy</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">output</span>::<span class="ident">Output</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">registry</span>::<span class="ident">Registry</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">render</span>::{<span class="ident">Helper</span>, <span class="ident">RenderContext</span>, <span class="ident">Renderable</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::context::Context</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error::RenderError</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::helpers</span>::{<span class="ident">HelperDef</span>, <span class="ident">HelperResult</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::json::value::JsonTruthy</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::output::Output</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::registry::Registry</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::render</span>::{<span class="ident">Helper</span>, <span class="ident">RenderContext</span>, <span class="ident">Renderable</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IfHelper</span> {
@@ -155,7 +155,7 @@
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HelperResult</span> {
         <span class="kw">let</span> <span class="ident">param</span> <span class="op">=</span> <span class="ident">h</span>
             .<span class="ident">param</span>(<span class="number">0</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">RenderError</span>::<span class="ident">new</span>(<span class="string">&quot;Param not found for helper \&quot;if\&quot;&quot;</span>))<span class="question-mark">?</span>;
+            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">RenderError::new</span>(<span class="string">&quot;Param not found for helper \&quot;if\&quot;&quot;</span>))<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">include_zero</span> <span class="op">=</span> <span class="ident">h</span>
             .<span class="ident">hash_get</span>(<span class="string">&quot;includeZero&quot;</span>)
             .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">value</span>().<span class="ident">as_bool</span>())
@@ -180,14 +180,14 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">helpers</span>::<span class="ident">WITH_HELPER</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">registry</span>::<span class="ident">Registry</span>;
-    <span class="kw">use</span> <span class="ident">serde_json</span>::<span class="ident">value</span>::<span class="ident">Value</span> <span class="kw">as</span> <span class="ident">Json</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">FromStr</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::helpers::WITH_HELPER</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::registry::Registry</span>;
+    <span class="kw">use</span> <span class="ident">serde_json::value::Value</span> <span class="kw">as</span> <span class="ident">Json</span>;
+    <span class="kw">use</span> <span class="ident">std::str::FromStr</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_if</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="macro">assert!</span>(<span class="ident">handlebars</span>
             .<span class="ident">register_template_string</span>(<span class="string">&quot;t0&quot;</span>, <span class="string">&quot;{{#if this}}hello{{/if}}&quot;</span>)
             .<span class="ident">is_ok</span>());
@@ -208,10 +208,10 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_if_context</span>() {
         <span class="kw">let</span> <span class="ident">json_str</span> <span class="op">=</span> <span class="string">r#&quot;{&quot;a&quot;:{&quot;b&quot;:99,&quot;c&quot;:{&quot;d&quot;: true}}}&quot;#</span>;
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Json</span>::<span class="ident">from_str</span>(<span class="ident">json_str</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Json::from_str</span>(<span class="ident">json_str</span>).<span class="ident">unwrap</span>();
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
-        <span class="ident">handlebars</span>.<span class="ident">register_helper</span>(<span class="string">&quot;with&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">WITH_HELPER</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
+        <span class="ident">handlebars</span>.<span class="ident">register_helper</span>(<span class="string">&quot;with&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">WITH_HELPER</span>));
         <span class="macro">assert!</span>(<span class="ident">handlebars</span>
             .<span class="ident">register_template_string</span>(<span class="string">&quot;t0&quot;</span>, <span class="string">&quot;{{#if a.c.d}}hello {{a.b}}{{/if}}&quot;</span>)
             .<span class="ident">is_ok</span>());
@@ -231,8 +231,8 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_if_include_zero</span>() {
-        <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">f64</span>;
-        <span class="kw">let</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">use</span> <span class="ident">std::f64</span>;
+        <span class="kw">let</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
 
         <span class="macro">assert_eq!</span>(
             <span class="string">&quot;0&quot;</span>.<span class="ident">to_owned</span>(),
@@ -254,7 +254,7 @@
             <span class="ident">handlebars</span>
                 .<span class="ident">render_template</span>(
                     <span class="string">&quot;{{#if a includeZero=true}}1{{else}}0{{/if}}&quot;</span>,
-                    <span class="kw-2">&amp;</span><span class="macro">json!</span>({ <span class="string">&quot;a&quot;</span>: <span class="ident">f64</span>::<span class="ident">NAN</span> })
+                    <span class="kw-2">&amp;</span><span class="macro">json!</span>({ <span class="string">&quot;a&quot;</span>: <span class="ident">f64::NAN</span> })
                 )
                 .<span class="ident">unwrap</span>()
         );

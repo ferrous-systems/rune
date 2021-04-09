@@ -147,52 +147,52 @@
 <span class="doccomment">//! This module exports the `expand_global_value` function which transforms a `global_value`</span>
 <span class="doccomment">//! instruction into code that depends on the kind of global value referenced.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">FuncCursor</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">flowgraph</span>::<span class="ident">ControlFlowGraph</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="self">self</span>, <span class="ident">InstBuilder</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">TargetIsa</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">FuncCursor</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::flowgraph::ControlFlowGraph</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="self">self</span>, <span class="ident">InstBuilder</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::TargetIsa</span>;
 
 <span class="doccomment">/// Expand a `global_value` instruction according to the definition of the global value.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">expand_global_value</span>(
-    <span class="ident">inst</span>: <span class="ident">ir</span>::<span class="ident">Inst</span>,
-    <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir</span>::<span class="ident">Function</span>,
+    <span class="ident">inst</span>: <span class="ident">ir::Inst</span>,
+    <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir::Function</span>,
     <span class="ident">_cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ControlFlowGraph</span>,
     <span class="ident">isa</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span>,
 ) {
     <span class="comment">// Unpack the instruction.</span>
     <span class="kw">let</span> <span class="ident">gv</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>] {
-        <span class="ident">ir</span>::<span class="ident">InstructionData</span>::<span class="ident">UnaryGlobalValue</span> {
+        <span class="ident">ir::InstructionData::UnaryGlobalValue</span> {
             <span class="ident">opcode</span>,
             <span class="ident">global_value</span>,
         } <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="macro">debug_assert_eq!</span>(<span class="ident">opcode</span>, <span class="ident">ir</span>::<span class="ident">Opcode</span>::<span class="ident">GlobalValue</span>);
+            <span class="macro">debug_assert_eq!</span>(<span class="ident">opcode</span>, <span class="ident">ir::Opcode::GlobalValue</span>);
             <span class="ident">global_value</span>
         }
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Wanted global_value: {}&quot;</span>, <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>, <span class="prelude-val">None</span>)),
     };
 
     <span class="kw">match</span> <span class="ident">func</span>.<span class="ident">global_values</span>[<span class="ident">gv</span>] {
-        <span class="ident">ir</span>::<span class="ident">GlobalValueData</span>::<span class="ident">VMContext</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">vmctx_addr</span>(<span class="ident">inst</span>, <span class="ident">func</span>),
-        <span class="ident">ir</span>::<span class="ident">GlobalValueData</span>::<span class="ident">IAddImm</span> {
+        <span class="ident">ir::GlobalValueData::VMContext</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">vmctx_addr</span>(<span class="ident">inst</span>, <span class="ident">func</span>),
+        <span class="ident">ir::GlobalValueData::IAddImm</span> {
             <span class="ident">base</span>,
             <span class="ident">offset</span>,
             <span class="ident">global_type</span>,
         } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">iadd_imm_addr</span>(<span class="ident">inst</span>, <span class="ident">func</span>, <span class="ident">base</span>, <span class="ident">offset</span>.<span class="ident">into</span>(), <span class="ident">global_type</span>),
-        <span class="ident">ir</span>::<span class="ident">GlobalValueData</span>::<span class="ident">Load</span> {
+        <span class="ident">ir::GlobalValueData::Load</span> {
             <span class="ident">base</span>,
             <span class="ident">offset</span>,
             <span class="ident">global_type</span>,
             <span class="ident">readonly</span>,
         } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">load_addr</span>(<span class="ident">inst</span>, <span class="ident">func</span>, <span class="ident">base</span>, <span class="ident">offset</span>, <span class="ident">global_type</span>, <span class="ident">readonly</span>, <span class="ident">isa</span>),
-        <span class="ident">ir</span>::<span class="ident">GlobalValueData</span>::<span class="ident">Symbol</span> { <span class="ident">tls</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">symbol</span>(<span class="ident">inst</span>, <span class="ident">func</span>, <span class="ident">gv</span>, <span class="ident">isa</span>, <span class="ident">tls</span>),
+        <span class="ident">ir::GlobalValueData::Symbol</span> { <span class="ident">tls</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">symbol</span>(<span class="ident">inst</span>, <span class="ident">func</span>, <span class="ident">gv</span>, <span class="ident">isa</span>, <span class="ident">tls</span>),
     }
 }
 
 <span class="doccomment">/// Expand a `global_value` instruction for a vmctx global.</span>
-<span class="kw">fn</span> <span class="ident">vmctx_addr</span>(<span class="ident">inst</span>: <span class="ident">ir</span>::<span class="ident">Inst</span>, <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir</span>::<span class="ident">Function</span>) {
+<span class="kw">fn</span> <span class="ident">vmctx_addr</span>(<span class="ident">inst</span>: <span class="ident">ir::Inst</span>, <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir::Function</span>) {
     <span class="comment">// Get the value representing the `vmctx` argument.</span>
     <span class="kw">let</span> <span class="ident">vmctx</span> <span class="op">=</span> <span class="ident">func</span>
-        .<span class="ident">special_param</span>(<span class="ident">ir</span>::<span class="ident">ArgumentPurpose</span>::<span class="ident">VMContext</span>)
+        .<span class="ident">special_param</span>(<span class="ident">ir::ArgumentPurpose::VMContext</span>)
         .<span class="ident">expect</span>(<span class="string">&quot;Missing vmctx parameter&quot;</span>);
 
     <span class="comment">// Replace the `global_value` instruction&#39;s value with an alias to the vmctx arg.</span>
@@ -204,19 +204,19 @@
 
 <span class="doccomment">/// Expand a `global_value` instruction for an iadd_imm global.</span>
 <span class="kw">fn</span> <span class="ident">iadd_imm_addr</span>(
-    <span class="ident">inst</span>: <span class="ident">ir</span>::<span class="ident">Inst</span>,
-    <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir</span>::<span class="ident">Function</span>,
-    <span class="ident">base</span>: <span class="ident">ir</span>::<span class="ident">GlobalValue</span>,
+    <span class="ident">inst</span>: <span class="ident">ir::Inst</span>,
+    <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir::Function</span>,
+    <span class="ident">base</span>: <span class="ident">ir::GlobalValue</span>,
     <span class="ident">offset</span>: <span class="ident">i64</span>,
-    <span class="ident">global_type</span>: <span class="ident">ir</span>::<span class="ident">Type</span>,
+    <span class="ident">global_type</span>: <span class="ident">ir::Type</span>,
 ) {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor</span>::<span class="ident">new</span>(<span class="ident">func</span>).<span class="ident">at_inst</span>(<span class="ident">inst</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor::new</span>(<span class="ident">func</span>).<span class="ident">at_inst</span>(<span class="ident">inst</span>);
 
     <span class="comment">// Get the value for the lhs. For tidiness, expand VMContext here so that we avoid</span>
     <span class="comment">// `vmctx_addr` which creates an otherwise unneeded value alias.</span>
-    <span class="kw">let</span> <span class="ident">lhs</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ir</span>::<span class="ident">GlobalValueData</span>::<span class="ident">VMContext</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">global_values</span>[<span class="ident">base</span>] {
+    <span class="kw">let</span> <span class="ident">lhs</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ir::GlobalValueData::VMContext</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">global_values</span>[<span class="ident">base</span>] {
         <span class="ident">pos</span>.<span class="ident">func</span>
-            .<span class="ident">special_param</span>(<span class="ident">ir</span>::<span class="ident">ArgumentPurpose</span>::<span class="ident">VMContext</span>)
+            .<span class="ident">special_param</span>(<span class="ident">ir::ArgumentPurpose::VMContext</span>)
             .<span class="ident">expect</span>(<span class="string">&quot;Missing vmctx parameter&quot;</span>)
     } <span class="kw">else</span> {
         <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">global_value</span>(<span class="ident">global_type</span>, <span class="ident">base</span>)
@@ -228,11 +228,11 @@
 
 <span class="doccomment">/// Expand a `global_value` instruction for a load global.</span>
 <span class="kw">fn</span> <span class="ident">load_addr</span>(
-    <span class="ident">inst</span>: <span class="ident">ir</span>::<span class="ident">Inst</span>,
-    <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir</span>::<span class="ident">Function</span>,
-    <span class="ident">base</span>: <span class="ident">ir</span>::<span class="ident">GlobalValue</span>,
-    <span class="ident">offset</span>: <span class="ident">ir</span>::<span class="ident">immediates</span>::<span class="ident">Offset32</span>,
-    <span class="ident">global_type</span>: <span class="ident">ir</span>::<span class="ident">Type</span>,
+    <span class="ident">inst</span>: <span class="ident">ir::Inst</span>,
+    <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir::Function</span>,
+    <span class="ident">base</span>: <span class="ident">ir::GlobalValue</span>,
+    <span class="ident">offset</span>: <span class="ident">ir::immediates::Offset32</span>,
+    <span class="ident">global_type</span>: <span class="ident">ir::Type</span>,
     <span class="ident">readonly</span>: <span class="ident">bool</span>,
     <span class="ident">isa</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span>,
 ) {
@@ -240,21 +240,21 @@
     <span class="comment">// instruction. This depends on the iterative legalization loop. Note that the IR verifier</span>
     <span class="comment">// detects any cycles in the `load` globals.</span>
     <span class="kw">let</span> <span class="ident">ptr_ty</span> <span class="op">=</span> <span class="ident">isa</span>.<span class="ident">pointer_type</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor</span>::<span class="ident">new</span>(<span class="ident">func</span>).<span class="ident">at_inst</span>(<span class="ident">inst</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor::new</span>(<span class="ident">func</span>).<span class="ident">at_inst</span>(<span class="ident">inst</span>);
     <span class="ident">pos</span>.<span class="ident">use_srcloc</span>(<span class="ident">inst</span>);
 
     <span class="comment">// Get the value for the base. For tidiness, expand VMContext here so that we avoid</span>
     <span class="comment">// `vmctx_addr` which creates an otherwise unneeded value alias.</span>
-    <span class="kw">let</span> <span class="ident">base_addr</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ir</span>::<span class="ident">GlobalValueData</span>::<span class="ident">VMContext</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">global_values</span>[<span class="ident">base</span>] {
+    <span class="kw">let</span> <span class="ident">base_addr</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ir::GlobalValueData::VMContext</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">global_values</span>[<span class="ident">base</span>] {
         <span class="ident">pos</span>.<span class="ident">func</span>
-            .<span class="ident">special_param</span>(<span class="ident">ir</span>::<span class="ident">ArgumentPurpose</span>::<span class="ident">VMContext</span>)
+            .<span class="ident">special_param</span>(<span class="ident">ir::ArgumentPurpose::VMContext</span>)
             .<span class="ident">expect</span>(<span class="string">&quot;Missing vmctx parameter&quot;</span>)
     } <span class="kw">else</span> {
         <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">global_value</span>(<span class="ident">ptr_ty</span>, <span class="ident">base</span>)
     };
 
     <span class="comment">// Global-value loads are always notrap and aligned. They may be readonly.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mflags</span> <span class="op">=</span> <span class="ident">ir</span>::<span class="ident">MemFlags</span>::<span class="ident">trusted</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mflags</span> <span class="op">=</span> <span class="ident">ir::MemFlags::trusted</span>();
     <span class="kw">if</span> <span class="ident">readonly</span> {
         <span class="ident">mflags</span>.<span class="ident">set_readonly</span>();
     }
@@ -268,9 +268,9 @@
 
 <span class="doccomment">/// Expand a `global_value` instruction for a symbolic name global.</span>
 <span class="kw">fn</span> <span class="ident">symbol</span>(
-    <span class="ident">inst</span>: <span class="ident">ir</span>::<span class="ident">Inst</span>,
-    <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir</span>::<span class="ident">Function</span>,
-    <span class="ident">gv</span>: <span class="ident">ir</span>::<span class="ident">GlobalValue</span>,
+    <span class="ident">inst</span>: <span class="ident">ir::Inst</span>,
+    <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir::Function</span>,
+    <span class="ident">gv</span>: <span class="ident">ir::GlobalValue</span>,
     <span class="ident">isa</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span>,
     <span class="ident">tls</span>: <span class="ident">bool</span>,
 ) {

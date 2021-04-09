@@ -861,19 +861,19 @@
 <span class="doccomment">//! The `write` module provides the `write_function` function which converts an IR `Function` to an</span>
 <span class="doccomment">//! equivalent textual form. This textual form can be read back by the `cranelift-reader` crate.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">entity</span>::<span class="ident">SecondaryMap</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">entities</span>::<span class="ident">AnyEntity</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::entity::SecondaryMap</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::entities::AnyEntity</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{
     <span class="ident">Block</span>, <span class="ident">DataFlowGraph</span>, <span class="ident">DisplayFunctionAnnotations</span>, <span class="ident">Function</span>, <span class="ident">Inst</span>, <span class="ident">SigRef</span>, <span class="ident">Type</span>, <span class="ident">Value</span>,
     <span class="ident">ValueDef</span>, <span class="ident">ValueLoc</span>,
 };
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::{<span class="ident">RegInfo</span>, <span class="ident">TargetIsa</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">packed_option</span>::<span class="ident">ReservedValue</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">value_label</span>::<span class="ident">ValueLabelsRanges</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">HashSet</span>;
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">string</span>::<span class="ident">String</span>;
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>::{<span class="self">self</span>, <span class="ident">Write</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa</span>::{<span class="ident">RegInfo</span>, <span class="ident">TargetIsa</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::packed_option::ReservedValue</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::value_label::ValueLabelsRanges</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::HashSet</span>;
+<span class="kw">use</span> <span class="ident">alloc::string::String</span>;
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>::{<span class="self">self</span>, <span class="ident">Write</span>};
 
 <span class="doccomment">/// A `FuncWriter` used to decorate functions during printing.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FuncWriter</span> {
@@ -885,7 +885,7 @@
         <span class="ident">isa</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span><span class="op">&gt;</span>,
         <span class="ident">block</span>: <span class="ident">Block</span>,
         <span class="ident">indent</span>: <span class="ident">usize</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span>;
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span>;
 
     <span class="doccomment">/// Write the given `inst` to `w`.</span>
     <span class="kw">fn</span> <span class="ident">write_instruction</span>(
@@ -896,7 +896,7 @@
         <span class="ident">isa</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span><span class="op">&gt;</span>,
         <span class="ident">inst</span>: <span class="ident">Inst</span>,
         <span class="ident">indent</span>: <span class="ident">usize</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span>;
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span>;
 
     <span class="doccomment">/// Write the preamble to `w`. By default, this uses `write_entity_definition`.</span>
     <span class="kw">fn</span> <span class="ident">write_preamble</span>(
@@ -904,7 +904,7 @@
         <span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>,
         <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>,
         <span class="ident">regs</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">RegInfo</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">fmt</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">super_preamble</span>(<span class="ident">w</span>, <span class="ident">func</span>, <span class="ident">regs</span>)
     }
 
@@ -914,7 +914,7 @@
         <span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>,
         <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>,
         <span class="ident">regs</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">RegInfo</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">fmt</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">bool</span>, <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">any</span> <span class="op">=</span> <span class="bool-val">false</span>;
 
         <span class="kw">for</span> (<span class="ident">ss</span>, <span class="ident">slot</span>) <span class="kw">in</span> <span class="ident">func</span>.<span class="ident">stack_slots</span>.<span class="ident">iter</span>() {
@@ -949,7 +949,7 @@
         }
 
         <span class="kw">for</span> (<span class="ident">fnref</span>, <span class="ident">ext_func</span>) <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">ext_funcs</span> {
-            <span class="kw">if</span> <span class="ident">ext_func</span>.<span class="ident">signature</span> <span class="op">!</span><span class="op">=</span> <span class="ident">SigRef</span>::<span class="ident">reserved_value</span>() {
+            <span class="kw">if</span> <span class="ident">ext_func</span>.<span class="ident">signature</span> <span class="op">!</span><span class="op">=</span> <span class="ident">SigRef::reserved_value</span>() {
                 <span class="ident">any</span> <span class="op">=</span> <span class="bool-val">true</span>;
                 <span class="self">self</span>.<span class="ident">write_entity_definition</span>(<span class="ident">w</span>, <span class="ident">func</span>, <span class="ident">fnref</span>.<span class="ident">into</span>(), <span class="ident">ext_func</span>)<span class="question-mark">?</span>;
             }
@@ -967,7 +967,7 @@
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">limit</span>) <span class="op">=</span> <span class="ident">func</span>.<span class="ident">stack_limit</span> {
             <span class="ident">any</span> <span class="op">=</span> <span class="bool-val">true</span>;
-            <span class="self">self</span>.<span class="ident">write_entity_definition</span>(<span class="ident">w</span>, <span class="ident">func</span>, <span class="ident">AnyEntity</span>::<span class="ident">StackLimit</span>, <span class="kw-2">&amp;</span><span class="ident">limit</span>)<span class="question-mark">?</span>;
+            <span class="self">self</span>.<span class="ident">write_entity_definition</span>(<span class="ident">w</span>, <span class="ident">func</span>, <span class="ident">AnyEntity::StackLimit</span>, <span class="kw-2">&amp;</span><span class="ident">limit</span>)<span class="question-mark">?</span>;
         }
 
         <span class="prelude-val">Ok</span>(<span class="ident">any</span>)
@@ -979,8 +979,8 @@
         <span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>,
         <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>,
         <span class="ident">entity</span>: <span class="ident">AnyEntity</span>,
-        <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">fmt</span>::<span class="ident">Display</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">fmt::Display</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="ident">super_entity_definition</span>(<span class="ident">w</span>, <span class="ident">func</span>, <span class="ident">entity</span>, <span class="ident">value</span>)
     }
 
@@ -991,8 +991,8 @@
         <span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>,
         <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>,
         <span class="ident">entity</span>: <span class="ident">AnyEntity</span>,
-        <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">fmt</span>::<span class="ident">Display</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">fmt::Display</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">writeln!</span>(<span class="ident">w</span>, <span class="string">&quot;    {} = {}&quot;</span>, <span class="ident">entity</span>, <span class="ident">value</span>)
     }
 }
@@ -1009,7 +1009,7 @@
         <span class="ident">isa</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span><span class="op">&gt;</span>,
         <span class="ident">inst</span>: <span class="ident">Inst</span>,
         <span class="ident">indent</span>: <span class="ident">usize</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">write_instruction</span>(<span class="ident">w</span>, <span class="ident">func</span>, <span class="ident">aliases</span>, <span class="ident">isa</span>, <span class="ident">inst</span>, <span class="ident">indent</span>)
     }
 
@@ -1020,7 +1020,7 @@
         <span class="ident">isa</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span><span class="op">&gt;</span>,
         <span class="ident">block</span>: <span class="ident">Block</span>,
         <span class="ident">indent</span>: <span class="ident">usize</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">write_block_header</span>(<span class="ident">w</span>, <span class="ident">func</span>, <span class="ident">isa</span>, <span class="ident">block</span>, <span class="ident">indent</span>)
     }
 }
@@ -1031,13 +1031,13 @@
     <span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>,
     <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>,
     <span class="ident">annotations</span>: <span class="kw-2">&amp;</span><span class="ident">DisplayFunctionAnnotations</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
     <span class="ident">decorate_function</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">PlainWriter</span>, <span class="ident">w</span>, <span class="ident">func</span>, <span class="ident">annotations</span>)
 }
 
 <span class="doccomment">/// Create a reverse-alias map from a value to all aliases having that value as a direct target</span>
 <span class="kw">fn</span> <span class="ident">alias_map</span>(<span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SecondaryMap</span><span class="op">&lt;</span><span class="ident">Value</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">aliases</span> <span class="op">=</span> <span class="ident">SecondaryMap</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">aliases</span> <span class="op">=</span> <span class="ident">SecondaryMap</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::new</span>();
     <span class="kw">for</span> <span class="ident">v</span> <span class="kw">in</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">values</span>() {
         <span class="comment">// VADFS returns the immediate target of an alias</span>
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">k</span>) <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_alias_dest_for_serialization</span>(<span class="ident">v</span>) {
@@ -1055,8 +1055,8 @@
     <span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>,
     <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>,
     <span class="ident">annotations</span>: <span class="kw-2">&amp;</span><span class="ident">DisplayFunctionAnnotations</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-    <span class="kw">let</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">annotations</span>.<span class="ident">isa</span>.<span class="ident">map</span>(<span class="ident">TargetIsa</span>::<span class="ident">register_info</span>);
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">let</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">annotations</span>.<span class="ident">isa</span>.<span class="ident">map</span>(<span class="ident">TargetIsa::register_info</span>);
     <span class="kw">let</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">regs</span>.<span class="ident">as_ref</span>();
 
     <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;function &quot;</span>)<span class="question-mark">?</span>;
@@ -1078,7 +1078,7 @@
 <span class="comment">//</span>
 <span class="comment">// Function spec.</span>
 
-<span class="kw">fn</span> <span class="ident">write_spec</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>, <span class="ident">regs</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">RegInfo</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">fn</span> <span class="ident">write_spec</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>, <span class="ident">regs</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">RegInfo</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
     <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{}{}&quot;</span>, <span class="ident">func</span>.<span class="ident">name</span>, <span class="ident">func</span>.<span class="ident">signature</span>.<span class="ident">display</span>(<span class="ident">regs</span>))
 }
 
@@ -1091,7 +1091,7 @@
     <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>,
     <span class="ident">regs</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">RegInfo</span><span class="op">&gt;</span>,
     <span class="ident">arg</span>: <span class="ident">Value</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
     <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{}: {}&quot;</span>, <span class="ident">arg</span>, <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">arg</span>))<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">loc</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">arg</span>];
     <span class="kw">if</span> <span class="ident">loc</span>.<span class="ident">is_assigned</span>() {
@@ -1113,11 +1113,11 @@
     <span class="ident">isa</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span><span class="op">&gt;</span>,
     <span class="ident">block</span>: <span class="ident">Block</span>,
     <span class="ident">indent</span>: <span class="ident">usize</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
     <span class="comment">// The `indent` is the instruction indentation. block headers are 4 spaces out from that.</span>
     <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{1:0$}{2}&quot;</span>, <span class="ident">indent</span> <span class="op">-</span> <span class="number">4</span>, <span class="string">&quot;&quot;</span>, <span class="ident">block</span>)<span class="question-mark">?</span>;
 
-    <span class="kw">let</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">isa</span>.<span class="ident">map</span>(<span class="ident">TargetIsa</span>::<span class="ident">register_info</span>);
+    <span class="kw">let</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">isa</span>.<span class="ident">map</span>(<span class="ident">TargetIsa::register_info</span>);
     <span class="kw">let</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">regs</span>.<span class="ident">as_ref</span>();
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">block_params</span>(<span class="ident">block</span>).<span class="ident">iter</span>().<span class="ident">cloned</span>();
@@ -1136,11 +1136,11 @@
     <span class="macro">writeln!</span>(<span class="ident">w</span>, <span class="string">&quot;):&quot;</span>)
 }
 
-<span class="kw">fn</span> <span class="ident">write_valueloc</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">loc</span>: <span class="ident">ValueLoc</span>, <span class="ident">regs</span>: <span class="kw-2">&amp;</span><span class="ident">RegInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">fn</span> <span class="ident">write_valueloc</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">loc</span>: <span class="ident">ValueLoc</span>, <span class="ident">regs</span>: <span class="kw-2">&amp;</span><span class="ident">RegInfo</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
     <span class="kw">match</span> <span class="ident">loc</span> {
-        <span class="ident">ValueLoc</span>::<span class="ident">Reg</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">regs</span>.<span class="ident">display_regunit</span>(<span class="ident">r</span>)),
-        <span class="ident">ValueLoc</span>::<span class="ident">Stack</span>(<span class="ident">ss</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">ss</span>),
-        <span class="ident">ValueLoc</span>::<span class="ident">Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;?&quot;</span>),
+        <span class="ident">ValueLoc::Reg</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">regs</span>.<span class="ident">display_regunit</span>(<span class="ident">r</span>)),
+        <span class="ident">ValueLoc::Stack</span>(<span class="ident">ss</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">ss</span>),
+        <span class="ident">ValueLoc::Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;?&quot;</span>),
     }
 }
 
@@ -1150,9 +1150,9 @@
     <span class="ident">regs</span>: <span class="kw-2">&amp;</span><span class="ident">RegInfo</span>,
     <span class="ident">offset</span>: <span class="ident">u32</span>,
     <span class="ident">indent</span>: <span class="ident">usize</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">new</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shown</span> <span class="op">=</span> <span class="ident">HashSet</span>::<span class="ident">new</span>();
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">String::new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shown</span> <span class="op">=</span> <span class="ident">HashSet::new</span>();
     <span class="kw">for</span> (<span class="ident">val</span>, <span class="ident">rng</span>) <span class="kw">in</span> <span class="ident">val_ranges</span> {
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> (<span class="number">0</span>..<span class="ident">rng</span>.<span class="ident">len</span>()).<span class="ident">rev</span>() {
             <span class="kw">if</span> <span class="ident">rng</span>[<span class="ident">i</span>].<span class="ident">start</span> <span class="op">=</span><span class="op">=</span> <span class="ident">offset</span> {
@@ -1184,7 +1184,7 @@
     <span class="ident">aliases</span>: <span class="kw-2">&amp;</span><span class="ident">SecondaryMap</span><span class="op">&lt;</span><span class="ident">Value</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">annotations</span>: <span class="kw-2">&amp;</span><span class="ident">DisplayFunctionAnnotations</span>,
     <span class="ident">block</span>: <span class="ident">Block</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
     <span class="comment">// Indent all instructions if any encodings are present.</span>
     <span class="kw">let</span> <span class="ident">indent</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">func</span>.<span class="ident">encodings</span>.<span class="ident">is_empty</span>() <span class="op">&amp;&amp;</span> <span class="ident">func</span>.<span class="ident">srclocs</span>.<span class="ident">is_empty</span>() {
         <span class="number">4</span>
@@ -1243,8 +1243,8 @@
     <span class="kw">if</span> <span class="ident">constraints</span>.<span class="ident">use_typevar_operand</span>() {
         <span class="kw">let</span> <span class="ident">ctrl_var</span> <span class="op">=</span> <span class="ident">inst_data</span>.<span class="ident">typevar_operand</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_lists</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">def_block</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_def</span>(<span class="ident">ctrl_var</span>) {
-            <span class="ident">ValueDef</span>::<span class="prelude-ty">Result</span>(<span class="ident">instr</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">func</span>.<span class="ident">layout</span>.<span class="ident">inst_block</span>(<span class="ident">instr</span>),
-            <span class="ident">ValueDef</span>::<span class="ident">Param</span>(<span class="ident">block</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">block</span>),
+            <span class="ident">ValueDef::Result</span>(<span class="ident">instr</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">func</span>.<span class="ident">layout</span>.<span class="ident">inst_block</span>(<span class="ident">instr</span>),
+            <span class="ident">ValueDef::Param</span>(<span class="ident">block</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">block</span>),
         };
         <span class="kw">if</span> <span class="ident">def_block</span>.<span class="ident">is_some</span>() <span class="op">&amp;&amp;</span> <span class="ident">def_block</span> <span class="op">=</span><span class="op">=</span> <span class="ident">func</span>.<span class="ident">layout</span>.<span class="ident">inst_block</span>(<span class="ident">inst</span>) {
             <span class="kw">return</span> <span class="prelude-val">None</span>;
@@ -1265,7 +1265,7 @@
     <span class="ident">aliases</span>: <span class="kw-2">&amp;</span><span class="ident">SecondaryMap</span><span class="op">&lt;</span><span class="ident">Value</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">target</span>: <span class="ident">Value</span>,
     <span class="ident">indent</span>: <span class="ident">usize</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">todo_stack</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">target</span>];
     <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">target</span>) <span class="op">=</span> <span class="ident">todo_stack</span>.<span class="ident">pop</span>() {
         <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">a</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">aliases</span>[<span class="ident">target</span>] {
@@ -1284,9 +1284,9 @@
     <span class="ident">isa</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span><span class="op">&gt;</span>,
     <span class="ident">inst</span>: <span class="ident">Inst</span>,
     <span class="ident">indent</span>: <span class="ident">usize</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
     <span class="comment">// Prefix containing source location, encoding, and value locations.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">with_capacity</span>(<span class="number">16</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">String::with_capacity</span>(<span class="number">16</span>);
 
     <span class="comment">// Source location goes first.</span>
     <span class="kw">let</span> <span class="ident">srcloc</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">srclocs</span>[<span class="ident">inst</span>];
@@ -1352,9 +1352,9 @@
     <span class="ident">dfg</span>: <span class="kw-2">&amp;</span><span class="ident">DataFlowGraph</span>,
     <span class="ident">isa</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span><span class="op">&gt;</span>,
     <span class="ident">inst</span>: <span class="ident">Inst</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
     <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">dfg</span>.<span class="ident">value_lists</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">instructions</span>::<span class="ident">InstructionData</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::instructions::InstructionData</span>::<span class="kw-2">*</span>;
     <span class="kw">match</span> <span class="ident">dfg</span>[<span class="ident">inst</span>] {
         <span class="ident">AtomicRmw</span> { <span class="ident">op</span>, <span class="ident">args</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}, {}&quot;</span>, <span class="ident">op</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>]),
         <span class="ident">AtomicCas</span> { <span class="ident">args</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; {}, {}, {}&quot;</span>, <span class="ident">args</span>[<span class="number">0</span>], <span class="ident">args</span>[<span class="number">1</span>], <span class="ident">args</span>[<span class="number">2</span>]),
@@ -1584,7 +1584,7 @@
 }
 
 <span class="doccomment">/// Write block args using optional parantheses.</span>
-<span class="kw">fn</span> <span class="ident">write_block_args</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">args</span>: <span class="kw-2">&amp;</span>[<span class="ident">Value</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">fn</span> <span class="ident">write_block_args</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>, <span class="ident">args</span>: <span class="kw-2">&amp;</span>[<span class="ident">Value</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
     <span class="kw">if</span> <span class="ident">args</span>.<span class="ident">is_empty</span>() {
         <span class="prelude-val">Ok</span>(())
     } <span class="kw">else</span> {
@@ -1595,8 +1595,8 @@
 <span class="doccomment">/// Displayable slice of values.</span>
 <span class="kw">struct</span> <span class="ident">DisplayValues</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">Value</span>]);
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">DisplayValues</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">DisplayValues</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">val</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
             <span class="kw">if</span> <span class="ident">i</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
                 <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">val</span>)<span class="question-mark">?</span>;
@@ -1610,8 +1610,8 @@
 
 <span class="kw">struct</span> <span class="ident">DisplayValuesWithDelimiter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">Value</span>], <span class="ident">char</span>);
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">DisplayValuesWithDelimiter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">DisplayValuesWithDelimiter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">val</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
             <span class="kw">if</span> <span class="ident">i</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
                 <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">val</span>)<span class="question-mark">?</span>;
@@ -1625,20 +1625,20 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">CursorPosition</span>, <span class="ident">FuncCursor</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">types</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">ExternalName</span>, <span class="ident">Function</span>, <span class="ident">InstBuilder</span>, <span class="ident">StackSlotData</span>, <span class="ident">StackSlotKind</span>};
-    <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">string</span>::<span class="ident">ToString</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">CursorPosition</span>, <span class="ident">FuncCursor</span>};
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::types</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">ExternalName</span>, <span class="ident">Function</span>, <span class="ident">InstBuilder</span>, <span class="ident">StackSlotData</span>, <span class="ident">StackSlotKind</span>};
+    <span class="kw">use</span> <span class="ident">alloc::string::ToString</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">basic</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">Function</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">Function::new</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">f</span>.<span class="ident">to_string</span>(), <span class="string">&quot;function u0:0() fast {\n}\n&quot;</span>);
 
-        <span class="ident">f</span>.<span class="ident">name</span> <span class="op">=</span> <span class="ident">ExternalName</span>::<span class="ident">testcase</span>(<span class="string">&quot;foo&quot;</span>);
+        <span class="ident">f</span>.<span class="ident">name</span> <span class="op">=</span> <span class="ident">ExternalName::testcase</span>(<span class="string">&quot;foo&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">f</span>.<span class="ident">to_string</span>(), <span class="string">&quot;function %foo() fast {\n}\n&quot;</span>);
 
-        <span class="ident">f</span>.<span class="ident">create_stack_slot</span>(<span class="ident">StackSlotData</span>::<span class="ident">new</span>(<span class="ident">StackSlotKind</span>::<span class="ident">ExplicitSlot</span>, <span class="number">4</span>));
+        <span class="ident">f</span>.<span class="ident">create_stack_slot</span>(<span class="ident">StackSlotData::new</span>(<span class="ident">StackSlotKind::ExplicitSlot</span>, <span class="number">4</span>));
         <span class="macro">assert_eq!</span>(
             <span class="ident">f</span>.<span class="ident">to_string</span>(),
             <span class="string">&quot;function %foo() fast {\n    ss0 = explicit_slot 4\n}\n&quot;</span>
@@ -1651,21 +1651,21 @@
             <span class="string">&quot;function %foo() fast {\n    ss0 = explicit_slot 4\n\nblock0:\n}\n&quot;</span>
         );
 
-        <span class="ident">f</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types</span>::<span class="ident">I8</span>);
+        <span class="ident">f</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types::I8</span>);
         <span class="macro">assert_eq!</span>(
             <span class="ident">f</span>.<span class="ident">to_string</span>(),
             <span class="string">&quot;function %foo() fast {\n    ss0 = explicit_slot 4\n\nblock0(v0: i8):\n}\n&quot;</span>
         );
 
-        <span class="ident">f</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types</span>::<span class="ident">F32</span>.<span class="ident">by</span>(<span class="number">4</span>).<span class="ident">unwrap</span>());
+        <span class="ident">f</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block</span>, <span class="ident">types::F32</span>.<span class="ident">by</span>(<span class="number">4</span>).<span class="ident">unwrap</span>());
         <span class="macro">assert_eq!</span>(
             <span class="ident">f</span>.<span class="ident">to_string</span>(),
             <span class="string">&quot;function %foo() fast {\n    ss0 = explicit_slot 4\n\nblock0(v0: i8, v1: f32x4):\n}\n&quot;</span>
         );
 
         {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cursor</span> <span class="op">=</span> <span class="ident">FuncCursor</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>);
-            <span class="ident">cursor</span>.<span class="ident">set_position</span>(<span class="ident">CursorPosition</span>::<span class="ident">After</span>(<span class="ident">block</span>));
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cursor</span> <span class="op">=</span> <span class="ident">FuncCursor::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>);
+            <span class="ident">cursor</span>.<span class="ident">set_position</span>(<span class="ident">CursorPosition::After</span>(<span class="ident">block</span>));
             <span class="ident">cursor</span>.<span class="ident">ins</span>().<span class="ident">return_</span>(<span class="kw-2">&amp;</span>[])
         };
         <span class="macro">assert_eq!</span>(
@@ -1676,32 +1676,32 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">aliases</span>() {
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">InstBuilder</span>;
+        <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::InstBuilder</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">Function</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">Function::new</span>();
         {
             <span class="kw">let</span> <span class="ident">block0</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">make_block</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">func</span>);
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">func</span>);
             <span class="ident">pos</span>.<span class="ident">insert_block</span>(<span class="ident">block0</span>);
 
             <span class="comment">// make some detached values for change_to_alias</span>
-            <span class="kw">let</span> <span class="ident">v0</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block0</span>, <span class="ident">types</span>::<span class="ident">I32</span>);
-            <span class="kw">let</span> <span class="ident">v1</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block0</span>, <span class="ident">types</span>::<span class="ident">I32</span>);
-            <span class="kw">let</span> <span class="ident">v2</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block0</span>, <span class="ident">types</span>::<span class="ident">I32</span>);
+            <span class="kw">let</span> <span class="ident">v0</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block0</span>, <span class="ident">types::I32</span>);
+            <span class="kw">let</span> <span class="ident">v1</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block0</span>, <span class="ident">types::I32</span>);
+            <span class="kw">let</span> <span class="ident">v2</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block0</span>, <span class="ident">types::I32</span>);
             <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">detach_block_params</span>(<span class="ident">block0</span>);
 
             <span class="comment">// alias to a param--will be printed at beginning of block defining param</span>
-            <span class="kw">let</span> <span class="ident">v3</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block0</span>, <span class="ident">types</span>::<span class="ident">I32</span>);
+            <span class="kw">let</span> <span class="ident">v3</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block0</span>, <span class="ident">types::I32</span>);
             <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">change_to_alias</span>(<span class="ident">v0</span>, <span class="ident">v3</span>);
 
             <span class="comment">// alias to an alias--should print attached to alias, not ultimate target</span>
             <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">make_value_alias_for_serialization</span>(<span class="ident">v0</span>, <span class="ident">v2</span>); <span class="comment">// v0 &lt;- v2</span>
 
             <span class="comment">// alias to a result--will be printed after instruction producing result</span>
-            <span class="kw">let</span> <span class="ident">_dummy0</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">iconst</span>(<span class="ident">types</span>::<span class="ident">I32</span>, <span class="number">42</span>);
+            <span class="kw">let</span> <span class="ident">_dummy0</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">iconst</span>(<span class="ident">types::I32</span>, <span class="number">42</span>);
             <span class="kw">let</span> <span class="ident">v4</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">iadd</span>(<span class="ident">v0</span>, <span class="ident">v0</span>);
             <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">change_to_alias</span>(<span class="ident">v1</span>, <span class="ident">v4</span>);
-            <span class="kw">let</span> <span class="ident">_dummy1</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">iconst</span>(<span class="ident">types</span>::<span class="ident">I32</span>, <span class="number">23</span>);
+            <span class="kw">let</span> <span class="ident">_dummy1</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">iconst</span>(<span class="ident">types::I32</span>, <span class="number">23</span>);
             <span class="kw">let</span> <span class="ident">_v7</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">iadd</span>(<span class="ident">v1</span>, <span class="ident">v1</span>);
         }
         <span class="macro">assert_eq!</span>(

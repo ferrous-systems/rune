@@ -1339,14 +1339,14 @@
 <span id="1336">1336</span>
 <span id="1337">1337</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">common</span>::{
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::common</span>::{
     <span class="ident">DebugAddrBase</span>, <span class="ident">DebugAddrIndex</span>, <span class="ident">DebugRngListsBase</span>, <span class="ident">DebugRngListsIndex</span>, <span class="ident">DwarfFileType</span>, <span class="ident">Encoding</span>,
     <span class="ident">RangeListsOffset</span>, <span class="ident">SectionId</span>,
 };
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">constants</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">endianity</span>::<span class="ident">Endianity</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">read</span>::{
-    <span class="ident">lists</span>::<span class="ident">ListsHeader</span>, <span class="ident">DebugAddr</span>, <span class="ident">EndianSlice</span>, <span class="ident">Error</span>, <span class="ident">Reader</span>, <span class="ident">ReaderOffset</span>, <span class="ident">ReaderOffsetId</span>,
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::constants</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::endianity::Endianity</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::read</span>::{
+    <span class="ident">lists::ListsHeader</span>, <span class="ident">DebugAddr</span>, <span class="ident">EndianSlice</span>, <span class="ident">Error</span>, <span class="ident">Reader</span>, <span class="ident">ReaderOffset</span>, <span class="ident">ReaderOffsetId</span>,
     <span class="prelude-ty">Result</span>, <span class="ident">Section</span>,
 };
 
@@ -1375,13 +1375,13 @@
     <span class="doccomment">/// let debug_ranges = DebugRanges::new(read_debug_ranges_section_somehow(), LittleEndian);</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">section</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;input</span> [<span class="ident">u8</span>], <span class="ident">endian</span>: <span class="ident">Endian</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">from</span>(<span class="ident">EndianSlice</span>::<span class="ident">new</span>(<span class="ident">section</span>, <span class="ident">endian</span>))
+        <span class="self">Self</span><span class="ident">::from</span>(<span class="ident">EndianSlice::new</span>(<span class="ident">section</span>, <span class="ident">endian</span>))
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> <span class="ident">Section</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DebugRanges</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">id</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionId</span> {
-        <span class="ident">SectionId</span>::<span class="ident">DebugRanges</span>
+        <span class="ident">SectionId::DebugRanges</span>
     }
 
     <span class="kw">fn</span> <span class="ident">reader</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">R</span> {
@@ -1422,13 +1422,13 @@
     <span class="doccomment">///     DebugRngLists::new(read_debug_rnglists_section_somehow(), LittleEndian);</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">section</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;input</span> [<span class="ident">u8</span>], <span class="ident">endian</span>: <span class="ident">Endian</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">from</span>(<span class="ident">EndianSlice</span>::<span class="ident">new</span>(<span class="ident">section</span>, <span class="ident">endian</span>))
+        <span class="self">Self</span><span class="ident">::from</span>(<span class="ident">EndianSlice::new</span>(<span class="ident">section</span>, <span class="ident">endian</span>))
     }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> <span class="ident">Section</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DebugRngLists</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">id</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SectionId</span> {
-        <span class="ident">SectionId</span>::<span class="ident">DebugRngLists</span>
+        <span class="ident">SectionId::DebugRngLists</span>
     }
 
     <span class="kw">fn</span> <span class="ident">reader</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">R</span> {
@@ -1455,13 +1455,13 @@
         <span class="ident">encoding</span>: <span class="ident">Encoding</span>,
         <span class="ident">file_type</span>: <span class="ident">DwarfFileType</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DebugRngListsBase</span><span class="op">&lt;</span><span class="ident">Offset</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">encoding</span>.<span class="ident">version</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">5</span> <span class="op">&amp;&amp;</span> <span class="ident">file_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">DwarfFileType</span>::<span class="ident">Dwo</span> {
+        <span class="kw">if</span> <span class="ident">encoding</span>.<span class="ident">version</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">5</span> <span class="op">&amp;&amp;</span> <span class="ident">file_type</span> <span class="op">=</span><span class="op">=</span> <span class="ident">DwarfFileType::Dwo</span> {
             <span class="comment">// In .dwo files, the compiler omits the DW_AT_rnglists_base attribute (because there is</span>
             <span class="comment">// only a single unit in the file) but we must skip past the header, which the attribute</span>
             <span class="comment">// would normally do for us.</span>
-            <span class="ident">DebugRngListsBase</span>(<span class="ident">Offset</span>::<span class="ident">from_u8</span>(<span class="ident">RngListsHeader</span>::<span class="ident">size_for_encoding</span>(<span class="ident">encoding</span>)))
+            <span class="ident">DebugRngListsBase</span>(<span class="ident">Offset::from_u8</span>(<span class="ident">RngListsHeader::size_for_encoding</span>(<span class="ident">encoding</span>)))
         } <span class="kw">else</span> {
-            <span class="ident">DebugRngListsBase</span>(<span class="ident">Offset</span>::<span class="ident">from_u8</span>(<span class="number">0</span>))
+            <span class="ident">DebugRngListsBase</span>(<span class="ident">Offset::from_u8</span>(<span class="number">0</span>))
         }
     }
 }
@@ -1524,13 +1524,13 @@
     <span class="doccomment">/// `FallibleIterator`](./index.html#using-with-fallibleiterator).</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ranges</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">offset</span>: <span class="ident">RangeListsOffset</span><span class="op">&lt;</span><span class="ident">R</span>::<span class="ident">Offset</span><span class="op">&gt;</span>,
+        <span class="ident">offset</span>: <span class="ident">RangeListsOffset</span><span class="op">&lt;</span><span class="ident">R::Offset</span><span class="op">&gt;</span>,
         <span class="ident">unit_encoding</span>: <span class="ident">Encoding</span>,
         <span class="ident">base_address</span>: <span class="ident">u64</span>,
         <span class="ident">debug_addr</span>: <span class="kw-2">&amp;</span><span class="ident">DebugAddr</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
-        <span class="ident">debug_addr_base</span>: <span class="ident">DebugAddrBase</span><span class="op">&lt;</span><span class="ident">R</span>::<span class="ident">Offset</span><span class="op">&gt;</span>,
+        <span class="ident">debug_addr_base</span>: <span class="ident">DebugAddrBase</span><span class="op">&lt;</span><span class="ident">R::Offset</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RngListIter</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Ok</span>(<span class="ident">RngListIter</span>::<span class="ident">new</span>(
+        <span class="prelude-val">Ok</span>(<span class="ident">RngListIter::new</span>(
             <span class="self">self</span>.<span class="ident">raw_ranges</span>(<span class="ident">offset</span>, <span class="ident">unit_encoding</span>)<span class="question-mark">?</span>,
             <span class="ident">base_address</span>,
             <span class="ident">debug_addr</span>.<span class="ident">clone</span>(),
@@ -1550,16 +1550,16 @@
     <span class="doccomment">/// `FallibleIterator`](./index.html#using-with-fallibleiterator).</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">raw_ranges</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">offset</span>: <span class="ident">RangeListsOffset</span><span class="op">&lt;</span><span class="ident">R</span>::<span class="ident">Offset</span><span class="op">&gt;</span>,
+        <span class="ident">offset</span>: <span class="ident">RangeListsOffset</span><span class="op">&lt;</span><span class="ident">R::Offset</span><span class="op">&gt;</span>,
         <span class="ident">unit_encoding</span>: <span class="ident">Encoding</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RawRngListIter</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">input</span>, <span class="ident">format</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">unit_encoding</span>.<span class="ident">version</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">4</span> {
-            (<span class="self">self</span>.<span class="ident">debug_ranges</span>.<span class="ident">section</span>.<span class="ident">clone</span>(), <span class="ident">RangeListsFormat</span>::<span class="ident">Bare</span>)
+            (<span class="self">self</span>.<span class="ident">debug_ranges</span>.<span class="ident">section</span>.<span class="ident">clone</span>(), <span class="ident">RangeListsFormat::Bare</span>)
         } <span class="kw">else</span> {
-            (<span class="self">self</span>.<span class="ident">debug_rnglists</span>.<span class="ident">section</span>.<span class="ident">clone</span>(), <span class="ident">RangeListsFormat</span>::<span class="ident">RLE</span>)
+            (<span class="self">self</span>.<span class="ident">debug_rnglists</span>.<span class="ident">section</span>.<span class="ident">clone</span>(), <span class="ident">RangeListsFormat::RLE</span>)
         };
         <span class="ident">input</span>.<span class="ident">skip</span>(<span class="ident">offset</span>.<span class="number">0</span>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">RawRngListIter</span>::<span class="ident">new</span>(<span class="ident">input</span>, <span class="ident">unit_encoding</span>, <span class="ident">format</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">RawRngListIter::new</span>(<span class="ident">input</span>, <span class="ident">unit_encoding</span>, <span class="ident">format</span>))
     }
 
     <span class="doccomment">/// Returns the `.debug_rnglists` offset at the given `base` and `index`.</span>
@@ -1574,14 +1574,14 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_offset</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">unit_encoding</span>: <span class="ident">Encoding</span>,
-        <span class="ident">base</span>: <span class="ident">DebugRngListsBase</span><span class="op">&lt;</span><span class="ident">R</span>::<span class="ident">Offset</span><span class="op">&gt;</span>,
-        <span class="ident">index</span>: <span class="ident">DebugRngListsIndex</span><span class="op">&lt;</span><span class="ident">R</span>::<span class="ident">Offset</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RangeListsOffset</span><span class="op">&lt;</span><span class="ident">R</span>::<span class="ident">Offset</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="ident">base</span>: <span class="ident">DebugRngListsBase</span><span class="op">&lt;</span><span class="ident">R::Offset</span><span class="op">&gt;</span>,
+        <span class="ident">index</span>: <span class="ident">DebugRngListsIndex</span><span class="op">&lt;</span><span class="ident">R::Offset</span><span class="op">&gt;</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RangeListsOffset</span><span class="op">&lt;</span><span class="ident">R::Offset</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">format</span> <span class="op">=</span> <span class="ident">unit_encoding</span>.<span class="ident">format</span>;
         <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">debug_rnglists</span>.<span class="ident">section</span>.<span class="ident">clone</span>();
         <span class="ident">input</span>.<span class="ident">skip</span>(<span class="ident">base</span>.<span class="number">0</span>)<span class="question-mark">?</span>;
-        <span class="ident">input</span>.<span class="ident">skip</span>(<span class="ident">R</span>::<span class="ident">Offset</span>::<span class="ident">from_u64</span>(
-            <span class="ident">index</span>.<span class="number">0</span>.<span class="ident">into_u64</span>() <span class="op">*</span> <span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">format</span>.<span class="ident">word_size</span>()),
+        <span class="ident">input</span>.<span class="ident">skip</span>(<span class="ident">R::Offset::from_u64</span>(
+            <span class="ident">index</span>.<span class="number">0</span>.<span class="ident">into_u64</span>() <span class="op">*</span> <span class="ident">u64::from</span>(<span class="ident">format</span>.<span class="ident">word_size</span>()),
         )<span class="question-mark">?</span>)<span class="question-mark">?</span>;
         <span class="ident">input</span>
             .<span class="ident">read_offset</span>(<span class="ident">format</span>)
@@ -1589,7 +1589,7 @@
     }
 
     <span class="doccomment">/// Call `Reader::lookup_offset_id` for each section, and return the first match.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lookup_offset_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="ident">ReaderOffsetId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">SectionId</span>, <span class="ident">R</span>::<span class="ident">Offset</span>)<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lookup_offset_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="ident">ReaderOffsetId</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">SectionId</span>, <span class="ident">R::Offset</span>)<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">debug_ranges</span>
             .<span class="ident">lookup_offset_id</span>(<span class="ident">id</span>)
             .<span class="ident">or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">debug_rnglists</span>.<span class="ident">lookup_offset_id</span>(<span class="ident">id</span>))
@@ -1680,49 +1680,49 @@
         <span class="ident">format</span>: <span class="ident">RangeListsFormat</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">format</span> {
-            <span class="ident">RangeListsFormat</span>::<span class="ident">Bare</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">range</span> <span class="op">=</span> <span class="ident">RawRange</span>::<span class="ident">parse</span>(<span class="ident">input</span>, <span class="ident">encoding</span>.<span class="ident">address_size</span>)<span class="question-mark">?</span>;
+            <span class="ident">RangeListsFormat::Bare</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> <span class="ident">range</span> <span class="op">=</span> <span class="ident">RawRange::parse</span>(<span class="ident">input</span>, <span class="ident">encoding</span>.<span class="ident">address_size</span>)<span class="question-mark">?</span>;
                 <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="kw">if</span> <span class="ident">range</span>.<span class="ident">is_end</span>() {
                     <span class="prelude-val">None</span>
                 } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">range</span>.<span class="ident">is_base_address</span>(<span class="ident">encoding</span>.<span class="ident">address_size</span>) {
-                    <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry</span>::<span class="ident">BaseAddress</span> { <span class="ident">addr</span>: <span class="ident">range</span>.<span class="ident">end</span> })
+                    <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry::BaseAddress</span> { <span class="ident">addr</span>: <span class="ident">range</span>.<span class="ident">end</span> })
                 } <span class="kw">else</span> {
-                    <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry</span>::<span class="ident">AddressOrOffsetPair</span> {
+                    <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry::AddressOrOffsetPair</span> {
                         <span class="ident">begin</span>: <span class="ident">range</span>.<span class="ident">begin</span>,
                         <span class="ident">end</span>: <span class="ident">range</span>.<span class="ident">end</span>,
                     })
                 });
             }
-            <span class="ident">RangeListsFormat</span>::<span class="ident">RLE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="ident">constants</span>::<span class="ident">DwRle</span>(<span class="ident">input</span>.<span class="ident">read_u8</span>()<span class="question-mark">?</span>) {
-                <span class="ident">constants</span>::<span class="ident">DW_RLE_end_of_list</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
-                <span class="ident">constants</span>::<span class="ident">DW_RLE_base_addressx</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry</span>::<span class="ident">BaseAddressx</span> {
-                    <span class="ident">addr</span>: <span class="ident">DebugAddrIndex</span>(<span class="ident">input</span>.<span class="ident">read_uleb128</span>().<span class="ident">and_then</span>(<span class="ident">R</span>::<span class="ident">Offset</span>::<span class="ident">from_u64</span>)<span class="question-mark">?</span>),
+            <span class="ident">RangeListsFormat::RLE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="kw">match</span> <span class="ident">constants::DwRle</span>(<span class="ident">input</span>.<span class="ident">read_u8</span>()<span class="question-mark">?</span>) {
+                <span class="ident">constants::DW_RLE_end_of_list</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+                <span class="ident">constants::DW_RLE_base_addressx</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry::BaseAddressx</span> {
+                    <span class="ident">addr</span>: <span class="ident">DebugAddrIndex</span>(<span class="ident">input</span>.<span class="ident">read_uleb128</span>().<span class="ident">and_then</span>(<span class="ident">R::Offset::from_u64</span>)<span class="question-mark">?</span>),
                 }),
-                <span class="ident">constants</span>::<span class="ident">DW_RLE_startx_endx</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry</span>::<span class="ident">StartxEndx</span> {
-                    <span class="ident">begin</span>: <span class="ident">DebugAddrIndex</span>(<span class="ident">input</span>.<span class="ident">read_uleb128</span>().<span class="ident">and_then</span>(<span class="ident">R</span>::<span class="ident">Offset</span>::<span class="ident">from_u64</span>)<span class="question-mark">?</span>),
-                    <span class="ident">end</span>: <span class="ident">DebugAddrIndex</span>(<span class="ident">input</span>.<span class="ident">read_uleb128</span>().<span class="ident">and_then</span>(<span class="ident">R</span>::<span class="ident">Offset</span>::<span class="ident">from_u64</span>)<span class="question-mark">?</span>),
+                <span class="ident">constants::DW_RLE_startx_endx</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry::StartxEndx</span> {
+                    <span class="ident">begin</span>: <span class="ident">DebugAddrIndex</span>(<span class="ident">input</span>.<span class="ident">read_uleb128</span>().<span class="ident">and_then</span>(<span class="ident">R::Offset::from_u64</span>)<span class="question-mark">?</span>),
+                    <span class="ident">end</span>: <span class="ident">DebugAddrIndex</span>(<span class="ident">input</span>.<span class="ident">read_uleb128</span>().<span class="ident">and_then</span>(<span class="ident">R::Offset::from_u64</span>)<span class="question-mark">?</span>),
                 }),
-                <span class="ident">constants</span>::<span class="ident">DW_RLE_startx_length</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry</span>::<span class="ident">StartxLength</span> {
-                    <span class="ident">begin</span>: <span class="ident">DebugAddrIndex</span>(<span class="ident">input</span>.<span class="ident">read_uleb128</span>().<span class="ident">and_then</span>(<span class="ident">R</span>::<span class="ident">Offset</span>::<span class="ident">from_u64</span>)<span class="question-mark">?</span>),
+                <span class="ident">constants::DW_RLE_startx_length</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry::StartxLength</span> {
+                    <span class="ident">begin</span>: <span class="ident">DebugAddrIndex</span>(<span class="ident">input</span>.<span class="ident">read_uleb128</span>().<span class="ident">and_then</span>(<span class="ident">R::Offset::from_u64</span>)<span class="question-mark">?</span>),
                     <span class="ident">length</span>: <span class="ident">input</span>.<span class="ident">read_uleb128</span>()<span class="question-mark">?</span>,
                 }),
-                <span class="ident">constants</span>::<span class="ident">DW_RLE_offset_pair</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry</span>::<span class="ident">OffsetPair</span> {
+                <span class="ident">constants::DW_RLE_offset_pair</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry::OffsetPair</span> {
                     <span class="ident">begin</span>: <span class="ident">input</span>.<span class="ident">read_uleb128</span>()<span class="question-mark">?</span>,
                     <span class="ident">end</span>: <span class="ident">input</span>.<span class="ident">read_uleb128</span>()<span class="question-mark">?</span>,
                 }),
-                <span class="ident">constants</span>::<span class="ident">DW_RLE_base_address</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry</span>::<span class="ident">BaseAddress</span> {
+                <span class="ident">constants::DW_RLE_base_address</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry::BaseAddress</span> {
                     <span class="ident">addr</span>: <span class="ident">input</span>.<span class="ident">read_address</span>(<span class="ident">encoding</span>.<span class="ident">address_size</span>)<span class="question-mark">?</span>,
                 }),
-                <span class="ident">constants</span>::<span class="ident">DW_RLE_start_end</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry</span>::<span class="ident">StartEnd</span> {
+                <span class="ident">constants::DW_RLE_start_end</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry::StartEnd</span> {
                     <span class="ident">begin</span>: <span class="ident">input</span>.<span class="ident">read_address</span>(<span class="ident">encoding</span>.<span class="ident">address_size</span>)<span class="question-mark">?</span>,
                     <span class="ident">end</span>: <span class="ident">input</span>.<span class="ident">read_address</span>(<span class="ident">encoding</span>.<span class="ident">address_size</span>)<span class="question-mark">?</span>,
                 }),
-                <span class="ident">constants</span>::<span class="ident">DW_RLE_start_length</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry</span>::<span class="ident">StartLength</span> {
+                <span class="ident">constants::DW_RLE_start_length</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">RawRngListEntry::StartLength</span> {
                     <span class="ident">begin</span>: <span class="ident">input</span>.<span class="ident">read_address</span>(<span class="ident">encoding</span>.<span class="ident">address_size</span>)<span class="question-mark">?</span>,
                     <span class="ident">length</span>: <span class="ident">input</span>.<span class="ident">read_uleb128</span>()<span class="question-mark">?</span>,
                 }),
                 <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">InvalidAddressRange</span>);
+                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::InvalidAddressRange</span>);
                 }
             }),
         }
@@ -1740,12 +1740,12 @@
     }
 
     <span class="doccomment">/// Advance the iterator to the next range.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">RawRngListEntry</span><span class="op">&lt;</span><span class="ident">R</span>::<span class="ident">Offset</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">RawRngListEntry</span><span class="op">&lt;</span><span class="ident">R::Offset</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">input</span>.<span class="ident">is_empty</span>() {
             <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>);
         }
 
-        <span class="kw">match</span> <span class="ident">RawRngListEntry</span>::<span class="ident">parse</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">input</span>, <span class="self">self</span>.<span class="ident">encoding</span>, <span class="self">self</span>.<span class="ident">format</span>) {
+        <span class="kw">match</span> <span class="ident">RawRngListEntry::parse</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">input</span>, <span class="self">self</span>.<span class="ident">encoding</span>, <span class="self">self</span>.<span class="ident">format</span>) {
             <span class="prelude-val">Ok</span>(<span class="ident">range</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">if</span> <span class="ident">range</span>.<span class="ident">is_none</span>() {
                     <span class="self">self</span>.<span class="ident">input</span>.<span class="ident">empty</span>();
@@ -1761,12 +1761,12 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fallible-iterator&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reader</span><span class="op">&gt;</span> <span class="ident">fallible_iterator</span>::<span class="ident">FallibleIterator</span> <span class="kw">for</span> <span class="ident">RawRngListIter</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">RawRngListEntry</span><span class="op">&lt;</span><span class="ident">R</span>::<span class="ident">Offset</span><span class="op">&gt;</span>;
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reader</span><span class="op">&gt;</span> <span class="ident">fallible_iterator::FallibleIterator</span> <span class="kw">for</span> <span class="ident">RawRngListIter</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">RawRngListEntry</span><span class="op">&lt;</span><span class="ident">R::Offset</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> ::<span class="ident">core</span>::<span class="ident">result</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="ident">RawRngListIter</span>::<span class="ident">next</span>(<span class="self">self</span>)
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">::core::result::Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span>, <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span> {
+        <span class="ident">RawRngListIter::next</span>(<span class="self">self</span>)
     }
 }
 
@@ -1780,7 +1780,7 @@
     <span class="ident">raw</span>: <span class="ident">RawRngListIter</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
     <span class="ident">base_address</span>: <span class="ident">u64</span>,
     <span class="ident">debug_addr</span>: <span class="ident">DebugAddr</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
-    <span class="ident">debug_addr_base</span>: <span class="ident">DebugAddrBase</span><span class="op">&lt;</span><span class="ident">R</span>::<span class="ident">Offset</span><span class="op">&gt;</span>,
+    <span class="ident">debug_addr_base</span>: <span class="ident">DebugAddrBase</span><span class="op">&lt;</span><span class="ident">R::Offset</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reader</span><span class="op">&gt;</span> <span class="ident">RngListIter</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
@@ -1789,7 +1789,7 @@
         <span class="ident">raw</span>: <span class="ident">RawRngListIter</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
         <span class="ident">base_address</span>: <span class="ident">u64</span>,
         <span class="ident">debug_addr</span>: <span class="ident">DebugAddr</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
-        <span class="ident">debug_addr_base</span>: <span class="ident">DebugAddrBase</span><span class="op">&lt;</span><span class="ident">R</span>::<span class="ident">Offset</span><span class="op">&gt;</span>,
+        <span class="ident">debug_addr_base</span>: <span class="ident">DebugAddrBase</span><span class="op">&lt;</span><span class="ident">R::Offset</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RngListIter</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
         <span class="ident">RngListIter</span> {
             <span class="ident">raw</span>,
@@ -1800,7 +1800,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">get_address</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">DebugAddrIndex</span><span class="op">&lt;</span><span class="ident">R</span>::<span class="ident">Offset</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">get_address</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">DebugAddrIndex</span><span class="op">&lt;</span><span class="ident">R::Offset</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">debug_addr</span>
             .<span class="ident">get_address</span>(<span class="self">self</span>.<span class="ident">raw</span>.<span class="ident">encoding</span>.<span class="ident">address_size</span>, <span class="self">self</span>.<span class="ident">debug_addr_base</span>, <span class="ident">index</span>)
     }
@@ -1814,32 +1814,32 @@
             };
 
             <span class="kw">let</span> <span class="ident">range</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">raw_range</span> {
-                <span class="ident">RawRngListEntry</span>::<span class="ident">BaseAddress</span> { <span class="ident">addr</span> } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">RawRngListEntry::BaseAddress</span> { <span class="ident">addr</span> } <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="self">self</span>.<span class="ident">base_address</span> <span class="op">=</span> <span class="ident">addr</span>;
                     <span class="kw">continue</span>;
                 }
-                <span class="ident">RawRngListEntry</span>::<span class="ident">BaseAddressx</span> { <span class="ident">addr</span> } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">RawRngListEntry::BaseAddressx</span> { <span class="ident">addr</span> } <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="self">self</span>.<span class="ident">base_address</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_address</span>(<span class="ident">addr</span>)<span class="question-mark">?</span>;
                     <span class="kw">continue</span>;
                 }
-                <span class="ident">RawRngListEntry</span>::<span class="ident">StartxEndx</span> { <span class="ident">begin</span>, <span class="ident">end</span> } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">RawRngListEntry::StartxEndx</span> { <span class="ident">begin</span>, <span class="ident">end</span> } <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">begin</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_address</span>(<span class="ident">begin</span>)<span class="question-mark">?</span>;
                     <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_address</span>(<span class="ident">end</span>)<span class="question-mark">?</span>;
                     <span class="ident">Range</span> { <span class="ident">begin</span>, <span class="ident">end</span> }
                 }
-                <span class="ident">RawRngListEntry</span>::<span class="ident">StartxLength</span> { <span class="ident">begin</span>, <span class="ident">length</span> } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">RawRngListEntry::StartxLength</span> { <span class="ident">begin</span>, <span class="ident">length</span> } <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">begin</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_address</span>(<span class="ident">begin</span>)<span class="question-mark">?</span>;
                     <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">begin</span> <span class="op">+</span> <span class="ident">length</span>;
                     <span class="ident">Range</span> { <span class="ident">begin</span>, <span class="ident">end</span> }
                 }
-                <span class="ident">RawRngListEntry</span>::<span class="ident">AddressOrOffsetPair</span> { <span class="ident">begin</span>, <span class="ident">end</span> }
-                <span class="op">|</span> <span class="ident">RawRngListEntry</span>::<span class="ident">OffsetPair</span> { <span class="ident">begin</span>, <span class="ident">end</span> } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">RawRngListEntry::AddressOrOffsetPair</span> { <span class="ident">begin</span>, <span class="ident">end</span> }
+                <span class="op">|</span> <span class="ident">RawRngListEntry::OffsetPair</span> { <span class="ident">begin</span>, <span class="ident">end</span> } <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">range</span> <span class="op">=</span> <span class="ident">Range</span> { <span class="ident">begin</span>, <span class="ident">end</span> };
                     <span class="ident">range</span>.<span class="ident">add_base_address</span>(<span class="self">self</span>.<span class="ident">base_address</span>, <span class="self">self</span>.<span class="ident">raw</span>.<span class="ident">encoding</span>.<span class="ident">address_size</span>);
                     <span class="ident">range</span>
                 }
-                <span class="ident">RawRngListEntry</span>::<span class="ident">StartEnd</span> { <span class="ident">begin</span>, <span class="ident">end</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Range</span> { <span class="ident">begin</span>, <span class="ident">end</span> },
-                <span class="ident">RawRngListEntry</span>::<span class="ident">StartLength</span> { <span class="ident">begin</span>, <span class="ident">length</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Range</span> {
+                <span class="ident">RawRngListEntry::StartEnd</span> { <span class="ident">begin</span>, <span class="ident">end</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Range</span> { <span class="ident">begin</span>, <span class="ident">end</span> },
+                <span class="ident">RawRngListEntry::StartLength</span> { <span class="ident">begin</span>, <span class="ident">length</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Range</span> {
                     <span class="ident">begin</span>,
                     <span class="ident">end</span>: <span class="ident">begin</span> <span class="op">+</span> <span class="ident">length</span>,
                 },
@@ -1847,7 +1847,7 @@
 
             <span class="kw">if</span> <span class="ident">range</span>.<span class="ident">begin</span> <span class="op">&gt;</span> <span class="ident">range</span>.<span class="ident">end</span> {
                 <span class="self">self</span>.<span class="ident">raw</span>.<span class="ident">input</span>.<span class="ident">empty</span>();
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">InvalidAddressRange</span>);
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::InvalidAddressRange</span>);
             }
 
             <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">range</span>));
@@ -1856,12 +1856,12 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;fallible-iterator&quot;</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reader</span><span class="op">&gt;</span> <span class="ident">fallible_iterator</span>::<span class="ident">FallibleIterator</span> <span class="kw">for</span> <span class="ident">RngListIter</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">Reader</span><span class="op">&gt;</span> <span class="ident">fallible_iterator::FallibleIterator</span> <span class="kw">for</span> <span class="ident">RngListIter</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Range</span>;
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Error</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> ::<span class="ident">core</span>::<span class="ident">result</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="ident">RngListIter</span>::<span class="ident">next</span>(<span class="self">self</span>)
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">::core::result::Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span>, <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span> {
+        <span class="ident">RngListIter::next</span>(<span class="self">self</span>)
     }
 }
 
@@ -1927,32 +1927,32 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">common</span>::<span class="ident">Format</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">endianity</span>::<span class="ident">LittleEndian</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">test_util</span>::<span class="ident">GimliSectionMethods</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::common::Format</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::endianity::LittleEndian</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::test_util::GimliSectionMethods</span>;
     <span class="kw">use</span> <span class="ident">test_assembler</span>::{<span class="ident">Endian</span>, <span class="ident">Label</span>, <span class="ident">LabelMaker</span>, <span class="ident">Section</span>};
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_rnglists_32</span>() {
         <span class="kw">let</span> <span class="ident">encoding</span> <span class="op">=</span> <span class="ident">Encoding</span> {
-            <span class="ident">format</span>: <span class="ident">Format</span>::<span class="ident">Dwarf32</span>,
+            <span class="ident">format</span>: <span class="ident">Format::Dwarf32</span>,
             <span class="ident">version</span>: <span class="number">5</span>,
             <span class="ident">address_size</span>: <span class="number">4</span>,
         };
-        <span class="kw">let</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">Section</span>::<span class="ident">with_endian</span>(<span class="ident">Endian</span>::<span class="ident">Little</span>)
+        <span class="kw">let</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">Section::with_endian</span>(<span class="ident">Endian::Little</span>)
             .<span class="ident">L32</span>(<span class="number">0x0300_0000</span>)
             .<span class="ident">L32</span>(<span class="number">0x0301_0300</span>)
             .<span class="ident">L32</span>(<span class="number">0x0301_0400</span>)
             .<span class="ident">L32</span>(<span class="number">0x0301_0500</span>);
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">section</span>.<span class="ident">get_contents</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">debug_addr</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DebugAddr</span>::<span class="ident">from</span>(<span class="ident">EndianSlice</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>, <span class="ident">LittleEndian</span>));
+        <span class="kw">let</span> <span class="ident">debug_addr</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DebugAddr::from</span>(<span class="ident">EndianSlice::new</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>, <span class="ident">LittleEndian</span>));
         <span class="kw">let</span> <span class="ident">debug_addr_base</span> <span class="op">=</span> <span class="ident">DebugAddrBase</span>(<span class="number">0</span>);
 
-        <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">Label</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">first</span> <span class="op">=</span> <span class="ident">Label</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">Label</span>::<span class="ident">new</span>();
-        <span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
-        <span class="kw">let</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">Section</span>::<span class="ident">with_endian</span>(<span class="ident">Endian</span>::<span class="ident">Little</span>)
+        <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">Label::new</span>();
+        <span class="kw">let</span> <span class="ident">first</span> <span class="op">=</span> <span class="ident">Label::new</span>();
+        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">Label::new</span>();
+        <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
+        <span class="kw">let</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">Section::with_endian</span>(<span class="ident">Endian::Little</span>)
             <span class="comment">// Header</span>
             .<span class="ident">mark</span>(<span class="kw-2">&amp;</span><span class="ident">start</span>)
             .<span class="ident">L32</span>(<span class="kw-2">&amp;</span><span class="ident">size</span>)
@@ -1994,9 +1994,9 @@
         <span class="ident">size</span>.<span class="ident">set_const</span>((<span class="kw-2">&amp;</span><span class="ident">section</span>.<span class="ident">here</span>() <span class="op">-</span> <span class="kw-2">&amp;</span><span class="ident">start</span> <span class="op">-</span> <span class="number">4</span>) <span class="kw">as</span> <span class="ident">u64</span>);
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">section</span>.<span class="ident">get_contents</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">debug_ranges</span> <span class="op">=</span> <span class="ident">DebugRanges</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>);
-        <span class="kw">let</span> <span class="ident">debug_rnglists</span> <span class="op">=</span> <span class="ident">DebugRngLists</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>, <span class="ident">LittleEndian</span>);
-        <span class="kw">let</span> <span class="ident">rnglists</span> <span class="op">=</span> <span class="ident">RangeLists</span>::<span class="ident">new</span>(<span class="ident">debug_ranges</span>, <span class="ident">debug_rnglists</span>);
+        <span class="kw">let</span> <span class="ident">debug_ranges</span> <span class="op">=</span> <span class="ident">DebugRanges::new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>);
+        <span class="kw">let</span> <span class="ident">debug_rnglists</span> <span class="op">=</span> <span class="ident">DebugRngLists::new</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>, <span class="ident">LittleEndian</span>);
+        <span class="kw">let</span> <span class="ident">rnglists</span> <span class="op">=</span> <span class="ident">RangeLists::new</span>(<span class="ident">debug_ranges</span>, <span class="ident">debug_rnglists</span>);
         <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">RangeListsOffset</span>((<span class="kw-2">&amp;</span><span class="ident">first</span> <span class="op">-</span> <span class="kw-2">&amp;</span><span class="ident">start</span>) <span class="kw">as</span> <span class="ident">usize</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ranges</span> <span class="op">=</span> <span class="ident">rnglists</span>
             .<span class="ident">ranges</span>(<span class="ident">offset</span>, <span class="ident">encoding</span>, <span class="number">0x0100_0000</span>, <span class="ident">debug_addr</span>, <span class="ident">debug_addr_base</span>)
@@ -2127,24 +2127,24 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_rnglists_64</span>() {
         <span class="kw">let</span> <span class="ident">encoding</span> <span class="op">=</span> <span class="ident">Encoding</span> {
-            <span class="ident">format</span>: <span class="ident">Format</span>::<span class="ident">Dwarf64</span>,
+            <span class="ident">format</span>: <span class="ident">Format::Dwarf64</span>,
             <span class="ident">version</span>: <span class="number">5</span>,
             <span class="ident">address_size</span>: <span class="number">8</span>,
         };
-        <span class="kw">let</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">Section</span>::<span class="ident">with_endian</span>(<span class="ident">Endian</span>::<span class="ident">Little</span>)
+        <span class="kw">let</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">Section::with_endian</span>(<span class="ident">Endian::Little</span>)
             .<span class="ident">L64</span>(<span class="number">0x0300_0000</span>)
             .<span class="ident">L64</span>(<span class="number">0x0301_0300</span>)
             .<span class="ident">L64</span>(<span class="number">0x0301_0400</span>)
             .<span class="ident">L64</span>(<span class="number">0x0301_0500</span>);
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">section</span>.<span class="ident">get_contents</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">debug_addr</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DebugAddr</span>::<span class="ident">from</span>(<span class="ident">EndianSlice</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>, <span class="ident">LittleEndian</span>));
+        <span class="kw">let</span> <span class="ident">debug_addr</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DebugAddr::from</span>(<span class="ident">EndianSlice::new</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>, <span class="ident">LittleEndian</span>));
         <span class="kw">let</span> <span class="ident">debug_addr_base</span> <span class="op">=</span> <span class="ident">DebugAddrBase</span>(<span class="number">0</span>);
 
-        <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">Label</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">first</span> <span class="op">=</span> <span class="ident">Label</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">Label</span>::<span class="ident">new</span>();
-        <span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
-        <span class="kw">let</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">Section</span>::<span class="ident">with_endian</span>(<span class="ident">Endian</span>::<span class="ident">Little</span>)
+        <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">Label::new</span>();
+        <span class="kw">let</span> <span class="ident">first</span> <span class="op">=</span> <span class="ident">Label::new</span>();
+        <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">Label::new</span>();
+        <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
+        <span class="kw">let</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">Section::with_endian</span>(<span class="ident">Endian::Little</span>)
             <span class="comment">// Header</span>
             .<span class="ident">mark</span>(<span class="kw-2">&amp;</span><span class="ident">start</span>)
             .<span class="ident">L32</span>(<span class="number">0xffff_ffff</span>)
@@ -2187,9 +2187,9 @@
         <span class="ident">size</span>.<span class="ident">set_const</span>((<span class="kw-2">&amp;</span><span class="ident">section</span>.<span class="ident">here</span>() <span class="op">-</span> <span class="kw-2">&amp;</span><span class="ident">start</span> <span class="op">-</span> <span class="number">12</span>) <span class="kw">as</span> <span class="ident">u64</span>);
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">section</span>.<span class="ident">get_contents</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">debug_ranges</span> <span class="op">=</span> <span class="ident">DebugRanges</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>);
-        <span class="kw">let</span> <span class="ident">debug_rnglists</span> <span class="op">=</span> <span class="ident">DebugRngLists</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>, <span class="ident">LittleEndian</span>);
-        <span class="kw">let</span> <span class="ident">rnglists</span> <span class="op">=</span> <span class="ident">RangeLists</span>::<span class="ident">new</span>(<span class="ident">debug_ranges</span>, <span class="ident">debug_rnglists</span>);
+        <span class="kw">let</span> <span class="ident">debug_ranges</span> <span class="op">=</span> <span class="ident">DebugRanges::new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>);
+        <span class="kw">let</span> <span class="ident">debug_rnglists</span> <span class="op">=</span> <span class="ident">DebugRngLists::new</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>, <span class="ident">LittleEndian</span>);
+        <span class="kw">let</span> <span class="ident">rnglists</span> <span class="op">=</span> <span class="ident">RangeLists::new</span>(<span class="ident">debug_ranges</span>, <span class="ident">debug_rnglists</span>);
         <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">RangeListsOffset</span>((<span class="kw-2">&amp;</span><span class="ident">first</span> <span class="op">-</span> <span class="kw-2">&amp;</span><span class="ident">start</span>) <span class="kw">as</span> <span class="ident">usize</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ranges</span> <span class="op">=</span> <span class="ident">rnglists</span>
             .<span class="ident">ranges</span>(<span class="ident">offset</span>, <span class="ident">encoding</span>, <span class="number">0x0100_0000</span>, <span class="ident">debug_addr</span>, <span class="ident">debug_addr_base</span>)
@@ -2351,10 +2351,10 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_ranges_32</span>() {
-        <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">Label</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">first</span> <span class="op">=</span> <span class="ident">Label</span>::<span class="ident">new</span>();
-        <span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
-        <span class="kw">let</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">Section</span>::<span class="ident">with_endian</span>(<span class="ident">Endian</span>::<span class="ident">Little</span>)
+        <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">Label::new</span>();
+        <span class="kw">let</span> <span class="ident">first</span> <span class="op">=</span> <span class="ident">Label::new</span>();
+        <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
+        <span class="kw">let</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">Section::with_endian</span>(<span class="ident">Endian::Little</span>)
             <span class="comment">// A range before the offset.</span>
             .<span class="ident">mark</span>(<span class="kw-2">&amp;</span><span class="ident">start</span>)
             .<span class="ident">L32</span>(<span class="number">0x10000</span>).<span class="ident">L32</span>(<span class="number">0x10100</span>)
@@ -2378,14 +2378,14 @@
             .<span class="ident">L32</span>(<span class="number">0</span>);
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">section</span>.<span class="ident">get_contents</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">debug_ranges</span> <span class="op">=</span> <span class="ident">DebugRanges</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>, <span class="ident">LittleEndian</span>);
-        <span class="kw">let</span> <span class="ident">debug_rnglists</span> <span class="op">=</span> <span class="ident">DebugRngLists</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>);
-        <span class="kw">let</span> <span class="ident">rnglists</span> <span class="op">=</span> <span class="ident">RangeLists</span>::<span class="ident">new</span>(<span class="ident">debug_ranges</span>, <span class="ident">debug_rnglists</span>);
+        <span class="kw">let</span> <span class="ident">debug_ranges</span> <span class="op">=</span> <span class="ident">DebugRanges::new</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>, <span class="ident">LittleEndian</span>);
+        <span class="kw">let</span> <span class="ident">debug_rnglists</span> <span class="op">=</span> <span class="ident">DebugRngLists::new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>);
+        <span class="kw">let</span> <span class="ident">rnglists</span> <span class="op">=</span> <span class="ident">RangeLists::new</span>(<span class="ident">debug_ranges</span>, <span class="ident">debug_rnglists</span>);
         <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">RangeListsOffset</span>((<span class="kw-2">&amp;</span><span class="ident">first</span> <span class="op">-</span> <span class="kw-2">&amp;</span><span class="ident">start</span>) <span class="kw">as</span> <span class="ident">usize</span>);
-        <span class="kw">let</span> <span class="ident">debug_addr</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DebugAddr</span>::<span class="ident">from</span>(<span class="ident">EndianSlice</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>));
+        <span class="kw">let</span> <span class="ident">debug_addr</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DebugAddr::from</span>(<span class="ident">EndianSlice::new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>));
         <span class="kw">let</span> <span class="ident">debug_addr_base</span> <span class="op">=</span> <span class="ident">DebugAddrBase</span>(<span class="number">0</span>);
         <span class="kw">let</span> <span class="ident">encoding</span> <span class="op">=</span> <span class="ident">Encoding</span> {
-            <span class="ident">format</span>: <span class="ident">Format</span>::<span class="ident">Dwarf32</span>,
+            <span class="ident">format</span>: <span class="ident">Format::Dwarf32</span>,
             <span class="ident">version</span>: <span class="number">4</span>,
             <span class="ident">address_size</span>: <span class="number">4</span>,
         };
@@ -2463,10 +2463,10 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_ranges_64</span>() {
-        <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">Label</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">first</span> <span class="op">=</span> <span class="ident">Label</span>::<span class="ident">new</span>();
-        <span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
-        <span class="kw">let</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">Section</span>::<span class="ident">with_endian</span>(<span class="ident">Endian</span>::<span class="ident">Little</span>)
+        <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">Label::new</span>();
+        <span class="kw">let</span> <span class="ident">first</span> <span class="op">=</span> <span class="ident">Label::new</span>();
+        <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
+        <span class="kw">let</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">Section::with_endian</span>(<span class="ident">Endian::Little</span>)
             <span class="comment">// A range before the offset.</span>
             .<span class="ident">mark</span>(<span class="kw-2">&amp;</span><span class="ident">start</span>)
             .<span class="ident">L64</span>(<span class="number">0x10000</span>).<span class="ident">L64</span>(<span class="number">0x10100</span>)
@@ -2490,14 +2490,14 @@
             .<span class="ident">L64</span>(<span class="number">0</span>);
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">section</span>.<span class="ident">get_contents</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">debug_ranges</span> <span class="op">=</span> <span class="ident">DebugRanges</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>, <span class="ident">LittleEndian</span>);
-        <span class="kw">let</span> <span class="ident">debug_rnglists</span> <span class="op">=</span> <span class="ident">DebugRngLists</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>);
-        <span class="kw">let</span> <span class="ident">rnglists</span> <span class="op">=</span> <span class="ident">RangeLists</span>::<span class="ident">new</span>(<span class="ident">debug_ranges</span>, <span class="ident">debug_rnglists</span>);
+        <span class="kw">let</span> <span class="ident">debug_ranges</span> <span class="op">=</span> <span class="ident">DebugRanges::new</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>, <span class="ident">LittleEndian</span>);
+        <span class="kw">let</span> <span class="ident">debug_rnglists</span> <span class="op">=</span> <span class="ident">DebugRngLists::new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>);
+        <span class="kw">let</span> <span class="ident">rnglists</span> <span class="op">=</span> <span class="ident">RangeLists::new</span>(<span class="ident">debug_ranges</span>, <span class="ident">debug_rnglists</span>);
         <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">RangeListsOffset</span>((<span class="kw-2">&amp;</span><span class="ident">first</span> <span class="op">-</span> <span class="kw-2">&amp;</span><span class="ident">start</span>) <span class="kw">as</span> <span class="ident">usize</span>);
-        <span class="kw">let</span> <span class="ident">debug_addr</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DebugAddr</span>::<span class="ident">from</span>(<span class="ident">EndianSlice</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>));
+        <span class="kw">let</span> <span class="ident">debug_addr</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DebugAddr::from</span>(<span class="ident">EndianSlice::new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>));
         <span class="kw">let</span> <span class="ident">debug_addr_base</span> <span class="op">=</span> <span class="ident">DebugAddrBase</span>(<span class="number">0</span>);
         <span class="kw">let</span> <span class="ident">encoding</span> <span class="op">=</span> <span class="ident">Encoding</span> {
-            <span class="ident">format</span>: <span class="ident">Format</span>::<span class="ident">Dwarf64</span>,
+            <span class="ident">format</span>: <span class="ident">Format::Dwarf64</span>,
             <span class="ident">version</span>: <span class="number">4</span>,
             <span class="ident">address_size</span>: <span class="number">8</span>,
         };
@@ -2575,21 +2575,21 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_ranges_invalid</span>() {
-        <span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
-        <span class="kw">let</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">Section</span>::<span class="ident">with_endian</span>(<span class="ident">Endian</span>::<span class="ident">Little</span>)
+        <span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
+        <span class="kw">let</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">Section::with_endian</span>(<span class="ident">Endian::Little</span>)
             <span class="comment">// An invalid range.</span>
             .<span class="ident">L32</span>(<span class="number">0x20000</span>).<span class="ident">L32</span>(<span class="number">0x10000</span>)
             <span class="comment">// An invalid range after wrapping.</span>
             .<span class="ident">L32</span>(<span class="number">0x20000</span>).<span class="ident">L32</span>(<span class="number">0xff01_0000</span>);
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">section</span>.<span class="ident">get_contents</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">debug_ranges</span> <span class="op">=</span> <span class="ident">DebugRanges</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>, <span class="ident">LittleEndian</span>);
-        <span class="kw">let</span> <span class="ident">debug_rnglists</span> <span class="op">=</span> <span class="ident">DebugRngLists</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>);
-        <span class="kw">let</span> <span class="ident">rnglists</span> <span class="op">=</span> <span class="ident">RangeLists</span>::<span class="ident">new</span>(<span class="ident">debug_ranges</span>, <span class="ident">debug_rnglists</span>);
-        <span class="kw">let</span> <span class="ident">debug_addr</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DebugAddr</span>::<span class="ident">from</span>(<span class="ident">EndianSlice</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>));
+        <span class="kw">let</span> <span class="ident">debug_ranges</span> <span class="op">=</span> <span class="ident">DebugRanges::new</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>, <span class="ident">LittleEndian</span>);
+        <span class="kw">let</span> <span class="ident">debug_rnglists</span> <span class="op">=</span> <span class="ident">DebugRngLists::new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>);
+        <span class="kw">let</span> <span class="ident">rnglists</span> <span class="op">=</span> <span class="ident">RangeLists::new</span>(<span class="ident">debug_ranges</span>, <span class="ident">debug_rnglists</span>);
+        <span class="kw">let</span> <span class="ident">debug_addr</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DebugAddr::from</span>(<span class="ident">EndianSlice::new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>));
         <span class="kw">let</span> <span class="ident">debug_addr_base</span> <span class="op">=</span> <span class="ident">DebugAddrBase</span>(<span class="number">0</span>);
         <span class="kw">let</span> <span class="ident">encoding</span> <span class="op">=</span> <span class="ident">Encoding</span> {
-            <span class="ident">format</span>: <span class="ident">Format</span>::<span class="ident">Dwarf32</span>,
+            <span class="ident">format</span>: <span class="ident">Format::Dwarf32</span>,
             <span class="ident">version</span>: <span class="number">4</span>,
             <span class="ident">address_size</span>: <span class="number">4</span>,
         };
@@ -2604,7 +2604,7 @@
                 <span class="ident">debug_addr_base</span>,
             )
             .<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">ranges</span>.<span class="ident">next</span>(), <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">InvalidAddressRange</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">ranges</span>.<span class="ident">next</span>(), <span class="prelude-val">Err</span>(<span class="ident">Error::InvalidAddressRange</span>));
 
         <span class="comment">// An invalid range after wrapping.</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ranges</span> <span class="op">=</span> <span class="ident">rnglists</span>
@@ -2616,7 +2616,7 @@
                 <span class="ident">debug_addr_base</span>,
             )
             .<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">ranges</span>.<span class="ident">next</span>(), <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">InvalidAddressRange</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">ranges</span>.<span class="ident">next</span>(), <span class="prelude-val">Err</span>(<span class="ident">Error::InvalidAddressRange</span>));
 
         <span class="comment">// An invalid offset.</span>
         <span class="kw">match</span> <span class="ident">rnglists</span>.<span class="ident">ranges</span>(
@@ -2626,26 +2626,26 @@
             <span class="ident">debug_addr</span>,
             <span class="ident">debug_addr_base</span>,
         ) {
-            <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">UnexpectedEof</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="prelude-val">Err</span>(<span class="ident">Error::UnexpectedEof</span>(<span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {}
             <span class="ident">otherwise</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unexpected result: {:?}&quot;</span>, <span class="ident">otherwise</span>),
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_get_offset</span>() {
-        <span class="kw">for</span> <span class="ident">format</span> <span class="kw">in</span> <span class="macro">vec!</span>[<span class="ident">Format</span>::<span class="ident">Dwarf32</span>, <span class="ident">Format</span>::<span class="ident">Dwarf64</span>] {
+        <span class="kw">for</span> <span class="ident">format</span> <span class="kw">in</span> <span class="macro">vec!</span>[<span class="ident">Format::Dwarf32</span>, <span class="ident">Format::Dwarf64</span>] {
             <span class="kw">let</span> <span class="ident">encoding</span> <span class="op">=</span> <span class="ident">Encoding</span> {
                 <span class="ident">format</span>,
                 <span class="ident">version</span>: <span class="number">5</span>,
                 <span class="ident">address_size</span>: <span class="number">4</span>,
             };
 
-            <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="ident">Label</span>::<span class="ident">new</span>();
-            <span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> <span class="ident">Label</span>::<span class="ident">new</span>();
-            <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">Label</span>::<span class="ident">new</span>();
-            <span class="kw">let</span> <span class="ident">first</span> <span class="op">=</span> <span class="ident">Label</span>::<span class="ident">new</span>();
-            <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">Label</span>::<span class="ident">new</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">Section</span>::<span class="ident">with_endian</span>(<span class="ident">Endian</span>::<span class="ident">Little</span>)
+            <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="ident">Label::new</span>();
+            <span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> <span class="ident">Label::new</span>();
+            <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="ident">Label::new</span>();
+            <span class="kw">let</span> <span class="ident">first</span> <span class="op">=</span> <span class="ident">Label::new</span>();
+            <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">Label::new</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">Section::with_endian</span>(<span class="ident">Endian::Little</span>)
                 .<span class="ident">mark</span>(<span class="kw-2">&amp;</span><span class="ident">zero</span>)
                 .<span class="ident">initial_length</span>(<span class="ident">format</span>, <span class="kw-2">&amp;</span><span class="ident">length</span>, <span class="kw-2">&amp;</span><span class="ident">start</span>)
                 .<span class="ident">D16</span>(<span class="ident">encoding</span>.<span class="ident">version</span>)
@@ -2660,9 +2660,9 @@
             <span class="ident">length</span>.<span class="ident">set_const</span>((<span class="kw-2">&amp;</span><span class="ident">end</span> <span class="op">-</span> <span class="kw-2">&amp;</span><span class="ident">start</span>) <span class="kw">as</span> <span class="ident">u64</span>);
             <span class="kw">let</span> <span class="ident">section</span> <span class="op">=</span> <span class="ident">section</span>.<span class="ident">get_contents</span>().<span class="ident">unwrap</span>();
 
-            <span class="kw">let</span> <span class="ident">debug_ranges</span> <span class="op">=</span> <span class="ident">DebugRanges</span>::<span class="ident">from</span>(<span class="ident">EndianSlice</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>));
-            <span class="kw">let</span> <span class="ident">debug_rnglists</span> <span class="op">=</span> <span class="ident">DebugRngLists</span>::<span class="ident">from</span>(<span class="ident">EndianSlice</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">section</span>, <span class="ident">LittleEndian</span>));
-            <span class="kw">let</span> <span class="ident">ranges</span> <span class="op">=</span> <span class="ident">RangeLists</span>::<span class="ident">new</span>(<span class="ident">debug_ranges</span>, <span class="ident">debug_rnglists</span>);
+            <span class="kw">let</span> <span class="ident">debug_ranges</span> <span class="op">=</span> <span class="ident">DebugRanges::from</span>(<span class="ident">EndianSlice::new</span>(<span class="kw-2">&amp;</span>[], <span class="ident">LittleEndian</span>));
+            <span class="kw">let</span> <span class="ident">debug_rnglists</span> <span class="op">=</span> <span class="ident">DebugRngLists::from</span>(<span class="ident">EndianSlice::new</span>(<span class="kw-2">&amp;</span><span class="ident">section</span>, <span class="ident">LittleEndian</span>));
+            <span class="kw">let</span> <span class="ident">ranges</span> <span class="op">=</span> <span class="ident">RangeLists::new</span>(<span class="ident">debug_ranges</span>, <span class="ident">debug_rnglists</span>);
 
             <span class="kw">let</span> <span class="ident">base</span> <span class="op">=</span> <span class="ident">DebugRngListsBase</span>((<span class="kw-2">&amp;</span><span class="ident">first</span> <span class="op">-</span> <span class="kw-2">&amp;</span><span class="ident">zero</span>) <span class="kw">as</span> <span class="ident">usize</span>);
             <span class="macro">assert_eq!</span>(

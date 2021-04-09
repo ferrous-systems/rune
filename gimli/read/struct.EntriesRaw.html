@@ -26,7 +26,7 @@ and thus it is suitable for cases where performance is important.</p>
         <span class="kw">continue</span>
     };
     <span class="kw">match</span> <span class="ident">abbrev</span>.<span class="ident">tag</span>() {
-        <span class="ident">gimli</span>::<span class="ident">DW_TAG_subprogram</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">gimli::DW_TAG_subprogram</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="comment">// Loop over attributes for DIEs we care about.</span>
             <span class="kw">for</span> <span class="ident">spec</span> <span class="kw">in</span> <span class="ident">abbrev</span>.<span class="ident">attributes</span>() {
                 <span class="kw">let</span> <span class="ident">attr</span> <span class="op">=</span> <span class="ident">entries</span>.<span class="ident">read_attribute</span>(<span class="kw-2">*</span><span class="ident">spec</span>)<span class="question-mark">?</span>;

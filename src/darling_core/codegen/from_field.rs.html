@@ -118,13 +118,13 @@
 <span id="115">115</span>
 <span id="116">116</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span>;
-<span class="kw">use</span> <span class="ident">quote</span>::<span class="ident">ToTokens</span>;
+<span class="kw">use</span> <span class="ident">proc_macro2::TokenStream</span>;
+<span class="kw">use</span> <span class="ident">quote::ToTokens</span>;
 <span class="kw">use</span> <span class="ident">syn</span>::{<span class="self">self</span>, <span class="ident">Ident</span>};
 
 <span class="kw">use</span> <span class="ident">codegen</span>::{<span class="ident">ExtractAttribute</span>, <span class="ident">OuterFromImpl</span>, <span class="ident">TraitImpl</span>};
-<span class="kw">use</span> <span class="ident">options</span>::<span class="ident">ForwardAttrs</span>;
-<span class="kw">use</span> <span class="ident">util</span>::<span class="ident">PathList</span>;
+<span class="kw">use</span> <span class="ident">options::ForwardAttrs</span>;
+<span class="kw">use</span> <span class="ident">util::PathList</span>;
 
 <span class="doccomment">/// `impl FromField` generator. This is used for parsing an individual</span>
 <span class="doccomment">/// field and its attributes.</span>
@@ -150,7 +150,7 @@
         <span class="kw">let</span> <span class="ident">initializers</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">initializers</span>();
 
         <span class="kw">let</span> <span class="ident">default</span> <span class="op">=</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">from_ident</span> {
-            <span class="macro">quote!</span>(<span class="kw">let</span> <span class="ident">__default</span>: <span class="self">Self</span> <span class="op">=</span> ::<span class="ident">darling</span>::<span class="ident">export</span>::<span class="ident">From</span>::<span class="ident">from</span>(#<span class="ident">input</span>.<span class="ident">ident</span>.<span class="ident">clone</span>());)
+            <span class="macro">quote!</span>(<span class="kw">let</span> <span class="ident">__default</span>: <span class="self">Self</span> <span class="op">=</span> <span class="ident">::darling::export::From::from</span>(#<span class="ident">input</span>.<span class="ident">ident</span>.<span class="ident">clone</span>());)
         } <span class="kw">else</span> {
             <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">fallback_decl</span>()
         };
@@ -169,7 +169,7 @@
 
         <span class="self">self</span>.<span class="ident">wrap</span>(
             <span class="macro">quote!</span> {
-                <span class="kw">fn</span> <span class="ident">from_field</span>(#<span class="ident">input</span>: <span class="kw-2">&amp;</span>::<span class="ident">syn</span>::<span class="ident">Field</span>) <span class="op">-</span><span class="op">&gt;</span> ::<span class="ident">darling</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+                <span class="kw">fn</span> <span class="ident">from_field</span>(#<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">::syn::Field</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">::darling::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
                     #<span class="ident">error_declaration</span>
 
                     #<span class="ident">grab_attrs</span>
@@ -180,7 +180,7 @@
 
                     #<span class="ident">default</span>
 
-                    ::<span class="ident">darling</span>::<span class="ident">export</span>::<span class="prelude-val">Ok</span>(<span class="self">Self</span> {
+                    <span class="ident">::darling::export::Ok</span>(<span class="self">Self</span> {
                         #<span class="ident">passed_ident</span>
                         #<span class="ident">passed_ty</span>
                         #<span class="ident">passed_vis</span>
@@ -222,12 +222,12 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">OuterFromImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">FromFieldImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">trait_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn</span>::<span class="ident">Path</span> {
-        <span class="macro">path!</span>(::<span class="ident">darling</span>::<span class="ident">FromField</span>)
+    <span class="kw">fn</span> <span class="ident">trait_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Path</span> {
+        <span class="macro">path!</span>(<span class="ident">::darling::FromField</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">trait_bound</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn</span>::<span class="ident">Path</span> {
-        <span class="macro">path!</span>(::<span class="ident">darling</span>::<span class="ident">FromMeta</span>)
+    <span class="kw">fn</span> <span class="ident">trait_bound</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Path</span> {
+        <span class="macro">path!</span>(<span class="ident">::darling::FromMeta</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">base</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">TraitImpl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {

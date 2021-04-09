@@ -1408,7 +1408,7 @@
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">non_upper_case_globals</span>)]</span>
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
 
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
 
 <span class="comment">// The `dw!` macro turns this:</span>
 <span class="comment">//</span>
@@ -1459,8 +1459,8 @@
             }
         }
 
-        <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">struct_name</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">struct_name</span> {
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">static_string</span>() {
                     <span class="ident">f</span>.<span class="ident">pad</span>(<span class="ident">s</span>)
                 } <span class="kw">else</span> {

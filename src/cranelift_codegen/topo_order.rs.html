@@ -142,10 +142,10 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Topological order of blocks, according to the dominator tree.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">dominator_tree</span>::<span class="ident">DominatorTree</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">entity</span>::<span class="ident">EntitySet</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">Block</span>, <span class="ident">Layout</span>};
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::dominator_tree::DominatorTree</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::entity::EntitySet</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">Block</span>, <span class="ident">Layout</span>};
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 
 <span class="doccomment">/// Present blocks in a topological order such that all dominating blocks are guaranteed to be visited</span>
 <span class="doccomment">/// before the current block.</span>
@@ -171,10 +171,10 @@
     <span class="doccomment">/// Create a new empty topological order.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">preferred</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
+            <span class="ident">preferred</span>: <span class="ident">Vec::new</span>(),
             <span class="ident">next</span>: <span class="number">0</span>,
-            <span class="ident">visited</span>: <span class="ident">EntitySet</span>::<span class="ident">new</span>(),
-            <span class="ident">stack</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
+            <span class="ident">visited</span>: <span class="ident">EntitySet::new</span>(),
+            <span class="ident">stack</span>: <span class="ident">Vec::new</span>(),
         }
     }
 
@@ -235,18 +235,18 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">FuncCursor</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">dominator_tree</span>::<span class="ident">DominatorTree</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">flowgraph</span>::<span class="ident">ControlFlowGraph</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">Function</span>, <span class="ident">InstBuilder</span>};
-    <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">iter</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">FuncCursor</span>};
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::dominator_tree::DominatorTree</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::flowgraph::ControlFlowGraph</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">Function</span>, <span class="ident">InstBuilder</span>};
+    <span class="kw">use</span> <span class="ident">core::iter</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">empty</span>() {
-        <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">Function</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">cfg</span> <span class="op">=</span> <span class="ident">ControlFlowGraph</span>::<span class="ident">with_function</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>);
-        <span class="kw">let</span> <span class="ident">domtree</span> <span class="op">=</span> <span class="ident">DominatorTree</span>::<span class="ident">with_function</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>, <span class="kw-2">&amp;</span><span class="ident">cfg</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">topo</span> <span class="op">=</span> <span class="ident">TopoOrder</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">Function::new</span>();
+        <span class="kw">let</span> <span class="ident">cfg</span> <span class="op">=</span> <span class="ident">ControlFlowGraph::with_function</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>);
+        <span class="kw">let</span> <span class="ident">domtree</span> <span class="op">=</span> <span class="ident">DominatorTree::with_function</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>, <span class="kw-2">&amp;</span><span class="ident">cfg</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">topo</span> <span class="op">=</span> <span class="ident">TopoOrder::new</span>();
 
         <span class="macro">assert_eq!</span>(<span class="ident">topo</span>.<span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">layout</span>, <span class="kw-2">&amp;</span><span class="ident">domtree</span>), <span class="prelude-val">None</span>);
         <span class="ident">topo</span>.<span class="ident">reset</span>(<span class="ident">func</span>.<span class="ident">layout</span>.<span class="ident">blocks</span>());
@@ -255,12 +255,12 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">simple</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">Function</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">Function::new</span>();
         <span class="kw">let</span> <span class="ident">block0</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">make_block</span>();
         <span class="kw">let</span> <span class="ident">block1</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">make_block</span>();
 
         {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cur</span> <span class="op">=</span> <span class="ident">FuncCursor</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">func</span>);
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cur</span> <span class="op">=</span> <span class="ident">FuncCursor::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">func</span>);
 
             <span class="ident">cur</span>.<span class="ident">insert_block</span>(<span class="ident">block0</span>);
             <span class="ident">cur</span>.<span class="ident">ins</span>().<span class="ident">jump</span>(<span class="ident">block1</span>, <span class="kw-2">&amp;</span>[]);
@@ -268,11 +268,11 @@
             <span class="ident">cur</span>.<span class="ident">ins</span>().<span class="ident">jump</span>(<span class="ident">block1</span>, <span class="kw-2">&amp;</span>[]);
         }
 
-        <span class="kw">let</span> <span class="ident">cfg</span> <span class="op">=</span> <span class="ident">ControlFlowGraph</span>::<span class="ident">with_function</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>);
-        <span class="kw">let</span> <span class="ident">domtree</span> <span class="op">=</span> <span class="ident">DominatorTree</span>::<span class="ident">with_function</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>, <span class="kw-2">&amp;</span><span class="ident">cfg</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">topo</span> <span class="op">=</span> <span class="ident">TopoOrder</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="ident">cfg</span> <span class="op">=</span> <span class="ident">ControlFlowGraph::with_function</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>);
+        <span class="kw">let</span> <span class="ident">domtree</span> <span class="op">=</span> <span class="ident">DominatorTree::with_function</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>, <span class="kw-2">&amp;</span><span class="ident">cfg</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">topo</span> <span class="op">=</span> <span class="ident">TopoOrder::new</span>();
 
-        <span class="ident">topo</span>.<span class="ident">reset</span>(<span class="ident">iter</span>::<span class="ident">once</span>(<span class="ident">block1</span>));
+        <span class="ident">topo</span>.<span class="ident">reset</span>(<span class="ident">iter::once</span>(<span class="ident">block1</span>));
         <span class="macro">assert_eq!</span>(<span class="ident">topo</span>.<span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">layout</span>, <span class="kw-2">&amp;</span><span class="ident">domtree</span>), <span class="prelude-val">Some</span>(<span class="ident">block0</span>));
         <span class="macro">assert_eq!</span>(<span class="ident">topo</span>.<span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">layout</span>, <span class="kw-2">&amp;</span><span class="ident">domtree</span>), <span class="prelude-val">Some</span>(<span class="ident">block1</span>));
         <span class="macro">assert_eq!</span>(<span class="ident">topo</span>.<span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">layout</span>, <span class="kw-2">&amp;</span><span class="ident">domtree</span>), <span class="prelude-val">None</span>);

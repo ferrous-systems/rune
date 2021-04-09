@@ -554,19 +554,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see &lt;http://www.gnu.org/licenses/&gt;.
  */</span>
-<span class="kw">use</span> <span class="ident">num</span>::<span class="ident">complex</span>::<span class="ident">Complex</span>;
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">num::complex::Complex</span>;
+<span class="kw">use</span> <span class="ident">alloc::vec</span>::<span class="kw-2">*</span>;
 
 
 
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">f32</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">f32</span>::<span class="ident">consts</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">core::f32</span>;
+<span class="kw">use</span> <span class="ident">core::f32::consts</span>::<span class="kw-2">*</span>;
 
 <span class="kw">use</span> <span class="ident">libm</span>::<span class="kw-2">*</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">colour_gradient</span>::{<span class="ident">ColourGradient</span>, <span class="ident">RGBAColour</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">errors</span>::<span class="ident">SonogramError</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utility</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::colour_gradient</span>::{<span class="ident">ColourGradient</span>, <span class="ident">RGBAColour</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::errors::SonogramError</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utility</span>;
 
 <span class="kw">type</span> <span class="ident">Spectrogram</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Complex</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 <span class="kw">type</span> <span class="ident">WindowFn</span> <span class="op">=</span> <span class="kw">fn</span>(<span class="ident">u32</span>, <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f32</span>;
@@ -616,7 +616,7 @@
       <span class="ident">height</span>,
       <span class="ident">sample_rate</span>: <span class="number">16000</span>,
       <span class="ident">data</span>: <span class="macro">vec!</span>[],
-      <span class="ident">window</span>: <span class="ident">utility</span>::<span class="ident">rectangular</span>,
+      <span class="ident">window</span>: <span class="ident">utility::rectangular</span>,
       <span class="ident">greyscale</span>: <span class="bool-val">false</span>,
       <span class="ident">verbose</span>: <span class="bool-val">false</span>,
     }
@@ -735,30 +735,30 @@
     <span class="kw">let</span> <span class="ident">audio_length_sec</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span> <span class="op">/</span> <span class="self">self</span>.<span class="ident">sample_rate</span>;
 
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">gradient</span> <span class="op">=</span> <span class="ident">ColourGradient</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">gradient</span> <span class="op">=</span> <span class="ident">ColourGradient::new</span>();
 
     <span class="kw">if</span> <span class="self">self</span>.<span class="ident">greyscale</span> {
-      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>));
-      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour</span>::<span class="ident">new</span>(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>));
+      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour::new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>));
+      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour::new</span>(<span class="number">255</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>));
     } <span class="kw">else</span> {
       <span class="comment">// Colour for our plot</span>
       <span class="comment">// Black</span>
-      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>));
+      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour::new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>));
       <span class="comment">// Purple</span>
-      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour</span>::<span class="ident">new</span>(<span class="number">55</span>, <span class="number">0</span>, <span class="number">110</span>, <span class="number">0</span>));
+      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour::new</span>(<span class="number">55</span>, <span class="number">0</span>, <span class="number">110</span>, <span class="number">0</span>));
       <span class="comment">// Blue</span>
-      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">180</span>, <span class="number">0</span>));
+      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour::new</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">180</span>, <span class="number">0</span>));
       <span class="comment">// Cyan</span>
-      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>));
+      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour::new</span>(<span class="number">0</span>, <span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>));
       <span class="comment">// Green</span>
-      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>));
+      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour::new</span>(<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>));
       <span class="comment">// Green Yellow</span>
       <span class="comment">// Yellow</span>
-      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour</span>::<span class="ident">new</span>(<span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>));
+      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour::new</span>(<span class="number">255</span>, <span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>));
       <span class="comment">// Orange</span>
-      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour</span>::<span class="ident">new</span>(<span class="number">230</span>, <span class="number">160</span>, <span class="number">0</span>, <span class="number">0</span>));
+      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour::new</span>(<span class="number">230</span>, <span class="number">160</span>, <span class="number">0</span>, <span class="number">0</span>));
       <span class="comment">// Red</span>
-      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour</span>::<span class="ident">new</span>(<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>));
+      <span class="ident">gradient</span>.<span class="ident">add_colour</span>(<span class="ident">RGBAColour::new</span>(<span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>));
     }
 
     <span class="ident">Spectrograph</span> {
@@ -802,10 +802,10 @@
 
 <span class="kw">impl</span> <span class="ident">Spectrograph</span> {
   <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">omega</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">p</span>: <span class="ident">f32</span>, <span class="ident">q</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Complex</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">trig_arg</span> <span class="op">=</span> <span class="number">2.0</span> <span class="op">*</span> <span class="ident">f32</span>::<span class="ident">consts</span>::<span class="ident">PI</span> <span class="op">*</span> <span class="ident">q</span> <span class="op">/</span> <span class="ident">p</span>;
+    <span class="kw">let</span> <span class="ident">trig_arg</span> <span class="op">=</span> <span class="number">2.0</span> <span class="op">*</span> <span class="ident">f32::consts::PI</span> <span class="op">*</span> <span class="ident">q</span> <span class="op">/</span> <span class="ident">p</span>;
 
     <span class="comment">// VVV Comment out this line to use the cache VVVV</span>
-    <span class="ident">Complex</span>::<span class="ident">new</span>(<span class="ident">libm</span>::<span class="ident">cosf</span>(<span class="ident">trig_arg</span>), <span class="ident">libm</span>::<span class="ident">sinf</span>(<span class="ident">trig_arg</span>))
+    <span class="ident">Complex::new</span>(<span class="ident">libm::cosf</span>(<span class="ident">trig_arg</span>), <span class="ident">libm::sinf</span>(<span class="ident">trig_arg</span>))
   }
 
   <span class="doccomment">///</span>
@@ -941,14 +941,14 @@
     <span class="kw">let</span> <span class="ident">multiplier</span> <span class="op">=</span> <span class="number">0.5</span>;
     <span class="kw">let</span> <span class="ident">img_len_used</span> <span class="op">=</span> <span class="ident">data_len</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">*</span> <span class="ident">multiplier</span>;
 
-    <span class="kw">let</span> <span class="ident">log_coef</span> <span class="op">=</span> <span class="number">1.0</span> <span class="op">/</span> <span class="ident">libm</span>::<span class="ident">logf</span>(<span class="self">self</span>.<span class="ident">height</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">+</span> <span class="number">1.0</span>) <span class="op">*</span> <span class="ident">img_len_used</span>;
+    <span class="kw">let</span> <span class="ident">log_coef</span> <span class="op">=</span> <span class="number">1.0</span> <span class="op">/</span> <span class="ident">libm::logf</span>(<span class="self">self</span>.<span class="ident">height</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">+</span> <span class="number">1.0</span>) <span class="op">*</span> <span class="ident">img_len_used</span>;
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">with_capacity</span>((<span class="self">self</span>.<span class="ident">height</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">width</span>) <span class="kw">as</span> <span class="ident">usize</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>((<span class="self">self</span>.<span class="ident">height</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">width</span>) <span class="kw">as</span> <span class="ident">usize</span>);
 
     <span class="kw">for</span> <span class="ident">y</span> <span class="kw">in</span> (<span class="number">0</span>..<span class="self">self</span>.<span class="ident">height</span>).<span class="ident">rev</span>() {
       <span class="kw">for</span> <span class="ident">x</span> <span class="kw">in</span> <span class="number">0</span>..<span class="self">self</span>.<span class="ident">width</span> {
         <span class="kw">let</span> <span class="ident">freq</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">log_freq</span> {
-          <span class="ident">img_len_used</span> <span class="op">-</span> (<span class="ident">log_coef</span> <span class="op">*</span> <span class="ident">libm</span>::<span class="ident">logf</span>(<span class="self">self</span>.<span class="ident">height</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">+</span> <span class="number">1.0</span> <span class="op">-</span> <span class="ident">y</span> <span class="kw">as</span> <span class="ident">f32</span>))
+          <span class="ident">img_len_used</span> <span class="op">-</span> (<span class="ident">log_coef</span> <span class="op">*</span> <span class="ident">libm::logf</span>(<span class="self">self</span>.<span class="ident">height</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">+</span> <span class="number">1.0</span> <span class="op">-</span> <span class="ident">y</span> <span class="kw">as</span> <span class="ident">f32</span>))
         } <span class="kw">else</span> {
           <span class="kw">let</span> <span class="ident">ratio</span> <span class="op">=</span> <span class="ident">y</span> <span class="kw">as</span> <span class="ident">f32</span> <span class="op">/</span> <span class="self">self</span>.<span class="ident">height</span> <span class="kw">as</span> <span class="ident">f32</span>;
           <span class="ident">ratio</span> <span class="op">*</span> <span class="ident">img_len_used</span>
@@ -963,7 +963,7 @@
   }
 
   <span class="kw">fn</span> <span class="ident">get_real</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">Complex</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f32</span> {
-    <span class="number">0.5</span> <span class="op">*</span> <span class="ident">libm</span>::<span class="ident">log10f</span>(<span class="ident">c</span>.<span class="ident">norm_sqr</span>() <span class="op">+</span> <span class="number">1.0</span>)
+    <span class="number">0.5</span> <span class="op">*</span> <span class="ident">libm::log10f</span>(<span class="ident">c</span>.<span class="ident">norm_sqr</span>() <span class="op">+</span> <span class="number">1.0</span>)
   }
 
   <span class="kw">fn</span> <span class="ident">get_colour</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">c</span>: <span class="ident">Complex</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>, <span class="ident">threshold</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RGBAColour</span> {
@@ -1001,7 +1001,7 @@
       <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">signal</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Complex</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">data</span>[<span class="ident">p</span>..]
         .<span class="ident">iter</span>()
         .<span class="ident">take</span>(<span class="ident">chunk_len</span>)
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> <span class="ident">Complex</span>::<span class="ident">new</span>(<span class="ident">f32</span>::<span class="ident">from</span>(<span class="kw-2">*</span><span class="ident">d</span>), <span class="number">0.0</span>))
+        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">d</span><span class="op">|</span> <span class="ident">Complex::new</span>(<span class="ident">f32::from</span>(<span class="kw-2">*</span><span class="ident">d</span>), <span class="number">0.0</span>))
         .<span class="ident">collect</span>();
 
       <span class="self">self</span>.<span class="ident">transform</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">signal</span>);
@@ -1020,10 +1020,10 @@
       <span class="kw">return</span>;
     }
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">transformed</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">Complex</span>::<span class="ident">new</span>(<span class="number">0f32</span>, <span class="number">0f32</span>); <span class="ident">signal</span>.<span class="ident">len</span>()];
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">transformed</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">Complex::new</span>(<span class="number">0f32</span>, <span class="number">0f32</span>); <span class="ident">signal</span>.<span class="ident">len</span>()];
     <span class="comment">// Apply window function and sort by bit-reversed index</span>
     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">signal</span>.<span class="ident">len</span>() {
-      <span class="ident">transformed</span>[<span class="ident">utility</span>::<span class="ident">reverse_bits</span>(<span class="ident">i</span>, <span class="ident">power</span>)] <span class="op">=</span>
+      <span class="ident">transformed</span>[<span class="ident">utility::reverse_bits</span>(<span class="ident">i</span>, <span class="ident">power</span>)] <span class="op">=</span>
         <span class="ident">signal</span>[<span class="ident">i</span>] <span class="op">*</span> (<span class="self">self</span>.<span class="ident">window</span>)(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u32</span>, <span class="ident">signal</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>);
     }
 
@@ -1059,7 +1059,7 @@
     <span class="ident">power</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
   }
   <span class="ident">pad</span>(<span class="ident">signal</span>, <span class="ident">new_len</span>);
-  <span class="kw">let</span> <span class="ident">padding</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="macro">vec!</span>[<span class="ident">Complex</span>::<span class="ident">new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>); <span class="ident">new_len</span> <span class="op">-</span> <span class="ident">signal</span>.<span class="ident">len</span>()];
+  <span class="kw">let</span> <span class="ident">padding</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="macro">vec!</span>[<span class="ident">Complex::new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>); <span class="ident">new_len</span> <span class="op">-</span> <span class="ident">signal</span>.<span class="ident">len</span>()];
   <span class="ident">signal</span>.<span class="ident">append</span>(<span class="ident">padding</span>);
 
   <span class="ident">power</span>
@@ -1067,7 +1067,7 @@
 
 <span class="kw">fn</span> <span class="ident">pad</span>(<span class="ident">signal</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Complex</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">new_len</span>: <span class="ident">usize</span>) {
   <span class="kw">if</span> <span class="ident">new_len</span> <span class="op">&gt;</span> <span class="ident">signal</span>.<span class="ident">len</span>() {
-    <span class="ident">signal</span>.<span class="ident">resize_with</span>(<span class="ident">new_len</span>, <span class="op">|</span><span class="op">|</span> <span class="ident">Complex</span>::<span class="ident">new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>));
+    <span class="ident">signal</span>.<span class="ident">resize_with</span>(<span class="ident">new_len</span>, <span class="op">|</span><span class="op">|</span> <span class="ident">Complex::new</span>(<span class="number">0.0</span>, <span class="number">0.0</span>));
   }
 }
 </pre></div>

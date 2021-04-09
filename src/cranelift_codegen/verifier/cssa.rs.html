@@ -176,14 +176,14 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Verify conventional SSA form.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">dbg</span>::<span class="ident">DisplayList</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">dominator_tree</span>::{<span class="ident">DominatorTree</span>, <span class="ident">DominatorTreePreorder</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">flowgraph</span>::{<span class="ident">BlockPredecessor</span>, <span class="ident">ControlFlowGraph</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">ExpandedProgramPoint</span>, <span class="ident">Function</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">liveness</span>::<span class="ident">Liveness</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">virtregs</span>::<span class="ident">VirtRegs</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">timing</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">verifier</span>::{<span class="ident">VerifierErrors</span>, <span class="ident">VerifierStepResult</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::dbg::DisplayList</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::dominator_tree</span>::{<span class="ident">DominatorTree</span>, <span class="ident">DominatorTreePreorder</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::flowgraph</span>::{<span class="ident">BlockPredecessor</span>, <span class="ident">ControlFlowGraph</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">ExpandedProgramPoint</span>, <span class="ident">Function</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::liveness::Liveness</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::virtregs::VirtRegs</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::timing</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::verifier</span>::{<span class="ident">VerifierErrors</span>, <span class="ident">VerifierStepResult</span>};
 
 <span class="doccomment">/// Verify conventional SSA form for `func`.</span>
 <span class="doccomment">///</span>
@@ -207,9 +207,9 @@
     <span class="ident">virtregs</span>: <span class="kw-2">&amp;</span><span class="ident">VirtRegs</span>,
     <span class="ident">errors</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">VerifierErrors</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VerifierStepResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">_tt</span> <span class="op">=</span> <span class="ident">timing</span>::<span class="ident">verify_cssa</span>();
+    <span class="kw">let</span> <span class="ident">_tt</span> <span class="op">=</span> <span class="ident">timing::verify_cssa</span>();
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">preorder</span> <span class="op">=</span> <span class="ident">DominatorTreePreorder</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">preorder</span> <span class="op">=</span> <span class="ident">DominatorTreePreorder::new</span>();
     <span class="ident">preorder</span>.<span class="ident">compute</span>(<span class="ident">domtree</span>, <span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">layout</span>);
 
     <span class="kw">let</span> <span class="ident">verifier</span> <span class="op">=</span> <span class="ident">CssaVerifier</span> {

@@ -87,13 +87,13 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The `CFGPrinter` utility.</span>
 
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>::{<span class="ident">Display</span>, <span class="ident">Formatter</span>, <span class="prelude-ty">Result</span>, <span class="ident">Write</span>};
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>::{<span class="ident">Display</span>, <span class="ident">Formatter</span>, <span class="prelude-ty">Result</span>, <span class="ident">Write</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">entity</span>::<span class="ident">SecondaryMap</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">flowgraph</span>::{<span class="ident">BlockPredecessor</span>, <span class="ident">ControlFlowGraph</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">Function</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">write</span>::{<span class="ident">FuncWriter</span>, <span class="ident">PlainWriter</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::entity::SecondaryMap</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::flowgraph</span>::{<span class="ident">BlockPredecessor</span>, <span class="ident">ControlFlowGraph</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::Function</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::write</span>::{<span class="ident">FuncWriter</span>, <span class="ident">PlainWriter</span>};
 
 <span class="doccomment">/// A utility for pretty-printing the CFG of a `Function`.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CFGPrinter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
@@ -107,7 +107,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Function</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">func</span>,
-            <span class="ident">cfg</span>: <span class="ident">ControlFlowGraph</span>::<span class="ident">with_function</span>(<span class="ident">func</span>),
+            <span class="ident">cfg</span>: <span class="ident">ControlFlowGraph::with_function</span>(<span class="ident">func</span>),
         }
     }
 
@@ -128,7 +128,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">block_nodes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Write</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">aliases</span> <span class="op">=</span> <span class="ident">SecondaryMap</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">aliases</span> <span class="op">=</span> <span class="ident">SecondaryMap</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::new</span>();
         <span class="kw">for</span> <span class="ident">v</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">values</span>() {
             <span class="comment">// VADFS returns the immediate target of an alias</span>
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">k</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_alias_dest_for_serialization</span>(<span class="ident">v</span>) {
@@ -138,7 +138,7 @@
 
         <span class="kw">for</span> <span class="ident">block</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">func</span>.<span class="ident">layout</span> {
             <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;    {} [shape=record, label=\&quot;{{&quot;</span>, <span class="ident">block</span>)<span class="question-mark">?</span>;
-            <span class="kw">crate</span>::<span class="ident">write</span>::<span class="ident">write_block_header</span>(<span class="ident">w</span>, <span class="self">self</span>.<span class="ident">func</span>, <span class="prelude-val">None</span>, <span class="ident">block</span>, <span class="number">4</span>)<span class="question-mark">?</span>;
+            <span class="kw">crate</span><span class="ident">::write::write_block_header</span>(<span class="ident">w</span>, <span class="self">self</span>.<span class="ident">func</span>, <span class="prelude-val">None</span>, <span class="ident">block</span>, <span class="number">4</span>)<span class="question-mark">?</span>;
             <span class="comment">// Add all outgoing branch instructions to the label.</span>
             <span class="kw">for</span> <span class="ident">inst</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">func</span>.<span class="ident">layout</span>.<span class="ident">block_likely_branches</span>(<span class="ident">block</span>) {
                 <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot; | &lt;{}&gt;&quot;</span>, <span class="ident">inst</span>)<span class="question-mark">?</span>;

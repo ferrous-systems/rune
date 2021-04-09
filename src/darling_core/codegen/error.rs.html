@@ -50,7 +50,7 @@
 <span id="47">47</span>
 <span id="48">48</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span>;
+<span class="kw">use</span> <span class="ident">proc_macro2::TokenStream</span>;
 <span class="kw">use</span> <span class="ident">quote</span>::{<span class="ident">ToTokens</span>, <span class="ident">TokenStreamExt</span>};
 
 <span class="doccomment">/// Declares the local variable into which errors will be accumulated.</span>
@@ -62,7 +62,7 @@
 <span class="kw">impl</span> <span class="ident">ToTokens</span> <span class="kw">for</span> <span class="ident">ErrorDeclaration</span> {
     <span class="kw">fn</span> <span class="ident">to_tokens</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">tokens</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TokenStream</span>) {
         <span class="ident">tokens</span>.<span class="ident">append_all</span>(<span class="macro">quote!</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">__errors</span> <span class="op">=</span> ::<span class="ident">darling</span>::<span class="ident">export</span>::<span class="ident">Vec</span>::<span class="ident">new</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">__errors</span> <span class="op">=</span> <span class="ident">::darling::export::Vec::new</span>();
         })
     }
 }
@@ -93,7 +93,7 @@
 
         <span class="ident">tokens</span>.<span class="ident">append_all</span>(<span class="macro">quote!</span> {
             <span class="kw">if</span> <span class="op">!</span><span class="ident">__errors</span>.<span class="ident">is_empty</span>() {
-                <span class="kw">return</span> ::<span class="ident">darling</span>::<span class="ident">export</span>::<span class="prelude-val">Err</span>(::<span class="ident">darling</span>::<span class="ident">Error</span>::<span class="ident">multiple</span>(<span class="ident">__errors</span>) #<span class="ident">at_call</span>);
+                <span class="kw">return</span> <span class="ident">::darling::export::Err</span>(<span class="ident">::darling::Error::multiple</span>(<span class="ident">__errors</span>) #<span class="ident">at_call</span>);
             }
         })
     }

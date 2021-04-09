@@ -59,22 +59,22 @@ same field. <a href="../../serde/de/trait.Error.html#method.duplicate_field">Rea
 EOF errors are turned into <code>UnexpectedEof</code> IO errors.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
+<span class="kw">use</span> <span class="ident">std::io</span>;
 
 <span class="kw">enum</span> <span class="ident">MyError</span> {
-    <span class="ident">Io</span>(<span class="ident">io</span>::<span class="ident">Error</span>),
-    <span class="ident">Json</span>(<span class="ident">serde_json</span>::<span class="ident">Error</span>),
+    <span class="ident">Io</span>(<span class="ident">io::Error</span>),
+    <span class="ident">Json</span>(<span class="ident">serde_json::Error</span>),
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">serde_json</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MyError</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: <span class="ident">serde_json</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MyError</span> {
-        <span class="kw">use</span> <span class="ident">serde_json</span>::<span class="ident">error</span>::<span class="ident">Category</span>;
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">serde_json::Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MyError</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">err</span>: <span class="ident">serde_json::Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MyError</span> {
+        <span class="kw">use</span> <span class="ident">serde_json::error::Category</span>;
         <span class="kw">match</span> <span class="ident">err</span>.<span class="ident">classify</span>() {
-            <span class="ident">Category</span>::<span class="ident">Io</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">MyError</span>::<span class="ident">Io</span>(<span class="ident">err</span>.<span class="ident">into</span>())
+            <span class="ident">Category::Io</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">MyError::Io</span>(<span class="ident">err</span>.<span class="ident">into</span>())
             }
-            <span class="ident">Category</span>::<span class="ident">Syntax</span> <span class="op">|</span> <span class="ident">Category</span>::<span class="ident">Data</span> <span class="op">|</span> <span class="ident">Category</span>::<span class="ident">Eof</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">MyError</span>::<span class="ident">Json</span>(<span class="ident">err</span>)
+            <span class="ident">Category::Syntax</span> <span class="op">|</span> <span class="ident">Category::Data</span> <span class="op">|</span> <span class="ident">Category::Eof</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">MyError::Json</span>(<span class="ident">err</span>)
             }
         }
     }

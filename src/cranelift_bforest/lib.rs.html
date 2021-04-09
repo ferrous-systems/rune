@@ -219,18 +219,18 @@
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>, <span class="ident">trivial_numeric_casts</span>, <span class="ident">unused_extern_crates</span>)]</span>
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">unused_import_braces</span>)]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;clippy&quot;</span>, <span class="ident">plugin</span>(<span class="ident">clippy</span>(<span class="ident">conf_file</span> <span class="op">=</span> <span class="string">&quot;../../clippy.toml&quot;</span>)))]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>, <span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">new_without_default</span>))]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>, <span class="ident">allow</span>(<span class="ident">clippy::new_without_default</span>))]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>,
     <span class="ident">warn</span>(
-        <span class="ident">clippy</span>::<span class="ident">float_arithmetic</span>,
-        <span class="ident">clippy</span>::<span class="ident">mut_mut</span>,
-        <span class="ident">clippy</span>::<span class="ident">nonminimal_bool</span>,
-        <span class="ident">clippy</span>::<span class="ident">option_map_unwrap_or</span>,
-        <span class="ident">clippy</span>::<span class="ident">option_map_unwrap_or_else</span>,
-        <span class="ident">clippy</span>::<span class="ident">print_stdout</span>,
-        <span class="ident">clippy</span>::<span class="ident">unicode_not_nfc</span>,
-        <span class="ident">clippy</span>::<span class="ident">use_self</span>
+        <span class="ident">clippy::float_arithmetic</span>,
+        <span class="ident">clippy::mut_mut</span>,
+        <span class="ident">clippy::nonminimal_bool</span>,
+        <span class="ident">clippy::option_map_unwrap_or</span>,
+        <span class="ident">clippy::option_map_unwrap_or_else</span>,
+        <span class="ident">clippy::print_stdout</span>,
+        <span class="ident">clippy::unicode_not_nfc</span>,
+        <span class="ident">clippy::use_self</span>
     )
 )]</span>
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
@@ -240,10 +240,10 @@
 
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">cranelift_entity</span> <span class="kw">as</span> <span class="ident">entity</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">entity</span>::<span class="ident">packed_option</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::entity::packed_option</span>;
 
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">borrow</span>::<span class="ident">BorrowMut</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">cmp</span>::<span class="ident">Ordering</span>;
+<span class="kw">use</span> <span class="ident">core::borrow::BorrowMut</span>;
+<span class="kw">use</span> <span class="ident">core::cmp::Ordering</span>;
 
 <span class="kw">mod</span> <span class="ident">map</span>;
 <span class="kw">mod</span> <span class="ident">node</span>;
@@ -251,12 +251,12 @@
 <span class="kw">mod</span> <span class="ident">pool</span>;
 <span class="kw">mod</span> <span class="ident">set</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">map</span>::{<span class="ident">Map</span>, <span class="ident">MapCursor</span>, <span class="ident">MapForest</span>, <span class="ident">MapIter</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">set</span>::{<span class="ident">Set</span>, <span class="ident">SetCursor</span>, <span class="ident">SetForest</span>, <span class="ident">SetIter</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::map</span>::{<span class="ident">Map</span>, <span class="ident">MapCursor</span>, <span class="ident">MapForest</span>, <span class="ident">MapIter</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::set</span>::{<span class="ident">Set</span>, <span class="ident">SetCursor</span>, <span class="ident">SetForest</span>, <span class="ident">SetIter</span>};
 
-<span class="kw">use</span> <span class="self">self</span>::<span class="ident">node</span>::<span class="ident">NodeData</span>;
-<span class="kw">use</span> <span class="self">self</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
-<span class="kw">use</span> <span class="self">self</span>::<span class="ident">pool</span>::<span class="ident">NodePool</span>;
+<span class="kw">use</span> <span class="self">self</span><span class="ident">::node::NodeData</span>;
+<span class="kw">use</span> <span class="self">self</span><span class="ident">::path::Path</span>;
+<span class="kw">use</span> <span class="self">self</span><span class="ident">::pool::NodePool</span>;
 
 <span class="doccomment">/// The maximum branching factor of an inner node in a B+-tree.</span>
 <span class="doccomment">/// The minimum number of outgoing edges is `INNER_SIZE/2`.</span>
@@ -310,16 +310,16 @@
     <span class="kw">type</span> <span class="ident">Value</span>: <span class="ident">Copy</span>;
 
     <span class="doccomment">/// An array of keys for the leaf nodes.</span>
-    <span class="kw">type</span> <span class="ident">LeafKeys</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">BorrowMut</span><span class="op">&lt;</span>[<span class="self">Self</span>::<span class="ident">Key</span>]<span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">LeafKeys</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">BorrowMut</span><span class="op">&lt;</span>[<span class="self">Self</span><span class="ident">::Key</span>]<span class="op">&gt;</span>;
 
     <span class="doccomment">/// An array of values for the leaf nodes.</span>
-    <span class="kw">type</span> <span class="ident">LeafValues</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">BorrowMut</span><span class="op">&lt;</span>[<span class="self">Self</span>::<span class="ident">Value</span>]<span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">LeafValues</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">BorrowMut</span><span class="op">&lt;</span>[<span class="self">Self</span><span class="ident">::Value</span>]<span class="op">&gt;</span>;
 
     <span class="doccomment">/// Splat a single key into a whole array.</span>
-    <span class="kw">fn</span> <span class="ident">splat_key</span>(<span class="ident">key</span>: <span class="self">Self</span>::<span class="ident">Key</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">LeafKeys</span>;
+    <span class="kw">fn</span> <span class="ident">splat_key</span>(<span class="ident">key</span>: <span class="self">Self</span><span class="ident">::Key</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::LeafKeys</span>;
 
     <span class="doccomment">/// Splat a single value inst a whole array</span>
-    <span class="kw">fn</span> <span class="ident">splat_value</span>(<span class="ident">value</span>: <span class="self">Self</span>::<span class="ident">Value</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">LeafValues</span>;
+    <span class="kw">fn</span> <span class="ident">splat_value</span>(<span class="ident">value</span>: <span class="self">Self</span><span class="ident">::Value</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::LeafValues</span>;
 }
 
 <span class="doccomment">/// A reference to a B+-tree node.</span>
@@ -349,7 +349,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">entity</span>::<span class="ident">EntityRef</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::entity::EntityRef</span>;
 
     <span class="doccomment">/// An opaque reference to a basic block in a function.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>)]</span>
@@ -358,10 +358,10 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">comparator</span>() {
-        <span class="kw">let</span> <span class="ident">block1</span> <span class="op">=</span> <span class="ident">Block</span>::<span class="ident">new</span>(<span class="number">1</span>);
-        <span class="kw">let</span> <span class="ident">block2</span> <span class="op">=</span> <span class="ident">Block</span>::<span class="ident">new</span>(<span class="number">2</span>);
-        <span class="kw">let</span> <span class="ident">block3</span> <span class="op">=</span> <span class="ident">Block</span>::<span class="ident">new</span>(<span class="number">3</span>);
-        <span class="kw">let</span> <span class="ident">block4</span> <span class="op">=</span> <span class="ident">Block</span>::<span class="ident">new</span>(<span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">block1</span> <span class="op">=</span> <span class="ident">Block::new</span>(<span class="number">1</span>);
+        <span class="kw">let</span> <span class="ident">block2</span> <span class="op">=</span> <span class="ident">Block::new</span>(<span class="number">2</span>);
+        <span class="kw">let</span> <span class="ident">block3</span> <span class="op">=</span> <span class="ident">Block::new</span>(<span class="number">3</span>);
+        <span class="kw">let</span> <span class="ident">block4</span> <span class="op">=</span> <span class="ident">Block::new</span>(<span class="number">4</span>);
         <span class="kw">let</span> <span class="ident">vals</span> <span class="op">=</span> [<span class="ident">block1</span>, <span class="ident">block2</span>, <span class="ident">block4</span>];
         <span class="kw">let</span> <span class="ident">comp</span> <span class="op">=</span> ();
         <span class="macro">assert_eq!</span>(<span class="ident">comp</span>.<span class="ident">search</span>(<span class="ident">block1</span>, <span class="kw-2">&amp;</span><span class="ident">vals</span>), <span class="prelude-val">Ok</span>(<span class="number">0</span>));

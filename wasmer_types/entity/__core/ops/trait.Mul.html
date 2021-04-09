@@ -8,7 +8,7 @@
 <p>Note that <code>Rhs</code> is <code>Self</code> by default, but this is not mandatory.</p>
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1><h2 id="multipliable-rational-numbers" class="section-header"><a href="#multipliable-rational-numbers"><code>Mul</code>tipliable rational numbers</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Mul</span>;
+<span class="kw">use</span> <span class="ident">std::ops::Mul</span>;
 
 <span class="comment">// By the fundamental theorem of arithmetic, rational numbers in lowest</span>
 <span class="comment">// terms are unique. So, by keeping `Rational`s in reduced form, we can</span>
@@ -42,7 +42,7 @@
     <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">numerator</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">numerator</span> <span class="op">*</span> <span class="ident">rhs</span>.<span class="ident">numerator</span>;
         <span class="kw">let</span> <span class="ident">denominator</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">denominator</span> <span class="op">*</span> <span class="ident">rhs</span>.<span class="ident">denominator</span>;
-        <span class="self">Self</span>::<span class="ident">new</span>(<span class="ident">numerator</span>, <span class="ident">denominator</span>)
+        <span class="self">Self</span><span class="ident">::new</span>(<span class="ident">numerator</span>, <span class="ident">denominator</span>)
     }
 }
 
@@ -59,12 +59,12 @@
     <span class="ident">x</span>
 }
 
-<span class="macro">assert_eq!</span>(<span class="ident">Rational</span>::<span class="ident">new</span>(<span class="number">1</span>, <span class="number">2</span>), <span class="ident">Rational</span>::<span class="ident">new</span>(<span class="number">2</span>, <span class="number">4</span>));
-<span class="macro">assert_eq!</span>(<span class="ident">Rational</span>::<span class="ident">new</span>(<span class="number">2</span>, <span class="number">3</span>) <span class="op">*</span> <span class="ident">Rational</span>::<span class="ident">new</span>(<span class="number">3</span>, <span class="number">4</span>),
-           <span class="ident">Rational</span>::<span class="ident">new</span>(<span class="number">1</span>, <span class="number">2</span>));</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">Rational::new</span>(<span class="number">1</span>, <span class="number">2</span>), <span class="ident">Rational::new</span>(<span class="number">2</span>, <span class="number">4</span>));
+<span class="macro">assert_eq!</span>(<span class="ident">Rational::new</span>(<span class="number">2</span>, <span class="number">3</span>) <span class="op">*</span> <span class="ident">Rational::new</span>(<span class="number">3</span>, <span class="number">4</span>),
+           <span class="ident">Rational::new</span>(<span class="number">1</span>, <span class="number">2</span>));</pre></div>
 <h2 id="multiplying-vectors-by-scalars-as-in-linear-algebra" class="section-header"><a href="#multiplying-vectors-by-scalars-as-in-linear-algebra">Multiplying vectors by scalars as in linear algebra</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Mul</span>;
+<span class="kw">use</span> <span class="ident">std::ops::Mul</span>;
 
 <span class="kw">struct</span> <span class="ident">Scalar</span> { <span class="ident">value</span>: <span class="ident">usize</span> }
 
@@ -74,7 +74,7 @@
 <span class="kw">impl</span> <span class="ident">Mul</span><span class="op">&lt;</span><span class="ident">Scalar</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Vector</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">mul</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="ident">Scalar</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
         <span class="self">Self</span> { <span class="ident">value</span>: <span class="self">self</span>.<span class="ident">value</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span> <span class="op">*</span> <span class="ident">rhs</span>.<span class="ident">value</span>).<span class="ident">collect</span>() }
     }
 }

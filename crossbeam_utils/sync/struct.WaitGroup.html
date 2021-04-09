@@ -20,17 +20,17 @@ to either wait for other threads or to continue without blocking.</p>
 </ul>
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">crossbeam_utils</span>::<span class="ident">sync</span>::<span class="ident">WaitGroup</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>;
+<span class="kw">use</span> <span class="ident">crossbeam_utils::sync::WaitGroup</span>;
+<span class="kw">use</span> <span class="ident">std::thread</span>;
 
 <span class="comment">// Create a new wait group.</span>
-<span class="kw">let</span> <span class="ident">wg</span> <span class="op">=</span> <span class="ident">WaitGroup</span>::<span class="ident">new</span>();
+<span class="kw">let</span> <span class="ident">wg</span> <span class="op">=</span> <span class="ident">WaitGroup::new</span>();
 
 <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">4</span> {
     <span class="comment">// Create another reference to the wait group.</span>
     <span class="kw">let</span> <span class="ident">wg</span> <span class="op">=</span> <span class="ident">wg</span>.<span class="ident">clone</span>();
 
-    <span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+    <span class="ident">thread::spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
         <span class="comment">// Do some work.</span>
 
         <span class="comment">// Drop the reference to the wait group.</span>
@@ -43,18 +43,18 @@ to either wait for other threads or to continue without blocking.</p>
 </div><h2 id="implementations" class="small-section-header">Implementations<a href="#implementations" class="anchor"></a></h2><h3 id="impl" class="impl"><code class="in-band">impl <a class="struct" href="../../crossbeam_utils/sync/struct.WaitGroup.html" title="struct crossbeam_utils::sync::WaitGroup">WaitGroup</a></code><a href="#impl" class="anchor"></a><a class="srclink" href="../../src/crossbeam_utils/sync/wait_group.rs.html#69-117" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.new" class="method"><code>pub fn <a href="#method.new" class="fnname">new</a>() -&gt; Self</code><a class="srclink" href="../../src/crossbeam_utils/sync/wait_group.rs.html#79-81" title="goto source code">[src]</a></h4><div class="docblock"><p>Creates a new wait group and returns the single reference to it.</p>
 <h1 id="examples-1" class="section-header"><a href="#examples-1">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">crossbeam_utils</span>::<span class="ident">sync</span>::<span class="ident">WaitGroup</span>;
+<span class="kw">use</span> <span class="ident">crossbeam_utils::sync::WaitGroup</span>;
 
-<span class="kw">let</span> <span class="ident">wg</span> <span class="op">=</span> <span class="ident">WaitGroup</span>::<span class="ident">new</span>();</pre></div>
+<span class="kw">let</span> <span class="ident">wg</span> <span class="op">=</span> <span class="ident">WaitGroup::new</span>();</pre></div>
 </div><h4 id="method.wait" class="method"><code>pub fn <a href="#method.wait" class="fnname">wait</a>(self)</code><a class="srclink" href="../../src/crossbeam_utils/sync/wait_group.rs.html#104-116" title="goto source code">[src]</a></h4><div class="docblock"><p>Drops this reference and waits until all other references are dropped.</p>
 <h1 id="examples-2" class="section-header"><a href="#examples-2">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">crossbeam_utils</span>::<span class="ident">sync</span>::<span class="ident">WaitGroup</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>;
+<span class="kw">use</span> <span class="ident">crossbeam_utils::sync::WaitGroup</span>;
+<span class="kw">use</span> <span class="ident">std::thread</span>;
 
-<span class="kw">let</span> <span class="ident">wg</span> <span class="op">=</span> <span class="ident">WaitGroup</span>::<span class="ident">new</span>();
+<span class="kw">let</span> <span class="ident">wg</span> <span class="op">=</span> <span class="ident">WaitGroup::new</span>();
 
-<span class="ident">thread</span>::<span class="ident">spawn</span>({
+<span class="ident">thread::spawn</span>({
     <span class="kw">let</span> <span class="ident">wg</span> <span class="op">=</span> <span class="ident">wg</span>.<span class="ident">clone</span>();
     <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
         <span class="comment">// Block until both threads have reached `wait()`.</span>

@@ -16,9 +16,9 @@ globs as matching.</p>
 <p>This example shows how to match a single glob against a single file path.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">globset</span>::<span class="ident">Glob</span>;
+<span class="kw">use</span> <span class="ident">globset::Glob</span>;
 
-<span class="kw">let</span> <span class="ident">glob</span> <span class="op">=</span> <span class="ident">Glob</span>::<span class="ident">new</span>(<span class="string">&quot;*.rs&quot;</span>)<span class="question-mark">?</span>.<span class="ident">compile_matcher</span>();
+<span class="kw">let</span> <span class="ident">glob</span> <span class="op">=</span> <span class="ident">Glob::new</span>(<span class="string">&quot;*.rs&quot;</span>)<span class="question-mark">?</span>.<span class="ident">compile_matcher</span>();
 
 <span class="macro">assert!</span>(<span class="ident">glob</span>.<span class="ident">is_match</span>(<span class="string">&quot;foo.rs&quot;</span>));
 <span class="macro">assert!</span>(<span class="ident">glob</span>.<span class="ident">is_match</span>(<span class="string">&quot;foo/bar.rs&quot;</span>));
@@ -28,9 +28,9 @@ globs as matching.</p>
 semantics. In this example, we prevent wildcards from matching path separators.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">globset</span>::<span class="ident">GlobBuilder</span>;
+<span class="kw">use</span> <span class="ident">globset::GlobBuilder</span>;
 
-<span class="kw">let</span> <span class="ident">glob</span> <span class="op">=</span> <span class="ident">GlobBuilder</span>::<span class="ident">new</span>(<span class="string">&quot;*.rs&quot;</span>)
+<span class="kw">let</span> <span class="ident">glob</span> <span class="op">=</span> <span class="ident">GlobBuilder::new</span>(<span class="string">&quot;*.rs&quot;</span>)
     .<span class="ident">literal_separator</span>(<span class="bool-val">true</span>).<span class="ident">build</span>()<span class="question-mark">?</span>.<span class="ident">compile_matcher</span>();
 
 <span class="macro">assert!</span>(<span class="ident">glob</span>.<span class="ident">is_match</span>(<span class="string">&quot;foo.rs&quot;</span>));
@@ -42,12 +42,12 @@ semantics. In this example, we prevent wildcards from matching path separators.<
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">globset</span>::{<span class="ident">Glob</span>, <span class="ident">GlobSetBuilder</span>};
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">GlobSetBuilder</span>::<span class="ident">new</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">GlobSetBuilder::new</span>();
 <span class="comment">// A GlobBuilder can be used to configure each glob&#39;s match semantics</span>
 <span class="comment">// independently.</span>
-<span class="ident">builder</span>.<span class="ident">add</span>(<span class="ident">Glob</span>::<span class="ident">new</span>(<span class="string">&quot;*.rs&quot;</span>)<span class="question-mark">?</span>);
-<span class="ident">builder</span>.<span class="ident">add</span>(<span class="ident">Glob</span>::<span class="ident">new</span>(<span class="string">&quot;src/lib.rs&quot;</span>)<span class="question-mark">?</span>);
-<span class="ident">builder</span>.<span class="ident">add</span>(<span class="ident">Glob</span>::<span class="ident">new</span>(<span class="string">&quot;src/**/foo.rs&quot;</span>)<span class="question-mark">?</span>);
+<span class="ident">builder</span>.<span class="ident">add</span>(<span class="ident">Glob::new</span>(<span class="string">&quot;*.rs&quot;</span>)<span class="question-mark">?</span>);
+<span class="ident">builder</span>.<span class="ident">add</span>(<span class="ident">Glob::new</span>(<span class="string">&quot;src/lib.rs&quot;</span>)<span class="question-mark">?</span>);
+<span class="ident">builder</span>.<span class="ident">add</span>(<span class="ident">Glob::new</span>(<span class="string">&quot;src/**/foo.rs&quot;</span>)<span class="question-mark">?</span>);
 <span class="kw">let</span> <span class="ident">set</span> <span class="op">=</span> <span class="ident">builder</span>.<span class="ident">build</span>()<span class="question-mark">?</span>;
 
 <span class="macro">assert_eq!</span>(<span class="ident">set</span>.<span class="ident">matches</span>(<span class="string">&quot;src/bar/baz/foo.rs&quot;</span>), <span class="macro">vec!</span>[<span class="number">0</span>, <span class="number">2</span>]);</pre></div>

@@ -252,14 +252,14 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! ARM 64-bit Instruction Set Architecture.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">condcodes</span>::<span class="ident">IntCC</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">Function</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">Builder</span> <span class="kw">as</span> <span class="ident">IsaBuilder</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">machinst</span>::{<span class="ident">compile</span>, <span class="ident">MachBackend</span>, <span class="ident">MachCompileResult</span>, <span class="ident">TargetIsaAdapter</span>, <span class="ident">VCode</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">result</span>::<span class="ident">CodegenResult</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">settings</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::condcodes::IntCC</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::Function</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::Builder</span> <span class="kw">as</span> <span class="ident">IsaBuilder</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::machinst</span>::{<span class="ident">compile</span>, <span class="ident">MachBackend</span>, <span class="ident">MachCompileResult</span>, <span class="ident">TargetIsaAdapter</span>, <span class="ident">VCode</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::result::CodegenResult</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::settings</span>;
 
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">boxed</span>::<span class="ident">Box</span>;
+<span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
 
 <span class="kw">use</span> <span class="ident">regalloc</span>::{<span class="ident">PrettyPrint</span>, <span class="ident">RealRegUniverse</span>};
 <span class="kw">use</span> <span class="ident">target_lexicon</span>::{<span class="ident">Aarch64Architecture</span>, <span class="ident">Architecture</span>, <span class="ident">Triple</span>};
@@ -270,20 +270,20 @@
 <span class="kw">mod</span> <span class="ident">lower</span>;
 <span class="kw">mod</span> <span class="ident">lower_inst</span>;
 
-<span class="kw">use</span> <span class="ident">inst</span>::<span class="ident">create_reg_universe</span>;
+<span class="kw">use</span> <span class="ident">inst::create_reg_universe</span>;
 
-<span class="kw">use</span> <span class="self">self</span>::<span class="ident">inst</span>::<span class="ident">EmitInfo</span>;
+<span class="kw">use</span> <span class="self">self</span><span class="ident">::inst::EmitInfo</span>;
 
 <span class="doccomment">/// An AArch64 backend.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AArch64Backend</span> {
     <span class="ident">triple</span>: <span class="ident">Triple</span>,
-    <span class="ident">flags</span>: <span class="ident">settings</span>::<span class="ident">Flags</span>,
+    <span class="ident">flags</span>: <span class="ident">settings::Flags</span>,
     <span class="ident">reg_universe</span>: <span class="ident">RealRegUniverse</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">AArch64Backend</span> {
     <span class="doccomment">/// Create a new AArch64 backend with the given (shared) flags.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_with_flags</span>(<span class="ident">triple</span>: <span class="ident">Triple</span>, <span class="ident">flags</span>: <span class="ident">settings</span>::<span class="ident">Flags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AArch64Backend</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_with_flags</span>(<span class="ident">triple</span>: <span class="ident">Triple</span>, <span class="ident">flags</span>: <span class="ident">settings::Flags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AArch64Backend</span> {
         <span class="kw">let</span> <span class="ident">reg_universe</span> <span class="op">=</span> <span class="ident">create_reg_universe</span>(<span class="kw-2">&amp;</span><span class="ident">flags</span>);
         <span class="ident">AArch64Backend</span> {
             <span class="ident">triple</span>,
@@ -297,11 +297,11 @@
     <span class="kw">fn</span> <span class="ident">compile_vcode</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>,
-        <span class="ident">flags</span>: <span class="ident">settings</span>::<span class="ident">Flags</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CodegenResult</span><span class="op">&lt;</span><span class="ident">VCode</span><span class="op">&lt;</span><span class="ident">inst</span>::<span class="ident">Inst</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">emit_info</span> <span class="op">=</span> <span class="ident">EmitInfo</span>::<span class="ident">new</span>(<span class="ident">flags</span>.<span class="ident">clone</span>());
-        <span class="kw">let</span> <span class="ident">abi</span> <span class="op">=</span> <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">abi</span>::<span class="ident">AArch64ABICallee</span>::<span class="ident">new</span>(<span class="ident">func</span>, <span class="ident">flags</span>)<span class="question-mark">?</span>);
-        <span class="ident">compile</span>::<span class="ident">compile</span>::<span class="op">&lt;</span><span class="ident">AArch64Backend</span><span class="op">&gt;</span>(<span class="ident">func</span>, <span class="self">self</span>, <span class="ident">abi</span>, <span class="ident">emit_info</span>)
+        <span class="ident">flags</span>: <span class="ident">settings::Flags</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CodegenResult</span><span class="op">&lt;</span><span class="ident">VCode</span><span class="op">&lt;</span><span class="ident">inst::Inst</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">emit_info</span> <span class="op">=</span> <span class="ident">EmitInfo::new</span>(<span class="ident">flags</span>.<span class="ident">clone</span>());
+        <span class="kw">let</span> <span class="ident">abi</span> <span class="op">=</span> <span class="ident">Box::new</span>(<span class="ident">abi::AArch64ABICallee::new</span>(<span class="ident">func</span>, <span class="ident">flags</span>)<span class="question-mark">?</span>);
+        <span class="ident">compile::compile</span>::<span class="op">&lt;</span><span class="ident">AArch64Backend</span><span class="op">&gt;</span>(<span class="ident">func</span>, <span class="self">self</span>, <span class="ident">abi</span>, <span class="ident">emit_info</span>)
     }
 }
 
@@ -341,7 +341,7 @@
         <span class="self">self</span>.<span class="ident">triple</span>.<span class="ident">clone</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">flags</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">settings</span>::<span class="ident">Flags</span> {
+    <span class="kw">fn</span> <span class="ident">flags</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">settings::Flags</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">flags</span>
     }
 
@@ -352,26 +352,26 @@
     <span class="kw">fn</span> <span class="ident">unsigned_add_overflow_condition</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">IntCC</span> {
         <span class="comment">// Unsigned `&gt;=`; this corresponds to the carry flag set on aarch64, which happens on</span>
         <span class="comment">// overflow of an add.</span>
-        <span class="ident">IntCC</span>::<span class="ident">UnsignedGreaterThanOrEqual</span>
+        <span class="ident">IntCC::UnsignedGreaterThanOrEqual</span>
     }
 
     <span class="kw">fn</span> <span class="ident">unsigned_sub_overflow_condition</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">IntCC</span> {
         <span class="comment">// unsigned `&lt;`; this corresponds to the carry flag cleared on aarch64, which happens on</span>
         <span class="comment">// underflow of a subtract (aarch64 follows a carry-cleared-on-borrow convention, the</span>
         <span class="comment">// opposite of x86).</span>
-        <span class="ident">IntCC</span>::<span class="ident">UnsignedLessThan</span>
+        <span class="ident">IntCC::UnsignedLessThan</span>
     }
 }
 
 <span class="doccomment">/// Create a new `isa::Builder`.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">isa_builder</span>(<span class="ident">triple</span>: <span class="ident">Triple</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">IsaBuilder</span> {
-    <span class="macro">assert!</span>(<span class="ident">triple</span>.<span class="ident">architecture</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Architecture</span>::<span class="ident">Aarch64</span>(<span class="ident">Aarch64Architecture</span>::<span class="ident">Aarch64</span>));
+    <span class="macro">assert!</span>(<span class="ident">triple</span>.<span class="ident">architecture</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Architecture::Aarch64</span>(<span class="ident">Aarch64Architecture::Aarch64</span>));
     <span class="ident">IsaBuilder</span> {
         <span class="ident">triple</span>,
-        <span class="ident">setup</span>: <span class="ident">settings</span>::<span class="ident">builder</span>(),
+        <span class="ident">setup</span>: <span class="ident">settings::builder</span>(),
         <span class="ident">constructor</span>: <span class="op">|</span><span class="ident">triple</span>, <span class="ident">shared_flags</span>, <span class="kw">_</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">AArch64Backend</span>::<span class="ident">new_with_flags</span>(<span class="ident">triple</span>, <span class="ident">shared_flags</span>);
-            <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">TargetIsaAdapter</span>::<span class="ident">new</span>(<span class="ident">backend</span>))
+            <span class="kw">let</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">AArch64Backend::new_with_flags</span>(<span class="ident">triple</span>, <span class="ident">shared_flags</span>);
+            <span class="ident">Box::new</span>(<span class="ident">TargetIsaAdapter::new</span>(<span class="ident">backend</span>))
         },
     }
 }
@@ -379,37 +379,37 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">FuncCursor</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">types</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">AbiParam</span>, <span class="ident">ExternalName</span>, <span class="ident">Function</span>, <span class="ident">InstBuilder</span>, <span class="ident">Signature</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">CallConv</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">settings</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">settings</span>::<span class="ident">Configurable</span>;
-    <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">str</span>::<span class="ident">FromStr</span>;
-    <span class="kw">use</span> <span class="ident">target_lexicon</span>::<span class="ident">Triple</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">FuncCursor</span>};
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::types</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">AbiParam</span>, <span class="ident">ExternalName</span>, <span class="ident">Function</span>, <span class="ident">InstBuilder</span>, <span class="ident">Signature</span>};
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::CallConv</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::settings</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::settings::Configurable</span>;
+    <span class="kw">use</span> <span class="ident">core::str::FromStr</span>;
+    <span class="kw">use</span> <span class="ident">target_lexicon::Triple</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_compile_function</span>() {
-        <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">ExternalName</span>::<span class="ident">testcase</span>(<span class="string">&quot;test0&quot;</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sig</span> <span class="op">=</span> <span class="ident">Signature</span>::<span class="ident">new</span>(<span class="ident">CallConv</span>::<span class="ident">SystemV</span>);
-        <span class="ident">sig</span>.<span class="ident">params</span>.<span class="ident">push</span>(<span class="ident">AbiParam</span>::<span class="ident">new</span>(<span class="ident">I32</span>));
-        <span class="ident">sig</span>.<span class="ident">returns</span>.<span class="ident">push</span>(<span class="ident">AbiParam</span>::<span class="ident">new</span>(<span class="ident">I32</span>));
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">Function</span>::<span class="ident">with_name_signature</span>(<span class="ident">name</span>, <span class="ident">sig</span>);
+        <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">ExternalName::testcase</span>(<span class="string">&quot;test0&quot;</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sig</span> <span class="op">=</span> <span class="ident">Signature::new</span>(<span class="ident">CallConv::SystemV</span>);
+        <span class="ident">sig</span>.<span class="ident">params</span>.<span class="ident">push</span>(<span class="ident">AbiParam::new</span>(<span class="ident">I32</span>));
+        <span class="ident">sig</span>.<span class="ident">returns</span>.<span class="ident">push</span>(<span class="ident">AbiParam::new</span>(<span class="ident">I32</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">Function::with_name_signature</span>(<span class="ident">name</span>, <span class="ident">sig</span>);
 
         <span class="kw">let</span> <span class="ident">bb0</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">make_block</span>();
         <span class="kw">let</span> <span class="ident">arg0</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">bb0</span>, <span class="ident">I32</span>);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">func</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">func</span>);
         <span class="ident">pos</span>.<span class="ident">insert_block</span>(<span class="ident">bb0</span>);
         <span class="kw">let</span> <span class="ident">v0</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">iconst</span>(<span class="ident">I32</span>, <span class="number">0x1234</span>);
         <span class="kw">let</span> <span class="ident">v1</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">iadd</span>(<span class="ident">arg0</span>, <span class="ident">v0</span>);
         <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">return_</span>(<span class="kw-2">&amp;</span>[<span class="ident">v1</span>]);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shared_flags</span> <span class="op">=</span> <span class="ident">settings</span>::<span class="ident">builder</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shared_flags</span> <span class="op">=</span> <span class="ident">settings::builder</span>();
         <span class="ident">shared_flags</span>.<span class="ident">set</span>(<span class="string">&quot;opt_level&quot;</span>, <span class="string">&quot;none&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">AArch64Backend</span>::<span class="ident">new_with_flags</span>(
-            <span class="ident">Triple</span>::<span class="ident">from_str</span>(<span class="string">&quot;aarch64&quot;</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">settings</span>::<span class="ident">Flags</span>::<span class="ident">new</span>(<span class="ident">shared_flags</span>),
+        <span class="kw">let</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">AArch64Backend::new_with_flags</span>(
+            <span class="ident">Triple::from_str</span>(<span class="string">&quot;aarch64&quot;</span>).<span class="ident">unwrap</span>(),
+            <span class="ident">settings::Flags::new</span>(<span class="ident">shared_flags</span>),
         );
         <span class="kw">let</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">backend</span>.<span class="ident">compile_function</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">func</span>, <span class="bool-val">false</span>).<span class="ident">unwrap</span>().<span class="ident">buffer</span>;
         <span class="kw">let</span> <span class="ident">code</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buffer</span>.<span class="ident">data</span>[..];
@@ -431,11 +431,11 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_branch_lowering</span>() {
-        <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">ExternalName</span>::<span class="ident">testcase</span>(<span class="string">&quot;test0&quot;</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sig</span> <span class="op">=</span> <span class="ident">Signature</span>::<span class="ident">new</span>(<span class="ident">CallConv</span>::<span class="ident">SystemV</span>);
-        <span class="ident">sig</span>.<span class="ident">params</span>.<span class="ident">push</span>(<span class="ident">AbiParam</span>::<span class="ident">new</span>(<span class="ident">I32</span>));
-        <span class="ident">sig</span>.<span class="ident">returns</span>.<span class="ident">push</span>(<span class="ident">AbiParam</span>::<span class="ident">new</span>(<span class="ident">I32</span>));
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">Function</span>::<span class="ident">with_name_signature</span>(<span class="ident">name</span>, <span class="ident">sig</span>);
+        <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">ExternalName::testcase</span>(<span class="string">&quot;test0&quot;</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sig</span> <span class="op">=</span> <span class="ident">Signature::new</span>(<span class="ident">CallConv::SystemV</span>);
+        <span class="ident">sig</span>.<span class="ident">params</span>.<span class="ident">push</span>(<span class="ident">AbiParam::new</span>(<span class="ident">I32</span>));
+        <span class="ident">sig</span>.<span class="ident">returns</span>.<span class="ident">push</span>(<span class="ident">AbiParam::new</span>(<span class="ident">I32</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">Function::with_name_signature</span>(<span class="ident">name</span>, <span class="ident">sig</span>);
 
         <span class="kw">let</span> <span class="ident">bb0</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">make_block</span>();
         <span class="kw">let</span> <span class="ident">arg0</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">bb0</span>, <span class="ident">I32</span>);
@@ -443,7 +443,7 @@
         <span class="kw">let</span> <span class="ident">bb2</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">make_block</span>();
         <span class="kw">let</span> <span class="ident">bb3</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">make_block</span>();
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">func</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">func</span>);
         <span class="ident">pos</span>.<span class="ident">insert_block</span>(<span class="ident">bb0</span>);
         <span class="kw">let</span> <span class="ident">v0</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">iconst</span>(<span class="ident">I32</span>, <span class="number">0x1234</span>);
         <span class="kw">let</span> <span class="ident">v1</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">iadd</span>(<span class="ident">arg0</span>, <span class="ident">v0</span>);
@@ -460,11 +460,11 @@
         <span class="kw">let</span> <span class="ident">v3</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">isub</span>(<span class="ident">v1</span>, <span class="ident">v0</span>);
         <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">return_</span>(<span class="kw-2">&amp;</span>[<span class="ident">v3</span>]);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shared_flags</span> <span class="op">=</span> <span class="ident">settings</span>::<span class="ident">builder</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shared_flags</span> <span class="op">=</span> <span class="ident">settings::builder</span>();
         <span class="ident">shared_flags</span>.<span class="ident">set</span>(<span class="string">&quot;opt_level&quot;</span>, <span class="string">&quot;none&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">AArch64Backend</span>::<span class="ident">new_with_flags</span>(
-            <span class="ident">Triple</span>::<span class="ident">from_str</span>(<span class="string">&quot;aarch64&quot;</span>).<span class="ident">unwrap</span>(),
-            <span class="ident">settings</span>::<span class="ident">Flags</span>::<span class="ident">new</span>(<span class="ident">shared_flags</span>),
+        <span class="kw">let</span> <span class="ident">backend</span> <span class="op">=</span> <span class="ident">AArch64Backend::new_with_flags</span>(
+            <span class="ident">Triple::from_str</span>(<span class="string">&quot;aarch64&quot;</span>).<span class="ident">unwrap</span>(),
+            <span class="ident">settings::Flags::new</span>(<span class="ident">shared_flags</span>),
         );
         <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">backend</span>
             .<span class="ident">compile_function</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">func</span>, <span class="comment">/* want_disasm = */</span> <span class="bool-val">false</span>)

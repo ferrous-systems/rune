@@ -9,9 +9,9 @@ in the haystack.</p>
 <p>Basic usage:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">aho_corasick</span>::<span class="ident">AhoCorasick</span>;
+<span class="kw">use</span> <span class="ident">aho_corasick::AhoCorasick</span>;
 
-<span class="kw">let</span> <span class="ident">ac</span> <span class="op">=</span> <span class="ident">AhoCorasick</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span>[
+<span class="kw">let</span> <span class="ident">ac</span> <span class="op">=</span> <span class="ident">AhoCorasick::new</span>(<span class="kw-2">&amp;</span>[
     <span class="string">&quot;foo&quot;</span>, <span class="string">&quot;bar&quot;</span>, <span class="string">&quot;baz&quot;</span>,
 ]);
 <span class="kw">let</span> <span class="ident">mat</span> <span class="op">=</span> <span class="ident">ac</span>.<span class="ident">find</span>(<span class="string">&quot;xxx bar xxx&quot;</span>).<span class="ident">expect</span>(<span class="string">&quot;should have a match&quot;</span>);

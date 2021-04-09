@@ -45,8 +45,8 @@ on the same location is undefined behavior.</p>
 <span class="kw">let</span> <span class="ident">z</span> <span class="op">=</span> <span class="number">12</span>;
 
 <span class="kw">unsafe</span> {
-    <span class="ident">std</span>::<span class="ident">ptr</span>::<span class="ident">write_volatile</span>(<span class="ident">y</span>, <span class="ident">z</span>);
-    <span class="macro">assert_eq!</span>(<span class="ident">std</span>::<span class="ident">ptr</span>::<span class="ident">read_volatile</span>(<span class="ident">y</span>), <span class="number">12</span>);
+    <span class="ident">std::ptr::write_volatile</span>(<span class="ident">y</span>, <span class="ident">z</span>);
+    <span class="macro">assert_eq!</span>(<span class="ident">std::ptr::read_volatile</span>(<span class="ident">y</span>), <span class="number">12</span>);
 }</pre></div>
 </div></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="wasmer_types" data-search-js="../../../../search-index.js"></div>
     <script src="../../../../main.js"></script></body></html>

@@ -77,7 +77,7 @@
 <span class="doccomment">//! This module provides runtime support for lookups in these tables.</span>
 
 <span class="comment">// Re-export entities from constant_hash for simplicity of use.</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cranelift_codegen_shared</span>::<span class="ident">constant_hash</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cranelift_codegen_shared::constant_hash</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// Trait that must be implemented by the entries in a constant hash table.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Table</span><span class="op">&lt;</span><span class="ident">K</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">Eq</span><span class="op">&gt;</span> {

@@ -68,14 +68,14 @@
 <span class="attribute">#![<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>,
     <span class="ident">warn</span>(
-        <span class="ident">clippy</span>::<span class="ident">float_arithmetic</span>,
-        <span class="ident">clippy</span>::<span class="ident">mut_mut</span>,
-        <span class="ident">clippy</span>::<span class="ident">nonminimal_bool</span>,
-        <span class="ident">clippy</span>::<span class="ident">option_map_unwrap_or</span>,
-        <span class="ident">clippy</span>::<span class="ident">option_map_unwrap_or_else</span>,
-        <span class="ident">clippy</span>::<span class="ident">print_stdout</span>,
-        <span class="ident">clippy</span>::<span class="ident">unicode_not_nfc</span>,
-        <span class="ident">clippy</span>::<span class="ident">use_self</span>,
+        <span class="ident">clippy::float_arithmetic</span>,
+        <span class="ident">clippy::mut_mut</span>,
+        <span class="ident">clippy::nonminimal_bool</span>,
+        <span class="ident">clippy::option_map_unwrap_or</span>,
+        <span class="ident">clippy::option_map_unwrap_or_else</span>,
+        <span class="ident">clippy::print_stdout</span>,
+        <span class="ident">clippy::unicode_not_nfc</span>,
+        <span class="ident">clippy::use_self</span>,
     )
 )]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
@@ -91,15 +91,15 @@
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">mod</span> <span class="ident">triple</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">data_model</span>::{<span class="ident">CDataModel</span>, <span class="ident">Size</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">host</span>::<span class="ident">HOST</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">parse_error</span>::<span class="ident">ParseError</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">targets</span>::{
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::data_model</span>::{<span class="ident">CDataModel</span>, <span class="ident">Size</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::host::HOST</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::parse_error::ParseError</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::targets</span>::{
     <span class="ident">Aarch64Architecture</span>, <span class="ident">Architecture</span>, <span class="ident">ArmArchitecture</span>, <span class="ident">BinaryFormat</span>, <span class="ident">CustomVendor</span>, <span class="ident">Environment</span>,
     <span class="ident">Mips32Architecture</span>, <span class="ident">Mips64Architecture</span>, <span class="ident">OperatingSystem</span>, <span class="ident">Riscv32Architecture</span>,
     <span class="ident">Riscv64Architecture</span>, <span class="ident">Vendor</span>, <span class="ident">X86_32Architecture</span>,
 };
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">triple</span>::{<span class="ident">CallingConvention</span>, <span class="ident">Endianness</span>, <span class="ident">PointerWidth</span>, <span class="ident">Triple</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::triple</span>::{<span class="ident">CallingConvention</span>, <span class="ident">Endianness</span>, <span class="ident">PointerWidth</span>, <span class="ident">Triple</span>};
 
 <span class="doccomment">/// A simple wrapper around `Triple` that provides an implementation of</span>
 <span class="doccomment">/// `Default` which defaults to `Triple::host()`.</span>
@@ -107,7 +107,7 @@
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">DefaultToHost</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>(<span class="ident">Triple</span>::<span class="ident">host</span>())
+        <span class="self">Self</span>(<span class="ident">Triple::host</span>())
     }
 }
 
@@ -117,7 +117,7 @@
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">DefaultToUnknown</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>(<span class="ident">Triple</span>::<span class="ident">unknown</span>())
+        <span class="self">Self</span>(<span class="ident">Triple::unknown</span>())
     }
 }
 </pre></div>

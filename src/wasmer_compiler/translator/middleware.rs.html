@@ -197,15 +197,15 @@
 <span class="doccomment">//! The middleware parses the function binary bytecodes and transform them</span>
 <span class="doccomment">//! with the chosen functions.</span>
 
-<span class="kw">use</span> <span class="ident">smallvec</span>::<span class="ident">SmallVec</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">VecDeque</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Deref</span>;
-<span class="kw">use</span> <span class="ident">wasmer_types</span>::<span class="ident">LocalFunctionIndex</span>;
-<span class="kw">use</span> <span class="ident">wasmer_vm</span>::<span class="ident">ModuleInfo</span>;
+<span class="kw">use</span> <span class="ident">smallvec::SmallVec</span>;
+<span class="kw">use</span> <span class="ident">std::collections::VecDeque</span>;
+<span class="kw">use</span> <span class="ident">std::fmt::Debug</span>;
+<span class="kw">use</span> <span class="ident">std::ops::Deref</span>;
+<span class="kw">use</span> <span class="ident">wasmer_types::LocalFunctionIndex</span>;
+<span class="kw">use</span> <span class="ident">wasmer_vm::ModuleInfo</span>;
 <span class="kw">use</span> <span class="ident">wasmparser</span>::{<span class="ident">BinaryReader</span>, <span class="ident">Operator</span>, <span class="ident">Type</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::{<span class="ident">MiddlewareError</span>, <span class="ident">WasmResult</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error</span>::{<span class="ident">MiddlewareError</span>, <span class="ident">WasmResult</span>};
 
 <span class="doccomment">/// A shared builder for function middlewares.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ModuleMiddleware</span>: <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> {
@@ -309,11 +309,11 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">MiddlewareBinaryReader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Constructs a `MiddlewareBinaryReader` with an explicit starting offset.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_with_offset</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>], <span class="ident">original_offset</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="ident">BinaryReader</span>::<span class="ident">new_with_offset</span>(<span class="ident">data</span>, <span class="ident">original_offset</span>);
+        <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="ident">BinaryReader::new_with_offset</span>(<span class="ident">data</span>, <span class="ident">original_offset</span>);
         <span class="self">Self</span> {
             <span class="ident">state</span>: <span class="ident">MiddlewareReaderState</span> {
                 <span class="ident">inner</span>,
-                <span class="ident">pending_operations</span>: <span class="ident">VecDeque</span>::<span class="ident">new</span>(),
+                <span class="ident">pending_operations</span>: <span class="ident">VecDeque::new</span>(),
             },
             <span class="ident">chain</span>: <span class="macro">vec!</span>[],
         }

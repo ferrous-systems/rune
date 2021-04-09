@@ -817,19 +817,19 @@
 
 <span class="kw">use</span> <span class="ident">log</span>::{<span class="ident">info</span>, <span class="ident">log_enabled</span>, <span class="ident">trace</span>, <span class="ident">Level</span>};
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">default</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">env</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
+<span class="kw">use</span> <span class="ident">std::default</span>;
+<span class="kw">use</span> <span class="ident">std::env</span>;
+<span class="kw">use</span> <span class="ident">std::fmt</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">data_structures</span>::{<span class="ident">BlockIx</span>, <span class="ident">InstIx</span>, <span class="ident">InstPoint</span>, <span class="ident">Point</span>, <span class="ident">RealReg</span>, <span class="ident">RegVecsAndBounds</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">inst_stream</span>::{<span class="ident">add_spills_reloads_and_moves</span>, <span class="ident">InstToInsertAndExtPoint</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::data_structures</span>::{<span class="ident">BlockIx</span>, <span class="ident">InstIx</span>, <span class="ident">InstPoint</span>, <span class="ident">Point</span>, <span class="ident">RealReg</span>, <span class="ident">RegVecsAndBounds</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::inst_stream</span>::{<span class="ident">add_spills_reloads_and_moves</span>, <span class="ident">InstToInsertAndExtPoint</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="ident">checker</span>::<span class="ident">CheckerContext</span>, <span class="ident">reg_maps</span>::<span class="ident">MentionRegUsageMapper</span>, <span class="ident">Function</span>, <span class="ident">RealRegUniverse</span>,
+    <span class="ident">checker::CheckerContext</span>, <span class="ident">reg_maps::MentionRegUsageMapper</span>, <span class="ident">Function</span>, <span class="ident">RealRegUniverse</span>,
     <span class="ident">RegAllocError</span>, <span class="ident">RegAllocResult</span>, <span class="ident">RegClass</span>, <span class="ident">Set</span>, <span class="ident">SpillSlot</span>, <span class="ident">VirtualReg</span>, <span class="ident">NUM_REG_CLASSES</span>,
 };
 
 <span class="kw">use</span> <span class="ident">analysis</span>::{<span class="ident">AnalysisInfo</span>, <span class="ident">RangeFrag</span>};
-<span class="kw">use</span> <span class="ident">smallvec</span>::<span class="ident">SmallVec</span>;
+<span class="kw">use</span> <span class="ident">smallvec::SmallVec</span>;
 
 <span class="kw">mod</span> <span class="ident">analysis</span>;
 <span class="kw">mod</span> <span class="ident">assign_registers</span>;
@@ -896,27 +896,27 @@
     <span class="ident">large_stats</span>: <span class="ident">bool</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">default</span>::<span class="ident">Default</span> <span class="kw">for</span> <span class="ident">LinearScanOptions</span> {
+<span class="kw">impl</span> <span class="ident">default::Default</span> <span class="kw">for</span> <span class="ident">LinearScanOptions</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="comment">// Useful for debugging.</span>
-        <span class="kw">let</span> <span class="ident">optimal_split_strategy</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;LSRA_SPLIT&quot;</span>) {
+        <span class="kw">let</span> <span class="ident">optimal_split_strategy</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">env::var</span>(<span class="string">&quot;LSRA_SPLIT&quot;</span>) {
             <span class="prelude-val">Ok</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">s</span>.<span class="ident">as_str</span>() {
-                <span class="string">&quot;t&quot;</span> <span class="op">|</span> <span class="string">&quot;to&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OptimalSplitStrategy</span>::<span class="ident">To</span>,
-                <span class="string">&quot;n&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OptimalSplitStrategy</span>::<span class="ident">NextFrom</span>,
-                <span class="string">&quot;nn&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OptimalSplitStrategy</span>::<span class="ident">NextNextFrom</span>,
-                <span class="string">&quot;p&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OptimalSplitStrategy</span>::<span class="ident">PrevTo</span>,
-                <span class="string">&quot;pp&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OptimalSplitStrategy</span>::<span class="ident">PrevPrevTo</span>,
-                <span class="string">&quot;m&quot;</span> <span class="op">|</span> <span class="string">&quot;mid&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OptimalSplitStrategy</span>::<span class="ident">Mid</span>,
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OptimalSplitStrategy</span>::<span class="ident">From</span>,
+                <span class="string">&quot;t&quot;</span> <span class="op">|</span> <span class="string">&quot;to&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OptimalSplitStrategy::To</span>,
+                <span class="string">&quot;n&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OptimalSplitStrategy::NextFrom</span>,
+                <span class="string">&quot;nn&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OptimalSplitStrategy::NextNextFrom</span>,
+                <span class="string">&quot;p&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OptimalSplitStrategy::PrevTo</span>,
+                <span class="string">&quot;pp&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OptimalSplitStrategy::PrevPrevTo</span>,
+                <span class="string">&quot;m&quot;</span> <span class="op">|</span> <span class="string">&quot;mid&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OptimalSplitStrategy::Mid</span>,
+                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OptimalSplitStrategy::From</span>,
             },
-            <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OptimalSplitStrategy</span>::<span class="ident">From</span>,
+            <span class="prelude-val">Err</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">OptimalSplitStrategy::From</span>,
         };
 
-        <span class="kw">let</span> <span class="ident">large_stats</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;LSRA_LARGE_STATS&quot;</span>).<span class="ident">is_ok</span>();
-        <span class="kw">let</span> <span class="ident">stats</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;LSRA_STATS&quot;</span>).<span class="ident">is_ok</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">large_stats</span>;
+        <span class="kw">let</span> <span class="ident">large_stats</span> <span class="op">=</span> <span class="ident">env::var</span>(<span class="string">&quot;LSRA_LARGE_STATS&quot;</span>).<span class="ident">is_ok</span>();
+        <span class="kw">let</span> <span class="ident">stats</span> <span class="op">=</span> <span class="ident">env::var</span>(<span class="string">&quot;LSRA_STATS&quot;</span>).<span class="ident">is_ok</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">large_stats</span>;
 
-        <span class="kw">let</span> <span class="ident">partial_split</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;LSRA_PARTIAL&quot;</span>).<span class="ident">is_ok</span>();
-        <span class="kw">let</span> <span class="ident">partial_split_near_end</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var</span>(<span class="string">&quot;LSRA_PARTIAL_END&quot;</span>).<span class="ident">is_ok</span>();
+        <span class="kw">let</span> <span class="ident">partial_split</span> <span class="op">=</span> <span class="ident">env::var</span>(<span class="string">&quot;LSRA_PARTIAL&quot;</span>).<span class="ident">is_ok</span>();
+        <span class="kw">let</span> <span class="ident">partial_split_near_end</span> <span class="op">=</span> <span class="ident">env::var</span>(<span class="string">&quot;LSRA_PARTIAL_END&quot;</span>).<span class="ident">is_ok</span>();
 
         <span class="self">Self</span> {
             <span class="ident">split_strategy</span>: <span class="ident">optimal_split_strategy</span>,
@@ -928,8 +928,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">LinearScanOptions</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">LinearScanOptions</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">writeln!</span>(<span class="ident">fmt</span>, <span class="string">&quot;linear scan&quot;</span>)<span class="question-mark">?</span>;
         <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;  split: {:?}&quot;</span>, <span class="self">self</span>.<span class="ident">split_strategy</span>)
     }
@@ -942,8 +942,8 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">struct</span> <span class="ident">IntId</span>(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">usize</span>);
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">IntId</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">IntId</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;int{}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
     }
 }
@@ -954,8 +954,8 @@
     <span class="ident">frags</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">RangeFrag</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">FixedInterval</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">FixedInterval</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;fixed {:?} [&quot;</span>, <span class="self">self</span>.<span class="ident">reg</span>)<span class="question-mark">?</span>;
         <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">frag</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">frags</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
             <span class="kw">if</span> <span class="ident">i</span> <span class="op">&gt;</span> <span class="number">0</span> {
@@ -986,8 +986,8 @@
     <span class="ident">end</span>: <span class="ident">InstPoint</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">VirtualInterval</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">VirtualInterval</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;virtual {:?}&quot;</span>, <span class="self">self</span>.<span class="ident">id</span>)<span class="question-mark">?</span>;
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">p</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">parent</span> {
             <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot; (parent={:?})&quot;</span>, <span class="ident">p</span>)<span class="question-mark">?</span>;
@@ -1014,7 +1014,7 @@
             <span class="ident">parent</span>: <span class="prelude-val">None</span>,
             <span class="ident">ancestor</span>: <span class="prelude-val">None</span>,
             <span class="ident">child</span>: <span class="prelude-val">None</span>,
-            <span class="ident">location</span>: <span class="ident">Location</span>::<span class="prelude-val">None</span>,
+            <span class="ident">location</span>: <span class="ident">Location::None</span>,
             <span class="ident">mentions</span>,
             <span class="ident">start</span>,
             <span class="ident">end</span>,
@@ -1036,8 +1036,8 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Mention</span>(<span class="ident">u8</span>);
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Mention</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Mention</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">comma</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">if</span> <span class="self">self</span>.<span class="number">0</span> <span class="op">&amp;</span> <span class="number">1</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
             <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;use&quot;</span>)<span class="question-mark">?</span>;
@@ -1110,30 +1110,30 @@
 <span class="kw">impl</span> <span class="ident">Location</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">reg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">RealReg</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Location</span>::<span class="ident">Reg</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="kw-2">*</span><span class="ident">reg</span>),
+            <span class="ident">Location::Reg</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="kw-2">*</span><span class="ident">reg</span>),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         }
     }
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">spill</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SpillSlot</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Location</span>::<span class="ident">Stack</span>(<span class="ident">slot</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="kw-2">*</span><span class="ident">slot</span>),
+            <span class="ident">Location::Stack</span>(<span class="ident">slot</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="kw-2">*</span><span class="ident">slot</span>),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         }
     }
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">is_none</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Location</span>::<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+            <span class="ident">Location::None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Location</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Location</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Location</span>::<span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;none&quot;</span>),
-            <span class="ident">Location</span>::<span class="ident">Reg</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;{:?}&quot;</span>, <span class="ident">reg</span>),
-            <span class="ident">Location</span>::<span class="ident">Stack</span>(<span class="ident">slot</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;{:?}&quot;</span>, <span class="ident">slot</span>),
+            <span class="ident">Location::None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;none&quot;</span>),
+            <span class="ident">Location::Reg</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;{:?}&quot;</span>, <span class="ident">reg</span>),
+            <span class="ident">Location::Stack</span>(<span class="ident">slot</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;{:?}&quot;</span>, <span class="ident">slot</span>),
         }
     }
 }
@@ -1159,12 +1159,12 @@
     <span class="kw">fn</span> <span class="ident">set_reg</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">int_id</span>: <span class="ident">IntId</span>, <span class="ident">reg</span>: <span class="ident">RealReg</span>) {
         <span class="kw">let</span> <span class="ident">int</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_mut</span>(<span class="ident">int_id</span>);
         <span class="macro">debug_assert!</span>(<span class="ident">int</span>.<span class="ident">location</span>.<span class="ident">is_none</span>());
-        <span class="ident">int</span>.<span class="ident">location</span> <span class="op">=</span> <span class="ident">Location</span>::<span class="ident">Reg</span>(<span class="ident">reg</span>);
+        <span class="ident">int</span>.<span class="ident">location</span> <span class="op">=</span> <span class="ident">Location::Reg</span>(<span class="ident">reg</span>);
     }
     <span class="kw">fn</span> <span class="ident">set_spill</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">int_id</span>: <span class="ident">IntId</span>, <span class="ident">slot</span>: <span class="ident">SpillSlot</span>) {
         <span class="kw">let</span> <span class="ident">int</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">get_mut</span>(<span class="ident">int_id</span>);
         <span class="macro">debug_assert!</span>(<span class="ident">int</span>.<span class="ident">location</span>.<span class="ident">spill</span>().<span class="ident">is_none</span>());
-        <span class="ident">int</span>.<span class="ident">location</span> <span class="op">=</span> <span class="ident">Location</span>::<span class="ident">Stack</span>(<span class="ident">slot</span>);
+        <span class="ident">int</span>.<span class="ident">location</span> <span class="op">=</span> <span class="ident">Location::Stack</span>(<span class="ident">slot</span>);
     }
     <span class="kw">fn</span> <span class="ident">push_interval</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">int</span>: <span class="ident">VirtualInterval</span>) {
         <span class="macro">debug_assert!</span>(<span class="ident">int</span>.<span class="ident">id</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">virtuals</span>.<span class="ident">len</span>());
@@ -1185,34 +1185,34 @@
 <span class="doccomment">/// Extends to the left, that is, &quot;modified&quot; means &quot;used&quot;.</span>
 <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">never</span>)]</span>
 <span class="kw">fn</span> <span class="ident">next_use</span>(<span class="ident">interval</span>: <span class="kw-2">&amp;</span><span class="ident">VirtualInterval</span>, <span class="ident">pos</span>: <span class="ident">InstPoint</span>, <span class="ident">_reg_uses</span>: <span class="kw-2">&amp;</span><span class="ident">RegUses</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">InstPoint</span><span class="op">&gt;</span> {
-    <span class="kw">if</span> <span class="macro">log_enabled!</span>(<span class="ident">Level</span>::<span class="ident">Trace</span>) {
+    <span class="kw">if</span> <span class="macro">log_enabled!</span>(<span class="ident">Level::Trace</span>) {
         <span class="macro">trace!</span>(<span class="string">&quot;find next use of {} after {:?}&quot;</span>, <span class="ident">interval</span>, <span class="ident">pos</span>);
     }
 
     <span class="kw">let</span> <span class="ident">mentions</span> <span class="op">=</span> <span class="ident">interval</span>.<span class="ident">mentions</span>();
-    <span class="kw">let</span> <span class="ident">target</span> <span class="op">=</span> <span class="ident">InstPoint</span>::<span class="ident">max</span>(<span class="ident">pos</span>, <span class="ident">interval</span>.<span class="ident">start</span>);
+    <span class="kw">let</span> <span class="ident">target</span> <span class="op">=</span> <span class="ident">InstPoint::max</span>(<span class="ident">pos</span>, <span class="ident">interval</span>.<span class="ident">start</span>);
 
     <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">mentions</span>.<span class="ident">binary_search_by_key</span>(<span class="kw-2">&amp;</span><span class="ident">target</span>.<span class="ident">iix</span>(), <span class="op">|</span><span class="ident">mention</span><span class="op">|</span> <span class="ident">mention</span>.<span class="number">0</span>) {
         <span class="prelude-val">Ok</span>(<span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="comment">// Either the selected index is a perfect match, or the next mention is</span>
             <span class="comment">// the correct answer.</span>
             <span class="kw">let</span> <span class="ident">mention</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">mentions</span>[<span class="ident">index</span>];
-            <span class="kw">if</span> <span class="ident">target</span>.<span class="ident">pt</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Point</span>::<span class="ident">Use</span> {
+            <span class="kw">if</span> <span class="ident">target</span>.<span class="ident">pt</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Point::Use</span> {
                 <span class="kw">if</span> <span class="ident">mention</span>.<span class="number">1</span>.<span class="ident">is_use_or_mod</span>() {
-                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint</span>::<span class="ident">new_use</span>(<span class="ident">mention</span>.<span class="number">0</span>))
+                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint::new_use</span>(<span class="ident">mention</span>.<span class="number">0</span>))
                 } <span class="kw">else</span> {
-                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint</span>::<span class="ident">new_def</span>(<span class="ident">mention</span>.<span class="number">0</span>))
+                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint::new_def</span>(<span class="ident">mention</span>.<span class="number">0</span>))
                 }
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">target</span>.<span class="ident">pt</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Point</span>::<span class="ident">Def</span> <span class="op">&amp;&amp;</span> <span class="ident">mention</span>.<span class="number">1</span>.<span class="ident">is_mod_or_def</span>() {
+            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">target</span>.<span class="ident">pt</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Point::Def</span> <span class="op">&amp;&amp;</span> <span class="ident">mention</span>.<span class="number">1</span>.<span class="ident">is_mod_or_def</span>() {
                 <span class="prelude-val">Some</span>(<span class="ident">target</span>)
             } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">index</span> <span class="op">=</span><span class="op">=</span> <span class="ident">mentions</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span> {
                 <span class="prelude-val">None</span>
             } <span class="kw">else</span> {
                 <span class="kw">let</span> <span class="ident">mention</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">mentions</span>[<span class="ident">index</span> <span class="op">+</span> <span class="number">1</span>];
                 <span class="kw">if</span> <span class="ident">mention</span>.<span class="number">1</span>.<span class="ident">is_use_or_mod</span>() {
-                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint</span>::<span class="ident">new_use</span>(<span class="ident">mention</span>.<span class="number">0</span>))
+                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint::new_use</span>(<span class="ident">mention</span>.<span class="number">0</span>))
                 } <span class="kw">else</span> {
-                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint</span>::<span class="ident">new_def</span>(<span class="ident">mention</span>.<span class="number">0</span>))
+                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint::new_def</span>(<span class="ident">mention</span>.<span class="number">0</span>))
                 }
             }
         }
@@ -1223,9 +1223,9 @@
             } <span class="kw">else</span> {
                 <span class="kw">let</span> <span class="ident">mention</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">mentions</span>[<span class="ident">index</span>];
                 <span class="kw">if</span> <span class="ident">mention</span>.<span class="number">1</span>.<span class="ident">is_use_or_mod</span>() {
-                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint</span>::<span class="ident">new_use</span>(<span class="ident">mention</span>.<span class="number">0</span>))
+                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint::new_use</span>(<span class="ident">mention</span>.<span class="number">0</span>))
                 } <span class="kw">else</span> {
-                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint</span>::<span class="ident">new_def</span>(<span class="ident">mention</span>.<span class="number">0</span>))
+                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint::new_def</span>(<span class="ident">mention</span>.<span class="number">0</span>))
                 }
             }
         }
@@ -1252,35 +1252,35 @@
 <span class="doccomment">/// Extends to the right, that is, modified means &quot;def&quot;.</span>
 <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">never</span>)]</span>
 <span class="kw">fn</span> <span class="ident">last_use</span>(<span class="ident">interval</span>: <span class="kw-2">&amp;</span><span class="ident">VirtualInterval</span>, <span class="ident">pos</span>: <span class="ident">InstPoint</span>, <span class="ident">_reg_uses</span>: <span class="kw-2">&amp;</span><span class="ident">RegUses</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">InstPoint</span><span class="op">&gt;</span> {
-    <span class="kw">if</span> <span class="macro">log_enabled!</span>(<span class="ident">Level</span>::<span class="ident">Trace</span>) {
+    <span class="kw">if</span> <span class="macro">log_enabled!</span>(<span class="ident">Level::Trace</span>) {
         <span class="macro">trace!</span>(<span class="string">&quot;searching last use of {} before {:?}&quot;</span>, <span class="ident">interval</span>, <span class="ident">pos</span>,);
     }
 
     <span class="kw">let</span> <span class="ident">mentions</span> <span class="op">=</span> <span class="ident">interval</span>.<span class="ident">mentions</span>();
 
-    <span class="kw">let</span> <span class="ident">target</span> <span class="op">=</span> <span class="ident">InstPoint</span>::<span class="ident">min</span>(<span class="ident">pos</span>, <span class="ident">interval</span>.<span class="ident">end</span>);
+    <span class="kw">let</span> <span class="ident">target</span> <span class="op">=</span> <span class="ident">InstPoint::min</span>(<span class="ident">pos</span>, <span class="ident">interval</span>.<span class="ident">end</span>);
 
     <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">mentions</span>.<span class="ident">binary_search_by_key</span>(<span class="kw-2">&amp;</span><span class="ident">target</span>.<span class="ident">iix</span>(), <span class="op">|</span><span class="ident">mention</span><span class="op">|</span> <span class="ident">mention</span>.<span class="number">0</span>) {
         <span class="prelude-val">Ok</span>(<span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="comment">// Either the selected index is a perfect match, or the previous mention</span>
             <span class="comment">// is the correct answer.</span>
             <span class="kw">let</span> <span class="ident">mention</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">mentions</span>[<span class="ident">index</span>];
-            <span class="kw">if</span> <span class="ident">target</span>.<span class="ident">pt</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Point</span>::<span class="ident">Def</span> {
+            <span class="kw">if</span> <span class="ident">target</span>.<span class="ident">pt</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Point::Def</span> {
                 <span class="kw">if</span> <span class="ident">mention</span>.<span class="number">1</span>.<span class="ident">is_mod_or_def</span>() {
-                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint</span>::<span class="ident">new_def</span>(<span class="ident">mention</span>.<span class="number">0</span>))
+                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint::new_def</span>(<span class="ident">mention</span>.<span class="number">0</span>))
                 } <span class="kw">else</span> {
-                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint</span>::<span class="ident">new_use</span>(<span class="ident">mention</span>.<span class="number">0</span>))
+                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint::new_use</span>(<span class="ident">mention</span>.<span class="number">0</span>))
                 }
-            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">target</span>.<span class="ident">pt</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Point</span>::<span class="ident">Use</span> <span class="op">&amp;&amp;</span> <span class="ident">mention</span>.<span class="number">1</span>.<span class="ident">is_use</span>() {
+            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">target</span>.<span class="ident">pt</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Point::Use</span> <span class="op">&amp;&amp;</span> <span class="ident">mention</span>.<span class="number">1</span>.<span class="ident">is_use</span>() {
                 <span class="prelude-val">Some</span>(<span class="ident">target</span>)
             } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">index</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
                 <span class="prelude-val">None</span>
             } <span class="kw">else</span> {
                 <span class="kw">let</span> <span class="ident">mention</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">mentions</span>[<span class="ident">index</span> <span class="op">-</span> <span class="number">1</span>];
                 <span class="kw">if</span> <span class="ident">mention</span>.<span class="number">1</span>.<span class="ident">is_mod_or_def</span>() {
-                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint</span>::<span class="ident">new_def</span>(<span class="ident">mention</span>.<span class="number">0</span>))
+                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint::new_def</span>(<span class="ident">mention</span>.<span class="number">0</span>))
                 } <span class="kw">else</span> {
-                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint</span>::<span class="ident">new_use</span>(<span class="ident">mention</span>.<span class="number">0</span>))
+                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint::new_use</span>(<span class="ident">mention</span>.<span class="number">0</span>))
                 }
             }
         }
@@ -1291,9 +1291,9 @@
             } <span class="kw">else</span> {
                 <span class="kw">let</span> <span class="ident">mention</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">mentions</span>[<span class="ident">index</span> <span class="op">-</span> <span class="number">1</span>];
                 <span class="kw">if</span> <span class="ident">mention</span>.<span class="number">1</span>.<span class="ident">is_mod_or_def</span>() {
-                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint</span>::<span class="ident">new_def</span>(<span class="ident">mention</span>.<span class="number">0</span>))
+                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint::new_def</span>(<span class="ident">mention</span>.<span class="number">0</span>))
                 } <span class="kw">else</span> {
-                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint</span>::<span class="ident">new_use</span>(<span class="ident">mention</span>.<span class="number">0</span>))
+                    <span class="prelude-val">Some</span>(<span class="ident">InstPoint::new_use</span>(<span class="ident">mention</span>.<span class="number">0</span>))
                 }
             }
         }
@@ -1327,15 +1327,15 @@
     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">NUM_REG_CLASSES</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">info</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">reg_universe</span>.<span class="ident">allocable_by_class</span>[<span class="ident">i</span>] {
             <span class="kw">if</span> <span class="ident">info</span>.<span class="ident">first</span> <span class="op">=</span><span class="op">=</span> <span class="ident">info</span>.<span class="ident">last</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RegAllocError</span>::<span class="ident">Other</span>(
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RegAllocError::Other</span>(
                     <span class="string">&quot;at least 2 registers required for linear scan&quot;</span>.<span class="ident">into</span>(),
                 ));
             }
             <span class="kw">let</span> <span class="ident">scratch</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">suggested_reg</span>) <span class="op">=</span> <span class="ident">info</span>.<span class="ident">suggested_scratch</span> {
                 <span class="ident">reg_universe</span>.<span class="ident">regs</span>[<span class="ident">suggested_reg</span>].<span class="number">0</span>
             } <span class="kw">else</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RegAllocError</span>::<span class="ident">MissingSuggestedScratchReg</span>(
-                    <span class="ident">RegClass</span>::<span class="ident">rc_from_u32</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u32</span>),
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RegAllocError::MissingSuggestedScratchReg</span>(
+                    <span class="ident">RegClass::rc_from_u32</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u32</span>),
                 ));
             };
             <span class="ident">scratches_by_rc</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">scratch</span>);
@@ -1363,26 +1363,26 @@
         <span class="ident">liveins</span>,
         <span class="ident">liveouts</span>,
         ..
-    } <span class="op">=</span> <span class="ident">analysis</span>::<span class="ident">run</span>(<span class="ident">func</span>, <span class="ident">reg_universe</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">RegAllocError</span>::<span class="ident">Analysis</span>(<span class="ident">err</span>))<span class="question-mark">?</span>;
+    } <span class="op">=</span> <span class="ident">analysis::run</span>(<span class="ident">func</span>, <span class="ident">reg_universe</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">RegAllocError::Analysis</span>(<span class="ident">err</span>))<span class="question-mark">?</span>;
 
     <span class="kw">let</span> <span class="ident">scratches_by_rc</span> <span class="op">=</span> <span class="ident">compute_scratches</span>(<span class="ident">reg_universe</span>)<span class="question-mark">?</span>;
 
     <span class="kw">let</span> <span class="ident">stats</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">opts</span>.<span class="ident">stats</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stats</span> <span class="op">=</span> <span class="ident">Statistics</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stats</span> <span class="op">=</span> <span class="ident">Statistics::default</span>();
         <span class="ident">stats</span>.<span class="ident">num_fixed</span> <span class="op">=</span> <span class="ident">intervals</span>.<span class="ident">fixeds</span>.<span class="ident">len</span>();
         <span class="ident">stats</span>.<span class="ident">num_virtual_ranges</span> <span class="op">=</span> <span class="ident">intervals</span>.<span class="ident">virtuals</span>.<span class="ident">len</span>();
         <span class="ident">stats</span>.<span class="ident">num_vregs</span> <span class="op">=</span> <span class="ident">intervals</span>
             .<span class="ident">virtuals</span>
             .<span class="ident">iter</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">virt</span><span class="op">|</span> <span class="ident">virt</span>.<span class="ident">vreg</span>.<span class="ident">get_index</span>())
-            .<span class="ident">fold</span>(<span class="number">0</span>, <span class="op">|</span><span class="ident">a</span>, <span class="ident">b</span><span class="op">|</span> <span class="ident">usize</span>::<span class="ident">max</span>(<span class="ident">a</span>, <span class="ident">b</span>));
+            .<span class="ident">fold</span>(<span class="number">0</span>, <span class="op">|</span><span class="ident">a</span>, <span class="ident">b</span><span class="op">|</span> <span class="ident">usize::max</span>(<span class="ident">a</span>, <span class="ident">b</span>));
         <span class="ident">stats</span>.<span class="ident">only_large</span> <span class="op">=</span> <span class="ident">opts</span>.<span class="ident">large_stats</span>;
         <span class="prelude-val">Some</span>(<span class="ident">stats</span>)
     } <span class="kw">else</span> {
         <span class="prelude-val">None</span>
     };
 
-    <span class="kw">if</span> <span class="macro">log_enabled!</span>(<span class="ident">Level</span>::<span class="ident">Trace</span>) {
+    <span class="kw">if</span> <span class="macro">log_enabled!</span>(<span class="ident">Level::Trace</span>) {
         <span class="macro">trace!</span>(<span class="string">&quot;fixed intervals:&quot;</span>);
         <span class="kw">for</span> <span class="ident">int</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">intervals</span>.<span class="ident">fixeds</span> {
             <span class="macro">trace!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">int</span>);
@@ -1398,7 +1398,7 @@
         <span class="macro">trace!</span>(<span class="string">&quot;&quot;</span>);
     }
 
-    <span class="kw">let</span> (<span class="ident">intervals</span>, <span class="kw-2">mut</span> <span class="ident">num_spill_slots</span>) <span class="op">=</span> <span class="ident">assign_registers</span>::<span class="ident">run</span>(
+    <span class="kw">let</span> (<span class="ident">intervals</span>, <span class="kw-2">mut</span> <span class="ident">num_spill_slots</span>) <span class="op">=</span> <span class="ident">assign_registers::run</span>(
         <span class="ident">opts</span>,
         <span class="ident">func</span>,
         <span class="kw-2">&amp;</span><span class="ident">reg_uses</span>,
@@ -1410,7 +1410,7 @@
 
     <span class="kw">let</span> <span class="ident">virtuals</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">intervals</span>.<span class="ident">virtuals</span>;
 
-    <span class="kw">let</span> <span class="ident">memory_moves</span> <span class="op">=</span> <span class="ident">resolve_moves</span>::<span class="ident">run</span>(
+    <span class="kw">let</span> <span class="ident">memory_moves</span> <span class="op">=</span> <span class="ident">resolve_moves::run</span>(
         <span class="ident">func</span>,
         <span class="kw-2">&amp;</span><span class="ident">reg_uses</span>,
         <span class="ident">virtuals</span>,
@@ -1444,7 +1444,7 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">checker</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CheckerContext</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insn_blocks</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">BlockIx</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec!</span>[];
     <span class="kw">if</span> <span class="ident">use_checker</span> {
-        <span class="ident">checker</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">CheckerContext</span>::<span class="ident">new</span>(
+        <span class="ident">checker</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">CheckerContext::new</span>(
             <span class="ident">func</span>,
             <span class="ident">reg_universe</span>,
             <span class="ident">memory_moves</span>,
@@ -1452,7 +1452,7 @@
             <span class="kw-2">&amp;</span>[],
             <span class="kw-2">&amp;</span>[],
         ));
-        <span class="ident">insn_blocks</span>.<span class="ident">resize</span>(<span class="ident">func</span>.<span class="ident">insns</span>().<span class="ident">len</span>(), <span class="ident">BlockIx</span>::<span class="ident">new</span>(<span class="number">0</span>));
+        <span class="ident">insn_blocks</span>.<span class="ident">resize</span>(<span class="ident">func</span>.<span class="ident">insns</span>().<span class="ident">len</span>(), <span class="ident">BlockIx::new</span>(<span class="number">0</span>));
         <span class="kw">for</span> <span class="ident">block_ix</span> <span class="kw">in</span> <span class="ident">func</span>.<span class="ident">blocks</span>() {
             <span class="kw">for</span> <span class="ident">insn_ix</span> <span class="kw">in</span> <span class="ident">func</span>.<span class="ident">block_insns</span>(<span class="ident">block_ix</span>) {
                 <span class="ident">insn_blocks</span>[<span class="ident">insn_ix</span>.<span class="ident">get</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span> <span class="ident">block_ix</span>;
@@ -1460,7 +1460,7 @@
         }
     }
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">clobbered_registers</span> <span class="op">=</span> <span class="ident">Set</span>::<span class="ident">empty</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">clobbered_registers</span> <span class="op">=</span> <span class="ident">Set::empty</span>();
 
     <span class="comment">// Collect all the regs per instruction and mention set.</span>
     <span class="kw">let</span> <span class="ident">capacity</span> <span class="op">=</span> <span class="ident">virtual_intervals</span>
@@ -1473,7 +1473,7 @@
         <span class="kw">return</span> <span class="ident">clobbered_registers</span>;
     }
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mention_map</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">with_capacity</span>(<span class="ident">capacity</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mention_map</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">capacity</span>);
 
     <span class="kw">for</span> <span class="ident">int</span> <span class="kw">in</span> <span class="ident">virtual_intervals</span> {
         <span class="kw">let</span> <span class="ident">rreg</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">int</span>.<span class="ident">location</span>.<span class="ident">reg</span>() {
@@ -1491,7 +1491,7 @@
     <span class="ident">mention_map</span>.<span class="ident">sort_unstable_by_key</span>(<span class="op">|</span><span class="ident">quad</span><span class="op">|</span> <span class="ident">quad</span>.<span class="number">0</span>);
 
     <span class="comment">// Iterate over all the mentions.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mapper</span> <span class="op">=</span> <span class="ident">MentionRegUsageMapper</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">mapper</span> <span class="op">=</span> <span class="ident">MentionRegUsageMapper::new</span>();
 
     <span class="kw">let</span> <span class="ident">flush_inst</span> <span class="op">=</span> <span class="op">|</span><span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">F</span>,
                       <span class="ident">mapper</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MentionRegUsageMapper</span>,
@@ -1499,7 +1499,7 @@
                       <span class="ident">checker</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">CheckerContext</span><span class="op">&gt;</span><span class="op">|</span> {
         <span class="macro">trace!</span>(<span class="string">&quot;map_regs for {:?}&quot;</span>, <span class="ident">iix</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">inst</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">get_insn_mut</span>(<span class="ident">iix</span>);
-        <span class="ident">F</span>::<span class="ident">map_regs</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">inst</span>, <span class="ident">mapper</span>);
+        <span class="ident">F::map_regs</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">inst</span>, <span class="ident">mapper</span>);
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">checker</span>) <span class="op">=</span> <span class="ident">checker</span> {
             <span class="kw">let</span> <span class="ident">block_ix</span> <span class="op">=</span> <span class="ident">insn_blocks</span>[<span class="ident">iix</span>.<span class="ident">get</span>() <span class="kw">as</span> <span class="ident">usize</span>];
@@ -1592,7 +1592,7 @@
     <span class="kw">let</span> <span class="ident">safepoint_insns</span> <span class="op">=</span> <span class="macro">vec!</span>[];
     <span class="kw">let</span> (<span class="ident">final_insns</span>, <span class="ident">target_map</span>, <span class="ident">new_to_old_insn_map</span>, <span class="ident">new_safepoint_insns</span>) <span class="op">=</span>
         <span class="ident">add_spills_reloads_and_moves</span>(<span class="ident">func</span>, <span class="kw-2">&amp;</span><span class="ident">safepoint_insns</span>, <span class="ident">memory_moves</span>)
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">RegAllocError</span>::<span class="ident">Other</span>(<span class="ident">e</span>))<span class="question-mark">?</span>;
+            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">RegAllocError::Other</span>(<span class="ident">e</span>))<span class="question-mark">?</span>;
     <span class="macro">assert!</span>(<span class="ident">new_safepoint_insns</span>.<span class="ident">is_empty</span>()); <span class="comment">// because `safepoint_insns` is also empty.</span>
 
     <span class="comment">// And now remove from the clobbered registers set, all those not available to the allocator.</span>

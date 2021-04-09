@@ -69,8 +69,8 @@
 <span id="66">66</span>
 <span id="67">67</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">common</span>::{<span class="ident">Encoding</span>, <span class="ident">Format</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">read</span>::{<span class="ident">Error</span>, <span class="ident">Reader</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::common</span>::{<span class="ident">Encoding</span>, <span class="ident">Format</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::read</span>::{<span class="ident">Error</span>, <span class="ident">Reader</span>, <span class="prelude-ty">Result</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">ListsHeader</span> {
@@ -82,7 +82,7 @@
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">ListsHeader</span> {
             <span class="ident">encoding</span>: <span class="ident">Encoding</span> {
-                <span class="ident">format</span>: <span class="ident">Format</span>::<span class="ident">Dwarf32</span>,
+                <span class="ident">format</span>: <span class="ident">Format::Dwarf32</span>,
                 <span class="ident">version</span>: <span class="number">5</span>,
                 <span class="ident">address_size</span>: <span class="number">0</span>,
             },
@@ -97,7 +97,7 @@
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">size</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
         <span class="comment">// initial_length + version + address_size + segment_selector_size + offset_entry_count</span>
-        <span class="ident">ListsHeader</span>::<span class="ident">size_for_encoding</span>(<span class="self">self</span>.<span class="ident">encoding</span>)
+        <span class="ident">ListsHeader::size_for_encoding</span>(<span class="self">self</span>.<span class="ident">encoding</span>)
     }
 
     <span class="doccomment">/// Return the serialized size of the table header.</span>
@@ -116,13 +116,13 @@
 
     <span class="kw">let</span> <span class="ident">version</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">read_u16</span>()<span class="question-mark">?</span>;
     <span class="kw">if</span> <span class="ident">version</span> <span class="op">!</span><span class="op">=</span> <span class="number">5</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">UnknownVersion</span>(<span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">version</span>)));
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::UnknownVersion</span>(<span class="ident">u64::from</span>(<span class="ident">version</span>)));
     }
 
     <span class="kw">let</span> <span class="ident">address_size</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">read_u8</span>()<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">segment_selector_size</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">read_u8</span>()<span class="question-mark">?</span>;
     <span class="kw">if</span> <span class="ident">segment_selector_size</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">UnsupportedSegmentSize</span>);
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::UnsupportedSegmentSize</span>);
     }
     <span class="kw">let</span> <span class="ident">offset_entry_count</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">read_u32</span>()<span class="question-mark">?</span>;
 

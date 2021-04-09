@@ -183,18 +183,18 @@
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">missing_docs</span>, <span class="ident">trivial_numeric_casts</span>, <span class="ident">unused_extern_crates</span>)]</span>
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">unused_import_braces</span>)]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;clippy&quot;</span>, <span class="ident">plugin</span>(<span class="ident">clippy</span>(<span class="ident">conf_file</span> <span class="op">=</span> <span class="string">&quot;../../clippy.toml&quot;</span>)))]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>, <span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">new_without_default</span>))]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>, <span class="ident">allow</span>(<span class="ident">clippy::new_without_default</span>))]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>,
     <span class="ident">warn</span>(
-        <span class="ident">clippy</span>::<span class="ident">float_arithmetic</span>,
-        <span class="ident">clippy</span>::<span class="ident">mut_mut</span>,
-        <span class="ident">clippy</span>::<span class="ident">nonminimal_bool</span>,
-        <span class="ident">clippy</span>::<span class="ident">option_map_unwrap_or</span>,
-        <span class="ident">clippy</span>::<span class="ident">option_map_unwrap_or_else</span>,
-        <span class="ident">clippy</span>::<span class="ident">print_stdout</span>,
-        <span class="ident">clippy</span>::<span class="ident">unicode_not_nfc</span>,
-        <span class="ident">clippy</span>::<span class="ident">use_self</span>
+        <span class="ident">clippy::float_arithmetic</span>,
+        <span class="ident">clippy::mut_mut</span>,
+        <span class="ident">clippy::nonminimal_bool</span>,
+        <span class="ident">clippy::option_map_unwrap_or</span>,
+        <span class="ident">clippy::option_map_unwrap_or_else</span>,
+        <span class="ident">clippy::print_stdout</span>,
+        <span class="ident">clippy::unicode_not_nfc</span>,
+        <span class="ident">clippy::use_self</span>
     )
 )]</span>
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
@@ -221,9 +221,9 @@
 <span class="macro">macro_rules!</span> <span class="ident">entity_impl</span> {
     <span class="comment">// Basic traits.</span>
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">entity</span>:<span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">EntityRef</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">entity</span> {
+        <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::EntityRef</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">entity</span> {
             <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="macro">debug_assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> (<span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__core</span>::<span class="ident">u32</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">usize</span>));
+                <span class="macro">debug_assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> (<span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::__core::u32::MAX</span> <span class="kw">as</span> <span class="ident">usize</span>));
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">entity</span>(<span class="ident">index</span> <span class="kw">as</span> <span class="ident">u32</span>)
             }
 
@@ -232,13 +232,13 @@
             }
         }
 
-        <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">packed_option</span>::<span class="ident">ReservedValue</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">entity</span> {
+        <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::packed_option::ReservedValue</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">entity</span> {
             <span class="kw">fn</span> <span class="ident">reserved_value</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">entity</span> {
-                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">entity</span>(<span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__core</span>::<span class="ident">u32</span>::<span class="ident">MAX</span>)
+                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">entity</span>(<span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::__core::u32::MAX</span>)
             }
 
             <span class="kw">fn</span> <span class="ident">is_reserved_value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-                <span class="self">self</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__core</span>::<span class="ident">u32</span>::<span class="ident">MAX</span>
+                <span class="self">self</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::__core::u32::MAX</span>
             }
         }
 
@@ -246,7 +246,7 @@
             <span class="doccomment">/// Create a new instance from a `u32`.</span>
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
             <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_u32</span>(<span class="ident">x</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="macro">debug_assert!</span>(<span class="ident">x</span> <span class="op">&lt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__core</span>::<span class="ident">u32</span>::<span class="ident">MAX</span>);
+                <span class="macro">debug_assert!</span>(<span class="ident">x</span> <span class="op">&lt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::__core::u32::MAX</span>);
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">entity</span>(<span class="ident">x</span>)
             }
 
@@ -263,15 +263,15 @@
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">entity</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">display_prefix</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="macro">entity_impl!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">entity</span>);
 
-        <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__core</span>::<span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">entity</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__core</span>::<span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__core</span>::<span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::__core::fmt::Display</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">entity</span> {
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::__core::fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::__core::fmt::Result</span> {
                 <span class="macro">write!</span>(<span class="ident">f</span>, <span class="macro">concat!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">display_prefix</span>, <span class="string">&quot;{}&quot;</span>), <span class="self">self</span>.<span class="number">0</span>)
             }
         }
 
-        <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__core</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">entity</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__core</span>::<span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__core</span>::<span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-                (<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">__core</span>::<span class="ident">fmt</span>::<span class="ident">Display</span>).<span class="ident">fmt</span>(<span class="ident">f</span>)
+        <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::__core::fmt::Debug</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">entity</span> {
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::__core::fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::__core::fmt::Result</span> {
+                (<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::__core::fmt::Display</span>).<span class="ident">fmt</span>(<span class="ident">f</span>)
             }
         }
     };
@@ -288,14 +288,14 @@
 <span class="kw">mod</span> <span class="ident">set</span>;
 <span class="kw">mod</span> <span class="ident">sparse</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">boxed_slice</span>::<span class="ident">BoxedSlice</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">iter</span>::{<span class="ident">Iter</span>, <span class="ident">IterMut</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">keys</span>::<span class="ident">Keys</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">list</span>::{<span class="ident">EntityList</span>, <span class="ident">ListPool</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">map</span>::<span class="ident">SecondaryMap</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">primary</span>::<span class="ident">PrimaryMap</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">set</span>::<span class="ident">EntitySet</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">sparse</span>::{<span class="ident">SparseMap</span>, <span class="ident">SparseMapValue</span>, <span class="ident">SparseSet</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::boxed_slice::BoxedSlice</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::iter</span>::{<span class="ident">Iter</span>, <span class="ident">IterMut</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::keys::Keys</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::list</span>::{<span class="ident">EntityList</span>, <span class="ident">ListPool</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::map::SecondaryMap</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::primary::PrimaryMap</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::set::EntitySet</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::sparse</span>::{<span class="ident">SparseMap</span>, <span class="ident">SparseMapValue</span>, <span class="ident">SparseSet</span>};
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="cranelift_entity" data-search-js="../../search-index.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>

@@ -274,14 +274,14 @@
 <span id="271">271</span>
 <span id="272">272</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">iter</span>::<span class="ident">FromIterator</span>;
+<span class="kw">use</span> <span class="ident">std::iter::FromIterator</span>;
 
 <span class="kw">use</span> <span class="ident">proc_macro_error</span>::{<span class="ident">abort</span>, <span class="ident">ResultExt</span>};
-<span class="kw">use</span> <span class="ident">quote</span>::<span class="ident">ToTokens</span>;
+<span class="kw">use</span> <span class="ident">quote::ToTokens</span>;
 <span class="kw">use</span> <span class="ident">syn</span>::{
     <span class="self">self</span>, <span class="ident">parenthesized</span>,
     <span class="ident">parse</span>::{<span class="ident">Parse</span>, <span class="ident">ParseBuffer</span>, <span class="ident">ParseStream</span>},
-    <span class="ident">punctuated</span>::<span class="ident">Punctuated</span>,
+    <span class="ident">punctuated::Punctuated</span>,
     <span class="ident">Attribute</span>, <span class="ident">Expr</span>, <span class="ident">ExprLit</span>, <span class="ident">Ident</span>, <span class="ident">Lit</span>, <span class="ident">LitBool</span>, <span class="ident">LitStr</span>, <span class="ident">Token</span>,
 };
 
@@ -321,8 +321,8 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Parse</span> <span class="kw">for</span> <span class="ident">StructOptAttr</span> {
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">StructOptAttr</span>::<span class="kw-2">*</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="kw">use</span> <span class="self">self</span><span class="ident">::StructOptAttr</span>::<span class="kw-2">*</span>;
 
         <span class="kw">let</span> <span class="ident">name</span>: <span class="ident">Ident</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">name_str</span> <span class="op">=</span> <span class="ident">name</span>.<span class="ident">to_string</span>();
@@ -369,9 +369,9 @@
                     <span class="string">&quot;skip&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="kw">let</span> <span class="ident">expr</span> <span class="op">=</span> <span class="ident">ExprLit</span> {
                             <span class="ident">attrs</span>: <span class="macro">vec!</span>[],
-                            <span class="ident">lit</span>: <span class="ident">Lit</span>::<span class="ident">Str</span>(<span class="ident">lit</span>),
+                            <span class="ident">lit</span>: <span class="ident">Lit::Str</span>(<span class="ident">lit</span>),
                         };
-                        <span class="kw">let</span> <span class="ident">expr</span> <span class="op">=</span> <span class="ident">Expr</span>::<span class="ident">Lit</span>(<span class="ident">expr</span>);
+                        <span class="kw">let</span> <span class="ident">expr</span> <span class="op">=</span> <span class="ident">Expr::Lit</span>(<span class="ident">expr</span>);
                         <span class="prelude-val">Ok</span>(<span class="ident">Skip</span>(<span class="ident">name</span>, <span class="prelude-val">Some</span>(<span class="ident">expr</span>)))
                     }
 
@@ -393,7 +393,7 @@
                     },
                 }
             }
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">input</span>.<span class="ident">peek</span>(<span class="ident">syn</span>::<span class="ident">token</span>::<span class="ident">Paren</span>) {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">input</span>.<span class="ident">peek</span>(<span class="ident">syn::token::Paren</span>) {
             <span class="comment">// `name(...)` attributes.</span>
             <span class="kw">let</span> <span class="ident">nested</span>;
             <span class="macro">parenthesized!</span>(<span class="ident">nested</span> <span class="kw">in</span> <span class="ident">input</span>);
@@ -401,7 +401,7 @@
             <span class="kw">match</span> <span class="ident">name_str</span>.<span class="ident">as_ref</span>() {
                 <span class="string">&quot;parse&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">parser_specs</span>: <span class="ident">Punctuated</span><span class="op">&lt;</span><span class="ident">ParserSpec</span>, <span class="macro">Token!</span>[,]<span class="op">&gt;</span> <span class="op">=</span>
-                        <span class="ident">nested</span>.<span class="ident">parse_terminated</span>(<span class="ident">ParserSpec</span>::<span class="ident">parse</span>)<span class="question-mark">?</span>;
+                        <span class="ident">nested</span>.<span class="ident">parse_terminated</span>(<span class="ident">ParserSpec::parse</span>)<span class="question-mark">?</span>;
 
                     <span class="kw">if</span> <span class="ident">parser_specs</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
                         <span class="prelude-val">Ok</span>(<span class="ident">Parse</span>(<span class="ident">name</span>, <span class="ident">parser_specs</span>[<span class="number">0</span>].<span class="ident">clone</span>()))
@@ -414,9 +414,9 @@
                     <span class="prelude-val">Ok</span>(<span class="ident">bool_token</span>) <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="kw">let</span> <span class="ident">expr</span> <span class="op">=</span> <span class="ident">ExprLit</span> {
                             <span class="ident">attrs</span>: <span class="macro">vec!</span>[],
-                            <span class="ident">lit</span>: <span class="ident">Lit</span>::<span class="ident">Bool</span>(<span class="ident">bool_token</span>),
+                            <span class="ident">lit</span>: <span class="ident">Lit::Bool</span>(<span class="ident">bool_token</span>),
                         };
-                        <span class="kw">let</span> <span class="ident">expr</span> <span class="op">=</span> <span class="ident">Expr</span>::<span class="ident">Lit</span>(<span class="ident">expr</span>);
+                        <span class="kw">let</span> <span class="ident">expr</span> <span class="op">=</span> <span class="ident">Expr::Lit</span>(<span class="ident">expr</span>);
                         <span class="prelude-val">Ok</span>(<span class="ident">MethodCall</span>(<span class="ident">name</span>, <span class="macro">vec!</span>[<span class="ident">expr</span>]))
                     }
 
@@ -433,8 +433,8 @@
 
                 <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">method_args</span>: <span class="ident">Punctuated</span><span class="op">&lt;</span><span class="kw">_</span>, <span class="macro">Token!</span>[,]<span class="op">&gt;</span> <span class="op">=</span>
-                        <span class="ident">nested</span>.<span class="ident">parse_terminated</span>(<span class="ident">Expr</span>::<span class="ident">parse</span>)<span class="question-mark">?</span>;
-                    <span class="prelude-val">Ok</span>(<span class="ident">MethodCall</span>(<span class="ident">name</span>, <span class="ident">Vec</span>::<span class="ident">from_iter</span>(<span class="ident">method_args</span>)))
+                        <span class="ident">nested</span>.<span class="ident">parse_terminated</span>(<span class="ident">Expr::parse</span>)<span class="question-mark">?</span>;
+                    <span class="prelude-val">Ok</span>(<span class="ident">MethodCall</span>(<span class="ident">name</span>, <span class="ident">Vec::from_iter</span>(<span class="ident">method_args</span>)))
                 }
             }
         } <span class="kw">else</span> {
@@ -476,7 +476,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Parse</span> <span class="kw">for</span> <span class="ident">ParserSpec</span> {
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">kind</span> <span class="op">=</span> <span class="ident">input</span>
             .<span class="ident">parse</span>()
             .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">input</span>.<span class="ident">error</span>(<span class="string">&quot;parser specification must start with identifier&quot;</span>))<span class="question-mark">?</span>;
@@ -494,11 +494,11 @@
 }
 
 <span class="kw">fn</span> <span class="ident">raw_method_suggestion</span>(<span class="ident">ts</span>: <span class="ident">ParseBuffer</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-    <span class="kw">let</span> <span class="ident">do_parse</span> <span class="op">=</span> <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Ident</span>, <span class="ident">Punctuated</span><span class="op">&lt;</span><span class="ident">Expr</span>, <span class="macro">Token!</span>[,]<span class="op">&gt;</span>), <span class="ident">syn</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">do_parse</span> <span class="op">=</span> <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Ident</span>, <span class="ident">Punctuated</span><span class="op">&lt;</span><span class="ident">Expr</span>, <span class="macro">Token!</span>[,]<span class="op">&gt;</span>), <span class="ident">syn::Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">ts</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">_eq</span>: <span class="macro">Token!</span>[<span class="op">=</span>] <span class="op">=</span> <span class="ident">ts</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">val</span>: <span class="ident">LitStr</span> <span class="op">=</span> <span class="ident">ts</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">exprs</span> <span class="op">=</span> <span class="ident">val</span>.<span class="ident">parse_with</span>(<span class="ident">Punctuated</span>::<span class="op">&lt;</span><span class="ident">Expr</span>, <span class="macro">Token!</span>[,]<span class="op">&gt;</span>::<span class="ident">parse_terminated</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">exprs</span> <span class="op">=</span> <span class="ident">val</span>.<span class="ident">parse_with</span>(<span class="ident">Punctuated</span>::<span class="op">&lt;</span><span class="ident">Expr</span>, <span class="macro">Token!</span>[,]<span class="op">&gt;</span><span class="ident">::parse_terminated</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>((<span class="ident">name</span>, <span class="ident">exprs</span>))
     };
 
@@ -541,7 +541,7 @@
         .<span class="ident">iter</span>()
         .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">attr</span><span class="op">|</span> <span class="ident">attr</span>.<span class="ident">path</span>.<span class="ident">is_ident</span>(<span class="string">&quot;structopt&quot;</span>))
         .<span class="ident">flat_map</span>(<span class="op">|</span><span class="ident">attr</span><span class="op">|</span> {
-            <span class="ident">attr</span>.<span class="ident">parse_args_with</span>(<span class="ident">Punctuated</span>::<span class="op">&lt;</span><span class="ident">StructOptAttr</span>, <span class="macro">Token!</span>[,]<span class="op">&gt;</span>::<span class="ident">parse_terminated</span>)
+            <span class="ident">attr</span>.<span class="ident">parse_args_with</span>(<span class="ident">Punctuated</span>::<span class="op">&lt;</span><span class="ident">StructOptAttr</span>, <span class="macro">Token!</span>[,]<span class="op">&gt;</span><span class="ident">::parse_terminated</span>)
                 .<span class="ident">unwrap_or_abort</span>()
         })
         .<span class="ident">collect</span>()

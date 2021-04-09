@@ -10,11 +10,11 @@
 </ul>
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">ident_case</span>::<span class="ident">RenameRule</span>;
+<span class="kw">use</span> <span class="ident">ident_case::RenameRule</span>;
 
-<span class="macro">assert_eq!</span>(<span class="string">&quot;helloWorld&quot;</span>, <span class="ident">RenameRule</span>::<span class="ident">CamelCase</span>.<span class="ident">apply_to_field</span>(<span class="string">&quot;hello_world&quot;</span>));
+<span class="macro">assert_eq!</span>(<span class="string">&quot;helloWorld&quot;</span>, <span class="ident">RenameRule::CamelCase</span>.<span class="ident">apply_to_field</span>(<span class="string">&quot;hello_world&quot;</span>));
 
-<span class="macro">assert_eq!</span>(<span class="string">&quot;i_love_serde&quot;</span>, <span class="ident">RenameRule</span>::<span class="ident">SnakeCase</span>.<span class="ident">apply_to_variant</span>(<span class="string">&quot;ILoveSerde&quot;</span>));</pre></div>
+<span class="macro">assert_eq!</span>(<span class="string">&quot;i_love_serde&quot;</span>, <span class="ident">RenameRule::SnakeCase</span>.<span class="ident">apply_to_variant</span>(<span class="string">&quot;ILoveSerde&quot;</span>));</pre></div>
 </div><h2 id="enums" class="section-header"><a href="#enums">Enums</a></h2>
 <table><tr class="module-item"><td><a class="enum" href="enum.RenameRule.html" title="ident_case::RenameRule enum">RenameRule</a></td><td class="docblock-short"><p>A casing rule for renaming Rust identifiers.</p>
 </td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="ident_case" data-search-js="../search-index.js"></div>

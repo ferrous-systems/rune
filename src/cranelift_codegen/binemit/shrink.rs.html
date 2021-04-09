@@ -82,19 +82,19 @@
 <span class="doccomment">//! flexibility. However, once register allocation is done, this is no longer important, and we</span>
 <span class="doccomment">//! can switch to smaller encodings when possible.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">instructions</span>::<span class="ident">InstructionData</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">Function</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">TargetIsa</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">RegDiversions</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">timing</span>;
-<span class="kw">use</span> <span class="ident">log</span>::<span class="ident">debug</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::instructions::InstructionData</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::Function</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::TargetIsa</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::RegDiversions</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::timing</span>;
+<span class="kw">use</span> <span class="ident">log::debug</span>;
 
 <span class="doccomment">/// Pick the smallest valid encodings for instructions.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shrink_instructions</span>(<span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Function</span>, <span class="ident">isa</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span>) {
-    <span class="kw">let</span> <span class="ident">_tt</span> <span class="op">=</span> <span class="ident">timing</span>::<span class="ident">shrink_instructions</span>();
+    <span class="kw">let</span> <span class="ident">_tt</span> <span class="op">=</span> <span class="ident">timing::shrink_instructions</span>();
 
     <span class="kw">let</span> <span class="ident">encinfo</span> <span class="op">=</span> <span class="ident">isa</span>.<span class="ident">encoding_info</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">divert</span> <span class="op">=</span> <span class="ident">RegDiversions</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">divert</span> <span class="op">=</span> <span class="ident">RegDiversions::new</span>();
 
     <span class="kw">for</span> <span class="ident">block</span> <span class="kw">in</span> <span class="ident">func</span>.<span class="ident">layout</span>.<span class="ident">blocks</span>() {
         <span class="comment">// Load diversions from predecessors.</span>
@@ -114,9 +114,9 @@
                 <span class="comment">// instructions behind, but for now, just temporarily avoid trying to shrink them.</span>
                 <span class="kw">let</span> <span class="ident">inst_data</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>];
                 <span class="kw">match</span> <span class="ident">inst_data</span> {
-                    <span class="ident">InstructionData</span>::<span class="ident">RegMove</span> { .. }
-                    <span class="op">|</span> <span class="ident">InstructionData</span>::<span class="ident">RegFill</span> { .. }
-                    <span class="op">|</span> <span class="ident">InstructionData</span>::<span class="ident">RegSpill</span> { .. } <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">InstructionData::RegMove</span> { .. }
+                    <span class="op">|</span> <span class="ident">InstructionData::RegFill</span> { .. }
+                    <span class="op">|</span> <span class="ident">InstructionData::RegSpill</span> { .. } <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="ident">divert</span>.<span class="ident">apply</span>(<span class="ident">inst_data</span>);
                         <span class="kw">continue</span>;
                     }

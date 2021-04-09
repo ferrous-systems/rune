@@ -39,9 +39,9 @@ used on the very first line of output.</p>
 initial indentation and wrapping each paragraph by itself:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">textwrap</span>::<span class="ident">Wrapper</span>;
+<span class="kw">use</span> <span class="ident">textwrap::Wrapper</span>;
 
-<span class="kw">let</span> <span class="ident">wrapper</span> <span class="op">=</span> <span class="ident">Wrapper</span>::<span class="ident">new</span>(<span class="number">15</span>).<span class="ident">initial_indent</span>(<span class="string">&quot;    &quot;</span>);</pre></div>
+<span class="kw">let</span> <span class="ident">wrapper</span> <span class="op">=</span> <span class="ident">Wrapper::new</span>(<span class="number">15</span>).<span class="ident">initial_indent</span>(<span class="string">&quot;    &quot;</span>);</pre></div>
 </div><h4 id="method.subsequent_indent" class="method"><code>pub fn <a href="#method.subsequent_indent" class="fnname">subsequent_indent</a>(self, indent: &amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="struct" href="../textwrap/struct.Wrapper.html" title="struct textwrap::Wrapper">Wrapper</a>&lt;'a, S&gt;</code><a class="srclink" href="../src/textwrap/lib.rs.html#190-195" title="goto source code">[src]</a></h4><div class="docblock"><p>Change <a href="#structfield.subsequent_indent"><code>self.subsequent_indent</code></a>. The subsequent indentation
 is used on lines following the first line of output.</p>
 <h1 id="examples-1" class="section-header"><a href="#examples-1">Examples</a></h1>
@@ -49,9 +49,9 @@ is used on lines following the first line of output.</p>
 single paragraph as a bullet list:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">textwrap</span>::<span class="ident">Wrapper</span>;
+<span class="kw">use</span> <span class="ident">textwrap::Wrapper</span>;
 
-<span class="kw">let</span> <span class="ident">wrapper</span> <span class="op">=</span> <span class="ident">Wrapper</span>::<span class="ident">new</span>(<span class="number">15</span>)
+<span class="kw">let</span> <span class="ident">wrapper</span> <span class="op">=</span> <span class="ident">Wrapper::new</span>(<span class="number">15</span>)
     .<span class="ident">initial_indent</span>(<span class="string">&quot;* &quot;</span>)
     .<span class="ident">subsequent_indent</span>(<span class="string">&quot;  &quot;</span>);</pre></div>
 </div><h4 id="method.break_words" class="method"><code>pub fn <a href="#method.break_words" class="fnname">break_words</a>(self, setting: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <a class="struct" href="../textwrap/struct.Wrapper.html" title="struct textwrap::Wrapper">Wrapper</a>&lt;'a, S&gt;</code><a class="srclink" href="../src/textwrap/lib.rs.html#202-207" title="goto source code">[src]</a></h4><div class="docblock"><p>Change <a href="#structfield.break_words"><code>self.break_words</code></a>. This controls if words longer
@@ -68,9 +68,9 @@ such, it inherits the O(<em>n</em>) time and memory complexity where
 <em>n</em> is the input string length.</p>
 <h1 id="examples-2" class="section-header"><a href="#examples-2">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">textwrap</span>::<span class="ident">Wrapper</span>;
+<span class="kw">use</span> <span class="ident">textwrap::Wrapper</span>;
 
-<span class="kw">let</span> <span class="ident">wrapper</span> <span class="op">=</span> <span class="ident">Wrapper</span>::<span class="ident">new</span>(<span class="number">15</span>);
+<span class="kw">let</span> <span class="ident">wrapper</span> <span class="op">=</span> <span class="ident">Wrapper::new</span>(<span class="number">15</span>);
 <span class="macro">assert_eq!</span>(<span class="ident">wrapper</span>.<span class="ident">fill</span>(<span class="string">&quot;Memory safety without garbage collection.&quot;</span>),
            <span class="string">&quot;Memory safety\nwithout garbage\ncollection.&quot;</span>);</pre></div>
 </div><h4 id="method.wrap" class="method"><code>pub fn <a href="#method.wrap" class="fnname">wrap</a>(&amp;self, s: &amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="enum" href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html" title="enum alloc::borrow::Cow">Cow</a>&lt;'a, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt;</code><a class="srclink" href="../src/textwrap/lib.rs.html#285-287" title="goto source code">[src]</a></h4><div class="docblock"><p>Wrap a line of text at <code>self.width</code> characters. Strings are
@@ -82,15 +82,15 @@ As such, it inherits the O(<em>n</em>) overall time and memory
 complexity where <em>n</em> is the input string length.</p>
 <h1 id="examples-3" class="section-header"><a href="#examples-3">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">textwrap</span>::<span class="ident">Wrapper</span>;
+<span class="kw">use</span> <span class="ident">textwrap::Wrapper</span>;
 
-<span class="kw">let</span> <span class="ident">wrap15</span> <span class="op">=</span> <span class="ident">Wrapper</span>::<span class="ident">new</span>(<span class="number">15</span>);
+<span class="kw">let</span> <span class="ident">wrap15</span> <span class="op">=</span> <span class="ident">Wrapper::new</span>(<span class="number">15</span>);
 <span class="macro">assert_eq!</span>(<span class="ident">wrap15</span>.<span class="ident">wrap</span>(<span class="string">&quot;Concurrency without data races.&quot;</span>),
            <span class="macro">vec!</span>[<span class="string">&quot;Concurrency&quot;</span>,
                 <span class="string">&quot;without data&quot;</span>,
                 <span class="string">&quot;races.&quot;</span>]);
 
-<span class="kw">let</span> <span class="ident">wrap20</span> <span class="op">=</span> <span class="ident">Wrapper</span>::<span class="ident">new</span>(<span class="number">20</span>);
+<span class="kw">let</span> <span class="ident">wrap20</span> <span class="op">=</span> <span class="ident">Wrapper::new</span>(<span class="number">20</span>);
 <span class="macro">assert_eq!</span>(<span class="ident">wrap20</span>.<span class="ident">wrap</span>(<span class="string">&quot;Concurrency without data races.&quot;</span>),
            <span class="macro">vec!</span>[<span class="string">&quot;Concurrency without&quot;</span>,
                 <span class="string">&quot;data races.&quot;</span>]);</pre></div>
@@ -99,9 +99,9 @@ that they force a line break, regardless of how long the
 current line is:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">textwrap</span>::<span class="ident">Wrapper</span>;
+<span class="kw">use</span> <span class="ident">textwrap::Wrapper</span>;
 
-<span class="kw">let</span> <span class="ident">wrapper</span> <span class="op">=</span> <span class="ident">Wrapper</span>::<span class="ident">new</span>(<span class="number">40</span>);
+<span class="kw">let</span> <span class="ident">wrapper</span> <span class="op">=</span> <span class="ident">Wrapper::new</span>(<span class="number">40</span>);
 <span class="macro">assert_eq!</span>(<span class="ident">wrapper</span>.<span class="ident">wrap</span>(<span class="string">&quot;First line.\nSecond line.&quot;</span>),
            <span class="macro">vec!</span>[<span class="string">&quot;First line.&quot;</span>, <span class="string">&quot;Second line.&quot;</span>]);</pre></div>
 </div><h4 id="method.wrap_iter" class="method"><code>pub fn <a href="#method.wrap_iter" class="fnname">wrap_iter</a>&lt;'w&gt;(&amp;'w self, s: &amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="struct" href="../textwrap/struct.WrapIter.html" title="struct textwrap::WrapIter">WrapIter</a>&lt;'w, 'a, S&gt;<span class="notable-traits"><span class="notable-traits-tooltip">ⓘ<div class="notable-traits-tooltiptext"><span class="docblock"><h3 class="notable">Notable traits for <a class="struct" href="../textwrap/struct.WrapIter.html" title="struct textwrap::WrapIter">WrapIter</a>&lt;'w, 'a, S&gt;</h3><code class="content"><span class="where fmt-newline">impl&lt;'w, 'a: 'w, S:&nbsp;<a class="trait" href="../textwrap/trait.WordSplitter.html" title="trait textwrap::WordSplitter">WordSplitter</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html" title="trait core::iter::traits::iterator::Iterator">Iterator</a> for <a class="struct" href="../textwrap/struct.WrapIter.html" title="struct textwrap::WrapIter">WrapIter</a>&lt;'w, 'a, S&gt;</span><span class="where fmt-newline">    type <a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#associatedtype.Item" class="type">Item</a> = <a class="enum" href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html" title="enum alloc::borrow::Cow">Cow</a>&lt;'a, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;;</span></code></span></div></span></span></code><a class="srclink" href="../src/textwrap/lib.rs.html#331-336" title="goto source code">[src]</a></h4><div class="docblock"><p>Lazily wrap a line of text at <code>self.width</code> characters. Strings
@@ -122,18 +122,18 @@ the input string and the memory overhead is thus constant.
 Otherwise new memory is allocated for each line returned.</p>
 <h1 id="examples-4" class="section-header"><a href="#examples-4">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
-<span class="kw">use</span> <span class="ident">textwrap</span>::<span class="ident">Wrapper</span>;
+<span class="kw">use</span> <span class="ident">std::borrow::Cow</span>;
+<span class="kw">use</span> <span class="ident">textwrap::Wrapper</span>;
 
-<span class="kw">let</span> <span class="ident">wrap20</span> <span class="op">=</span> <span class="ident">Wrapper</span>::<span class="ident">new</span>(<span class="number">20</span>);
+<span class="kw">let</span> <span class="ident">wrap20</span> <span class="op">=</span> <span class="ident">Wrapper::new</span>(<span class="number">20</span>);
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">wrap20_iter</span> <span class="op">=</span> <span class="ident">wrap20</span>.<span class="ident">wrap_iter</span>(<span class="string">&quot;Zero-cost abstractions.&quot;</span>);
-<span class="macro">assert_eq!</span>(<span class="ident">wrap20_iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Cow</span>::<span class="ident">from</span>(<span class="string">&quot;Zero-cost&quot;</span>)));
-<span class="macro">assert_eq!</span>(<span class="ident">wrap20_iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Cow</span>::<span class="ident">from</span>(<span class="string">&quot;abstractions.&quot;</span>)));
+<span class="macro">assert_eq!</span>(<span class="ident">wrap20_iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Cow::from</span>(<span class="string">&quot;Zero-cost&quot;</span>)));
+<span class="macro">assert_eq!</span>(<span class="ident">wrap20_iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Cow::from</span>(<span class="string">&quot;abstractions.&quot;</span>)));
 <span class="macro">assert_eq!</span>(<span class="ident">wrap20_iter</span>.<span class="ident">next</span>(), <span class="prelude-val">None</span>);
 
-<span class="kw">let</span> <span class="ident">wrap25</span> <span class="op">=</span> <span class="ident">Wrapper</span>::<span class="ident">new</span>(<span class="number">25</span>);
+<span class="kw">let</span> <span class="ident">wrap25</span> <span class="op">=</span> <span class="ident">Wrapper::new</span>(<span class="number">25</span>);
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">wrap25_iter</span> <span class="op">=</span> <span class="ident">wrap25</span>.<span class="ident">wrap_iter</span>(<span class="string">&quot;Zero-cost abstractions.&quot;</span>);
-<span class="macro">assert_eq!</span>(<span class="ident">wrap25_iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Cow</span>::<span class="ident">from</span>(<span class="string">&quot;Zero-cost abstractions.&quot;</span>)));
+<span class="macro">assert_eq!</span>(<span class="ident">wrap25_iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Cow::from</span>(<span class="string">&quot;Zero-cost abstractions.&quot;</span>)));
 <span class="macro">assert_eq!</span>(<span class="ident">wrap25_iter</span>.<span class="ident">next</span>(), <span class="prelude-val">None</span>);</pre></div>
 </div><h4 id="method.into_wrap_iter" class="method"><code>pub fn <a href="#method.into_wrap_iter" class="fnname">into_wrap_iter</a>(self, s: &amp;'a <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="struct" href="../textwrap/struct.IntoWrapIter.html" title="struct textwrap::IntoWrapIter">IntoWrapIter</a>&lt;'a, S&gt;<span class="notable-traits"><span class="notable-traits-tooltip">ⓘ<div class="notable-traits-tooltiptext"><span class="docblock"><h3 class="notable">Notable traits for <a class="struct" href="../textwrap/struct.IntoWrapIter.html" title="struct textwrap::IntoWrapIter">IntoWrapIter</a>&lt;'a, S&gt;</h3><code class="content"><span class="where fmt-newline">impl&lt;'a, S:&nbsp;<a class="trait" href="../textwrap/trait.WordSplitter.html" title="trait textwrap::WordSplitter">WordSplitter</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html" title="trait core::iter::traits::iterator::Iterator">Iterator</a> for <a class="struct" href="../textwrap/struct.IntoWrapIter.html" title="struct textwrap::IntoWrapIter">IntoWrapIter</a>&lt;'a, S&gt;</span><span class="where fmt-newline">    type <a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html#associatedtype.Item" class="type">Item</a> = <a class="enum" href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html" title="enum alloc::borrow::Cow">Cow</a>&lt;'a, <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;;</span></code></span></div></span></span></code><a class="srclink" href="../src/textwrap/lib.rs.html#371-378" title="goto source code">[src]</a></h4><div class="docblock"><p>Lazily wrap a line of text at <code>self.width</code> characters. Strings
 are wrapped based on their displayed width, not their size in
@@ -149,13 +149,13 @@ the same O(<em>n</em>) time complexity as <a href="#method.wrap_iter"><code>wrap
 the length of the input string.</p>
 <h1 id="examples-5" class="section-header"><a href="#examples-5">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
-<span class="kw">use</span> <span class="ident">textwrap</span>::<span class="ident">Wrapper</span>;
+<span class="kw">use</span> <span class="ident">std::borrow::Cow</span>;
+<span class="kw">use</span> <span class="ident">textwrap::Wrapper</span>;
 
-<span class="kw">let</span> <span class="ident">wrap20</span> <span class="op">=</span> <span class="ident">Wrapper</span>::<span class="ident">new</span>(<span class="number">20</span>);
+<span class="kw">let</span> <span class="ident">wrap20</span> <span class="op">=</span> <span class="ident">Wrapper::new</span>(<span class="number">20</span>);
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">wrap20_iter</span> <span class="op">=</span> <span class="ident">wrap20</span>.<span class="ident">into_wrap_iter</span>(<span class="string">&quot;Zero-cost abstractions.&quot;</span>);
-<span class="macro">assert_eq!</span>(<span class="ident">wrap20_iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Cow</span>::<span class="ident">from</span>(<span class="string">&quot;Zero-cost&quot;</span>)));
-<span class="macro">assert_eq!</span>(<span class="ident">wrap20_iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Cow</span>::<span class="ident">from</span>(<span class="string">&quot;abstractions.&quot;</span>)));
+<span class="macro">assert_eq!</span>(<span class="ident">wrap20_iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Cow::from</span>(<span class="string">&quot;Zero-cost&quot;</span>)));
+<span class="macro">assert_eq!</span>(<span class="ident">wrap20_iter</span>.<span class="ident">next</span>(), <span class="prelude-val">Some</span>(<span class="ident">Cow::from</span>(<span class="string">&quot;abstractions.&quot;</span>)));
 <span class="macro">assert_eq!</span>(<span class="ident">wrap20_iter</span>.<span class="ident">next</span>(), <span class="prelude-val">None</span>);</pre></div>
 </div></div><h2 id="trait-implementations" class="small-section-header">Trait Implementations<a href="#trait-implementations" class="anchor"></a></h2><div id="trait-implementations-list"><h3 id="impl-Clone" class="impl"><code class="in-band">impl&lt;'a, S:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> + <a class="trait" href="../textwrap/trait.WordSplitter.html" title="trait textwrap::WordSplitter">WordSplitter</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="struct" href="../textwrap/struct.Wrapper.html" title="struct textwrap::Wrapper">Wrapper</a>&lt;'a, S&gt;</code><a href="#impl-Clone" class="anchor"></a><a class="srclink" href="../src/textwrap/lib.rs.html#83" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.clone" class="method hidden"><code>fn <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone" class="fnname">clone</a>(&amp;self) -&gt; <a class="struct" href="../textwrap/struct.Wrapper.html" title="struct textwrap::Wrapper">Wrapper</a>&lt;'a, S&gt;</code><a class="srclink" href="../src/textwrap/lib.rs.html#83" title="goto source code">[src]</a></h4><div class='docblock hidden'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
 </div><h4 id="method.clone_from" class="method hidden"><code>pub fn <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from" class="fnname">clone_from</a>(&amp;mut self, source: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Self)</code><span class="since" title="Stable since Rust version 1.0.0">1.0.0</span><a class="srclink" href="https://doc.rust-lang.org/nightly/src/core/clone.rs.html#130" title="goto source code">[src]</a></h4><div class='docblock hidden'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>

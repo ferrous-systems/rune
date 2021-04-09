@@ -148,17 +148,17 @@
 <span id="145">145</span>
 <span id="146">146</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">checker</span>::<span class="ident">CompositeChecker</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">either</span>::<span class="ident">Either</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::checker::CompositeChecker</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">either::Either</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">helper</span>::<span class="ident">has_executable_extension</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">env</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">OsStr</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::helper::has_executable_extension</span>;
+<span class="kw">use</span> <span class="ident">std::env</span>;
+<span class="kw">use</span> <span class="ident">std::ffi::OsStr</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">OsString</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">iter</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
+<span class="kw">use</span> <span class="ident">std::ffi::OsString</span>;
+<span class="kw">use</span> <span class="ident">std::iter</span>;
+<span class="kw">use</span> <span class="ident">std::path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Checker</span> {
     <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
@@ -184,7 +184,7 @@
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_absolute</span>() {
             <span class="self">self</span>
         } <span class="kw">else</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_path</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">cwd</span>.<span class="ident">as_ref</span>());
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_path</span> <span class="op">=</span> <span class="ident">PathBuf::from</span>(<span class="ident">cwd</span>.<span class="ident">as_ref</span>());
             <span class="ident">new_path</span>.<span class="ident">push</span>(<span class="self">self</span>);
             <span class="ident">new_path</span>
         }
@@ -210,17 +210,17 @@
         <span class="ident">U</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">OsStr</span><span class="op">&gt;</span>,
         <span class="ident">V</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>,
     {
-        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="kw-2">&amp;</span><span class="ident">binary_name</span>);
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">PathBuf::from</span>(<span class="kw-2">&amp;</span><span class="ident">binary_name</span>);
 
         <span class="kw">let</span> <span class="ident">binary_path_candidates</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">has_separator</span>() {
             <span class="comment">// Search binary in cwd if the path have a path separator.</span>
-            <span class="ident">Either</span>::<span class="ident">Left</span>(<span class="self">Self</span>::<span class="ident">cwd_search_candidates</span>(<span class="ident">path</span>, <span class="ident">cwd</span>).<span class="ident">into_iter</span>())
+            <span class="ident">Either::Left</span>(<span class="self">Self</span><span class="ident">::cwd_search_candidates</span>(<span class="ident">path</span>, <span class="ident">cwd</span>).<span class="ident">into_iter</span>())
         } <span class="kw">else</span> {
             <span class="comment">// Search binary in PATHs(defined in environment variable).</span>
-            <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">paths</span>.<span class="ident">ok_or</span>(<span class="ident">Error</span>::<span class="ident">CannotFindBinaryPath</span>)<span class="question-mark">?</span>;
-            <span class="kw">let</span> <span class="ident">paths</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">split_paths</span>(<span class="kw-2">&amp;</span><span class="ident">p</span>).<span class="ident">collect</span>();
+            <span class="kw">let</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">paths</span>.<span class="ident">ok_or</span>(<span class="ident">Error::CannotFindBinaryPath</span>)<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">paths</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">env::split_paths</span>(<span class="kw-2">&amp;</span><span class="ident">p</span>).<span class="ident">collect</span>();
 
-            <span class="ident">Either</span>::<span class="ident">Right</span>(<span class="self">Self</span>::<span class="ident">path_search_candidates</span>(<span class="ident">path</span>, <span class="ident">paths</span>).<span class="ident">into_iter</span>())
+            <span class="ident">Either::Right</span>(<span class="self">Self</span><span class="ident">::path_search_candidates</span>(<span class="ident">path</span>, <span class="ident">paths</span>).<span class="ident">into_iter</span>())
         };
 
         <span class="prelude-val">Ok</span>(<span class="ident">binary_path_candidates</span>.<span class="ident">filter</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">binary_checker</span>.<span class="ident">is_valid</span>(<span class="ident">p</span>)))
@@ -232,7 +232,7 @@
     {
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">binary_name</span>.<span class="ident">to_absolute</span>(<span class="ident">cwd</span>);
 
-        <span class="self">Self</span>::<span class="ident">append_extension</span>(<span class="ident">iter</span>::<span class="ident">once</span>(<span class="ident">path</span>))
+        <span class="self">Self</span><span class="ident">::append_extension</span>(<span class="ident">iter::once</span>(<span class="ident">path</span>))
     }
 
     <span class="kw">fn</span> <span class="ident">path_search_candidates</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>(
@@ -244,7 +244,7 @@
     {
         <span class="kw">let</span> <span class="ident">new_paths</span> <span class="op">=</span> <span class="ident">paths</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">join</span>(<span class="ident">binary_name</span>.<span class="ident">clone</span>()));
 
-        <span class="self">Self</span>::<span class="ident">append_extension</span>(<span class="ident">new_paths</span>)
+        <span class="self">Self</span><span class="ident">::append_extension</span>(<span class="ident">new_paths</span>)
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
@@ -262,9 +262,9 @@
     {
         <span class="comment">// Read PATHEXT env variable and split it into vector of String</span>
         <span class="kw">let</span> <span class="ident">path_exts</span> <span class="op">=</span>
-            <span class="ident">env</span>::<span class="ident">var_os</span>(<span class="string">&quot;PATHEXT&quot;</span>).<span class="ident">unwrap_or</span>(<span class="ident">OsString</span>::<span class="ident">from</span>(<span class="ident">env</span>::<span class="ident">consts</span>::<span class="ident">EXE_EXTENSION</span>));
+            <span class="ident">env::var_os</span>(<span class="string">&quot;PATHEXT&quot;</span>).<span class="ident">unwrap_or</span>(<span class="ident">OsString::from</span>(<span class="ident">env::consts::EXE_EXTENSION</span>));
 
-        <span class="kw">let</span> <span class="ident">exe_extension_vec</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">split_paths</span>(<span class="kw-2">&amp;</span><span class="ident">path_exts</span>)
+        <span class="kw">let</span> <span class="ident">exe_extension_vec</span> <span class="op">=</span> <span class="ident">env::split_paths</span>(<span class="kw-2">&amp;</span><span class="ident">path_exts</span>)
             .<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">to_str</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">to_owned</span>()))
             .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
 
@@ -273,7 +273,7 @@
             .<span class="ident">flat_map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span> {
                 <span class="comment">// Check if path already have executable extension</span>
                 <span class="kw">if</span> <span class="ident">has_executable_extension</span>(<span class="kw-2">&amp;</span><span class="ident">p</span>, <span class="kw-2">&amp;</span><span class="ident">exe_extension_vec</span>) {
-                    <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">iter</span>::<span class="ident">once</span>(<span class="ident">p</span>))
+                    <span class="ident">Box::new</span>(<span class="ident">iter::once</span>(<span class="ident">p</span>))
                 } <span class="kw">else</span> {
                     <span class="comment">// Appended paths with windows executable extensions.</span>
                     <span class="comment">// e.g. path `c:/windows/bin` will expend to:</span>
@@ -286,10 +286,10 @@
                         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span>.<span class="ident">clone</span>().<span class="ident">to_path_buf</span>().<span class="ident">into_os_string</span>();
                         <span class="ident">p</span>.<span class="ident">push</span>(<span class="ident">e</span>);
 
-                        <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">p</span>)
+                        <span class="ident">PathBuf::from</span>(<span class="ident">p</span>)
                     });
 
-                    <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">ps</span>)
+                    <span class="ident">Box::new</span>(<span class="ident">ps</span>)
                 }
             })
     }

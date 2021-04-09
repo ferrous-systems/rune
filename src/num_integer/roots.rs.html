@@ -394,9 +394,9 @@
 <span id="391">391</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">core</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>;
-<span class="kw">use</span> <span class="ident">traits</span>::<span class="ident">checked_pow</span>;
-<span class="kw">use</span> <span class="ident">traits</span>::<span class="ident">PrimInt</span>;
+<span class="kw">use</span> <span class="ident">core::mem</span>;
+<span class="kw">use</span> <span class="ident">traits::checked_pow</span>;
+<span class="kw">use</span> <span class="ident">traits::PrimInt</span>;
 <span class="kw">use</span> <span class="ident">Integer</span>;
 
 <span class="doccomment">/// Provides methods to compute an integer&#39;s square root, cube root,</span>
@@ -585,12 +585,12 @@
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">fn</span> <span class="ident">bits</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
-    <span class="number">8</span> <span class="op">*</span> <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>
+    <span class="number">8</span> <span class="op">*</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">fn</span> <span class="ident">log2</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">PrimInt</span><span class="op">&gt;</span>(<span class="ident">x</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
-    <span class="macro">debug_assert!</span>(<span class="ident">x</span> <span class="op">&gt;</span> <span class="ident">T</span>::<span class="ident">zero</span>());
+    <span class="macro">debug_assert!</span>(<span class="ident">x</span> <span class="op">&gt;</span> <span class="ident">T::zero</span>());
     <span class="ident">bits</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="op">-</span> <span class="number">1</span> <span class="op">-</span> <span class="ident">x</span>.<span class="ident">leading_zeros</span>()
 }
 
@@ -616,7 +616,7 @@
 
                     <span class="kw">if</span> <span class="ident">bits</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span><span class="op">&gt;</span>() <span class="op">&gt;</span> <span class="number">64</span> {
                         <span class="comment">// 128-bit division is slow, so do a bitwise `nth_root` until it&#39;s small enough.</span>
-                        <span class="kw">return</span> <span class="kw">if</span> <span class="ident">a</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">core</span>::<span class="ident">u64</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span> {
+                        <span class="kw">return</span> <span class="kw">if</span> <span class="ident">a</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">core::u64::MAX</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span> {
                             (<span class="ident">a</span> <span class="kw">as</span> <span class="ident">u64</span>).<span class="ident">nth_root</span>(<span class="ident">n</span>) <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>
                         } <span class="kw">else</span> {
                             <span class="kw">let</span> <span class="ident">lo</span> <span class="op">=</span> (<span class="ident">a</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">n</span>).<span class="ident">nth_root</span>(<span class="ident">n</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>;
@@ -642,10 +642,10 @@
                     <span class="attribute">#[<span class="ident">inline</span>]</span>
                     <span class="kw">fn</span> <span class="ident">guess</span>(<span class="ident">x</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>, <span class="ident">n</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span> {
                         <span class="comment">// for smaller inputs, `f64` doesn&#39;t justify its cost.</span>
-                        <span class="kw">if</span> <span class="ident">bits</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span><span class="op">&gt;</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="number">32</span> <span class="op">|</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">core</span>::<span class="ident">u32</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span> {
+                        <span class="kw">if</span> <span class="ident">bits</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span><span class="op">&gt;</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="number">32</span> <span class="op">|</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">core::u32::MAX</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span> {
                             <span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> ((<span class="ident">log2</span>(<span class="ident">x</span>) <span class="op">+</span> <span class="ident">n</span> <span class="op">-</span> <span class="number">1</span>) <span class="op">/</span> <span class="ident">n</span>)
                         } <span class="kw">else</span> {
-                            ((<span class="ident">x</span> <span class="kw">as</span> <span class="ident">f64</span>).<span class="ident">ln</span>() <span class="op">/</span> <span class="ident">f64</span>::<span class="ident">from</span>(<span class="ident">n</span>)).<span class="ident">exp</span>() <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>
+                            ((<span class="ident">x</span> <span class="kw">as</span> <span class="ident">f64</span>).<span class="ident">ln</span>() <span class="op">/</span> <span class="ident">f64::from</span>(<span class="ident">n</span>)).<span class="ident">exp</span>() <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>
                         }
                     }
 
@@ -674,7 +674,7 @@
                 <span class="kw">fn</span> <span class="ident">go</span>(<span class="ident">a</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span> {
                     <span class="kw">if</span> <span class="ident">bits</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span><span class="op">&gt;</span>() <span class="op">&gt;</span> <span class="number">64</span> {
                         <span class="comment">// 128-bit division is slow, so do a bitwise `sqrt` until it&#39;s small enough.</span>
-                        <span class="kw">return</span> <span class="kw">if</span> <span class="ident">a</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">core</span>::<span class="ident">u64</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span> {
+                        <span class="kw">return</span> <span class="kw">if</span> <span class="ident">a</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">core::u64::MAX</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span> {
                             (<span class="ident">a</span> <span class="kw">as</span> <span class="ident">u64</span>).<span class="ident">sqrt</span>() <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>
                         } <span class="kw">else</span> {
                             <span class="kw">let</span> <span class="ident">lo</span> <span class="op">=</span> (<span class="ident">a</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">2u32</span>).<span class="ident">sqrt</span>() <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>;
@@ -715,7 +715,7 @@
                 <span class="kw">fn</span> <span class="ident">go</span>(<span class="ident">a</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span> {
                     <span class="kw">if</span> <span class="ident">bits</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span><span class="op">&gt;</span>() <span class="op">&gt;</span> <span class="number">64</span> {
                         <span class="comment">// 128-bit division is slow, so do a bitwise `cbrt` until it&#39;s small enough.</span>
-                        <span class="kw">return</span> <span class="kw">if</span> <span class="ident">a</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">core</span>::<span class="ident">u64</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span> {
+                        <span class="kw">return</span> <span class="kw">if</span> <span class="ident">a</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">core::u64::MAX</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span> {
                             (<span class="ident">a</span> <span class="kw">as</span> <span class="ident">u64</span>).<span class="ident">cbrt</span>() <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>
                         } <span class="kw">else</span> {
                             <span class="kw">let</span> <span class="ident">lo</span> <span class="op">=</span> (<span class="ident">a</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">3u32</span>).<span class="ident">cbrt</span>() <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">1</span>;
@@ -751,7 +751,7 @@
                     <span class="kw">if</span> <span class="ident">a</span> <span class="op">&lt;</span> <span class="number">8</span> {
                         <span class="kw">return</span> (<span class="ident">a</span> <span class="op">&gt;</span> <span class="number">0</span>) <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>;
                     }
-                    <span class="kw">if</span> <span class="ident">a</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">core</span>::<span class="ident">u32</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span> {
+                    <span class="kw">if</span> <span class="ident">a</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">core::u32::MAX</span> <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span> {
                         <span class="kw">return</span> (<span class="ident">a</span> <span class="kw">as</span> <span class="ident">u32</span>).<span class="ident">cbrt</span>() <span class="kw">as</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">T</span>;
                     }
 

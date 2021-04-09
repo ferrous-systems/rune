@@ -364,8 +364,8 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Data structures describing the registers in an ISA.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">entity</span>::<span class="ident">EntityRef</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::entity::EntityRef</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
 
 <span class="doccomment">/// Register units are the smallest units of register allocation.</span>
 <span class="doccomment">///</span>
@@ -456,7 +456,7 @@
 
     <span class="doccomment">/// Write `regunit` to `w`, assuming that it belongs to this bank.</span>
     <span class="doccomment">/// All regunits are written with a `%` prefix.</span>
-    <span class="kw">fn</span> <span class="ident">write_regunit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>, <span class="ident">regunit</span>: <span class="ident">RegUnit</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">write_regunit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>, <span class="ident">regunit</span>: <span class="ident">RegUnit</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">regunit</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">first_unit</span>;
         <span class="macro">assert!</span>(<span class="ident">offset</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">units</span>);
         <span class="kw">if</span> (<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">names</span>.<span class="ident">len</span>() {
@@ -554,7 +554,7 @@
 
     <span class="doccomment">/// Get a specific register unit in this class.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RegUnit</span> {
-        <span class="kw">let</span> <span class="ident">uoffset</span> <span class="op">=</span> <span class="ident">offset</span> <span class="op">*</span> <span class="ident">usize</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="ident">width</span>);
+        <span class="kw">let</span> <span class="ident">uoffset</span> <span class="op">=</span> <span class="ident">offset</span> <span class="op">*</span> <span class="ident">usize::from</span>(<span class="self">self</span>.<span class="ident">width</span>);
         <span class="self">self</span>.<span class="ident">first</span> <span class="op">+</span> <span class="ident">uoffset</span> <span class="kw">as</span> <span class="ident">RegUnit</span>
     }
 
@@ -584,14 +584,14 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">RegClassData</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">RegClassData</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="self">self</span>.<span class="ident">name</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">RegClassData</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">RegClassData</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="self">self</span>.<span class="ident">name</span>)
     }
 }
@@ -616,7 +616,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">index</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="ident">usize</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="number">0</span>)
+        <span class="ident">usize::from</span>(<span class="self">self</span>.<span class="number">0</span>)
     }
 }
 
@@ -626,8 +626,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">RegClassIndex</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">RegClassIndex</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;rci{}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
     }
 }
@@ -637,8 +637,8 @@
 <span class="doccomment">/// A register is identified as a `(RegClass, RegUnit)` pair. The register class is needed to</span>
 <span class="doccomment">/// determine the width (in regunits) of the register.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">regs_overlap</span>(<span class="ident">rc1</span>: <span class="ident">RegClass</span>, <span class="ident">reg1</span>: <span class="ident">RegUnit</span>, <span class="ident">rc2</span>: <span class="ident">RegClass</span>, <span class="ident">reg2</span>: <span class="ident">RegUnit</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-    <span class="kw">let</span> <span class="ident">end1</span> <span class="op">=</span> <span class="ident">reg1</span> <span class="op">+</span> <span class="ident">RegUnit</span>::<span class="ident">from</span>(<span class="ident">rc1</span>.<span class="ident">width</span>);
-    <span class="kw">let</span> <span class="ident">end2</span> <span class="op">=</span> <span class="ident">reg2</span> <span class="op">+</span> <span class="ident">RegUnit</span>::<span class="ident">from</span>(<span class="ident">rc2</span>.<span class="ident">width</span>);
+    <span class="kw">let</span> <span class="ident">end1</span> <span class="op">=</span> <span class="ident">reg1</span> <span class="op">+</span> <span class="ident">RegUnit::from</span>(<span class="ident">rc1</span>.<span class="ident">width</span>);
+    <span class="kw">let</span> <span class="ident">end2</span> <span class="op">=</span> <span class="ident">reg2</span> <span class="op">+</span> <span class="ident">RegUnit::from</span>(<span class="ident">rc2</span>.<span class="ident">width</span>);
     <span class="op">!</span>(<span class="ident">end1</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">reg2</span> <span class="op">|</span><span class="op">|</span> <span class="ident">end2</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">reg1</span>)
 }
 
@@ -696,8 +696,8 @@
     <span class="ident">reginfo</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">RegInfo</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">DisplayRegUnit</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">DisplayRegUnit</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">reginfo</span>.<span class="ident">bank_containing_regunit</span>(<span class="self">self</span>.<span class="ident">regunit</span>) {
             <span class="prelude-val">Some</span>(<span class="ident">b</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">b</span>.<span class="ident">write_regunit</span>(<span class="ident">f</span>, <span class="self">self</span>.<span class="ident">regunit</span>),
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;%INVALID{}&quot;</span>, <span class="self">self</span>.<span class="ident">regunit</span>),
@@ -707,18 +707,18 @@
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">assert_sizes</span>() {
-    <span class="kw">use</span> <span class="ident">cranelift_codegen_shared</span>::<span class="ident">constants</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>;
+    <span class="kw">use</span> <span class="ident">cranelift_codegen_shared::constants</span>;
+    <span class="kw">use</span> <span class="ident">std::mem::size_of</span>;
 
     <span class="comment">// In these tests, size_of returns number of bytes: we actually want the number of bits, so</span>
     <span class="comment">// multiply these by 8.</span>
     <span class="macro">assert!</span>(
-        (<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">RegClassMask</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="number">8</span>) <span class="op">&lt;</span><span class="op">=</span> <span class="ident">constants</span>::<span class="ident">MAX_NUM_REG_CLASSES</span>,
+        (<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">RegClassMask</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="number">8</span>) <span class="op">&lt;</span><span class="op">=</span> <span class="ident">constants::MAX_NUM_REG_CLASSES</span>,
         <span class="string">&quot;need to bump MAX_NUM_REG_CLASSES or change RegClassMask type&quot;</span>
     );
 
     <span class="macro">assert!</span>(
-        <span class="ident">constants</span>::<span class="ident">MAX_NUM_REG_CLASSES</span> <span class="op">&lt;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> (<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">RegClassIndex</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="number">8</span>)),
+        <span class="ident">constants::MAX_NUM_REG_CLASSES</span> <span class="op">&lt;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> (<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">RegClassIndex</span><span class="op">&gt;</span>() <span class="op">*</span> <span class="number">8</span>)),
         <span class="string">&quot;need to change RegClassIndex&#39;s type to a wider type&quot;</span>
     );
 }

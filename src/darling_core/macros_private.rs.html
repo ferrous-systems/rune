@@ -16,7 +16,7 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="macro">macro_rules!</span> <span class="ident">quote</span> {
     ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="macro">quote_spanned!</span>(::<span class="ident">proc_macro2</span>::<span class="ident">Span</span>::<span class="ident">call_site</span>() <span class="op">=</span><span class="op">&gt;</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>)
+        <span class="macro">quote_spanned!</span>(<span class="ident">::proc_macro2::Span::call_site</span>() <span class="op">=</span><span class="op">&gt;</span> $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>)
     };
 }
 

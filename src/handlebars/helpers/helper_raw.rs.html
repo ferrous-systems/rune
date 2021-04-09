@@ -46,11 +46,11 @@
 <span id="43">43</span>
 <span id="44">44</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">context</span>::<span class="ident">Context</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">helpers</span>::{<span class="ident">HelperDef</span>, <span class="ident">HelperResult</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">output</span>::<span class="ident">Output</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">registry</span>::<span class="ident">Registry</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">render</span>::{<span class="ident">Helper</span>, <span class="ident">RenderContext</span>, <span class="ident">Renderable</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::context::Context</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::helpers</span>::{<span class="ident">HelperDef</span>, <span class="ident">HelperResult</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::output::Output</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::registry::Registry</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::render</span>::{<span class="ident">Helper</span>, <span class="ident">RenderContext</span>, <span class="ident">Renderable</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RawHelper</span>;
@@ -77,11 +77,11 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">registry</span>::<span class="ident">Registry</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::registry::Registry</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_raw_helper</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="macro">assert!</span>(<span class="ident">handlebars</span>
             .<span class="ident">register_template_string</span>(<span class="string">&quot;t0&quot;</span>, <span class="string">&quot;a{{{{raw}}}}{{content}}{{else}}hello{{{{/raw}}}}&quot;</span>)
             .<span class="ident">is_ok</span>());

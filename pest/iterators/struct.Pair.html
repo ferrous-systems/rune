@@ -14,11 +14,11 @@ editors.</p>
 }
 
 <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>;
-<span class="kw">let</span> <span class="ident">pair</span> <span class="op">=</span> <span class="ident">pest</span>::<span class="ident">state</span>(<span class="ident">input</span>, <span class="op">|</span><span class="ident">state</span><span class="op">|</span> {
+<span class="kw">let</span> <span class="ident">pair</span> <span class="op">=</span> <span class="ident">pest::state</span>(<span class="ident">input</span>, <span class="op">|</span><span class="ident">state</span><span class="op">|</span> {
     <span class="comment">// generating Token pair with Rule::a ...</span>
 }).<span class="ident">unwrap</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>();
 
-<span class="macro">assert_eq!</span>(<span class="ident">pair</span>.<span class="ident">as_rule</span>(), <span class="ident">Rule</span>::<span class="ident">a</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">pair</span>.<span class="ident">as_rule</span>(), <span class="ident">Rule::a</span>);</pre></div>
 </div><h4 id="method.as_str" class="method"><code>pub fn <a href="#method.as_str" class="fnname">as_str</a>(&amp;self) -&gt; &amp;'i <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a></code><a class="srclink" href="../../src/pest/iterators/pair.rs.html#111-117" title="goto source code">[src]</a></h4><div class="docblock"><p>Captures a slice from the <code>&amp;str</code> defined by the token <code>Pair</code>.</p>
 <h1 id="examples-1" class="section-header"><a href="#examples-1">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -27,7 +27,7 @@ editors.</p>
 }
 
 <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="string">&quot;ab&quot;</span>;
-<span class="kw">let</span> <span class="ident">pair</span> <span class="op">=</span> <span class="ident">pest</span>::<span class="ident">state</span>(<span class="ident">input</span>, <span class="op">|</span><span class="ident">state</span><span class="op">|</span> {
+<span class="kw">let</span> <span class="ident">pair</span> <span class="op">=</span> <span class="ident">pest::state</span>(<span class="ident">input</span>, <span class="op">|</span><span class="ident">state</span><span class="op">|</span> {
     <span class="comment">// generating Token pair with Rule::ab ...</span>
 }).<span class="ident">unwrap</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>();
 
@@ -41,7 +41,7 @@ editors.</p>
 }
 
 <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="string">&quot;ab&quot;</span>;
-<span class="kw">let</span> <span class="ident">pair</span> <span class="op">=</span> <span class="ident">pest</span>::<span class="ident">state</span>(<span class="ident">input</span>, <span class="op">|</span><span class="ident">state</span><span class="op">|</span> {
+<span class="kw">let</span> <span class="ident">pair</span> <span class="op">=</span> <span class="ident">pest::state</span>(<span class="ident">input</span>, <span class="op">|</span><span class="ident">state</span><span class="op">|</span> {
     <span class="comment">// generating Token pair with Rule::ab ...</span>
 }).<span class="ident">unwrap</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>();
 
@@ -54,7 +54,7 @@ editors.</p>
 }
 
 <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="string">&quot;ab&quot;</span>;
-<span class="kw">let</span> <span class="ident">pair</span> <span class="op">=</span> <span class="ident">pest</span>::<span class="ident">state</span>(<span class="ident">input</span>, <span class="op">|</span><span class="ident">state</span><span class="op">|</span> {
+<span class="kw">let</span> <span class="ident">pair</span> <span class="op">=</span> <span class="ident">pest::state</span>(<span class="ident">input</span>, <span class="op">|</span><span class="ident">state</span><span class="op">|</span> {
     <span class="comment">// generating Token pair with Rule::ab ...</span>
 }).<span class="ident">unwrap</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>();
 
@@ -67,7 +67,7 @@ editors.</p>
 }
 
 <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>;
-<span class="kw">let</span> <span class="ident">pair</span> <span class="op">=</span> <span class="ident">pest</span>::<span class="ident">state</span>(<span class="ident">input</span>, <span class="op">|</span><span class="ident">state</span><span class="op">|</span> {
+<span class="kw">let</span> <span class="ident">pair</span> <span class="op">=</span> <span class="ident">pest::state</span>(<span class="ident">input</span>, <span class="op">|</span><span class="ident">state</span><span class="op">|</span> {
     <span class="comment">// generating Token pair with Rule::a ...</span>
 }).<span class="ident">unwrap</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>();
 
@@ -80,7 +80,7 @@ editors.</p>
 }
 
 <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>;
-<span class="kw">let</span> <span class="ident">pair</span> <span class="op">=</span> <span class="ident">pest</span>::<span class="ident">state</span>(<span class="ident">input</span>, <span class="op">|</span><span class="ident">state</span><span class="op">|</span> {
+<span class="kw">let</span> <span class="ident">pair</span> <span class="op">=</span> <span class="ident">pest::state</span>(<span class="ident">input</span>, <span class="op">|</span><span class="ident">state</span><span class="op">|</span> {
     <span class="comment">// generating Token pair with Rule::a ...</span>
 }).<span class="ident">unwrap</span>().<span class="ident">next</span>().<span class="ident">unwrap</span>();
 <span class="kw">let</span> <span class="ident">tokens</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">pair</span>.<span class="ident">tokens</span>().<span class="ident">collect</span>();

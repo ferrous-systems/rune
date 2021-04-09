@@ -400,11 +400,11 @@
 <span class="doccomment">//! &quot;register unit&quot; abstraction. Every register contains one or more register units. Registers that</span>
 <span class="doccomment">//! share a register unit can&#39;t be in use at the same time.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">registers</span>::{<span class="ident">RegClass</span>, <span class="ident">RegInfo</span>, <span class="ident">RegUnit</span>, <span class="ident">RegUnitMask</span>};
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">char</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">iter</span>::<span class="ident">ExactSizeIterator</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">size_of_val</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::registers</span>::{<span class="ident">RegClass</span>, <span class="ident">RegInfo</span>, <span class="ident">RegUnit</span>, <span class="ident">RegUnitMask</span>};
+<span class="kw">use</span> <span class="ident">core::char</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
+<span class="kw">use</span> <span class="ident">core::iter::ExactSizeIterator</span>;
+<span class="kw">use</span> <span class="ident">core::mem::size_of_val</span>;
 
 <span class="doccomment">/// Set of registers available for allocation.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
@@ -587,8 +587,8 @@
 <span class="doccomment">/// Displaying an `RegisterSet` correctly requires the associated `RegInfo` from the target ISA.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DisplayRegisterSet</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">RegisterSet</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">RegInfo</span><span class="op">&gt;</span>);
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">DisplayRegisterSet</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">DisplayRegisterSet</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;[&quot;</span>)<span class="question-mark">?</span>;
         <span class="kw">match</span> <span class="self">self</span>.<span class="number">1</span> {
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
@@ -625,8 +625,8 @@
                                 <span class="ident">bank</span>.<span class="ident">names</span>
                                     .<span class="ident">get</span>(<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">usize</span>)
                                     .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">name</span><span class="op">|</span> <span class="ident">name</span>.<span class="ident">chars</span>().<span class="ident">nth</span>(<span class="number">1</span>))
-                                    .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">char</span>::<span class="ident">from_digit</span>(
-                                        <span class="ident">u32</span>::<span class="ident">from</span>(<span class="ident">offset</span> <span class="op">%</span> <span class="number">10</span>),
+                                    .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">char::from_digit</span>(
+                                        <span class="ident">u32::from</span>(<span class="ident">offset</span> <span class="op">%</span> <span class="number">10</span>),
                                         <span class="number">10</span>
                                     )
                                     .<span class="ident">unwrap</span>())
@@ -640,8 +640,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">RegisterSet</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">RegisterSet</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="self">self</span>.<span class="ident">display</span>(<span class="prelude-val">None</span>).<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }
@@ -649,8 +649,8 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">registers</span>::{<span class="ident">RegClass</span>, <span class="ident">RegClassData</span>};
-    <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::registers</span>::{<span class="ident">RegClass</span>, <span class="ident">RegClassData</span>};
+    <span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 
     <span class="comment">// Register classes for testing.</span>
     <span class="kw">const</span> <span class="ident">GPR</span>: <span class="ident">RegClass</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">RegClassData</span> {
@@ -702,7 +702,7 @@
         <span class="kw">let</span> <span class="ident">results_f</span> <span class="op">=</span> <span class="ident">rsi_f</span>.<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rsi_r</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">rsi</span>).<span class="ident">clone</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">results_r</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">RegUnit</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">results_r</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">RegUnit</span><span class="op">&gt;</span><span class="ident">::new</span>();
         <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">r</span>) <span class="op">=</span> <span class="ident">rsi_r</span>.<span class="ident">rnext</span>() {
             <span class="ident">results_r</span>.<span class="ident">push</span>(<span class="ident">r</span>);
         }
@@ -725,7 +725,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">put_and_take</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">RegisterSet</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">RegisterSet::new</span>();
 
         <span class="comment">// `GPR` has units 28-36.</span>
         <span class="macro">assert_eq!</span>(<span class="ident">regs</span>.<span class="ident">iter</span>(<span class="ident">GPR</span>).<span class="ident">len</span>(), <span class="number">8</span>);
@@ -772,8 +772,8 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">interference</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">regs1</span> <span class="op">=</span> <span class="ident">RegisterSet</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">regs2</span> <span class="op">=</span> <span class="ident">RegisterSet</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">regs1</span> <span class="op">=</span> <span class="ident">RegisterSet::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">regs2</span> <span class="op">=</span> <span class="ident">RegisterSet::new</span>();
 
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">regs1</span>.<span class="ident">interferes_with</span>(<span class="kw-2">&amp;</span><span class="ident">regs2</span>));
         <span class="ident">regs1</span>.<span class="ident">take</span>(<span class="kw-2">&amp;</span><span class="ident">GPR</span>, <span class="number">32</span>);

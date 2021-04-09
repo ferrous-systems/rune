@@ -1506,23 +1506,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Write</span>;
+<span class="kw">use</span> <span class="ident">std::io::Write</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">config</span>::{<span class="ident">Config</span>, <span class="ident">Language</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">declarationtyperesolver</span>::<span class="ident">DeclarationTypeResolver</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">dependencies</span>::<span class="ident">Dependencies</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">ir</span>::{
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::config</span>::{<span class="ident">Config</span>, <span class="ident">Language</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::declarationtyperesolver::DeclarationTypeResolver</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::dependencies::Dependencies</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::ir</span>::{
     <span class="ident">AnnotationSet</span>, <span class="ident">AnnotationValue</span>, <span class="ident">Cfg</span>, <span class="ident">ConditionWrite</span>, <span class="ident">Documentation</span>, <span class="ident">Field</span>, <span class="ident">GenericParams</span>,
     <span class="ident">GenericPath</span>, <span class="ident">Item</span>, <span class="ident">ItemContainer</span>, <span class="ident">Literal</span>, <span class="ident">Path</span>, <span class="ident">Repr</span>, <span class="ident">ReprStyle</span>, <span class="ident">Struct</span>, <span class="ident">ToCondition</span>, <span class="ident">Type</span>,
 };
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">library</span>::<span class="ident">Library</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">mangle</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">monomorph</span>::<span class="ident">Monomorphs</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">rename</span>::{<span class="ident">IdentifierType</span>, <span class="ident">RenameRule</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">reserved</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">writer</span>::{<span class="ident">ListType</span>, <span class="ident">Source</span>, <span class="ident">SourceWriter</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::library::Library</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::mangle</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::monomorph::Monomorphs</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::rename</span>::{<span class="ident">IdentifierType</span>, <span class="ident">RenameRule</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::reserved</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::writer</span>::{<span class="ident">ListType</span>, <span class="ident">Source</span>, <span class="ident">SourceWriter</span>};
 
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">large_enum_variant</span>)]</span>
+<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::large_enum_variant</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">VariantBody</span> {
     <span class="ident">Empty</span>(<span class="ident">AnnotationSet</span>),
@@ -1544,20 +1544,20 @@
 
 <span class="kw">impl</span> <span class="ident">VariantBody</span> {
     <span class="kw">fn</span> <span class="ident">empty</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Empty</span>(<span class="ident">AnnotationSet</span>::<span class="ident">new</span>())
+        <span class="self">Self</span><span class="ident">::Empty</span>(<span class="ident">AnnotationSet::new</span>())
     }
 
     <span class="kw">fn</span> <span class="ident">annotations</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">AnnotationSet</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Empty</span>(<span class="kw-2">ref</span> <span class="ident">anno</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">anno</span>,
-            <span class="self">Self</span>::<span class="ident">Body</span> { <span class="kw-2">ref</span> <span class="ident">body</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">body</span>.<span class="ident">annotations</span>,
+            <span class="self">Self</span><span class="ident">::Empty</span>(<span class="kw-2">ref</span> <span class="ident">anno</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">anno</span>,
+            <span class="self">Self</span><span class="ident">::Body</span> { <span class="kw-2">ref</span> <span class="ident">body</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">body</span>.<span class="ident">annotations</span>,
         }
     }
 
     <span class="kw">fn</span> <span class="ident">is_empty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Empty</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="self">Self</span>::<span class="ident">Body</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+            <span class="self">Self</span><span class="ident">::Empty</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+            <span class="self">Self</span><span class="ident">::Body</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
         }
     }
 
@@ -1568,13 +1568,13 @@
         <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Empty</span>(<span class="kw-2">ref</span> <span class="ident">annos</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Empty</span>(<span class="ident">annos</span>.<span class="ident">clone</span>()),
-            <span class="self">Self</span>::<span class="ident">Body</span> {
+            <span class="self">Self</span><span class="ident">::Empty</span>(<span class="kw-2">ref</span> <span class="ident">annos</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Empty</span>(<span class="ident">annos</span>.<span class="ident">clone</span>()),
+            <span class="self">Self</span><span class="ident">::Body</span> {
                 <span class="kw-2">ref</span> <span class="ident">name</span>,
                 <span class="kw-2">ref</span> <span class="ident">body</span>,
                 <span class="ident">inline</span>,
                 <span class="ident">inline_casts</span>,
-            } <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Body</span> {
+            } <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Body</span> {
                 <span class="ident">name</span>: <span class="ident">name</span>.<span class="ident">clone</span>(),
                 <span class="ident">body</span>: <span class="ident">body</span>.<span class="ident">specialize</span>(<span class="ident">generic_values</span>, <span class="ident">mappings</span>, <span class="ident">config</span>),
                 <span class="ident">inline</span>,
@@ -1597,7 +1597,7 @@
 <span class="kw">impl</span> <span class="ident">EnumVariant</span> {
     <span class="kw">fn</span> <span class="ident">load</span>(
         <span class="ident">inline_tag_field</span>: <span class="ident">bool</span>,
-        <span class="ident">variant</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Variant</span>,
+        <span class="ident">variant</span>: <span class="kw-2">&amp;</span><span class="ident">syn::Variant</span>,
         <span class="ident">generic_params</span>: <span class="ident">GenericParams</span>,
         <span class="ident">mod_cfg</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Cfg</span><span class="op">&gt;</span>,
         <span class="ident">self_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
@@ -1605,27 +1605,27 @@
         <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">String</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">discriminant</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">variant</span>.<span class="ident">discriminant</span> {
-            <span class="prelude-val">Some</span>((<span class="kw">_</span>, <span class="kw-2">ref</span> <span class="ident">expr</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Literal</span>::<span class="ident">load</span>(<span class="ident">expr</span>)<span class="question-mark">?</span>),
+            <span class="prelude-val">Some</span>((<span class="kw">_</span>, <span class="kw-2">ref</span> <span class="ident">expr</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Literal::load</span>(<span class="ident">expr</span>)<span class="question-mark">?</span>),
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         };
 
         <span class="kw">fn</span> <span class="ident">parse_fields</span>(
             <span class="ident">inline_tag_field</span>: <span class="ident">bool</span>,
-            <span class="ident">fields</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">punctuated</span>::<span class="ident">Punctuated</span><span class="op">&lt;</span><span class="ident">syn</span>::<span class="ident">Field</span>, <span class="ident">syn</span>::<span class="ident">token</span>::<span class="ident">Comma</span><span class="op">&gt;</span>,
+            <span class="ident">fields</span>: <span class="kw-2">&amp;</span><span class="ident">syn::punctuated::Punctuated</span><span class="op">&lt;</span><span class="ident">syn::Field</span>, <span class="ident">syn::token::Comma</span><span class="op">&gt;</span>,
             <span class="ident">self_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>,
             <span class="ident">inline_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Field</span><span class="op">&gt;</span>, <span class="ident">String</span><span class="op">&gt;</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
 
             <span class="kw">if</span> <span class="ident">inline_tag_field</span> {
-                <span class="ident">res</span>.<span class="ident">push</span>(<span class="ident">Field</span>::<span class="ident">from_name_and_type</span>(
+                <span class="ident">res</span>.<span class="ident">push</span>(<span class="ident">Field::from_name_and_type</span>(
                     <span class="ident">inline_name</span>.<span class="ident">map_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="string">&quot;tag&quot;</span>.<span class="ident">to_string</span>(), <span class="op">|</span><span class="ident">name</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;{}_tag&quot;</span>, <span class="ident">name</span>)),
-                    <span class="ident">Type</span>::<span class="ident">Path</span>(<span class="ident">GenericPath</span>::<span class="ident">new</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Tag&quot;</span>), <span class="macro">vec!</span>[])),
+                    <span class="ident">Type::Path</span>(<span class="ident">GenericPath::new</span>(<span class="ident">Path::new</span>(<span class="string">&quot;Tag&quot;</span>), <span class="macro">vec!</span>[])),
                 ));
             }
 
             <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">field</span>) <span class="kw">in</span> <span class="ident">fields</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">mut</span> <span class="ident">ty</span>) <span class="op">=</span> <span class="ident">Type</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">ty</span>)<span class="question-mark">?</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">mut</span> <span class="ident">ty</span>) <span class="op">=</span> <span class="ident">Type::load</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">ty</span>)<span class="question-mark">?</span> {
                     <span class="ident">ty</span>.<span class="ident">replace_self_with</span>(<span class="ident">self_path</span>);
                     <span class="ident">res</span>.<span class="ident">push</span>(<span class="ident">Field</span> {
                         <span class="ident">name</span>: <span class="ident">inline_name</span>.<span class="ident">map_or_else</span>(
@@ -1636,9 +1636,9 @@
                             <span class="op">|</span><span class="ident">name</span><span class="op">|</span> <span class="ident">name</span>.<span class="ident">to_string</span>(),
                         ),
                         <span class="ident">ty</span>,
-                        <span class="ident">cfg</span>: <span class="ident">Cfg</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">attrs</span>),
-                        <span class="ident">annotations</span>: <span class="ident">AnnotationSet</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">attrs</span>)<span class="question-mark">?</span>,
-                        <span class="ident">documentation</span>: <span class="ident">Documentation</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">attrs</span>),
+                        <span class="ident">cfg</span>: <span class="ident">Cfg::load</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">attrs</span>),
+                        <span class="ident">annotations</span>: <span class="ident">AnnotationSet::load</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">attrs</span>)<span class="question-mark">?</span>,
+                        <span class="ident">documentation</span>: <span class="ident">Documentation::load</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">attrs</span>),
                     });
                 }
             }
@@ -1646,20 +1646,20 @@
             <span class="prelude-val">Ok</span>(<span class="ident">res</span>)
         }
 
-        <span class="kw">let</span> <span class="ident">variant_cfg</span> <span class="op">=</span> <span class="ident">Cfg</span>::<span class="ident">append</span>(<span class="ident">mod_cfg</span>, <span class="ident">Cfg</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">variant</span>.<span class="ident">attrs</span>));
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">annotations</span> <span class="op">=</span> <span class="ident">AnnotationSet</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">variant</span>.<span class="ident">attrs</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">variant_cfg</span> <span class="op">=</span> <span class="ident">Cfg::append</span>(<span class="ident">mod_cfg</span>, <span class="ident">Cfg::load</span>(<span class="kw-2">&amp;</span><span class="ident">variant</span>.<span class="ident">attrs</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">annotations</span> <span class="op">=</span> <span class="ident">AnnotationSet::load</span>(<span class="kw-2">&amp;</span><span class="ident">variant</span>.<span class="ident">attrs</span>)<span class="question-mark">?</span>;
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">b</span>) <span class="op">=</span> <span class="ident">enum_annotations</span>.<span class="ident">bool</span>(<span class="string">&quot;derive-ostream&quot;</span>) {
-            <span class="ident">annotations</span>.<span class="ident">add_default</span>(<span class="string">&quot;derive-ostream&quot;</span>, <span class="ident">AnnotationValue</span>::<span class="ident">Bool</span>(<span class="ident">b</span>));
+            <span class="ident">annotations</span>.<span class="ident">add_default</span>(<span class="string">&quot;derive-ostream&quot;</span>, <span class="ident">AnnotationValue::Bool</span>(<span class="ident">b</span>));
         }
         <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">variant</span>.<span class="ident">fields</span> {
-            <span class="ident">syn</span>::<span class="ident">Fields</span>::<span class="ident">Unit</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">VariantBody</span>::<span class="ident">Empty</span>(<span class="ident">annotations</span>),
-            <span class="ident">syn</span>::<span class="ident">Fields</span>::<span class="ident">Named</span>(<span class="kw-2">ref</span> <span class="ident">fields</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">new</span>(<span class="macro">format!</span>(<span class="string">&quot;{}_Body&quot;</span>, <span class="ident">variant</span>.<span class="ident">ident</span>));
-                <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">RenameRule</span>::<span class="ident">SnakeCase</span>
-                    .<span class="ident">apply</span>(<span class="kw-2">&amp;</span><span class="ident">variant</span>.<span class="ident">ident</span>.<span class="ident">to_string</span>(), <span class="ident">IdentifierType</span>::<span class="ident">StructMember</span>)
+            <span class="ident">syn::Fields::Unit</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">VariantBody::Empty</span>(<span class="ident">annotations</span>),
+            <span class="ident">syn::Fields::Named</span>(<span class="kw-2">ref</span> <span class="ident">fields</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="macro">format!</span>(<span class="string">&quot;{}_Body&quot;</span>, <span class="ident">variant</span>.<span class="ident">ident</span>));
+                <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">RenameRule::SnakeCase</span>
+                    .<span class="ident">apply</span>(<span class="kw-2">&amp;</span><span class="ident">variant</span>.<span class="ident">ident</span>.<span class="ident">to_string</span>(), <span class="ident">IdentifierType::StructMember</span>)
                     .<span class="ident">into_owned</span>();
-                <span class="ident">VariantBody</span>::<span class="ident">Body</span> {
-                    <span class="ident">body</span>: <span class="ident">Struct</span>::<span class="ident">new</span>(
+                <span class="ident">VariantBody::Body</span> {
+                    <span class="ident">body</span>: <span class="ident">Struct::new</span>(
                         <span class="ident">path</span>,
                         <span class="ident">generic_params</span>,
                         <span class="ident">parse_fields</span>(<span class="ident">inline_tag_field</span>, <span class="kw-2">&amp;</span><span class="ident">fields</span>.<span class="ident">named</span>, <span class="ident">self_path</span>, <span class="prelude-val">None</span>)<span class="question-mark">?</span>,
@@ -1669,17 +1669,17 @@
                         <span class="bool-val">false</span>,
                         <span class="prelude-val">None</span>,
                         <span class="ident">annotations</span>,
-                        <span class="ident">Documentation</span>::<span class="ident">none</span>(),
+                        <span class="ident">Documentation::none</span>(),
                     ),
                     <span class="ident">name</span>,
                     <span class="ident">inline</span>: <span class="bool-val">false</span>,
                     <span class="ident">inline_casts</span>: <span class="bool-val">false</span>,
                 }
             }
-            <span class="ident">syn</span>::<span class="ident">Fields</span>::<span class="ident">Unnamed</span>(<span class="kw-2">ref</span> <span class="ident">fields</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">new</span>(<span class="macro">format!</span>(<span class="string">&quot;{}_Body&quot;</span>, <span class="ident">variant</span>.<span class="ident">ident</span>));
-                <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">RenameRule</span>::<span class="ident">SnakeCase</span>
-                    .<span class="ident">apply</span>(<span class="kw-2">&amp;</span><span class="ident">variant</span>.<span class="ident">ident</span>.<span class="ident">to_string</span>(), <span class="ident">IdentifierType</span>::<span class="ident">StructMember</span>)
+            <span class="ident">syn::Fields::Unnamed</span>(<span class="kw-2">ref</span> <span class="ident">fields</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="macro">format!</span>(<span class="string">&quot;{}_Body&quot;</span>, <span class="ident">variant</span>.<span class="ident">ident</span>));
+                <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">RenameRule::SnakeCase</span>
+                    .<span class="ident">apply</span>(<span class="kw-2">&amp;</span><span class="ident">variant</span>.<span class="ident">ident</span>.<span class="ident">to_string</span>(), <span class="ident">IdentifierType::StructMember</span>)
                     .<span class="ident">into_owned</span>();
                 <span class="kw">let</span> <span class="ident">inline_casts</span> <span class="op">=</span> <span class="ident">fields</span>.<span class="ident">unnamed</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span>;
                 <span class="comment">// In C++ types with destructors cannot be put into unnamed structs like the</span>
@@ -1687,10 +1687,10 @@
                 <span class="comment">// Besides that for C++ we generate casts/getters that can be used instead of</span>
                 <span class="comment">// direct field accesses and also have a benefit of being checked.</span>
                 <span class="comment">// As a result we don&#39;t currently inline variant definitions in C++ mode at all.</span>
-                <span class="kw">let</span> <span class="ident">inline</span> <span class="op">=</span> <span class="ident">inline_casts</span> <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cxx</span>;
+                <span class="kw">let</span> <span class="ident">inline</span> <span class="op">=</span> <span class="ident">inline_casts</span> <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cxx</span>;
                 <span class="kw">let</span> <span class="ident">inline_name</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">inline</span> { <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">name</span>) } <span class="kw">else</span> { <span class="prelude-val">None</span> };
-                <span class="ident">VariantBody</span>::<span class="ident">Body</span> {
-                    <span class="ident">body</span>: <span class="ident">Struct</span>::<span class="ident">new</span>(
+                <span class="ident">VariantBody::Body</span> {
+                    <span class="ident">body</span>: <span class="ident">Struct::new</span>(
                         <span class="ident">path</span>,
                         <span class="ident">generic_params</span>,
                         <span class="ident">parse_fields</span>(<span class="ident">inline_tag_field</span>, <span class="kw-2">&amp;</span><span class="ident">fields</span>.<span class="ident">unnamed</span>, <span class="ident">self_path</span>, <span class="ident">inline_name</span>)<span class="question-mark">?</span>,
@@ -1700,7 +1700,7 @@
                         <span class="bool-val">false</span>,
                         <span class="prelude-val">None</span>,
                         <span class="ident">annotations</span>,
-                        <span class="ident">Documentation</span>::<span class="ident">none</span>(),
+                        <span class="ident">Documentation::none</span>(),
                     ),
                     <span class="ident">name</span>,
                     <span class="ident">inline</span>,
@@ -1709,12 +1709,12 @@
             }
         };
 
-        <span class="prelude-val">Ok</span>(<span class="ident">EnumVariant</span>::<span class="ident">new</span>(
+        <span class="prelude-val">Ok</span>(<span class="ident">EnumVariant::new</span>(
             <span class="ident">variant</span>.<span class="ident">ident</span>.<span class="ident">to_string</span>(),
             <span class="ident">discriminant</span>,
             <span class="ident">body</span>,
             <span class="ident">variant_cfg</span>,
-            <span class="ident">Documentation</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">variant</span>.<span class="ident">attrs</span>),
+            <span class="ident">Documentation::load</span>(<span class="kw-2">&amp;</span><span class="ident">variant</span>.<span class="ident">attrs</span>),
         ))
     }
 
@@ -1737,13 +1737,13 @@
     }
 
     <span class="kw">fn</span> <span class="ident">add_dependencies</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">library</span>: <span class="kw-2">&amp;</span><span class="ident">Library</span>, <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Dependencies</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> { <span class="kw-2">ref</span> <span class="ident">body</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">body</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody::Body</span> { <span class="kw-2">ref</span> <span class="ident">body</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">body</span> {
             <span class="ident">body</span>.<span class="ident">add_dependencies</span>(<span class="ident">library</span>, <span class="ident">out</span>);
         }
     }
 
     <span class="kw">fn</span> <span class="ident">resolve_declaration_types</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">resolver</span>: <span class="kw-2">&amp;</span><span class="ident">DeclarationTypeResolver</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">body</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">body</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody::Body</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">body</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">body</span> {
             <span class="ident">body</span>.<span class="ident">resolve_declaration_types</span>(<span class="ident">resolver</span>);
         }
     }
@@ -1754,8 +1754,8 @@
         <span class="ident">mappings</span>: <span class="kw-2">&amp;</span>[(<span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="kw-2">&amp;</span><span class="ident">Type</span>)],
         <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">new</span>(
-            <span class="ident">mangle</span>::<span class="ident">mangle_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">name</span>, <span class="ident">generic_values</span>, <span class="kw-2">&amp;</span><span class="ident">config</span>.<span class="ident">export</span>.<span class="ident">mangle</span>),
+        <span class="self">Self</span><span class="ident">::new</span>(
+            <span class="ident">mangle::mangle_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">name</span>, <span class="ident">generic_values</span>, <span class="kw-2">&amp;</span><span class="ident">config</span>.<span class="ident">export</span>.<span class="ident">mangle</span>),
             <span class="self">self</span>.<span class="ident">discriminant</span>.<span class="ident">clone</span>(),
             <span class="self">self</span>.<span class="ident">body</span>.<span class="ident">specialize</span>(<span class="ident">generic_values</span>, <span class="ident">mappings</span>, <span class="ident">config</span>),
             <span class="self">self</span>.<span class="ident">cfg</span>.<span class="ident">clone</span>(),
@@ -1764,13 +1764,13 @@
     }
 
     <span class="kw">fn</span> <span class="ident">add_monomorphs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">library</span>: <span class="kw-2">&amp;</span><span class="ident">Library</span>, <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Monomorphs</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> { <span class="kw-2">ref</span> <span class="ident">body</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">body</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody::Body</span> { <span class="kw-2">ref</span> <span class="ident">body</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">body</span> {
             <span class="ident">body</span>.<span class="ident">add_monomorphs</span>(<span class="ident">library</span>, <span class="ident">out</span>);
         }
     }
 
     <span class="kw">fn</span> <span class="ident">mangle_paths</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">monomorphs</span>: <span class="kw-2">&amp;</span><span class="ident">Monomorphs</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">body</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">body</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody::Body</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">body</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">body</span> {
             <span class="ident">body</span>.<span class="ident">mangle_paths</span>(<span class="ident">monomorphs</span>);
         }
     }
@@ -1780,13 +1780,13 @@
     <span class="kw">fn</span> <span class="ident">write</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Write</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>, <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">SourceWriter</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> <span class="ident">condition</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cfg</span>.<span class="ident">to_condition</span>(<span class="ident">config</span>);
         <span class="comment">// Cython doesn&#39;t support conditional enum variants.</span>
-        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span> {
+        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cython</span> {
             <span class="ident">condition</span>.<span class="ident">write_before</span>(<span class="ident">config</span>, <span class="ident">out</span>);
         }
         <span class="self">self</span>.<span class="ident">documentation</span>.<span class="ident">write</span>(<span class="ident">config</span>, <span class="ident">out</span>);
         <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">export_name</span>);
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">discriminant</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">discriminant</span> {
-            <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span> {
+            <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language::Cython</span> {
                 <span class="comment">// For extern Cython declarations the enumerator value is ignored,</span>
                 <span class="comment">// but still useful as documentation, so we write it as a comment.</span>
                 <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot; #&quot;</span>)
@@ -1795,7 +1795,7 @@
             <span class="ident">discriminant</span>.<span class="ident">write</span>(<span class="ident">config</span>, <span class="ident">out</span>);
         }
         <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;,&quot;</span>);
-        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span> {
+        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cython</span> {
             <span class="ident">condition</span>.<span class="ident">write_after</span>(<span class="ident">config</span>, <span class="ident">out</span>);
         }
     }
@@ -1822,7 +1822,7 @@
 
     <span class="doccomment">/// Enum with data turns into a union of structs with each struct having its own tag field.</span>
     <span class="kw">fn</span> <span class="ident">inline_tag_field</span>(<span class="ident">repr</span>: <span class="kw-2">&amp;</span><span class="ident">Repr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="ident">repr</span>.<span class="ident">style</span> <span class="op">!</span><span class="op">=</span> <span class="ident">ReprStyle</span>::<span class="ident">C</span>
+        <span class="ident">repr</span>.<span class="ident">style</span> <span class="op">!</span><span class="op">=</span> <span class="ident">ReprStyle::C</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_monomorphs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">library</span>: <span class="kw-2">&amp;</span><span class="ident">Library</span>, <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Monomorphs</span>) {
@@ -1841,8 +1841,8 @@
         }
 
         <span class="self">self</span>.<span class="ident">variants</span>.<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">variant</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">variant</span>.<span class="ident">body</span> {
-            <span class="ident">VariantBody</span>::<span class="ident">Empty</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="ident">VariantBody</span>::<span class="ident">Body</span> { <span class="kw-2">ref</span> <span class="ident">body</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">body</span>.<span class="ident">can_derive_eq</span>(),
+            <span class="ident">VariantBody::Empty</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+            <span class="ident">VariantBody::Body</span> { <span class="kw-2">ref</span> <span class="ident">body</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">body</span>.<span class="ident">can_derive_eq</span>(),
         })
     }
 
@@ -1853,12 +1853,12 @@
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load</span>(
-        <span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">ItemEnum</span>,
+        <span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="ident">syn::ItemEnum</span>,
         <span class="ident">mod_cfg</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Cfg</span><span class="op">&gt;</span>,
         <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Enum</span>, <span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">repr</span> <span class="op">=</span> <span class="ident">Repr</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>)<span class="question-mark">?</span>;
-        <span class="kw">if</span> <span class="ident">repr</span>.<span class="ident">style</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ReprStyle</span>::<span class="ident">Rust</span> <span class="op">&amp;&amp;</span> <span class="ident">repr</span>.<span class="ident">ty</span>.<span class="ident">is_none</span>() {
+        <span class="kw">let</span> <span class="ident">repr</span> <span class="op">=</span> <span class="ident">Repr::load</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>)<span class="question-mark">?</span>;
+        <span class="kw">if</span> <span class="ident">repr</span>.<span class="ident">style</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ReprStyle::Rust</span> <span class="op">&amp;&amp;</span> <span class="ident">repr</span>.<span class="ident">ty</span>.<span class="ident">is_none</span>() {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Enum is not marked with a valid #[repr(prim)] or #[repr(C)].&quot;</span>.<span class="ident">to_owned</span>());
         }
         <span class="comment">// TODO: Implement translation of aligned enums.</span>
@@ -1866,17 +1866,17 @@
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Enum is marked with #[repr(align(...))] or #[repr(packed)].&quot;</span>.<span class="ident">to_owned</span>());
         }
 
-        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">new</span>(<span class="ident">item</span>.<span class="ident">ident</span>.<span class="ident">to_string</span>());
-        <span class="kw">let</span> <span class="ident">generic_params</span> <span class="op">=</span> <span class="ident">GenericParams</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">generics</span>);
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">item</span>.<span class="ident">ident</span>.<span class="ident">to_string</span>());
+        <span class="kw">let</span> <span class="ident">generic_params</span> <span class="op">=</span> <span class="ident">GenericParams::new</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">generics</span>);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">variants</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">variants</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">has_data</span> <span class="op">=</span> <span class="bool-val">false</span>;
 
-        <span class="kw">let</span> <span class="ident">annotations</span> <span class="op">=</span> <span class="ident">AnnotationSet</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">annotations</span> <span class="op">=</span> <span class="ident">AnnotationSet::load</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>)<span class="question-mark">?</span>;
 
         <span class="kw">for</span> <span class="ident">variant</span> <span class="kw">in</span> <span class="ident">item</span>.<span class="ident">variants</span>.<span class="ident">iter</span>() {
-            <span class="kw">let</span> <span class="ident">variant</span> <span class="op">=</span> <span class="ident">EnumVariant</span>::<span class="ident">load</span>(
-                <span class="self">Self</span>::<span class="ident">inline_tag_field</span>(<span class="kw-2">&amp;</span><span class="ident">repr</span>),
+            <span class="kw">let</span> <span class="ident">variant</span> <span class="op">=</span> <span class="ident">EnumVariant::load</span>(
+                <span class="self">Self</span><span class="ident">::inline_tag_field</span>(<span class="kw-2">&amp;</span><span class="ident">repr</span>),
                 <span class="ident">variant</span>,
                 <span class="ident">generic_params</span>.<span class="ident">clone</span>(),
                 <span class="ident">mod_cfg</span>,
@@ -1890,23 +1890,23 @@
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">names</span>) <span class="op">=</span> <span class="ident">annotations</span>.<span class="ident">list</span>(<span class="string">&quot;enum-trailing-values&quot;</span>) {
             <span class="kw">for</span> <span class="ident">name</span> <span class="kw">in</span> <span class="ident">names</span> {
-                <span class="ident">variants</span>.<span class="ident">push</span>(<span class="ident">EnumVariant</span>::<span class="ident">new</span>(
+                <span class="ident">variants</span>.<span class="ident">push</span>(<span class="ident">EnumVariant::new</span>(
                     <span class="ident">name</span>,
                     <span class="prelude-val">None</span>,
-                    <span class="ident">VariantBody</span>::<span class="ident">empty</span>(),
+                    <span class="ident">VariantBody::empty</span>(),
                     <span class="prelude-val">None</span>,
-                    <span class="ident">Documentation</span>::<span class="ident">none</span>(),
+                    <span class="ident">Documentation::none</span>(),
                 ));
             }
         }
 
         <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">enumeration</span>.<span class="ident">add_sentinel</span>(<span class="kw-2">&amp;</span><span class="ident">annotations</span>) {
-            <span class="ident">variants</span>.<span class="ident">push</span>(<span class="ident">EnumVariant</span>::<span class="ident">new</span>(
+            <span class="ident">variants</span>.<span class="ident">push</span>(<span class="ident">EnumVariant::new</span>(
                 <span class="string">&quot;Sentinel&quot;</span>.<span class="ident">to_owned</span>(),
                 <span class="prelude-val">None</span>,
-                <span class="ident">VariantBody</span>::<span class="ident">empty</span>(),
+                <span class="ident">VariantBody::empty</span>(),
                 <span class="prelude-val">None</span>,
-                <span class="ident">Documentation</span>::<span class="ident">simple</span>(<span class="string">&quot; Must be last for serialization purposes&quot;</span>),
+                <span class="ident">Documentation::simple</span>(<span class="string">&quot; Must be last for serialization purposes&quot;</span>),
             ));
         }
 
@@ -1916,19 +1916,19 @@
             <span class="prelude-val">None</span>
         };
 
-        <span class="prelude-val">Ok</span>(<span class="ident">Enum</span>::<span class="ident">new</span>(
+        <span class="prelude-val">Ok</span>(<span class="ident">Enum::new</span>(
             <span class="ident">path</span>,
             <span class="ident">generic_params</span>,
             <span class="ident">repr</span>,
             <span class="ident">variants</span>,
             <span class="ident">tag</span>,
-            <span class="ident">Cfg</span>::<span class="ident">append</span>(<span class="ident">mod_cfg</span>, <span class="ident">Cfg</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>)),
+            <span class="ident">Cfg::append</span>(<span class="ident">mod_cfg</span>, <span class="ident">Cfg::load</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>)),
             <span class="ident">annotations</span>,
-            <span class="ident">Documentation</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>),
+            <span class="ident">Documentation::load</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>),
         ))
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">too_many_arguments</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
         <span class="ident">path</span>: <span class="ident">Path</span>,
         <span class="ident">generic_params</span>: <span class="ident">GenericParams</span>,
@@ -1976,17 +1976,17 @@
     }
 
     <span class="kw">fn</span> <span class="ident">container</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ItemContainer</span> {
-        <span class="ident">ItemContainer</span>::<span class="ident">Enum</span>(<span class="self">self</span>.<span class="ident">clone</span>())
+        <span class="ident">ItemContainer::Enum</span>(<span class="self">self</span>.<span class="ident">clone</span>())
     }
 
     <span class="kw">fn</span> <span class="ident">collect_declaration_types</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">resolver</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">DeclarationTypeResolver</span>) {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">tag</span>.<span class="ident">is_some</span>() {
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">repr</span>.<span class="ident">style</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ReprStyle</span>::<span class="ident">C</span> {
+            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">repr</span>.<span class="ident">style</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ReprStyle::C</span> {
                 <span class="ident">resolver</span>.<span class="ident">add_struct</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>);
             } <span class="kw">else</span> {
                 <span class="ident">resolver</span>.<span class="ident">add_union</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>);
             }
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">repr</span>.<span class="ident">style</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ReprStyle</span>::<span class="ident">C</span> {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">repr</span>.<span class="ident">style</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ReprStyle::C</span> {
             <span class="ident">resolver</span>.<span class="ident">add_enum</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>);
         } <span class="kw">else</span> {
             <span class="comment">// This is important to handle conflicting names with opaque items.</span>
@@ -2003,15 +2003,15 @@
     <span class="kw">fn</span> <span class="ident">rename_for_config</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>) {
         <span class="ident">config</span>.<span class="ident">export</span>.<span class="ident">rename</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">export_name</span>);
 
-        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cxx</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">tag</span>.<span class="ident">is_some</span>() {
+        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cxx</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">tag</span>.<span class="ident">is_some</span>() {
             <span class="comment">// it makes sense to always prefix Tag with type name in C</span>
             <span class="kw">let</span> <span class="ident">new_tag</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{}_Tag&quot;</span>, <span class="self">self</span>.<span class="ident">export_name</span>);
-            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">repr</span>.<span class="ident">style</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ReprStyle</span>::<span class="ident">Rust</span> {
+            <span class="kw">if</span> <span class="self">self</span>.<span class="ident">repr</span>.<span class="ident">style</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ReprStyle::Rust</span> {
                 <span class="kw">for</span> <span class="ident">variant</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">variants</span> {
-                    <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">body</span>, .. } <span class="op">=</span> <span class="ident">variant</span>.<span class="ident">body</span> {
-                        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">new</span>(<span class="ident">new_tag</span>.<span class="ident">clone</span>());
-                        <span class="kw">let</span> <span class="ident">generic_path</span> <span class="op">=</span> <span class="ident">GenericPath</span>::<span class="ident">new</span>(<span class="ident">path</span>, <span class="macro">vec!</span>[]);
-                        <span class="ident">body</span>.<span class="ident">fields</span>[<span class="number">0</span>].<span class="ident">ty</span> <span class="op">=</span> <span class="ident">Type</span>::<span class="ident">Path</span>(<span class="ident">generic_path</span>);
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody::Body</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">body</span>, .. } <span class="op">=</span> <span class="ident">variant</span>.<span class="ident">body</span> {
+                        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">new_tag</span>.<span class="ident">clone</span>());
+                        <span class="kw">let</span> <span class="ident">generic_path</span> <span class="op">=</span> <span class="ident">GenericPath::new</span>(<span class="ident">path</span>, <span class="macro">vec!</span>[]);
+                        <span class="ident">body</span>.<span class="ident">fields</span>[<span class="number">0</span>].<span class="ident">ty</span> <span class="op">=</span> <span class="ident">Type::Path</span>(<span class="ident">generic_path</span>);
                     }
                 }
             }
@@ -2019,18 +2019,18 @@
         }
 
         <span class="kw">for</span> <span class="ident">variant</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">variants</span> {
-            <span class="ident">reserved</span>::<span class="ident">escape</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">variant</span>.<span class="ident">export_name</span>);
+            <span class="ident">reserved::escape</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">variant</span>.<span class="ident">export_name</span>);
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">discriminant</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">variant</span>.<span class="ident">discriminant</span> {
                 <span class="ident">discriminant</span>.<span class="ident">rename_for_config</span>(<span class="ident">config</span>);
             }
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody::Body</span> {
                 <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">name</span>,
                 <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">body</span>,
                 ..
             } <span class="op">=</span> <span class="ident">variant</span>.<span class="ident">body</span>
             {
                 <span class="ident">body</span>.<span class="ident">rename_for_config</span>(<span class="ident">config</span>);
-                <span class="ident">reserved</span>::<span class="ident">escape</span>(<span class="ident">name</span>);
+                <span class="ident">reserved::escape</span>(<span class="ident">name</span>);
             }
         }
 
@@ -2039,7 +2039,7 @@
         {
             <span class="kw">for</span> <span class="ident">variant</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">variants</span> {
                 <span class="ident">variant</span>.<span class="ident">export_name</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{}_{}&quot;</span>, <span class="self">self</span>.<span class="ident">export_name</span>, <span class="ident">variant</span>.<span class="ident">export_name</span>);
-                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">body</span>, .. } <span class="op">=</span> <span class="ident">variant</span>.<span class="ident">body</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody::Body</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">body</span>, .. } <span class="op">=</span> <span class="ident">variant</span>.<span class="ident">body</span> {
                     <span class="ident">body</span>.<span class="ident">export_name</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{}_{}&quot;</span>, <span class="self">self</span>.<span class="ident">export_name</span>, <span class="ident">body</span>.<span class="ident">export_name</span>());
                 }
             }
@@ -2055,19 +2055,19 @@
                 .<span class="ident">variants</span>
                 .<span class="ident">iter</span>()
                 .<span class="ident">map</span>(<span class="op">|</span><span class="ident">variant</span><span class="op">|</span> {
-                    <span class="ident">EnumVariant</span>::<span class="ident">new</span>(
-                        <span class="ident">r</span>.<span class="ident">apply</span>(<span class="kw-2">&amp;</span><span class="ident">variant</span>.<span class="ident">export_name</span>, <span class="ident">IdentifierType</span>::<span class="ident">EnumVariant</span>(<span class="self">self</span>))
+                    <span class="ident">EnumVariant::new</span>(
+                        <span class="ident">r</span>.<span class="ident">apply</span>(<span class="kw-2">&amp;</span><span class="ident">variant</span>.<span class="ident">export_name</span>, <span class="ident">IdentifierType::EnumVariant</span>(<span class="self">self</span>))
                             .<span class="ident">into_owned</span>(),
                         <span class="ident">variant</span>.<span class="ident">discriminant</span>.<span class="ident">clone</span>(),
                         <span class="kw">match</span> <span class="ident">variant</span>.<span class="ident">body</span> {
-                            <span class="ident">VariantBody</span>::<span class="ident">Empty</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">variant</span>.<span class="ident">body</span>.<span class="ident">clone</span>(),
-                            <span class="ident">VariantBody</span>::<span class="ident">Body</span> {
+                            <span class="ident">VariantBody::Empty</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">variant</span>.<span class="ident">body</span>.<span class="ident">clone</span>(),
+                            <span class="ident">VariantBody::Body</span> {
                                 <span class="kw-2">ref</span> <span class="ident">name</span>,
                                 <span class="kw-2">ref</span> <span class="ident">body</span>,
                                 <span class="ident">inline</span>,
                                 <span class="ident">inline_casts</span>,
-                            } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> {
-                                <span class="ident">name</span>: <span class="ident">r</span>.<span class="ident">apply</span>(<span class="kw-2">&amp;</span><span class="ident">name</span>, <span class="ident">IdentifierType</span>::<span class="ident">StructMember</span>).<span class="ident">into_owned</span>(),
+                            } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">VariantBody::Body</span> {
+                                <span class="ident">name</span>: <span class="ident">r</span>.<span class="ident">apply</span>(<span class="kw-2">&amp;</span><span class="ident">name</span>, <span class="ident">IdentifierType::StructMember</span>).<span class="ident">into_owned</span>(),
                                 <span class="ident">body</span>: <span class="ident">body</span>.<span class="ident">clone</span>(),
                                 <span class="ident">inline</span>,
                                 <span class="ident">inline_casts</span>,
@@ -2107,20 +2107,20 @@
             .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
 
         <span class="kw">for</span> <span class="ident">variant</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">variants</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> { <span class="kw-2">ref</span> <span class="ident">body</span>, .. } <span class="op">=</span> <span class="ident">variant</span>.<span class="ident">body</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody::Body</span> { <span class="kw-2">ref</span> <span class="ident">body</span>, .. } <span class="op">=</span> <span class="ident">variant</span>.<span class="ident">body</span> {
                 <span class="ident">body</span>.<span class="ident">instantiate_monomorph</span>(<span class="ident">generic_values</span>, <span class="ident">library</span>, <span class="ident">out</span>);
             }
         }
 
-        <span class="kw">let</span> <span class="ident">mangled_path</span> <span class="op">=</span> <span class="ident">mangle</span>::<span class="ident">mangle_path</span>(
+        <span class="kw">let</span> <span class="ident">mangled_path</span> <span class="op">=</span> <span class="ident">mangle::mangle_path</span>(
             <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>,
             <span class="ident">generic_values</span>,
             <span class="kw-2">&amp;</span><span class="ident">library</span>.<span class="ident">get_config</span>().<span class="ident">export</span>.<span class="ident">mangle</span>,
         );
 
-        <span class="kw">let</span> <span class="ident">monomorph</span> <span class="op">=</span> <span class="ident">Enum</span>::<span class="ident">new</span>(
+        <span class="kw">let</span> <span class="ident">monomorph</span> <span class="op">=</span> <span class="ident">Enum::new</span>(
             <span class="ident">mangled_path</span>,
-            <span class="ident">GenericParams</span>::<span class="ident">default</span>(),
+            <span class="ident">GenericParams::default</span>(),
             <span class="self">self</span>.<span class="ident">repr</span>,
             <span class="self">self</span>.<span class="ident">variants</span>
                 .<span class="ident">iter</span>()
@@ -2148,7 +2148,7 @@
     <span class="kw">fn</span> <span class="ident">write</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Write</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>, <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">SourceWriter</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">repr</span>.<span class="ident">ty</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">ty</span><span class="op">|</span> <span class="ident">ty</span>.<span class="ident">to_primitive</span>().<span class="ident">to_repr_c</span>(<span class="ident">config</span>));
         <span class="kw">let</span> <span class="ident">has_data</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tag</span>.<span class="ident">is_some</span>();
-        <span class="kw">let</span> <span class="ident">inline_tag_field</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">inline_tag_field</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">repr</span>);
+        <span class="kw">let</span> <span class="ident">inline_tag_field</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::inline_tag_field</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">repr</span>);
         <span class="kw">let</span> <span class="ident">tag_name</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tag_name</span>();
 
         <span class="kw">let</span> <span class="ident">condition</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cfg</span>.<span class="ident">to_condition</span>(<span class="ident">config</span>);
@@ -2160,7 +2160,7 @@
         <span class="comment">// If the enum has data, we need to emit a struct or union for the data</span>
         <span class="comment">// and enum for the tag. C++ supports nested type definitions, so we open</span>
         <span class="comment">// the struct or union here and define the tag enum inside it (*).</span>
-        <span class="kw">if</span> <span class="ident">has_data</span> <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cxx</span> {
+        <span class="kw">if</span> <span class="ident">has_data</span> <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language::Cxx</span> {
             <span class="self">self</span>.<span class="ident">open_struct_or_union</span>(<span class="ident">config</span>, <span class="ident">out</span>, <span class="ident">inline_tag_field</span>);
         }
 
@@ -2176,7 +2176,7 @@
             <span class="comment">// Open the struct or union for the data (**), gathering all the variants with data</span>
             <span class="comment">// together, unless it&#39;s C++, then we have already opened that struct/union at (*) and</span>
             <span class="comment">// are currently inside it.</span>
-            <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cxx</span> {
+            <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cxx</span> {
                 <span class="self">self</span>.<span class="ident">open_struct_or_union</span>(<span class="ident">config</span>, <span class="ident">out</span>, <span class="ident">inline_tag_field</span>);
             }
 
@@ -2189,7 +2189,7 @@
             <span class="comment">// corresponding C code. So we can inline the unnamed union into the struct and get the</span>
             <span class="comment">// same observable result. Moreother we have to do it because Cython doesn&#39;t support</span>
             <span class="comment">// unnamed unions.</span>
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">inline_tag_field</span> <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span> {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">inline_tag_field</span> <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cython</span> {
                 <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;union&quot;</span>);
                 <span class="ident">out</span>.<span class="ident">open_brace</span>();
             }
@@ -2199,7 +2199,7 @@
 
             <span class="comment">// Close union of all variants with data, only in the non-inline tag scenario.</span>
             <span class="comment">// See the comment about Cython on `open_brace`.</span>
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">inline_tag_field</span> <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span> {
+            <span class="kw">if</span> <span class="op">!</span><span class="ident">inline_tag_field</span> <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cython</span> {
                 <span class="ident">out</span>.<span class="ident">close_brace</span>(<span class="bool-val">true</span>);
             }
 
@@ -2213,7 +2213,7 @@
             }
 
             <span class="comment">// Close the struct or union opened either at (*) or at (**).</span>
-            <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">C</span> <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_typedef</span>() {
+            <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language::C</span> <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_typedef</span>() {
                 <span class="ident">out</span>.<span class="ident">close_brace</span>(<span class="bool-val">false</span>);
                 <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot; {};&quot;</span>, <span class="self">self</span>.<span class="ident">export_name</span>);
             } <span class="kw">else</span> {
@@ -2239,7 +2239,7 @@
     ) {
         <span class="comment">// Open the tag enum.</span>
         <span class="kw">match</span> <span class="ident">config</span>.<span class="ident">language</span> {
-            <span class="ident">Language</span>::<span class="ident">C</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Language::C</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">prim</span>) <span class="op">=</span> <span class="ident">size</span> {
                     <span class="comment">// If we need to specify size, then we have no choice but to create a typedef,</span>
                     <span class="comment">// so `config.style` is not respected.</span>
@@ -2264,7 +2264,7 @@
                     }
                 }
             }
-            <span class="ident">Language</span>::<span class="ident">Cxx</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Language::Cxx</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">enumeration</span>.<span class="ident">enum_class</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">annotations</span>) {
                     <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;enum class&quot;</span>);
                 } <span class="kw">else</span> {
@@ -2282,7 +2282,7 @@
                     <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot; : {}&quot;</span>, <span class="ident">prim</span>);
                 }
             }
-            <span class="ident">Language</span>::<span class="ident">Cython</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Language::Cython</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">if</span> <span class="ident">size</span>.<span class="ident">is_some</span>() {
                     <span class="comment">// If we need to specify size, then we have no choice but to create a typedef,</span>
                     <span class="comment">// so `config.style` is not respected.</span>
@@ -2303,7 +2303,7 @@
         }
 
         <span class="comment">// Close the tag enum.</span>
-        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">C</span> <span class="op">&amp;&amp;</span> <span class="ident">size</span>.<span class="ident">is_none</span>() <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_typedef</span>() {
+        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language::C</span> <span class="op">&amp;&amp;</span> <span class="ident">size</span>.<span class="ident">is_none</span>() <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_typedef</span>() {
             <span class="ident">out</span>.<span class="ident">close_brace</span>(<span class="bool-val">false</span>);
             <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot; {};&quot;</span>, <span class="ident">tag_name</span>);
         } <span class="kw">else</span> {
@@ -2319,7 +2319,7 @@
                 <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;#ifndef __cplusplus&quot;</span>);
             }
 
-            <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cxx</span> {
+            <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cxx</span> {
                 <span class="ident">out</span>.<span class="ident">new_line</span>();
                 <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;{} {} {};&quot;</span>, <span class="ident">config</span>.<span class="ident">language</span>.<span class="ident">typedef</span>(), <span class="ident">prim</span>, <span class="ident">tag_name</span>);
             }
@@ -2342,9 +2342,9 @@
         <span class="ident">inline_tag_field</span>: <span class="ident">bool</span>,
     ) {
         <span class="kw">match</span> <span class="ident">config</span>.<span class="ident">language</span> {
-            <span class="ident">Language</span>::<span class="ident">C</span> <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_typedef</span>() <span class="op">=</span><span class="op">&gt;</span> <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;typedef &quot;</span>),
-            <span class="ident">Language</span>::<span class="ident">C</span> <span class="op">|</span> <span class="ident">Language</span>::<span class="ident">Cxx</span> <span class="op">=</span><span class="op">&gt;</span> {}
-            <span class="ident">Language</span>::<span class="ident">Cython</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">out</span>.<span class="ident">write</span>(<span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">cython_def</span>()),
+            <span class="ident">Language::C</span> <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_typedef</span>() <span class="op">=</span><span class="op">&gt;</span> <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;typedef &quot;</span>),
+            <span class="ident">Language::C</span> <span class="op">|</span> <span class="ident">Language::Cxx</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="ident">Language::Cython</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">out</span>.<span class="ident">write</span>(<span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">cython_def</span>()),
         }
 
         <span class="ident">out</span>.<span class="ident">write</span>(<span class="kw">if</span> <span class="ident">inline_tag_field</span> { <span class="string">&quot;union&quot;</span> } <span class="kw">else</span> { <span class="string">&quot;struct&quot;</span> });
@@ -2355,7 +2355,7 @@
             }
         }
 
-        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">C</span> <span class="op">|</span><span class="op">|</span> <span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_tag</span>() {
+        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::C</span> <span class="op">|</span><span class="op">|</span> <span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_tag</span>() {
             <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot; {}&quot;</span>, <span class="self">self</span>.<span class="ident">export_name</span>());
         }
 
@@ -2371,7 +2371,7 @@
     <span class="doccomment">/// Emit struct definitions for variants having data.</span>
     <span class="kw">fn</span> <span class="ident">write_variant_defs</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Write</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>, <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">SourceWriter</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>) {
         <span class="kw">for</span> <span class="ident">variant</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">variants</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody::Body</span> {
                 <span class="kw-2">ref</span> <span class="ident">body</span>,
                 <span class="ident">inline</span>: <span class="bool-val">false</span>,
                 ..
@@ -2381,11 +2381,11 @@
                 <span class="ident">out</span>.<span class="ident">new_line</span>();
                 <span class="kw">let</span> <span class="ident">condition</span> <span class="op">=</span> <span class="ident">variant</span>.<span class="ident">cfg</span>.<span class="ident">to_condition</span>(<span class="ident">config</span>);
                 <span class="comment">// Cython doesn&#39;t support conditional enum variants.</span>
-                <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span> {
+                <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cython</span> {
                     <span class="ident">condition</span>.<span class="ident">write_before</span>(<span class="ident">config</span>, <span class="ident">out</span>);
                 }
                 <span class="ident">body</span>.<span class="ident">write</span>(<span class="ident">config</span>, <span class="ident">out</span>);
-                <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span> {
+                <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cython</span> {
                     <span class="ident">condition</span>.<span class="ident">write_after</span>(<span class="ident">config</span>, <span class="ident">out</span>);
                 }
             }
@@ -2406,14 +2406,14 @@
     ) {
         <span class="comment">// C++ allows accessing only common initial sequence of union</span>
         <span class="comment">// fields so we have to wrap the tag field into an anonymous struct.</span>
-        <span class="kw">let</span> <span class="ident">wrap_tag</span> <span class="op">=</span> <span class="ident">inline_tag_field</span> <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cxx</span>;
+        <span class="kw">let</span> <span class="ident">wrap_tag</span> <span class="op">=</span> <span class="ident">inline_tag_field</span> <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language::Cxx</span>;
 
         <span class="kw">if</span> <span class="ident">wrap_tag</span> {
             <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;struct&quot;</span>);
             <span class="ident">out</span>.<span class="ident">open_brace</span>();
         }
 
-        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">C</span> <span class="op">&amp;&amp;</span> <span class="ident">size</span>.<span class="ident">is_none</span>() <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_typedef</span>() {
+        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language::C</span> <span class="op">&amp;&amp;</span> <span class="ident">size</span>.<span class="ident">is_none</span>() <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_typedef</span>() {
             <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;enum &quot;</span>);
         }
 
@@ -2428,7 +2428,7 @@
     <span class="kw">fn</span> <span class="ident">write_variant_fields</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Write</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>, <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">SourceWriter</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>) {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">first</span> <span class="op">=</span> <span class="bool-val">true</span>;
         <span class="kw">for</span> <span class="ident">variant</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">variants</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody::Body</span> {
                 <span class="ident">name</span>, <span class="ident">body</span>, <span class="ident">inline</span>, ..
             } <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">variant</span>.<span class="ident">body</span>
             {
@@ -2438,7 +2438,7 @@
                 <span class="ident">first</span> <span class="op">=</span> <span class="bool-val">false</span>;
                 <span class="kw">let</span> <span class="ident">condition</span> <span class="op">=</span> <span class="ident">variant</span>.<span class="ident">cfg</span>.<span class="ident">to_condition</span>(<span class="ident">config</span>);
                 <span class="comment">// Cython doesn&#39;t support conditional enum variants.</span>
-                <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span> {
+                <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cython</span> {
                     <span class="ident">condition</span>.<span class="ident">write_before</span>(<span class="ident">config</span>, <span class="ident">out</span>);
                 }
                 <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">inline</span> {
@@ -2447,20 +2447,20 @@
                     <span class="comment">// by the corresponding C code. So we can inline the unnamed struct and get the</span>
                     <span class="comment">// same observable result. Moreother we have to do it because Cython doesn&#39;t</span>
                     <span class="comment">// support unnamed structs.</span>
-                    <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span> {
+                    <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cython</span> {
                         <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;struct&quot;</span>);
                         <span class="ident">out</span>.<span class="ident">open_brace</span>();
                     }
-                    <span class="ident">out</span>.<span class="ident">write_vertical_source_list</span>(<span class="kw-2">&amp;</span><span class="ident">body</span>.<span class="ident">fields</span>, <span class="ident">ListType</span>::<span class="ident">Cap</span>(<span class="string">&quot;;&quot;</span>));
-                    <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span> {
+                    <span class="ident">out</span>.<span class="ident">write_vertical_source_list</span>(<span class="kw-2">&amp;</span><span class="ident">body</span>.<span class="ident">fields</span>, <span class="ident">ListType::Cap</span>(<span class="string">&quot;;&quot;</span>));
+                    <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cython</span> {
                         <span class="ident">out</span>.<span class="ident">close_brace</span>(<span class="bool-val">true</span>);
                     }
-                } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_typedef</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span> {
+                } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_typedef</span>() <span class="op">|</span><span class="op">|</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language::Cython</span> {
                     <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;{} {};&quot;</span>, <span class="ident">body</span>.<span class="ident">export_name</span>(), <span class="ident">name</span>);
                 } <span class="kw">else</span> {
                     <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;struct {} {};&quot;</span>, <span class="ident">body</span>.<span class="ident">export_name</span>(), <span class="ident">name</span>);
                 }
-                <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span> {
+                <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cython</span> {
                     <span class="ident">condition</span>.<span class="ident">write_after</span>(<span class="ident">config</span>, <span class="ident">out</span>);
                 }
             }
@@ -2475,7 +2475,7 @@
         <span class="ident">has_data</span>: <span class="ident">bool</span>,
         <span class="ident">tag_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
     ) {
-        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cxx</span> {
+        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cxx</span> {
             <span class="kw">return</span>;
         }
 
@@ -2488,11 +2488,11 @@
             <span class="kw">let</span> <span class="ident">stream</span> <span class="op">=</span> <span class="ident">config</span>
                 .<span class="ident">function</span>
                 .<span class="ident">rename_args</span>
-                .<span class="ident">apply</span>(<span class="string">&quot;stream&quot;</span>, <span class="ident">IdentifierType</span>::<span class="ident">FunctionArg</span>);
+                .<span class="ident">apply</span>(<span class="string">&quot;stream&quot;</span>, <span class="ident">IdentifierType::FunctionArg</span>);
             <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="ident">config</span>
                 .<span class="ident">function</span>
                 .<span class="ident">rename_args</span>
-                .<span class="ident">apply</span>(<span class="string">&quot;instance&quot;</span>, <span class="ident">IdentifierType</span>::<span class="ident">FunctionArg</span>);
+                .<span class="ident">apply</span>(<span class="string">&quot;instance&quot;</span>, <span class="ident">IdentifierType::FunctionArg</span>);
 
             <span class="ident">out</span>.<span class="ident">new_line</span>();
             <span class="ident">out</span>.<span class="ident">new_line</span>();
@@ -2541,7 +2541,7 @@
                     )
                 })
                 .<span class="ident">collect</span>();
-            <span class="ident">out</span>.<span class="ident">write_vertical_source_list</span>(<span class="kw-2">&amp;</span><span class="ident">vec</span>[..], <span class="ident">ListType</span>::<span class="ident">Join</span>(<span class="string">&quot;&quot;</span>));
+            <span class="ident">out</span>.<span class="ident">write_vertical_source_list</span>(<span class="kw-2">&amp;</span><span class="ident">vec</span>[..], <span class="ident">ListType::Join</span>(<span class="string">&quot;&quot;</span>));
             <span class="ident">out</span>.<span class="ident">close_brace</span>(<span class="bool-val">false</span>);
             <span class="ident">out</span>.<span class="ident">new_line</span>();
 
@@ -2580,7 +2580,7 @@
                     .<span class="ident">iter</span>()
                     .<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> {
                         <span class="kw">let</span> <span class="ident">tag_str</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;\&quot;{}\&quot;&quot;</span>, <span class="ident">x</span>.<span class="ident">export_name</span>);
-                        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> {
+                        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody::Body</span> {
                             <span class="kw-2">ref</span> <span class="ident">name</span>, <span class="kw-2">ref</span> <span class="ident">body</span>, ..
                         } <span class="op">=</span> <span class="ident">x</span>.<span class="ident">body</span>
                         {
@@ -2602,7 +2602,7 @@
                         }
                     })
                     .<span class="ident">collect</span>();
-                <span class="ident">out</span>.<span class="ident">write_vertical_source_list</span>(<span class="kw-2">&amp;</span><span class="ident">vec</span>[..], <span class="ident">ListType</span>::<span class="ident">Join</span>(<span class="string">&quot;&quot;</span>));
+                <span class="ident">out</span>.<span class="ident">write_vertical_source_list</span>(<span class="kw-2">&amp;</span><span class="ident">vec</span>[..], <span class="ident">ListType::Join</span>(<span class="string">&quot;&quot;</span>));
                 <span class="ident">out</span>.<span class="ident">close_brace</span>(<span class="bool-val">false</span>);
                 <span class="ident">out</span>.<span class="ident">new_line</span>();
 
@@ -2619,7 +2619,7 @@
         <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">SourceWriter</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>,
         <span class="ident">tag_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
     ) {
-        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cxx</span> {
+        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cxx</span> {
             <span class="kw">return</span>;
         }
 
@@ -2635,7 +2635,7 @@
                     <span class="ident">config</span>
                         .<span class="ident">function</span>
                         .<span class="ident">rename_args</span>
-                        .<span class="ident">apply</span>(<span class="ident">name</span>, <span class="ident">IdentifierType</span>::<span class="ident">FunctionArg</span>)
+                        .<span class="ident">apply</span>(<span class="ident">name</span>, <span class="ident">IdentifierType::FunctionArg</span>)
                         .<span class="ident">into_owned</span>()
                 };
 
@@ -2655,21 +2655,21 @@
                 <span class="macro">write_attrs!</span>(<span class="string">&quot;constructor&quot;</span>);
                 <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;static {} {}(&quot;</span>, <span class="self">self</span>.<span class="ident">export_name</span>, <span class="ident">variant</span>.<span class="ident">export_name</span>);
 
-                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> { <span class="kw-2">ref</span> <span class="ident">body</span>, .. } <span class="op">=</span> <span class="ident">variant</span>.<span class="ident">body</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody::Body</span> { <span class="kw-2">ref</span> <span class="ident">body</span>, .. } <span class="op">=</span> <span class="ident">variant</span>.<span class="ident">body</span> {
                     <span class="kw">let</span> <span class="ident">skip_fields</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">body</span>.<span class="ident">has_tag_field</span> { <span class="number">1</span> } <span class="kw">else</span> { <span class="number">0</span> };
                     <span class="kw">let</span> <span class="ident">vec</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">body</span>
                         .<span class="ident">fields</span>
                         .<span class="ident">iter</span>()
                         .<span class="ident">skip</span>(<span class="ident">skip_fields</span>)
                         .<span class="ident">map</span>(<span class="op">|</span><span class="ident">field</span><span class="op">|</span> {
-                            <span class="ident">Field</span>::<span class="ident">from_name_and_type</span>(
+                            <span class="ident">Field::from_name_and_type</span>(
                                 <span class="comment">// const-ref args to constructor</span>
                                 <span class="ident">arg_renamer</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">name</span>),
-                                <span class="ident">Type</span>::<span class="ident">const_ref_to</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">ty</span>),
+                                <span class="ident">Type::const_ref_to</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">ty</span>),
                             )
                         })
                         .<span class="ident">collect</span>();
-                    <span class="ident">out</span>.<span class="ident">write_vertical_source_list</span>(<span class="kw-2">&amp;</span><span class="ident">vec</span>[..], <span class="ident">ListType</span>::<span class="ident">Join</span>(<span class="string">&quot;,&quot;</span>));
+                    <span class="ident">out</span>.<span class="ident">write_vertical_source_list</span>(<span class="kw-2">&amp;</span><span class="ident">vec</span>[..], <span class="ident">ListType::Join</span>(<span class="string">&quot;,&quot;</span>));
                 }
 
                 <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;)&quot;</span>);
@@ -2677,7 +2677,7 @@
 
                 <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;{} result;&quot;</span>, <span class="self">self</span>.<span class="ident">export_name</span>);
 
-                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody::Body</span> {
                     <span class="ident">name</span>: <span class="kw-2">ref</span> <span class="ident">variant_name</span>,
                     <span class="kw-2">ref</span> <span class="ident">body</span>,
                     ..
@@ -2687,7 +2687,7 @@
                     <span class="kw">for</span> <span class="ident">field</span> <span class="kw">in</span> <span class="ident">body</span>.<span class="ident">fields</span>.<span class="ident">iter</span>().<span class="ident">skip</span>(<span class="ident">skip_fields</span>) {
                         <span class="ident">out</span>.<span class="ident">new_line</span>();
                         <span class="kw">match</span> <span class="ident">field</span>.<span class="ident">ty</span> {
-                            <span class="ident">Type</span>::<span class="ident">Array</span>(<span class="kw-2">ref</span> <span class="ident">ty</span>, <span class="kw-2">ref</span> <span class="ident">length</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="ident">Type::Array</span>(<span class="kw-2">ref</span> <span class="ident">ty</span>, <span class="kw-2">ref</span> <span class="ident">length</span>) <span class="op">=</span><span class="op">&gt;</span> {
                                 <span class="comment">// arrays are not assignable in C++ so we</span>
                                 <span class="comment">// need to manually copy the elements</span>
                                 <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;for (int i = 0; i &lt; {}; i++)&quot;</span>, <span class="ident">length</span>.<span class="ident">as_str</span>());
@@ -2729,13 +2729,13 @@
 
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">derive_casts</span> <span class="op">=</span> <span class="op">|</span><span class="ident">const_casts</span>: <span class="ident">bool</span><span class="op">|</span> {
                     <span class="kw">let</span> (<span class="ident">member_name</span>, <span class="ident">body</span>, <span class="ident">inline_casts</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">variant</span>.<span class="ident">body</span> {
-                        <span class="ident">VariantBody</span>::<span class="ident">Body</span> {
+                        <span class="ident">VariantBody::Body</span> {
                             <span class="kw-2">ref</span> <span class="ident">name</span>,
                             <span class="kw-2">ref</span> <span class="ident">body</span>,
                             <span class="ident">inline_casts</span>,
                             ..
                         } <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">name</span>, <span class="ident">body</span>, <span class="ident">inline_casts</span>),
-                        <span class="ident">VariantBody</span>::<span class="ident">Empty</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span>,
+                        <span class="ident">VariantBody::Empty</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span>,
                     };
 
                     <span class="kw">let</span> <span class="ident">skip_fields</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">body</span>.<span class="ident">has_tag_field</span> { <span class="number">1</span> } <span class="kw">else</span> { <span class="number">0</span> };
@@ -2755,8 +2755,8 @@
                     <span class="kw">if</span> <span class="ident">inline_casts</span> {
                         <span class="kw">let</span> <span class="ident">field</span> <span class="op">=</span> <span class="ident">body</span>.<span class="ident">fields</span>.<span class="ident">last</span>().<span class="ident">unwrap</span>();
                         <span class="kw">let</span> <span class="ident">return_type</span> <span class="op">=</span> <span class="ident">field</span>.<span class="ident">ty</span>.<span class="ident">clone</span>();
-                        <span class="kw">let</span> <span class="ident">return_type</span> <span class="op">=</span> <span class="ident">Type</span>::<span class="ident">Ptr</span> {
-                            <span class="ident">ty</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">return_type</span>),
+                        <span class="kw">let</span> <span class="ident">return_type</span> <span class="op">=</span> <span class="ident">Type::Ptr</span> {
+                            <span class="ident">ty</span>: <span class="ident">Box::new</span>(<span class="ident">return_type</span>),
                             <span class="ident">is_const</span>: <span class="ident">const_casts</span>,
                             <span class="ident">is_ref</span>: <span class="bool-val">true</span>,
                             <span class="ident">is_nullable</span>: <span class="bool-val">false</span>,
@@ -2798,7 +2798,7 @@
         <span class="kw">let</span> <span class="ident">other</span> <span class="op">=</span> <span class="ident">config</span>
             .<span class="ident">function</span>
             .<span class="ident">rename_args</span>
-            .<span class="ident">apply</span>(<span class="string">&quot;other&quot;</span>, <span class="ident">IdentifierType</span>::<span class="ident">FunctionArg</span>);
+            .<span class="ident">apply</span>(<span class="string">&quot;other&quot;</span>, <span class="ident">IdentifierType::FunctionArg</span>);
 
         <span class="macro">macro_rules!</span> <span class="ident">write_attrs</span> {
             (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">op</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {{
@@ -2827,7 +2827,7 @@
             <span class="ident">out</span>.<span class="ident">open_brace</span>();
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exhaustive</span> <span class="op">=</span> <span class="bool-val">true</span>;
             <span class="kw">for</span> <span class="ident">variant</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">variants</span> {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody::Body</span> {
                     <span class="ident">name</span>: <span class="kw-2">ref</span> <span class="ident">variant_name</span>,
                     ..
                 } <span class="op">=</span> <span class="ident">variant</span>.<span class="ident">body</span>
@@ -2903,7 +2903,7 @@
             <span class="ident">out</span>.<span class="ident">open_brace</span>();
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exhaustive</span> <span class="op">=</span> <span class="bool-val">true</span>;
             <span class="kw">for</span> <span class="ident">variant</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">variants</span> {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody::Body</span> {
                     <span class="kw-2">ref</span> <span class="ident">name</span>, <span class="kw-2">ref</span> <span class="ident">body</span>, ..
                 } <span class="op">=</span> <span class="ident">variant</span>.<span class="ident">body</span>
                 {
@@ -2949,7 +2949,7 @@
             <span class="ident">out</span>.<span class="ident">open_brace</span>();
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">exhaustive</span> <span class="op">=</span> <span class="bool-val">true</span>;
             <span class="kw">for</span> <span class="ident">variant</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">variants</span> {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody</span>::<span class="ident">Body</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">VariantBody::Body</span> {
                     <span class="kw-2">ref</span> <span class="ident">name</span>, <span class="kw-2">ref</span> <span class="ident">body</span>, ..
                 } <span class="op">=</span> <span class="ident">variant</span>.<span class="ident">body</span>
                 {

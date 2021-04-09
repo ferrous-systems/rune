@@ -7,9 +7,9 @@
 <span id="4">4</span>
 <span id="5">5</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">dead_code</span>, <span class="ident">clippy</span>::<span class="ident">all</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">dead_code</span>, <span class="ident">clippy::all</span>)]</span>
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">root</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::root</span>::<span class="kw-2">*</span>;
 
 <span class="macro">include!</span>(<span class="macro">concat!</span>(<span class="macro">env!</span>(<span class="string">&quot;OUT_DIR&quot;</span>), <span class="string">&quot;/tflite_types.rs&quot;</span>));
 </pre></div>

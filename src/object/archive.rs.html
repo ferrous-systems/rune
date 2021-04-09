@@ -46,7 +46,7 @@
 <span class="doccomment">//! These definitions are independent of read/write support, although we do implement</span>
 <span class="doccomment">//! some traits useful for those.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">pod</span>::<span class="ident">Pod</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::pod::Pod</span>;
 
 <span class="doccomment">/// File identification bytes stored at the beginning of the file.</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAGIC</span>: [<span class="ident">u8</span>; <span class="number">8</span>] <span class="op">=</span> <span class="kw-2">*</span><span class="string">b&quot;!&lt;arch&gt;\n&quot;</span>;

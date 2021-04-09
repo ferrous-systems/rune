@@ -32,7 +32,7 @@ cases. So while it’s the best way to get a <code>&amp;mut T</code> for <code>M
 for <code>MaybeOwnedMut</code> it’s preferable to use <code>as_mut</code> from <code>AsMut</code>.</p>
 <h2 id="example" class="section-header"><a href="#example">Example</a></h2>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">maybe_owned</span>::<span class="ident">MaybeOwned</span>;
+<span class="kw">use</span> <span class="ident">maybe_owned::MaybeOwned</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
 <span class="kw">struct</span> <span class="ident">PseudoBigData</span>(<span class="ident">u8</span>);

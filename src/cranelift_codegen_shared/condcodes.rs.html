@@ -413,8 +413,8 @@
 <span class="doccomment">//! are different rules for comparing integers and floating point numbers, so they use different</span>
 <span class="doccomment">//! condition codes.</span>
 
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>::{<span class="self">self</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>};
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">str</span>::<span class="ident">FromStr</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>::{<span class="self">self</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>};
+<span class="kw">use</span> <span class="ident">core::str::FromStr</span>;
 
 <span class="doccomment">/// Common traits of condition codes.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">CondCode</span>: <span class="ident">Copy</span> {
@@ -468,7 +468,7 @@
 
 <span class="kw">impl</span> <span class="ident">CondCode</span> <span class="kw">for</span> <span class="ident">IntCC</span> {
     <span class="kw">fn</span> <span class="ident">inverse</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">IntCC</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="self">self</span><span class="ident">::IntCC</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">Equal</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">NotEqual</span>,
             <span class="ident">NotEqual</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Equal</span>,
@@ -486,7 +486,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">reverse</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">IntCC</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="self">self</span><span class="ident">::IntCC</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">Equal</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Equal</span>,
             <span class="ident">NotEqual</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">NotEqual</span>,
@@ -508,7 +508,7 @@
     <span class="doccomment">/// Get the corresponding IntCC with the equal component removed.</span>
     <span class="doccomment">/// For conditions without a zero component, this is a no-op.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">without_equal</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">IntCC</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="self">self</span><span class="ident">::IntCC</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">SignedGreaterThan</span> <span class="op">|</span> <span class="ident">SignedGreaterThanOrEqual</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SignedGreaterThan</span>,
             <span class="ident">SignedLessThan</span> <span class="op">|</span> <span class="ident">SignedLessThanOrEqual</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SignedLessThan</span>,
@@ -521,7 +521,7 @@
     <span class="doccomment">/// Get the corresponding IntCC with the signed component removed.</span>
     <span class="doccomment">/// For conditions without a signed component, this is a no-op.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unsigned</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">IntCC</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="self">self</span><span class="ident">::IntCC</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">SignedGreaterThan</span> <span class="op">|</span> <span class="ident">UnsignedGreaterThan</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">UnsignedGreaterThan</span>,
             <span class="ident">SignedGreaterThanOrEqual</span> <span class="op">|</span> <span class="ident">UnsignedGreaterThanOrEqual</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">UnsignedGreaterThanOrEqual</span>,
@@ -533,7 +533,7 @@
 
     <span class="doccomment">/// Get the corresponding string condition code for the IntCC object.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_static_str</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">IntCC</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="self">self</span><span class="ident">::IntCC</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">Equal</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;eq&quot;</span>,
             <span class="ident">NotEqual</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;ne&quot;</span>,
@@ -552,7 +552,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">IntCC</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="self">self</span>.<span class="ident">to_static_str</span>())
     }
 }
@@ -560,8 +560,8 @@
 <span class="kw">impl</span> <span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">IntCC</span> {
     <span class="kw">type</span> <span class="prelude-val">Err</span> <span class="op">=</span> ();
 
-    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="prelude-val">Err</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">IntCC</span>::<span class="kw-2">*</span>;
+    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span><span class="ident">::Err</span><span class="op">&gt;</span> {
+        <span class="kw">use</span> <span class="self">self</span><span class="ident">::IntCC</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="ident">s</span> {
             <span class="string">&quot;eq&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Equal</span>),
             <span class="string">&quot;ne&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">NotEqual</span>),
@@ -633,7 +633,7 @@
 
 <span class="kw">impl</span> <span class="ident">CondCode</span> <span class="kw">for</span> <span class="ident">FloatCC</span> {
     <span class="kw">fn</span> <span class="ident">inverse</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">FloatCC</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="self">self</span><span class="ident">::FloatCC</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">Ordered</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Unordered</span>,
             <span class="ident">Unordered</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Ordered</span>,
@@ -652,7 +652,7 @@
         }
     }
     <span class="kw">fn</span> <span class="ident">reverse</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">FloatCC</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="self">self</span><span class="ident">::FloatCC</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="ident">Ordered</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Ordered</span>,
             <span class="ident">Unordered</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Unordered</span>,
@@ -673,8 +673,8 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">FloatCC</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">FloatCC</span>::<span class="kw-2">*</span>;
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        <span class="kw">use</span> <span class="self">self</span><span class="ident">::FloatCC</span>::<span class="kw-2">*</span>;
         <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
             <span class="ident">Ordered</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;ord&quot;</span>,
             <span class="ident">Unordered</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;uno&quot;</span>,
@@ -697,8 +697,8 @@
 <span class="kw">impl</span> <span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">FloatCC</span> {
     <span class="kw">type</span> <span class="prelude-val">Err</span> <span class="op">=</span> ();
 
-    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="prelude-val">Err</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">FloatCC</span>::<span class="kw-2">*</span>;
+    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span><span class="ident">::Err</span><span class="op">&gt;</span> {
+        <span class="kw">use</span> <span class="self">self</span><span class="ident">::FloatCC</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="ident">s</span> {
             <span class="string">&quot;ord&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Ordered</span>),
             <span class="string">&quot;uno&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Unordered</span>),
@@ -722,21 +722,21 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">string</span>::<span class="ident">ToString</span>;
+    <span class="kw">use</span> <span class="ident">std::string::ToString</span>;
 
     <span class="kw">static</span> <span class="ident">INT_ALL</span>: [<span class="ident">IntCC</span>; <span class="number">12</span>] <span class="op">=</span> [
-        <span class="ident">IntCC</span>::<span class="ident">Equal</span>,
-        <span class="ident">IntCC</span>::<span class="ident">NotEqual</span>,
-        <span class="ident">IntCC</span>::<span class="ident">SignedLessThan</span>,
-        <span class="ident">IntCC</span>::<span class="ident">SignedGreaterThanOrEqual</span>,
-        <span class="ident">IntCC</span>::<span class="ident">SignedGreaterThan</span>,
-        <span class="ident">IntCC</span>::<span class="ident">SignedLessThanOrEqual</span>,
-        <span class="ident">IntCC</span>::<span class="ident">UnsignedLessThan</span>,
-        <span class="ident">IntCC</span>::<span class="ident">UnsignedGreaterThanOrEqual</span>,
-        <span class="ident">IntCC</span>::<span class="ident">UnsignedGreaterThan</span>,
-        <span class="ident">IntCC</span>::<span class="ident">UnsignedLessThanOrEqual</span>,
-        <span class="ident">IntCC</span>::<span class="ident">Overflow</span>,
-        <span class="ident">IntCC</span>::<span class="ident">NotOverflow</span>,
+        <span class="ident">IntCC::Equal</span>,
+        <span class="ident">IntCC::NotEqual</span>,
+        <span class="ident">IntCC::SignedLessThan</span>,
+        <span class="ident">IntCC::SignedGreaterThanOrEqual</span>,
+        <span class="ident">IntCC::SignedGreaterThan</span>,
+        <span class="ident">IntCC::SignedLessThanOrEqual</span>,
+        <span class="ident">IntCC::UnsignedLessThan</span>,
+        <span class="ident">IntCC::UnsignedGreaterThanOrEqual</span>,
+        <span class="ident">IntCC::UnsignedGreaterThan</span>,
+        <span class="ident">IntCC::UnsignedLessThanOrEqual</span>,
+        <span class="ident">IntCC::Overflow</span>,
+        <span class="ident">IntCC::NotOverflow</span>,
     ];
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -768,20 +768,20 @@
     }
 
     <span class="kw">static</span> <span class="ident">FLOAT_ALL</span>: [<span class="ident">FloatCC</span>; <span class="number">14</span>] <span class="op">=</span> [
-        <span class="ident">FloatCC</span>::<span class="ident">Ordered</span>,
-        <span class="ident">FloatCC</span>::<span class="ident">Unordered</span>,
-        <span class="ident">FloatCC</span>::<span class="ident">Equal</span>,
-        <span class="ident">FloatCC</span>::<span class="ident">NotEqual</span>,
-        <span class="ident">FloatCC</span>::<span class="ident">OrderedNotEqual</span>,
-        <span class="ident">FloatCC</span>::<span class="ident">UnorderedOrEqual</span>,
-        <span class="ident">FloatCC</span>::<span class="ident">LessThan</span>,
-        <span class="ident">FloatCC</span>::<span class="ident">LessThanOrEqual</span>,
-        <span class="ident">FloatCC</span>::<span class="ident">GreaterThan</span>,
-        <span class="ident">FloatCC</span>::<span class="ident">GreaterThanOrEqual</span>,
-        <span class="ident">FloatCC</span>::<span class="ident">UnorderedOrLessThan</span>,
-        <span class="ident">FloatCC</span>::<span class="ident">UnorderedOrLessThanOrEqual</span>,
-        <span class="ident">FloatCC</span>::<span class="ident">UnorderedOrGreaterThan</span>,
-        <span class="ident">FloatCC</span>::<span class="ident">UnorderedOrGreaterThanOrEqual</span>,
+        <span class="ident">FloatCC::Ordered</span>,
+        <span class="ident">FloatCC::Unordered</span>,
+        <span class="ident">FloatCC::Equal</span>,
+        <span class="ident">FloatCC::NotEqual</span>,
+        <span class="ident">FloatCC::OrderedNotEqual</span>,
+        <span class="ident">FloatCC::UnorderedOrEqual</span>,
+        <span class="ident">FloatCC::LessThan</span>,
+        <span class="ident">FloatCC::LessThanOrEqual</span>,
+        <span class="ident">FloatCC::GreaterThan</span>,
+        <span class="ident">FloatCC::GreaterThanOrEqual</span>,
+        <span class="ident">FloatCC::UnorderedOrLessThan</span>,
+        <span class="ident">FloatCC::UnorderedOrLessThanOrEqual</span>,
+        <span class="ident">FloatCC::UnorderedOrGreaterThan</span>,
+        <span class="ident">FloatCC::UnorderedOrGreaterThanOrEqual</span>,
     ];
 
     <span class="attribute">#[<span class="ident">test</span>]</span>

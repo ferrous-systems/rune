@@ -456,14 +456,14 @@
 <span class="doccomment">//! Data structure for representing WebAssembly modules in a</span>
 <span class="doccomment">//! `wasmer::Module`.</span>
 
-<span class="kw">use</span> <span class="ident">indexmap</span>::<span class="ident">IndexMap</span>;
+<span class="kw">use</span> <span class="ident">indexmap::IndexMap</span>;
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">iter</span>::<span class="ident">ExactSizeIterator</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">atomic</span>::{<span class="ident">AtomicUsize</span>, <span class="ident">Ordering</span>::<span class="ident">SeqCst</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
-<span class="kw">use</span> <span class="ident">wasmer_types</span>::<span class="ident">entity</span>::{<span class="ident">EntityRef</span>, <span class="ident">PrimaryMap</span>};
+<span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
+<span class="kw">use</span> <span class="ident">std::fmt</span>;
+<span class="kw">use</span> <span class="ident">std::iter::ExactSizeIterator</span>;
+<span class="kw">use</span> <span class="ident">std::sync::atomic</span>::{<span class="ident">AtomicUsize</span>, <span class="ident">Ordering::SeqCst</span>};
+<span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
+<span class="kw">use</span> <span class="ident">wasmer_types::entity</span>::{<span class="ident">EntityRef</span>, <span class="ident">PrimaryMap</span>};
 <span class="kw">use</span> <span class="ident">wasmer_types</span>::{
     <span class="ident">CustomSectionIndex</span>, <span class="ident">DataIndex</span>, <span class="ident">ElemIndex</span>, <span class="ident">ExportIndex</span>, <span class="ident">ExportType</span>, <span class="ident">ExternType</span>, <span class="ident">FunctionIndex</span>,
     <span class="ident">FunctionType</span>, <span class="ident">GlobalIndex</span>, <span class="ident">GlobalInit</span>, <span class="ident">GlobalType</span>, <span class="ident">ImportIndex</span>, <span class="ident">ImportType</span>, <span class="ident">LocalFunctionIndex</span>,
@@ -484,7 +484,7 @@
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">ModuleId</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">static</span> <span class="ident">NEXT_ID</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize</span>::<span class="ident">new</span>(<span class="number">0</span>);
+        <span class="kw">static</span> <span class="ident">NEXT_ID</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize::new</span>(<span class="number">0</span>);
         <span class="self">Self</span> {
             <span class="ident">id</span>: <span class="ident">NEXT_ID</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">SeqCst</span>),
         }
@@ -571,27 +571,27 @@
     <span class="doccomment">/// Allocates the module data structures.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">id</span>: <span class="ident">ModuleId</span>::<span class="ident">default</span>(),
+            <span class="ident">id</span>: <span class="ident">ModuleId::default</span>(),
             <span class="ident">name</span>: <span class="prelude-val">None</span>,
-            <span class="ident">imports</span>: <span class="ident">IndexMap</span>::<span class="ident">new</span>(),
-            <span class="ident">exports</span>: <span class="ident">IndexMap</span>::<span class="ident">new</span>(),
+            <span class="ident">imports</span>: <span class="ident">IndexMap::new</span>(),
+            <span class="ident">exports</span>: <span class="ident">IndexMap::new</span>(),
             <span class="ident">start_function</span>: <span class="prelude-val">None</span>,
-            <span class="ident">table_initializers</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
-            <span class="ident">passive_elements</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
-            <span class="ident">passive_data</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
-            <span class="ident">global_initializers</span>: <span class="ident">PrimaryMap</span>::<span class="ident">new</span>(),
-            <span class="ident">function_names</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
-            <span class="ident">signatures</span>: <span class="ident">PrimaryMap</span>::<span class="ident">new</span>(),
-            <span class="ident">functions</span>: <span class="ident">PrimaryMap</span>::<span class="ident">new</span>(),
-            <span class="ident">tables</span>: <span class="ident">PrimaryMap</span>::<span class="ident">new</span>(),
-            <span class="ident">memories</span>: <span class="ident">PrimaryMap</span>::<span class="ident">new</span>(),
-            <span class="ident">globals</span>: <span class="ident">PrimaryMap</span>::<span class="ident">new</span>(),
+            <span class="ident">table_initializers</span>: <span class="ident">Vec::new</span>(),
+            <span class="ident">passive_elements</span>: <span class="ident">HashMap::new</span>(),
+            <span class="ident">passive_data</span>: <span class="ident">HashMap::new</span>(),
+            <span class="ident">global_initializers</span>: <span class="ident">PrimaryMap::new</span>(),
+            <span class="ident">function_names</span>: <span class="ident">HashMap::new</span>(),
+            <span class="ident">signatures</span>: <span class="ident">PrimaryMap::new</span>(),
+            <span class="ident">functions</span>: <span class="ident">PrimaryMap::new</span>(),
+            <span class="ident">tables</span>: <span class="ident">PrimaryMap::new</span>(),
+            <span class="ident">memories</span>: <span class="ident">PrimaryMap::new</span>(),
+            <span class="ident">globals</span>: <span class="ident">PrimaryMap::new</span>(),
             <span class="ident">num_imported_functions</span>: <span class="number">0</span>,
             <span class="ident">num_imported_tables</span>: <span class="number">0</span>,
             <span class="ident">num_imported_memories</span>: <span class="number">0</span>,
             <span class="ident">num_imported_globals</span>: <span class="number">0</span>,
-            <span class="ident">custom_sections</span>: <span class="ident">IndexMap</span>::<span class="ident">new</span>(),
-            <span class="ident">custom_sections_data</span>: <span class="ident">PrimaryMap</span>::<span class="ident">new</span>(),
+            <span class="ident">custom_sections</span>: <span class="ident">IndexMap::new</span>(),
+            <span class="ident">custom_sections_data</span>: <span class="ident">PrimaryMap::new</span>(),
         }
     }
 
@@ -605,7 +605,7 @@
         <span class="self">self</span>.<span class="ident">exports</span>
             .<span class="ident">iter</span>()
             .<span class="ident">filter_map</span>(<span class="op">|</span>(<span class="ident">_name</span>, <span class="ident">export_index</span>)<span class="op">|</span> <span class="kw">match</span> <span class="ident">export_index</span> {
-                <span class="ident">ExportIndex</span>::<span class="ident">Function</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ExportIndex::Function</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">signature</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">functions</span>.<span class="ident">get</span>(<span class="kw-2">*</span><span class="ident">i</span>).<span class="ident">unwrap</span>();
                     <span class="kw">let</span> <span class="ident">func_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">signatures</span>.<span class="ident">get</span>(<span class="kw-2">*</span><span class="ident">signature</span>).<span class="ident">unwrap</span>();
                     <span class="prelude-val">Some</span>(<span class="ident">func_type</span>.<span class="ident">clone</span>())
@@ -619,25 +619,25 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exports</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExportsIterator</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">ExportType</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">iter</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">exports</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span>(<span class="ident">name</span>, <span class="ident">export_index</span>)<span class="op">|</span> {
             <span class="kw">let</span> <span class="ident">extern_type</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">export_index</span> {
-                <span class="ident">ExportIndex</span>::<span class="ident">Function</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ExportIndex::Function</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">signature</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">functions</span>.<span class="ident">get</span>(<span class="kw-2">*</span><span class="ident">i</span>).<span class="ident">unwrap</span>();
                     <span class="kw">let</span> <span class="ident">func_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">signatures</span>.<span class="ident">get</span>(<span class="kw-2">*</span><span class="ident">signature</span>).<span class="ident">unwrap</span>();
-                    <span class="ident">ExternType</span>::<span class="ident">Function</span>(<span class="ident">func_type</span>.<span class="ident">clone</span>())
+                    <span class="ident">ExternType::Function</span>(<span class="ident">func_type</span>.<span class="ident">clone</span>())
                 }
-                <span class="ident">ExportIndex</span>::<span class="ident">Table</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ExportIndex::Table</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">table_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tables</span>.<span class="ident">get</span>(<span class="kw-2">*</span><span class="ident">i</span>).<span class="ident">unwrap</span>();
-                    <span class="ident">ExternType</span>::<span class="ident">Table</span>(<span class="kw-2">*</span><span class="ident">table_type</span>)
+                    <span class="ident">ExternType::Table</span>(<span class="kw-2">*</span><span class="ident">table_type</span>)
                 }
-                <span class="ident">ExportIndex</span>::<span class="ident">Memory</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ExportIndex::Memory</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">memory_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">memories</span>.<span class="ident">get</span>(<span class="kw-2">*</span><span class="ident">i</span>).<span class="ident">unwrap</span>();
-                    <span class="ident">ExternType</span>::<span class="ident">Memory</span>(<span class="kw-2">*</span><span class="ident">memory_type</span>)
+                    <span class="ident">ExternType::Memory</span>(<span class="kw-2">*</span><span class="ident">memory_type</span>)
                 }
-                <span class="ident">ExportIndex</span>::<span class="ident">Global</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ExportIndex::Global</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">global_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">globals</span>.<span class="ident">get</span>(<span class="kw-2">*</span><span class="ident">i</span>).<span class="ident">unwrap</span>();
-                    <span class="ident">ExternType</span>::<span class="ident">Global</span>(<span class="kw-2">*</span><span class="ident">global_type</span>)
+                    <span class="ident">ExternType::Global</span>(<span class="kw-2">*</span><span class="ident">global_type</span>)
                 }
             };
-            <span class="ident">ExportType</span>::<span class="ident">new</span>(<span class="ident">name</span>, <span class="ident">extern_type</span>)
+            <span class="ident">ExportType::new</span>(<span class="ident">name</span>, <span class="ident">extern_type</span>)
         });
         <span class="ident">ExportsIterator</span> {
             <span class="ident">iter</span>,
@@ -652,25 +652,25 @@
             .<span class="ident">iter</span>()
             .<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span>((<span class="ident">module</span>, <span class="ident">field</span>, <span class="kw">_</span>), <span class="ident">import_index</span>)<span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">extern_type</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">import_index</span> {
-                    <span class="ident">ImportIndex</span>::<span class="ident">Function</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">ImportIndex::Function</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="kw">let</span> <span class="ident">signature</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">functions</span>.<span class="ident">get</span>(<span class="kw-2">*</span><span class="ident">i</span>).<span class="ident">unwrap</span>();
                         <span class="kw">let</span> <span class="ident">func_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">signatures</span>.<span class="ident">get</span>(<span class="kw-2">*</span><span class="ident">signature</span>).<span class="ident">unwrap</span>();
-                        <span class="ident">ExternType</span>::<span class="ident">Function</span>(<span class="ident">func_type</span>.<span class="ident">clone</span>())
+                        <span class="ident">ExternType::Function</span>(<span class="ident">func_type</span>.<span class="ident">clone</span>())
                     }
-                    <span class="ident">ImportIndex</span>::<span class="ident">Table</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">ImportIndex::Table</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="kw">let</span> <span class="ident">table_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tables</span>.<span class="ident">get</span>(<span class="kw-2">*</span><span class="ident">i</span>).<span class="ident">unwrap</span>();
-                        <span class="ident">ExternType</span>::<span class="ident">Table</span>(<span class="kw-2">*</span><span class="ident">table_type</span>)
+                        <span class="ident">ExternType::Table</span>(<span class="kw-2">*</span><span class="ident">table_type</span>)
                     }
-                    <span class="ident">ImportIndex</span>::<span class="ident">Memory</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">ImportIndex::Memory</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="kw">let</span> <span class="ident">memory_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">memories</span>.<span class="ident">get</span>(<span class="kw-2">*</span><span class="ident">i</span>).<span class="ident">unwrap</span>();
-                        <span class="ident">ExternType</span>::<span class="ident">Memory</span>(<span class="kw-2">*</span><span class="ident">memory_type</span>)
+                        <span class="ident">ExternType::Memory</span>(<span class="kw-2">*</span><span class="ident">memory_type</span>)
                     }
-                    <span class="ident">ImportIndex</span>::<span class="ident">Global</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">ImportIndex::Global</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="kw">let</span> <span class="ident">global_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">globals</span>.<span class="ident">get</span>(<span class="kw-2">*</span><span class="ident">i</span>).<span class="ident">unwrap</span>();
-                        <span class="ident">ExternType</span>::<span class="ident">Global</span>(<span class="kw-2">*</span><span class="ident">global_type</span>)
+                        <span class="ident">ExternType::Global</span>(<span class="kw-2">*</span><span class="ident">global_type</span>)
                     }
                 };
-                <span class="ident">ImportType</span>::<span class="ident">new</span>(<span class="ident">module</span>, <span class="ident">field</span>, <span class="ident">extern_type</span>)
+                <span class="ident">ImportType::new</span>(<span class="ident">module</span>, <span class="ident">field</span>, <span class="ident">extern_type</span>)
             });
         <span class="ident">ImportsIterator</span> {
             <span class="ident">iter</span>,
@@ -692,7 +692,7 @@
 
     <span class="doccomment">/// Convert a `LocalFunctionIndex` into a `FunctionIndex`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">func_index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">local_func</span>: <span class="ident">LocalFunctionIndex</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FunctionIndex</span> {
-        <span class="ident">FunctionIndex</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">num_imported_functions</span> <span class="op">+</span> <span class="ident">local_func</span>.<span class="ident">index</span>())
+        <span class="ident">FunctionIndex::new</span>(<span class="self">self</span>.<span class="ident">num_imported_functions</span> <span class="op">+</span> <span class="ident">local_func</span>.<span class="ident">index</span>())
     }
 
     <span class="doccomment">/// Convert a `FunctionIndex` into a `LocalFunctionIndex`. Returns None if the</span>
@@ -700,7 +700,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">local_func_index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">func</span>: <span class="ident">FunctionIndex</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">LocalFunctionIndex</span><span class="op">&gt;</span> {
         <span class="ident">func</span>.<span class="ident">index</span>()
             .<span class="ident">checked_sub</span>(<span class="self">self</span>.<span class="ident">num_imported_functions</span>)
-            .<span class="ident">map</span>(<span class="ident">LocalFunctionIndex</span>::<span class="ident">new</span>)
+            .<span class="ident">map</span>(<span class="ident">LocalFunctionIndex::new</span>)
     }
 
     <span class="doccomment">/// Test whether the given function index is for an imported function.</span>
@@ -710,7 +710,7 @@
 
     <span class="doccomment">/// Convert a `LocalTableIndex` into a `TableIndex`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">table_index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">local_table</span>: <span class="ident">LocalTableIndex</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TableIndex</span> {
-        <span class="ident">TableIndex</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">num_imported_tables</span> <span class="op">+</span> <span class="ident">local_table</span>.<span class="ident">index</span>())
+        <span class="ident">TableIndex::new</span>(<span class="self">self</span>.<span class="ident">num_imported_tables</span> <span class="op">+</span> <span class="ident">local_table</span>.<span class="ident">index</span>())
     }
 
     <span class="doccomment">/// Convert a `TableIndex` into a `LocalTableIndex`. Returns None if the</span>
@@ -719,7 +719,7 @@
         <span class="ident">table</span>
             .<span class="ident">index</span>()
             .<span class="ident">checked_sub</span>(<span class="self">self</span>.<span class="ident">num_imported_tables</span>)
-            .<span class="ident">map</span>(<span class="ident">LocalTableIndex</span>::<span class="ident">new</span>)
+            .<span class="ident">map</span>(<span class="ident">LocalTableIndex::new</span>)
     }
 
     <span class="doccomment">/// Test whether the given table index is for an imported table.</span>
@@ -729,7 +729,7 @@
 
     <span class="doccomment">/// Convert a `LocalMemoryIndex` into a `MemoryIndex`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">memory_index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">local_memory</span>: <span class="ident">LocalMemoryIndex</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MemoryIndex</span> {
-        <span class="ident">MemoryIndex</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">num_imported_memories</span> <span class="op">+</span> <span class="ident">local_memory</span>.<span class="ident">index</span>())
+        <span class="ident">MemoryIndex::new</span>(<span class="self">self</span>.<span class="ident">num_imported_memories</span> <span class="op">+</span> <span class="ident">local_memory</span>.<span class="ident">index</span>())
     }
 
     <span class="doccomment">/// Convert a `MemoryIndex` into a `LocalMemoryIndex`. Returns None if the</span>
@@ -738,7 +738,7 @@
         <span class="ident">memory</span>
             .<span class="ident">index</span>()
             .<span class="ident">checked_sub</span>(<span class="self">self</span>.<span class="ident">num_imported_memories</span>)
-            .<span class="ident">map</span>(<span class="ident">LocalMemoryIndex</span>::<span class="ident">new</span>)
+            .<span class="ident">map</span>(<span class="ident">LocalMemoryIndex::new</span>)
     }
 
     <span class="doccomment">/// Test whether the given memory index is for an imported memory.</span>
@@ -748,7 +748,7 @@
 
     <span class="doccomment">/// Convert a `LocalGlobalIndex` into a `GlobalIndex`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">global_index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">local_global</span>: <span class="ident">LocalGlobalIndex</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">GlobalIndex</span> {
-        <span class="ident">GlobalIndex</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">num_imported_globals</span> <span class="op">+</span> <span class="ident">local_global</span>.<span class="ident">index</span>())
+        <span class="ident">GlobalIndex::new</span>(<span class="self">self</span>.<span class="ident">num_imported_globals</span> <span class="op">+</span> <span class="ident">local_global</span>.<span class="ident">index</span>())
     }
 
     <span class="doccomment">/// Convert a `GlobalIndex` into a `LocalGlobalIndex`. Returns None if the</span>
@@ -757,7 +757,7 @@
         <span class="ident">global</span>
             .<span class="ident">index</span>()
             .<span class="ident">checked_sub</span>(<span class="self">self</span>.<span class="ident">num_imported_globals</span>)
-            .<span class="ident">map</span>(<span class="ident">LocalGlobalIndex</span>::<span class="ident">new</span>)
+            .<span class="ident">map</span>(<span class="ident">LocalGlobalIndex::new</span>)
     }
 
     <span class="doccomment">/// Test whether the given global index is for an imported global.</span>
@@ -782,8 +782,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">ModuleInfo</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">ModuleInfo</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">name</span>())
     }
 }
@@ -809,28 +809,28 @@
     <span class="doccomment">/// Get only the functions</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">functions</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">ExportType</span><span class="op">&lt;</span><span class="ident">FunctionType</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">extern_</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">extern_</span>.<span class="ident">ty</span>() {
-            <span class="ident">ExternType</span>::<span class="ident">Function</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ExportType</span>::<span class="ident">new</span>(<span class="ident">extern_</span>.<span class="ident">name</span>(), <span class="ident">ty</span>.<span class="ident">clone</span>())),
+            <span class="ident">ExternType::Function</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ExportType::new</span>(<span class="ident">extern_</span>.<span class="ident">name</span>(), <span class="ident">ty</span>.<span class="ident">clone</span>())),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         })
     }
     <span class="doccomment">/// Get only the memories</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">memories</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">ExportType</span><span class="op">&lt;</span><span class="ident">MemoryType</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">extern_</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">extern_</span>.<span class="ident">ty</span>() {
-            <span class="ident">ExternType</span>::<span class="ident">Memory</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ExportType</span>::<span class="ident">new</span>(<span class="ident">extern_</span>.<span class="ident">name</span>(), <span class="kw-2">*</span><span class="ident">ty</span>)),
+            <span class="ident">ExternType::Memory</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ExportType::new</span>(<span class="ident">extern_</span>.<span class="ident">name</span>(), <span class="kw-2">*</span><span class="ident">ty</span>)),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         })
     }
     <span class="doccomment">/// Get only the tables</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tables</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">ExportType</span><span class="op">&lt;</span><span class="ident">TableType</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">extern_</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">extern_</span>.<span class="ident">ty</span>() {
-            <span class="ident">ExternType</span>::<span class="ident">Table</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ExportType</span>::<span class="ident">new</span>(<span class="ident">extern_</span>.<span class="ident">name</span>(), <span class="kw-2">*</span><span class="ident">ty</span>)),
+            <span class="ident">ExternType::Table</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ExportType::new</span>(<span class="ident">extern_</span>.<span class="ident">name</span>(), <span class="kw-2">*</span><span class="ident">ty</span>)),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         })
     }
     <span class="doccomment">/// Get only the globals</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">globals</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">ExportType</span><span class="op">&lt;</span><span class="ident">GlobalType</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">extern_</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">extern_</span>.<span class="ident">ty</span>() {
-            <span class="ident">ExternType</span>::<span class="ident">Global</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ExportType</span>::<span class="ident">new</span>(<span class="ident">extern_</span>.<span class="ident">name</span>(), <span class="kw-2">*</span><span class="ident">ty</span>)),
+            <span class="ident">ExternType::Global</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ExportType::new</span>(<span class="ident">extern_</span>.<span class="ident">name</span>(), <span class="kw-2">*</span><span class="ident">ty</span>)),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         })
     }
@@ -838,7 +838,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">ExportType</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">ExportsIterator</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">ExportType</span>;
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>()
     }
 }
@@ -861,7 +861,7 @@
     <span class="doccomment">/// Get only the functions</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">functions</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">ImportType</span><span class="op">&lt;</span><span class="ident">FunctionType</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">extern_</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">extern_</span>.<span class="ident">ty</span>() {
-            <span class="ident">ExternType</span>::<span class="ident">Function</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ImportType</span>::<span class="ident">new</span>(
+            <span class="ident">ExternType::Function</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ImportType::new</span>(
                 <span class="ident">extern_</span>.<span class="ident">module</span>(),
                 <span class="ident">extern_</span>.<span class="ident">name</span>(),
                 <span class="ident">ty</span>.<span class="ident">clone</span>(),
@@ -872,21 +872,21 @@
     <span class="doccomment">/// Get only the memories</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">memories</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">ImportType</span><span class="op">&lt;</span><span class="ident">MemoryType</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">extern_</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">extern_</span>.<span class="ident">ty</span>() {
-            <span class="ident">ExternType</span>::<span class="ident">Memory</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ImportType</span>::<span class="ident">new</span>(<span class="ident">extern_</span>.<span class="ident">module</span>(), <span class="ident">extern_</span>.<span class="ident">name</span>(), <span class="kw-2">*</span><span class="ident">ty</span>)),
+            <span class="ident">ExternType::Memory</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ImportType::new</span>(<span class="ident">extern_</span>.<span class="ident">module</span>(), <span class="ident">extern_</span>.<span class="ident">name</span>(), <span class="kw-2">*</span><span class="ident">ty</span>)),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         })
     }
     <span class="doccomment">/// Get only the tables</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tables</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">ImportType</span><span class="op">&lt;</span><span class="ident">TableType</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">extern_</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">extern_</span>.<span class="ident">ty</span>() {
-            <span class="ident">ExternType</span>::<span class="ident">Table</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ImportType</span>::<span class="ident">new</span>(<span class="ident">extern_</span>.<span class="ident">module</span>(), <span class="ident">extern_</span>.<span class="ident">name</span>(), <span class="kw-2">*</span><span class="ident">ty</span>)),
+            <span class="ident">ExternType::Table</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ImportType::new</span>(<span class="ident">extern_</span>.<span class="ident">module</span>(), <span class="ident">extern_</span>.<span class="ident">name</span>(), <span class="kw-2">*</span><span class="ident">ty</span>)),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         })
     }
     <span class="doccomment">/// Get only the globals</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">globals</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">ImportType</span><span class="op">&lt;</span><span class="ident">GlobalType</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">extern_</span><span class="op">|</span> <span class="kw">match</span> <span class="ident">extern_</span>.<span class="ident">ty</span>() {
-            <span class="ident">ExternType</span>::<span class="ident">Global</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ImportType</span>::<span class="ident">new</span>(<span class="ident">extern_</span>.<span class="ident">module</span>(), <span class="ident">extern_</span>.<span class="ident">name</span>(), <span class="kw-2">*</span><span class="ident">ty</span>)),
+            <span class="ident">ExternType::Global</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ImportType::new</span>(<span class="ident">extern_</span>.<span class="ident">module</span>(), <span class="ident">extern_</span>.<span class="ident">name</span>(), <span class="kw-2">*</span><span class="ident">ty</span>)),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         })
     }
@@ -894,7 +894,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">ImportType</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">ImportsIterator</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">ImportType</span>;
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>()
     }
 }

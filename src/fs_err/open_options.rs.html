@@ -135,15 +135,15 @@
 <span id="132">132</span>
 <span id="133">133</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fs</span>, <span class="ident">io</span>, <span class="ident">path</span>::<span class="ident">PathBuf</span>};
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fs</span>, <span class="ident">io</span>, <span class="ident">path::PathBuf</span>};
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="doccomment">/// Wrapper around [`std::fs::OptionOptions`](https://doc.rust-lang.org/std/fs/struct.OpenOptions.html)</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OpenOptions</span>(<span class="ident">fs</span>::<span class="ident">OpenOptions</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OpenOptions</span>(<span class="ident">fs::OpenOptions</span>);
 
 <span class="kw">impl</span> <span class="ident">OpenOptions</span> {
     <span class="doccomment">/// Wrapper for [`std::fs::OpenOptions::new`](https://doc.rust-lang.org/std/fs/struct.OpenOptions.html#method.new)</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">OpenOptions</span>(<span class="ident">fs</span>::<span class="ident">OpenOptions</span>::<span class="ident">new</span>())
+        <span class="ident">OpenOptions</span>(<span class="ident">fs::OpenOptions::new</span>())
     }
 
     <span class="doccomment">/// Wrapper for [`std::fs::OpenOptions::read`](https://doc.rust-lang.org/std/fs/struct.OpenOptions.html#method.read)</span>
@@ -183,7 +183,7 @@
     }
 
     <span class="doccomment">/// Wrapper for [`std::fs::OpenOptions::open`](https://doc.rust-lang.org/std/fs/struct.OpenOptions.html#method.open)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">File</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">open</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">path</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::File</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">P</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
     {
@@ -192,7 +192,7 @@
         <span class="comment">// `&amp;fs_err::OpenOptions` from `&amp;fs::OpenOptions` without cloning</span>
         <span class="comment">// (although cloning would probably be cheap).</span>
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-        <span class="kw">crate</span>::<span class="ident">File</span>::<span class="ident">from_options</span>(<span class="ident">path</span>.<span class="ident">into</span>(), <span class="self">self</span>.<span class="ident">options</span>())
+        <span class="kw">crate</span><span class="ident">::File::from_options</span>(<span class="ident">path</span>.<span class="ident">into</span>(), <span class="self">self</span>.<span class="ident">options</span>())
     }
 }
 
@@ -200,14 +200,14 @@
 <span class="doccomment">/// [`std::fs::OpenOptions`](https://doc.rust-lang.org/stable/std/fs/struct.OpenOptions.html).</span>
 <span class="kw">impl</span> <span class="ident">OpenOptions</span> {
     <span class="doccomment">/// Constructs `Self` from [`std::fs::OpenOptions`](https://doc.rust-lang.org/stable/std/fs/struct.OpenOptions.html)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_options</span>(<span class="ident">options</span>: <span class="ident">fs</span>::<span class="ident">OpenOptions</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_options</span>(<span class="ident">options</span>: <span class="ident">fs::OpenOptions</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">options</span>)
     }
 
     <span class="doccomment">/// Returns a reference to the underlying [`std::fs::OpenOptions`](https://doc.rust-lang.org/stable/std/fs/struct.OpenOptions.html).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that calling `open()` on this reference will NOT give you the improved errors from fs-err.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">options</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">fs</span>::<span class="ident">OpenOptions</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">options</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">fs::OpenOptions</span> {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
     }
 
@@ -215,16 +215,16 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This allows you to change settings that don&#39;t yet have wrappers in fs-err.</span>
     <span class="doccomment">/// Note that calling `open()` on this reference will NOT give you the improved errors from fs-err.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">options_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fs</span>::<span class="ident">OpenOptions</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">options_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fs::OpenOptions</span> {
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
 <span class="kw">mod</span> <span class="ident">unix</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">os</span>::<span class="ident">unix</span>::<span class="ident">fs</span>::<span class="ident">OpenOptionsExt</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">unix</span>::<span class="ident">fs</span>::<span class="ident">OpenOptionsExt</span> <span class="kw">as</span> <span class="kw">_</span>;
-    <span class="kw">impl</span> <span class="ident">OpenOptionsExt</span> <span class="kw">for</span> <span class="kw">crate</span>::<span class="ident">OpenOptions</span> {
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::os::unix::fs::OpenOptionsExt</span>;
+    <span class="kw">use</span> <span class="ident">std::os::unix::fs::OpenOptionsExt</span> <span class="kw">as</span> <span class="kw">_</span>;
+    <span class="kw">impl</span> <span class="ident">OpenOptionsExt</span> <span class="kw">for</span> <span class="kw">crate</span><span class="ident">::OpenOptions</span> {
         <span class="kw">fn</span> <span class="ident">mode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">mode</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
             <span class="self">self</span>.<span class="ident">options_mut</span>().<span class="ident">mode</span>(<span class="ident">mode</span>);
             <span class="self">self</span>
@@ -239,10 +239,10 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">mod</span> <span class="ident">windows</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">os</span>::<span class="ident">windows</span>::<span class="ident">fs</span>::<span class="ident">OpenOptionsExt</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">windows</span>::<span class="ident">fs</span>::<span class="ident">OpenOptionsExt</span> <span class="kw">as</span> <span class="kw">_</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::os::windows::fs::OpenOptionsExt</span>;
+    <span class="kw">use</span> <span class="ident">std::os::windows::fs::OpenOptionsExt</span> <span class="kw">as</span> <span class="kw">_</span>;
 
-    <span class="kw">impl</span> <span class="ident">OpenOptionsExt</span> <span class="kw">for</span> <span class="kw">crate</span>::<span class="ident">OpenOptions</span> {
+    <span class="kw">impl</span> <span class="ident">OpenOptionsExt</span> <span class="kw">for</span> <span class="kw">crate</span><span class="ident">::OpenOptions</span> {
         <span class="kw">fn</span> <span class="ident">access_mode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">access</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
             <span class="self">self</span>.<span class="ident">options_mut</span>().<span class="ident">access_mode</span>(<span class="ident">access</span>);
             <span class="self">self</span>

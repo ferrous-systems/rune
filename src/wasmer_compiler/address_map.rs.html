@@ -47,8 +47,8 @@
 <span class="doccomment">//! Data structures to provide transformation of the source</span>
 <span class="comment">// addresses of a WebAssembly module into the native code.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">lib</span>::<span class="ident">std</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sourceloc</span>::<span class="ident">SourceLoc</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::lib::std::vec::Vec</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::sourceloc::SourceLoc</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;enable-serde&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 

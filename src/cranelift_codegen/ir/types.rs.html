@@ -537,9 +537,9 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Common types for the Cranelift code generator.</span>
 
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">default</span>::<span class="ident">Default</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>::{<span class="self">self</span>, <span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>};
-<span class="kw">use</span> <span class="ident">cranelift_codegen_shared</span>::<span class="ident">constants</span>;
+<span class="kw">use</span> <span class="ident">core::default::Default</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>::{<span class="self">self</span>, <span class="ident">Debug</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>};
+<span class="kw">use</span> <span class="ident">cranelift_codegen_shared::constants</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;enable-serde&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">target_lexicon</span>::{<span class="ident">PointerWidth</span>, <span class="ident">Triple</span>};
@@ -576,10 +576,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// A lane type is the same as a SIMD vector type with one lane, so it returns itself.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lane_type</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="number">0</span> <span class="op">&lt;</span> <span class="ident">constants</span>::<span class="ident">VECTOR_BASE</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="number">0</span> <span class="op">&lt;</span> <span class="ident">constants::VECTOR_BASE</span> {
             <span class="self">self</span>
         } <span class="kw">else</span> {
-            <span class="self">Self</span>(<span class="ident">constants</span>::<span class="ident">LANE_BASE</span> <span class="op">|</span> (<span class="self">self</span>.<span class="number">0</span> <span class="op">&amp;</span> <span class="number">0x0f</span>))
+            <span class="self">Self</span>(<span class="ident">constants::LANE_BASE</span> <span class="op">|</span> (<span class="self">self</span>.<span class="number">0</span> <span class="op">&amp;</span> <span class="number">0x0f</span>))
         }
     }
 
@@ -705,21 +705,21 @@
 
     <span class="doccomment">/// Is this a special type?</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_special</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="number">0</span> <span class="op">&lt;</span> <span class="ident">constants</span>::<span class="ident">LANE_BASE</span>
+        <span class="self">self</span>.<span class="number">0</span> <span class="op">&lt;</span> <span class="ident">constants::LANE_BASE</span>
     }
 
     <span class="doccomment">/// Is this a lane type?</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This is a scalar type that can also appear as the lane type of a SIMD vector.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_lane</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="ident">constants</span>::<span class="ident">LANE_BASE</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="number">0</span> <span class="op">&lt;</span> <span class="ident">constants</span>::<span class="ident">VECTOR_BASE</span>
+        <span class="ident">constants::LANE_BASE</span> <span class="op">&lt;</span><span class="op">=</span> <span class="self">self</span>.<span class="number">0</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="number">0</span> <span class="op">&lt;</span> <span class="ident">constants::VECTOR_BASE</span>
     }
 
     <span class="doccomment">/// Is this a SIMD vector type?</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// A vector type has 2 or more lanes.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_vector</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="number">0</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">constants</span>::<span class="ident">VECTOR_BASE</span>
+        <span class="self">self</span>.<span class="number">0</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">constants::VECTOR_BASE</span>
     }
 
     <span class="doccomment">/// Is this a scalar boolean type?</span>
@@ -769,7 +769,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// A scalar type is the same as a SIMD vector type with one lane, so it returns 0.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">log2_lane_count</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
-        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">saturating_sub</span>(<span class="ident">constants</span>::<span class="ident">LANE_BASE</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">4</span>
+        <span class="self">self</span>.<span class="number">0</span>.<span class="ident">saturating_sub</span>(<span class="ident">constants::LANE_BASE</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">4</span>
     }
 
     <span class="doccomment">/// Get the number of lanes in this SIMD vector type.</span>
@@ -781,12 +781,12 @@
 
     <span class="doccomment">/// Get the total number of bits used to represent this type.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bits</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
-        <span class="ident">u16</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="ident">lane_bits</span>()) <span class="op">*</span> <span class="self">self</span>.<span class="ident">lane_count</span>()
+        <span class="ident">u16::from</span>(<span class="self">self</span>.<span class="ident">lane_bits</span>()) <span class="op">*</span> <span class="self">self</span>.<span class="ident">lane_count</span>()
     }
 
     <span class="doccomment">/// Get the number of bytes used to store this type in memory.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bytes</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
-        (<span class="ident">u32</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="ident">bits</span>()) <span class="op">+</span> <span class="number">7</span>) <span class="op">/</span> <span class="number">8</span>
+        (<span class="ident">u32::from</span>(<span class="self">self</span>.<span class="ident">bits</span>()) <span class="op">+</span> <span class="number">7</span>) <span class="op">/</span> <span class="number">8</span>
     }
 
     <span class="doccomment">/// Get a SIMD vector type with `n` times more lanes than this one.</span>
@@ -800,7 +800,7 @@
             <span class="kw">return</span> <span class="prelude-val">None</span>;
         }
         <span class="kw">let</span> <span class="ident">log2_lanes</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">n</span>.<span class="ident">trailing_zeros</span>();
-        <span class="kw">let</span> <span class="ident">new_type</span> <span class="op">=</span> <span class="ident">u32</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="number">0</span>) <span class="op">+</span> (<span class="ident">log2_lanes</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">new_type</span> <span class="op">=</span> <span class="ident">u32::from</span>(<span class="self">self</span>.<span class="number">0</span>) <span class="op">+</span> (<span class="ident">log2_lanes</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span>);
         <span class="kw">if</span> <span class="ident">new_type</span> <span class="op">&lt;</span> <span class="number">0x100</span> {
             <span class="prelude-val">Some</span>(<span class="self">Self</span>(<span class="ident">new_type</span> <span class="kw">as</span> <span class="ident">u8</span>))
         } <span class="kw">else</span> {
@@ -842,7 +842,7 @@
 
     <span class="doccomment">/// Index of this type, for use with hash tables etc.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">index</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="ident">usize</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="number">0</span>)
+        <span class="ident">usize::from</span>(<span class="self">self</span>.<span class="number">0</span>)
     }
 
     <span class="doccomment">/// True iff:</span>
@@ -856,16 +856,16 @@
     <span class="doccomment">/// Return the pointer type for the given target triple.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">triple_pointer_type</span>(<span class="ident">triple</span>: <span class="kw-2">&amp;</span><span class="ident">Triple</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">triple</span>.<span class="ident">pointer_width</span>() {
-            <span class="prelude-val">Ok</span>(<span class="ident">PointerWidth</span>::<span class="ident">U16</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">I16</span>,
-            <span class="prelude-val">Ok</span>(<span class="ident">PointerWidth</span>::<span class="ident">U32</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">I32</span>,
-            <span class="prelude-val">Ok</span>(<span class="ident">PointerWidth</span>::<span class="ident">U64</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">I64</span>,
+            <span class="prelude-val">Ok</span>(<span class="ident">PointerWidth::U16</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">I16</span>,
+            <span class="prelude-val">Ok</span>(<span class="ident">PointerWidth::U32</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">I32</span>,
+            <span class="prelude-val">Ok</span>(<span class="ident">PointerWidth::U64</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">I64</span>,
             <span class="prelude-val">Err</span>(()) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;unable to determine architecture pointer width&quot;</span>),
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Type</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_bool</span>() {
             <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;b{}&quot;</span>, <span class="self">self</span>.<span class="ident">lane_bits</span>())
         } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_int</span>() {
@@ -889,7 +889,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Type</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_bool</span>() {
             <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;types::B{}&quot;</span>, <span class="self">self</span>.<span class="ident">lane_bits</span>())
         } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_int</span>() {
@@ -920,7 +920,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">string</span>::<span class="ident">ToString</span>;
+    <span class="kw">use</span> <span class="ident">alloc::string::ToString</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">basic_scalars</span>() {

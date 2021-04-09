@@ -115,9 +115,9 @@ parsing an <a href="../../wast/enum.Index.html"><code>Index</code></a> we can do
     <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">parser</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">l</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">lookahead1</span>();
         <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">Id</span><span class="op">&gt;</span>() {
-            <span class="prelude-val">Ok</span>(<span class="ident">Index</span>::<span class="ident">Id</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>))
+            <span class="prelude-val">Ok</span>(<span class="ident">Index::Id</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>))
         } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>() {
-            <span class="prelude-val">Ok</span>(<span class="ident">Index</span>::<span class="ident">Num</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>))
+            <span class="prelude-val">Ok</span>(<span class="ident">Index::Num</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>))
         } <span class="kw">else</span> {
             <span class="comment">// produces error message of `expected identifier or u32`</span>
             <span class="prelude-val">Err</span>(<span class="ident">l</span>.<span class="ident">error</span>())
@@ -148,11 +148,11 @@ the exact definition, but it’s close enough!</p>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Parse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Module</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">parser</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="comment">// Modules start out with a `module` keyword</span>
-        <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">module</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+        <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::module</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
 
         <span class="comment">// And then everything else is `(field ...)`, so while we&#39;ve got</span>
         <span class="comment">// items left we continuously parse parenthesized items.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fields</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fields</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
         <span class="kw">while</span> <span class="op">!</span><span class="ident">parser</span>.<span class="ident">is_empty</span>() {
             <span class="ident">fields</span>.<span class="ident">push</span>(<span class="ident">parser</span>.<span class="ident">parens</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">parse</span>())<span class="question-mark">?</span>);
         }
@@ -220,7 +220,7 @@ to get an idea of how this works:</p>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Parse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Module</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">parser</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="comment">// Modules start out with a `module` keyword</span>
-        <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">module</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+        <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::module</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
 
         <span class="comment">// Next may be `(@name &quot;foo&quot;)`. Typically this annotation would</span>
         <span class="comment">// skipped, but we don&#39;t want it skipped, so we register it.</span>
@@ -247,7 +247,7 @@ registered <em>before</em> we parse the parentheses of the annotation.</p>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Parse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Module</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">parser</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="comment">// Modules start out with a `module` keyword</span>
-        <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">module</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+        <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::module</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
 
         <span class="comment">// register the `@custom` annotation *first* before we start</span>
         <span class="comment">// parsing fields, because each field is contained in</span>
@@ -255,7 +255,7 @@ registered <em>before</em> we parse the parentheses of the annotation.</p>
         <span class="comment">// have to known to not skip it.</span>
         <span class="kw">let</span> <span class="ident">_r</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">register_annotation</span>(<span class="string">&quot;custom&quot;</span>);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fields</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fields</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
         <span class="kw">while</span> <span class="op">!</span><span class="ident">parser</span>.<span class="ident">is_empty</span>() {
             <span class="ident">fields</span>.<span class="ident">push</span>(<span class="ident">parser</span>.<span class="ident">parens</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">parse</span>())<span class="question-mark">?</span>);
         }
@@ -274,8 +274,8 @@ registered <em>before</em> we parse the parentheses of the annotation.</p>
         <span class="comment">// annotation with the parser we known that `peek` methods like</span>
         <span class="comment">// this, working on the annotation token, are enabled to ever</span>
         <span class="comment">// return `true`.</span>
-        <span class="kw">if</span> <span class="ident">parser</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">annotation</span>::<span class="ident">custom</span><span class="op">&gt;</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">ModuleField</span>::<span class="ident">Custom</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>));
+        <span class="kw">if</span> <span class="ident">parser</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">annotation::custom</span><span class="op">&gt;</span>() {
+            <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">ModuleField::Custom</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>));
         }
 
         <span class="comment">// .. typically we&#39;d parse other module fields here...</span>

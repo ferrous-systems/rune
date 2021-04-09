@@ -38,15 +38,15 @@
 <span class="doccomment">//! Data structures to provide transformation of the source</span>
 <span class="comment">// addresses of a WebAssembly module into the native code.</span>
 
-<span class="kw">use</span> <span class="ident">cranelift_codegen</span>::<span class="ident">ir</span>;
-<span class="kw">use</span> <span class="ident">wasmer_types</span>::<span class="ident">entity</span>::<span class="ident">PrimaryMap</span>;
-<span class="kw">use</span> <span class="ident">wasmer_types</span>::<span class="ident">LocalFunctionIndex</span>;
+<span class="kw">use</span> <span class="ident">cranelift_codegen::ir</span>;
+<span class="kw">use</span> <span class="ident">wasmer_types::entity::PrimaryMap</span>;
+<span class="kw">use</span> <span class="ident">wasmer_types::LocalFunctionIndex</span>;
 
 <span class="doccomment">/// Value ranges for functions.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ValueLabelsRanges</span> <span class="op">=</span> <span class="ident">PrimaryMap</span><span class="op">&lt;</span><span class="ident">LocalFunctionIndex</span>, <span class="ident">cranelift_codegen</span>::<span class="ident">ValueLabelsRanges</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">ValueLabelsRanges</span> <span class="op">=</span> <span class="ident">PrimaryMap</span><span class="op">&lt;</span><span class="ident">LocalFunctionIndex</span>, <span class="ident">cranelift_codegen::ValueLabelsRanges</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// Stack slots for functions.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">StackSlots</span> <span class="op">=</span> <span class="ident">PrimaryMap</span><span class="op">&lt;</span><span class="ident">LocalFunctionIndex</span>, <span class="ident">ir</span>::<span class="ident">StackSlots</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="ident">StackSlots</span> <span class="op">=</span> <span class="ident">PrimaryMap</span><span class="op">&lt;</span><span class="ident">LocalFunctionIndex</span>, <span class="ident">ir::StackSlots</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// Memory definition offset in the VMContext structure.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>

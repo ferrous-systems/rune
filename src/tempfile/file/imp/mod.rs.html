@@ -15,13 +15,13 @@
 <span class="macro">cfg_if!</span> {
     <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">unix</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;redox&quot;</span>))]</span> {
         <span class="kw">mod</span> <span class="ident">unix</span>;
-        <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">unix</span>::<span class="kw-2">*</span>;
+        <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::unix</span>::<span class="kw-2">*</span>;
     } <span class="kw">else</span> <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span> {
         <span class="kw">mod</span> <span class="ident">windows</span>;
-        <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">windows</span>::<span class="kw-2">*</span>;
+        <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::windows</span>::<span class="kw-2">*</span>;
     } <span class="kw">else</span> {
         <span class="kw">mod</span> <span class="ident">other</span>;
-        <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">other</span>::<span class="kw-2">*</span>;
+        <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::other</span>::<span class="kw-2">*</span>;
     }
 }
 </pre></div>

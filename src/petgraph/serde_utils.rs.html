@@ -97,21 +97,21 @@
 <span id="94">94</span>
 <span id="95">95</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">de</span>::{<span class="ident">Deserialize</span>, <span class="ident">Error</span>, <span class="ident">SeqAccess</span>, <span class="ident">Visitor</span>};
-<span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">ser</span>::{<span class="ident">Serialize</span>, <span class="ident">SerializeSeq</span>, <span class="ident">Serializer</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
+<span class="kw">use</span> <span class="ident">serde::de</span>::{<span class="ident">Deserialize</span>, <span class="ident">Error</span>, <span class="ident">SeqAccess</span>, <span class="ident">Visitor</span>};
+<span class="kw">use</span> <span class="ident">serde::ser</span>::{<span class="ident">Serialize</span>, <span class="ident">SerializeSeq</span>, <span class="ident">Serializer</span>};
+<span class="kw">use</span> <span class="ident">std::fmt</span>;
+<span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
 
 <span class="doccomment">/// Map to serializeable representation</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">IntoSerializable</span> {
     <span class="kw">type</span> <span class="ident">Output</span>;
-    <span class="kw">fn</span> <span class="ident">into_serializable</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span>;
+    <span class="kw">fn</span> <span class="ident">into_serializable</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span>;
 }
 
 <span class="doccomment">/// Map from deserialized representation</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FromDeserialized</span>: <span class="ident">Sized</span> {
     <span class="kw">type</span> <span class="ident">Input</span>;
-    <span class="kw">fn</span> <span class="ident">from_deserialized</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">input</span>: <span class="self">Self</span>::<span class="ident">Input</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">E</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">from_deserialized</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">input</span>: <span class="self">Self</span><span class="ident">::Input</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">E</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">E</span>: <span class="ident">Error</span>;
 }
@@ -146,17 +146,17 @@
 {
     <span class="kw">type</span> <span class="ident">Value</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">expecting</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">formatter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">expecting</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">formatter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">formatter</span>, <span class="string">&quot;a sequence&quot;</span>)
     }
-    <span class="kw">fn</span> <span class="ident">visit_seq</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">seq</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Value</span>, <span class="ident">A</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">visit_seq</span><span class="op">&lt;</span><span class="ident">A</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">seq</span>: <span class="ident">A</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Value</span>, <span class="ident">A::Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">A</span>: <span class="ident">SeqAccess</span><span class="op">&lt;</span><span class="lifetime">&#39;de</span><span class="op">&gt;</span>,
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
         <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">elem</span>) <span class="op">=</span> <span class="ident">seq</span>.<span class="ident">next_element</span>()<span class="question-mark">?</span> {
             <span class="kw">match</span> (<span class="self">self</span>.<span class="ident">f</span>)(<span class="ident">elem</span>) {
-                <span class="prelude-val">Err</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="op">&lt;</span><span class="ident">A</span>::<span class="ident">Error</span><span class="op">&gt;</span>::<span class="ident">custom</span>(<span class="ident">s</span>))<span class="question-mark">?</span>,
+                <span class="prelude-val">Err</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="op">&lt;</span><span class="ident">A::Error</span><span class="op">&gt;</span><span class="ident">::custom</span>(<span class="ident">s</span>))<span class="question-mark">?</span>,
                 <span class="prelude-val">Ok</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">v</span>.<span class="ident">push</span>(<span class="ident">x</span>),
             }
         }
@@ -165,10 +165,10 @@
 }
 
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">CollectSeqWithLength</span>: <span class="ident">Serializer</span> {
-    <span class="kw">fn</span> <span class="ident">collect_seq_with_length</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">length</span>: <span class="ident">usize</span>, <span class="ident">iterable</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="prelude-val">Ok</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">collect_seq_with_length</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">length</span>: <span class="ident">usize</span>, <span class="ident">iterable</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Ok</span>, <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">I</span>: <span class="ident">IntoIterator</span>,
-        <span class="ident">I</span>::<span class="ident">Item</span>: <span class="ident">Serialize</span>,
+        <span class="ident">I::Item</span>: <span class="ident">Serialize</span>,
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">count</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">seq</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">serialize_seq</span>(<span class="prelude-val">Some</span>(<span class="ident">length</span>))<span class="question-mark">?</span>;
@@ -180,11 +180,11 @@
         <span class="ident">seq</span>.<span class="ident">end</span>()
     }
 
-    <span class="kw">fn</span> <span class="ident">collect_seq_exact</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">iterable</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="prelude-val">Ok</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">collect_seq_exact</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">iterable</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Ok</span>, <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">I</span>: <span class="ident">IntoIterator</span>,
-        <span class="ident">I</span>::<span class="ident">Item</span>: <span class="ident">Serialize</span>,
-        <span class="ident">I</span>::<span class="ident">IntoIter</span>: <span class="ident">ExactSizeIterator</span>,
+        <span class="ident">I::Item</span>: <span class="ident">Serialize</span>,
+        <span class="ident">I::IntoIter</span>: <span class="ident">ExactSizeIterator</span>,
     {
         <span class="kw">let</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">iterable</span>.<span class="ident">into_iter</span>();
         <span class="self">self</span>.<span class="ident">collect_seq_with_length</span>(<span class="ident">iter</span>.<span class="ident">len</span>(), <span class="ident">iter</span>)

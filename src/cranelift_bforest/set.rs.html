@@ -603,12 +603,12 @@
 <span class="doccomment">//! Forest of sets.</span>
 
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Comparator</span>, <span class="ident">Forest</span>, <span class="ident">Node</span>, <span class="ident">NodeData</span>, <span class="ident">NodePool</span>, <span class="ident">Path</span>, <span class="ident">SetValue</span>, <span class="ident">INNER_SIZE</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">packed_option</span>::<span class="ident">PackedOption</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::packed_option::PackedOption</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">string</span>::<span class="ident">String</span>;
+<span class="kw">use</span> <span class="ident">alloc::string::String</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
+<span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
 
 <span class="doccomment">/// Tag type defining forest types for a set.</span>
 <span class="kw">struct</span> <span class="ident">SetTypes</span><span class="op">&lt;</span><span class="ident">K</span><span class="op">&gt;</span>(<span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">K</span><span class="op">&gt;</span>);
@@ -622,11 +622,11 @@
     <span class="kw">type</span> <span class="ident">LeafKeys</span> <span class="op">=</span> [<span class="ident">K</span>; <span class="number">2</span> <span class="op">*</span> <span class="ident">INNER_SIZE</span> <span class="op">-</span> <span class="number">1</span>];
     <span class="kw">type</span> <span class="ident">LeafValues</span> <span class="op">=</span> [<span class="ident">SetValue</span>; <span class="number">2</span> <span class="op">*</span> <span class="ident">INNER_SIZE</span> <span class="op">-</span> <span class="number">1</span>];
 
-    <span class="kw">fn</span> <span class="ident">splat_key</span>(<span class="ident">key</span>: <span class="self">Self</span>::<span class="ident">Key</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">LeafKeys</span> {
+    <span class="kw">fn</span> <span class="ident">splat_key</span>(<span class="ident">key</span>: <span class="self">Self</span><span class="ident">::Key</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::LeafKeys</span> {
         [<span class="ident">key</span>; <span class="number">2</span> <span class="op">*</span> <span class="ident">INNER_SIZE</span> <span class="op">-</span> <span class="number">1</span>]
     }
 
-    <span class="kw">fn</span> <span class="ident">splat_value</span>(<span class="ident">value</span>: <span class="self">Self</span>::<span class="ident">Value</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">LeafValues</span> {
+    <span class="kw">fn</span> <span class="ident">splat_value</span>(<span class="ident">value</span>: <span class="self">Self</span><span class="ident">::Value</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::LeafValues</span> {
         [<span class="ident">value</span>; <span class="number">2</span> <span class="op">*</span> <span class="ident">INNER_SIZE</span> <span class="op">-</span> <span class="number">1</span>]
     }
 }
@@ -646,7 +646,7 @@
     <span class="doccomment">/// Create a new empty forest.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">nodes</span>: <span class="ident">NodePool</span>::<span class="ident">new</span>(),
+            <span class="ident">nodes</span>: <span class="ident">NodePool::new</span>(),
         }
     }
 
@@ -696,7 +696,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains</span><span class="op">&lt;</span><span class="ident">C</span>: <span class="ident">Comparator</span><span class="op">&lt;</span><span class="ident">K</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">K</span>, <span class="ident">forest</span>: <span class="kw-2">&amp;</span><span class="ident">SetForest</span><span class="op">&lt;</span><span class="ident">K</span><span class="op">&gt;</span>, <span class="ident">comp</span>: <span class="kw-2">&amp;</span><span class="ident">C</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="self">self</span>.<span class="ident">root</span>
             .<span class="ident">expand</span>()
-            .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">root</span><span class="op">|</span> <span class="ident">Path</span>::<span class="ident">default</span>().<span class="ident">find</span>(<span class="ident">key</span>, <span class="ident">root</span>, <span class="kw-2">&amp;</span><span class="ident">forest</span>.<span class="ident">nodes</span>, <span class="ident">comp</span>))
+            .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">root</span><span class="op">|</span> <span class="ident">Path::default</span>().<span class="ident">find</span>(<span class="ident">key</span>, <span class="ident">root</span>, <span class="kw-2">&amp;</span><span class="ident">forest</span>.<span class="ident">nodes</span>, <span class="ident">comp</span>))
             .<span class="ident">is_some</span>()
     }
 
@@ -746,7 +746,7 @@
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">K</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>,
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::default</span>();
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">root</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">root</span>.<span class="ident">expand</span>() {
             <span class="ident">path</span>.<span class="ident">first</span>(<span class="ident">root</span>, <span class="kw-2">&amp;</span><span class="ident">forest</span>.<span class="ident">nodes</span>);
         }
@@ -766,7 +766,7 @@
         <span class="ident">forest</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">SetForest</span><span class="op">&lt;</span><span class="ident">K</span><span class="op">&gt;</span>,
         <span class="ident">comp</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">C</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SetCursor</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">K</span>, <span class="ident">C</span><span class="op">&gt;</span> {
-        <span class="ident">SetCursor</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">forest</span>, <span class="ident">comp</span>)
+        <span class="ident">SetCursor::new</span>(<span class="self">self</span>, <span class="ident">forest</span>, <span class="ident">comp</span>)
     }
 
     <span class="doccomment">/// Create an iterator traversing this set. The iterator type is `K`.</span>
@@ -774,7 +774,7 @@
         <span class="ident">SetIter</span> {
             <span class="ident">root</span>: <span class="self">self</span>.<span class="ident">root</span>,
             <span class="ident">pool</span>: <span class="kw-2">&amp;</span><span class="ident">forest</span>.<span class="ident">nodes</span>,
-            <span class="ident">path</span>: <span class="ident">Path</span>::<span class="ident">default</span>(),
+            <span class="ident">path</span>: <span class="ident">Path::default</span>(),
         }
     }
 }
@@ -784,7 +784,7 @@
     <span class="ident">K</span>: <span class="ident">Copy</span>,
 {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">new</span>()
+        <span class="self">Self</span><span class="ident">::new</span>()
     }
 }
 
@@ -814,7 +814,7 @@
             <span class="ident">root</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">container</span>.<span class="ident">root</span>,
             <span class="ident">pool</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">forest</span>.<span class="ident">nodes</span>,
             <span class="ident">comp</span>,
-            <span class="ident">path</span>: <span class="ident">Path</span>::<span class="ident">default</span>(),
+            <span class="ident">path</span>: <span class="ident">Path::default</span>(),
         }
     }
 
@@ -827,7 +827,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// If the cursor reaches the end, return `None` and leave the cursor at the off-the-end</span>
     <span class="doccomment">/// position.</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>, <span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">should_implement_trait</span>))]</span>
+    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>, <span class="ident">allow</span>(<span class="ident">clippy::should_implement_trait</span>))]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">K</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">path</span>.<span class="ident">next</span>(<span class="self">self</span>.<span class="ident">pool</span>).<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">k</span>)
     }
@@ -882,7 +882,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">insert</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">elem</span>: <span class="ident">K</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">root</span>.<span class="ident">expand</span>() {
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">root</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">alloc_node</span>(<span class="ident">NodeData</span>::<span class="ident">leaf</span>(<span class="ident">elem</span>, <span class="ident">SetValue</span>()));
+                <span class="kw">let</span> <span class="ident">root</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">alloc_node</span>(<span class="ident">NodeData::leaf</span>(<span class="ident">elem</span>, <span class="ident">SetValue</span>()));
                 <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">root</span> <span class="op">=</span> <span class="ident">root</span>.<span class="ident">into</span>();
                 <span class="self">self</span>.<span class="ident">path</span>.<span class="ident">set_root_node</span>(<span class="ident">root</span>);
                 <span class="bool-val">true</span>
@@ -913,7 +913,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">K</span>, <span class="ident">C</span><span class="op">&gt;</span> <span class="ident">SetCursor</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">K</span>, <span class="ident">C</span><span class="op">&gt;</span>
 <span class="kw">where</span>
-    <span class="ident">K</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">fmt</span>::<span class="ident">Display</span>,
+    <span class="ident">K</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">fmt::Display</span>,
     <span class="ident">C</span>: <span class="ident">Comparator</span><span class="op">&lt;</span><span class="ident">K</span><span class="op">&gt;</span>,
 {
     <span class="kw">fn</span> <span class="ident">verify</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
@@ -923,7 +923,7 @@
 
     <span class="doccomment">/// Get a text version of the path to the current position.</span>
     <span class="kw">fn</span> <span class="ident">tpath</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-        <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">string</span>::<span class="ident">ToString</span>;
+        <span class="kw">use</span> <span class="ident">alloc::string::ToString</span>;
         <span class="self">self</span>.<span class="ident">path</span>.<span class="ident">to_string</span>()
     }
 }
@@ -944,7 +944,7 @@
 {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">K</span>;
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
         <span class="comment">// We use `self.root` to indicate if we need to go to the first element. Reset to `None`</span>
         <span class="comment">// once we&#39;ve returned the first element. This also works for an empty tree since the</span>
         <span class="comment">// `path.next()` call returns `None` when the path is empty. This also fuses the iterator.</span>
@@ -957,24 +957,24 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">NodeData</span>;
+    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw">super</span><span class="ident">::NodeData</span>;
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
-    <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>;
+    <span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
+    <span class="kw">use</span> <span class="ident">core::mem</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">node_size</span>() {
         <span class="comment">// check that nodes are cache line sized when keys are 32 bits.</span>
         <span class="kw">type</span> <span class="ident">F</span> <span class="op">=</span> <span class="ident">SetTypes</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">NodeData</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>(), <span class="number">64</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">NodeData</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>(), <span class="number">64</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">empty</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">SetForest</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">SetForest</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="ident">::new</span>();
         <span class="ident">f</span>.<span class="ident">clear</span>();
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">Set</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">Set</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="ident">::new</span>();
         <span class="macro">assert!</span>(<span class="ident">s</span>.<span class="ident">is_empty</span>());
         <span class="ident">s</span>.<span class="ident">clear</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>);
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">s</span>.<span class="ident">contains</span>(<span class="number">7</span>, <span class="kw-2">&amp;</span><span class="ident">f</span>, <span class="kw-2">&amp;</span>()));
@@ -984,7 +984,7 @@
 
         <span class="ident">s</span>.<span class="ident">retain</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>, <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="macro">unreachable!</span>());
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">SetCursor</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">s</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>, <span class="kw-2">&amp;</span>());
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">SetCursor::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">s</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>, <span class="kw-2">&amp;</span>());
         <span class="ident">c</span>.<span class="ident">verify</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">c</span>.<span class="ident">elem</span>(), <span class="prelude-val">None</span>);
 
@@ -994,9 +994,9 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">simple_cursor</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">SetForest</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">Set</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">SetCursor</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">s</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>, <span class="kw-2">&amp;</span>());
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">SetForest</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="ident">::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">Set</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="ident">::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">SetCursor::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">s</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>, <span class="kw-2">&amp;</span>());
 
         <span class="macro">assert!</span>(<span class="ident">c</span>.<span class="ident">insert</span>(<span class="number">50</span>));
         <span class="ident">c</span>.<span class="ident">verify</span>();
@@ -1036,9 +1036,9 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">two_level_sparse_tree</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">SetForest</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">Set</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">SetCursor</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">s</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>, <span class="kw-2">&amp;</span>());
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">SetForest</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="ident">::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">Set</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="ident">::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">SetCursor::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">s</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>, <span class="kw-2">&amp;</span>());
 
         <span class="comment">// Insert enough elements that we get a two-level tree.</span>
         <span class="comment">// Each leaf node holds 8 elements</span>
@@ -1082,9 +1082,9 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">three_level_sparse_tree</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">SetForest</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">Set</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">SetCursor</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">s</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>, <span class="kw-2">&amp;</span>());
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">SetForest</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="ident">::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">Set</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="ident">::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">SetCursor::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">s</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>, <span class="kw-2">&amp;</span>());
 
         <span class="comment">// Insert enough elements that we get a 3-level tree.</span>
         <span class="comment">// Each leaf node holds 8 elements when filled up sequentially.</span>
@@ -1137,7 +1137,7 @@
     <span class="comment">// A 3-level tree can hold at most 960 elements.</span>
     <span class="kw">fn</span> <span class="ident">dense4l</span>(<span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">SetForest</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Set</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> {
         <span class="ident">f</span>.<span class="ident">clear</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">Set</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">Set::new</span>();
 
         <span class="comment">// Insert 400 elements in 7 passes over the range to avoid the half-full leaf node pattern</span>
         <span class="comment">// that comes from sequential insertion. This will generate a normal leaf layer.</span>
@@ -1149,7 +1149,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">four_level</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">SetForest</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">SetForest</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span><span class="ident">::new</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">dense4l</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>);
 
         <span class="macro">assert_eq!</span>(
@@ -1193,7 +1193,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">four_level_clear</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">SetForest</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">SetForest</span>::<span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span><span class="ident">::new</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">dense4l</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>);
         <span class="ident">s</span>.<span class="ident">clear</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>);
     }

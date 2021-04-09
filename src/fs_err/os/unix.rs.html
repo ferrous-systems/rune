@@ -42,36 +42,36 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">/// Unix-specific extensions to wrappers in `fs_err` for `std::fs` types.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">fs</span> {
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
+    <span class="kw">use</span> <span class="ident">std::io</span>;
+    <span class="kw">use</span> <span class="ident">std::path::Path</span>;
 
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">SourceDestError</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">SourceDestErrorKind</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::SourceDestError</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::SourceDestErrorKind</span>;
 
     <span class="doccomment">/// Wrapper for [`std::os::unix::fs::symlink`](https://doc.rust-lang.org/std/os/unix/fs/fn.symlink.html)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">symlink</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>, <span class="ident">Q</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">src</span>: <span class="ident">P</span>, <span class="ident">dst</span>: <span class="ident">Q</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">symlink</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>, <span class="ident">Q</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">src</span>: <span class="ident">P</span>, <span class="ident">dst</span>: <span class="ident">Q</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">src</span>.<span class="ident">as_ref</span>();
         <span class="kw">let</span> <span class="ident">dst</span> <span class="op">=</span> <span class="ident">dst</span>.<span class="ident">as_ref</span>();
-        <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">unix</span>::<span class="ident">fs</span>::<span class="ident">symlink</span>(<span class="ident">src</span>, <span class="ident">dst</span>)
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">SourceDestError</span>::<span class="ident">new</span>(<span class="ident">err</span>, <span class="ident">SourceDestErrorKind</span>::<span class="ident">Symlink</span>, <span class="ident">src</span>, <span class="ident">dst</span>))
+        <span class="ident">std::os::unix::fs::symlink</span>(<span class="ident">src</span>, <span class="ident">dst</span>)
+            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">SourceDestError::new</span>(<span class="ident">err</span>, <span class="ident">SourceDestErrorKind::Symlink</span>, <span class="ident">src</span>, <span class="ident">dst</span>))
     }
 
     <span class="doccomment">/// Wrapper for [`std::os::unix::fs::FileExt`](https://doc.rust-lang.org/std/os/unix/fs/trait.FileExt.html).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The std traits might be extended in the future (See issue [#49961](https://github.com/rust-lang/rust/issues/49961#issuecomment-382751777)).</span>
     <span class="doccomment">/// This trait is sealed and can not be implemented by other crates.</span>
-    <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FileExt</span>: <span class="kw">crate</span>::<span class="ident">Sealed</span> {
+    <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">FileExt</span>: <span class="kw">crate</span><span class="ident">::Sealed</span> {
         <span class="doccomment">/// Wrapper for [`FileExt::read_at`](https://doc.rust-lang.org/std/os/unix/fs/trait.FileExt.html#tymethod.read_at)</span>
-        <span class="kw">fn</span> <span class="ident">read_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="ident">offset</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>;
+        <span class="kw">fn</span> <span class="ident">read_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>], <span class="ident">offset</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>;
         <span class="doccomment">/// Wrapper for [`FileExt::write_at`](https://doc.rust-lang.org/std/os/unix/fs/trait.FileExt.html#tymethod.write_at)</span>
-        <span class="kw">fn</span> <span class="ident">write_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">offset</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>;
+        <span class="kw">fn</span> <span class="ident">write_at</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">offset</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>;
     }
 
     <span class="doccomment">/// Wrapper for [`std::os::unix::fs::OpenOptionsExt`](https://doc.rust-lang.org/std/os/unix/fs/trait.OpenOptionsExt.html)</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The std traits might be extended in the future (See issue [#49961](https://github.com/rust-lang/rust/issues/49961#issuecomment-382751777)).</span>
     <span class="doccomment">/// This trait is sealed and can not be implemented by other crates.</span>
-    <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">OpenOptionsExt</span>: <span class="kw">crate</span>::<span class="ident">Sealed</span> {
+    <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">OpenOptionsExt</span>: <span class="kw">crate</span><span class="ident">::Sealed</span> {
         <span class="doccomment">/// Wapper for [`OpenOptionsExt::mode`](https://doc.rust-lang.org/std/os/unix/fs/trait.OpenOptionsExt.html#tymethod.mode)</span>
         <span class="kw">fn</span> <span class="ident">mode</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">mode</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>;
         <span class="doccomment">/// Wapper for [`OpenOptionsExt::custom_flags`](https://doc.rust-lang.org/std/os/unix/fs/trait.OpenOptionsExt.html#tymethod.custom_flags)</span>

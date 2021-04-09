@@ -498,20 +498,20 @@
 <span class="doccomment">//! possible to minimize the number of `fill` instructions needed. This must not cause the register</span>
 <span class="doccomment">//! pressure limits to be exceeded.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">EncCursor</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">dominator_tree</span>::<span class="ident">DominatorTree</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">entity</span>::{<span class="ident">SparseMap</span>, <span class="ident">SparseMapValue</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">AbiParam</span>, <span class="ident">ArgumentLoc</span>, <span class="ident">InstBuilder</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">Block</span>, <span class="ident">Function</span>, <span class="ident">Inst</span>, <span class="ident">InstructionData</span>, <span class="ident">Opcode</span>, <span class="ident">Value</span>, <span class="ident">ValueLoc</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">RegClass</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::{<span class="ident">ConstraintKind</span>, <span class="ident">EncInfo</span>, <span class="ident">Encoding</span>, <span class="ident">RecipeConstraints</span>, <span class="ident">TargetIsa</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">affinity</span>::<span class="ident">Affinity</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">live_value_tracker</span>::{<span class="ident">LiveValue</span>, <span class="ident">LiveValueTracker</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">liveness</span>::<span class="ident">Liveness</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">timing</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">topo_order</span>::<span class="ident">TopoOrder</span>;
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
-<span class="kw">use</span> <span class="ident">log</span>::<span class="ident">debug</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">EncCursor</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::dominator_tree::DominatorTree</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::entity</span>::{<span class="ident">SparseMap</span>, <span class="ident">SparseMapValue</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">AbiParam</span>, <span class="ident">ArgumentLoc</span>, <span class="ident">InstBuilder</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">Block</span>, <span class="ident">Function</span>, <span class="ident">Inst</span>, <span class="ident">InstructionData</span>, <span class="ident">Opcode</span>, <span class="ident">Value</span>, <span class="ident">ValueLoc</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::RegClass</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa</span>::{<span class="ident">ConstraintKind</span>, <span class="ident">EncInfo</span>, <span class="ident">Encoding</span>, <span class="ident">RecipeConstraints</span>, <span class="ident">TargetIsa</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::affinity::Affinity</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::live_value_tracker</span>::{<span class="ident">LiveValue</span>, <span class="ident">LiveValueTracker</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::liveness::Liveness</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::timing</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::topo_order::TopoOrder</span>;
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
+<span class="kw">use</span> <span class="ident">log::debug</span>;
 
 <span class="doccomment">/// Reusable data structures for the reload pass.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Reload</span> {
@@ -540,8 +540,8 @@
     <span class="doccomment">/// Create a new blank reload pass.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">candidates</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
-            <span class="ident">reloads</span>: <span class="ident">SparseMap</span>::<span class="ident">new</span>(),
+            <span class="ident">candidates</span>: <span class="ident">Vec::new</span>(),
+            <span class="ident">reloads</span>: <span class="ident">SparseMap::new</span>(),
         }
     }
 
@@ -561,10 +561,10 @@
         <span class="ident">topo</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TopoOrder</span>,
         <span class="ident">tracker</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">LiveValueTracker</span>,
     ) {
-        <span class="kw">let</span> <span class="ident">_tt</span> <span class="op">=</span> <span class="ident">timing</span>::<span class="ident">ra_reload</span>();
+        <span class="kw">let</span> <span class="ident">_tt</span> <span class="op">=</span> <span class="ident">timing::ra_reload</span>();
         <span class="macro">debug!</span>(<span class="string">&quot;Reload for:\n{}&quot;</span>, <span class="ident">func</span>.<span class="ident">display</span>(<span class="ident">isa</span>));
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context</span> {
-            <span class="ident">cur</span>: <span class="ident">EncCursor</span>::<span class="ident">new</span>(<span class="ident">func</span>, <span class="ident">isa</span>),
+            <span class="ident">cur</span>: <span class="ident">EncCursor::new</span>(<span class="ident">func</span>, <span class="ident">isa</span>),
             <span class="ident">encinfo</span>: <span class="ident">isa</span>.<span class="ident">encoding_info</span>(),
             <span class="ident">domtree</span>,
             <span class="ident">liveness</span>,
@@ -656,7 +656,7 @@
         <span class="kw">for</span> (<span class="ident">arg_idx</span>, <span class="ident">arg</span>) <span class="kw">in</span> <span class="ident">args</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
             <span class="kw">let</span> <span class="ident">abi</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">signature</span>.<span class="ident">params</span>[<span class="ident">arg_idx</span>];
             <span class="kw">match</span> <span class="ident">abi</span>.<span class="ident">location</span> {
-                <span class="ident">ArgumentLoc</span>::<span class="ident">Reg</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ArgumentLoc::Reg</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">if</span> <span class="ident">arg</span>.<span class="ident">affinity</span>.<span class="ident">is_stack</span>() {
                         <span class="comment">// An incoming register parameter was spilled. Replace the parameter value</span>
                         <span class="comment">// with a temporary register value that is immediately spilled.</span>
@@ -665,15 +665,15 @@
                             .<span class="ident">func</span>
                             .<span class="ident">dfg</span>
                             .<span class="ident">replace_block_param</span>(<span class="ident">arg</span>.<span class="ident">value</span>, <span class="ident">abi</span>.<span class="ident">value_type</span>);
-                        <span class="kw">let</span> <span class="ident">affinity</span> <span class="op">=</span> <span class="ident">Affinity</span>::<span class="ident">abi</span>(<span class="kw-2">&amp;</span><span class="ident">abi</span>, <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">isa</span>);
+                        <span class="kw">let</span> <span class="ident">affinity</span> <span class="op">=</span> <span class="ident">Affinity::abi</span>(<span class="kw-2">&amp;</span><span class="ident">abi</span>, <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">isa</span>);
                         <span class="self">self</span>.<span class="ident">liveness</span>.<span class="ident">create_dead</span>(<span class="ident">reg</span>, <span class="ident">block</span>, <span class="ident">affinity</span>);
                         <span class="self">self</span>.<span class="ident">insert_spill</span>(<span class="ident">block</span>, <span class="ident">arg</span>.<span class="ident">value</span>, <span class="ident">reg</span>);
                     }
                 }
-                <span class="ident">ArgumentLoc</span>::<span class="ident">Stack</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ArgumentLoc::Stack</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="macro">debug_assert!</span>(<span class="ident">arg</span>.<span class="ident">affinity</span>.<span class="ident">is_stack</span>());
                 }
-                <span class="ident">ArgumentLoc</span>::<span class="ident">Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unexpected ABI location&quot;</span>),
+                <span class="ident">ArgumentLoc::Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unexpected ABI location&quot;</span>),
             }
         }
     }
@@ -704,8 +704,8 @@
         <span class="comment">// it with a `copy_nop` but otherwise ignore it.  In particular, don&#39;t</span>
         <span class="comment">// generate a reload immediately followed by a spill.  The `copy_nop`</span>
         <span class="comment">// has a zero-length encoding, so will disappear at emission time.</span>
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">InstructionData</span>::<span class="ident">Unary</span> {
-            <span class="ident">opcode</span>: <span class="ident">Opcode</span>::<span class="ident">Copy</span>,
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">InstructionData::Unary</span> {
+            <span class="ident">opcode</span>: <span class="ident">Opcode::Copy</span>,
             <span class="ident">arg</span>,
         } <span class="op">=</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>]
         {
@@ -716,7 +716,7 @@
                     <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">arg</span>],
                     <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">dst_val</span>],
                 ) {
-                    (<span class="ident">ValueLoc</span>::<span class="ident">Stack</span>(<span class="ident">src_slot</span>), <span class="ident">ValueLoc</span>::<span class="ident">Stack</span>(<span class="ident">dst_slot</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                    (<span class="ident">ValueLoc::Stack</span>(<span class="ident">src_slot</span>), <span class="ident">ValueLoc::Stack</span>(<span class="ident">dst_slot</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="ident">src_slot</span> <span class="op">=</span><span class="op">=</span> <span class="ident">dst_slot</span> <span class="op">&amp;&amp;</span> {
                             <span class="kw">let</span> <span class="ident">src_ty</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">arg</span>);
                             <span class="kw">let</span> <span class="ident">dst_ty</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">dst_val</span>);
@@ -747,8 +747,8 @@
 
         <span class="comment">// Deal with all instructions not special-cased by the immediately</span>
         <span class="comment">// preceding fragment.</span>
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">InstructionData</span>::<span class="ident">Unary</span> {
-            <span class="ident">opcode</span>: <span class="ident">Opcode</span>::<span class="ident">Copy</span>,
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">InstructionData::Unary</span> {
+            <span class="ident">opcode</span>: <span class="ident">Opcode::Copy</span>,
             ..
         } <span class="op">=</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>]
         {
@@ -780,9 +780,9 @@
         <span class="comment">// That way, we don&#39;t need to rewrite all future uses of v2.</span>
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">constraints</span>) <span class="op">=</span> <span class="ident">constraints</span> {
             <span class="kw">for</span> (<span class="ident">lv</span>, <span class="ident">op</span>) <span class="kw">in</span> <span class="ident">defs</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">constraints</span>.<span class="ident">outs</span>) {
-                <span class="kw">if</span> <span class="ident">lv</span>.<span class="ident">affinity</span>.<span class="ident">is_stack</span>() <span class="op">&amp;&amp;</span> <span class="ident">op</span>.<span class="ident">kind</span> <span class="op">!</span><span class="op">=</span> <span class="ident">ConstraintKind</span>::<span class="ident">Stack</span> {
-                    <span class="kw">if</span> <span class="kw">let</span> <span class="ident">InstructionData</span>::<span class="ident">Unary</span> {
-                        <span class="ident">opcode</span>: <span class="ident">Opcode</span>::<span class="ident">Copy</span>,
+                <span class="kw">if</span> <span class="ident">lv</span>.<span class="ident">affinity</span>.<span class="ident">is_stack</span>() <span class="op">&amp;&amp;</span> <span class="ident">op</span>.<span class="ident">kind</span> <span class="op">!</span><span class="op">=</span> <span class="ident">ConstraintKind::Stack</span> {
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="ident">InstructionData::Unary</span> {
+                        <span class="ident">opcode</span>: <span class="ident">Opcode::Copy</span>,
                         <span class="ident">arg</span>,
                     } <span class="op">=</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>]
                     {
@@ -792,7 +792,7 @@
                     } <span class="kw">else</span> {
                         <span class="kw">let</span> <span class="ident">value_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">lv</span>.<span class="ident">value</span>);
                         <span class="kw">let</span> <span class="ident">reg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">replace_result</span>(<span class="ident">lv</span>.<span class="ident">value</span>, <span class="ident">value_type</span>);
-                        <span class="self">self</span>.<span class="ident">liveness</span>.<span class="ident">create_dead</span>(<span class="ident">reg</span>, <span class="ident">inst</span>, <span class="ident">Affinity</span>::<span class="ident">new</span>(<span class="ident">op</span>));
+                        <span class="self">self</span>.<span class="ident">liveness</span>.<span class="ident">create_dead</span>(<span class="ident">reg</span>, <span class="ident">inst</span>, <span class="ident">Affinity::new</span>(<span class="ident">op</span>));
                         <span class="self">self</span>.<span class="ident">insert_spill</span>(<span class="ident">block</span>, <span class="ident">lv</span>.<span class="ident">value</span>, <span class="ident">reg</span>);
                     }
                 }
@@ -821,7 +821,7 @@
                 <span class="kw">if</span> <span class="ident">lv</span>.<span class="ident">affinity</span>.<span class="ident">is_stack</span>() {
                     <span class="kw">let</span> <span class="ident">reg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">replace_result</span>(<span class="ident">lv</span>.<span class="ident">value</span>, <span class="ident">abi</span>.<span class="ident">value_type</span>);
                     <span class="self">self</span>.<span class="ident">liveness</span>
-                        .<span class="ident">create_dead</span>(<span class="ident">reg</span>, <span class="ident">inst</span>, <span class="ident">Affinity</span>::<span class="ident">abi</span>(<span class="kw-2">&amp;</span><span class="ident">abi</span>, <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">isa</span>));
+                        .<span class="ident">create_dead</span>(<span class="ident">reg</span>, <span class="ident">inst</span>, <span class="ident">Affinity::abi</span>(<span class="kw-2">&amp;</span><span class="ident">abi</span>, <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">isa</span>));
                     <span class="self">self</span>.<span class="ident">insert_spill</span>(<span class="ident">block</span>, <span class="ident">lv</span>.<span class="ident">value</span>, <span class="ident">reg</span>);
                 }
             }
@@ -847,7 +847,7 @@
             <span class="ident">cand</span>.<span class="ident">value</span> <span class="op">=</span> <span class="ident">reg</span>;
 
             <span class="comment">// Create a live range for the new reload.</span>
-            <span class="kw">let</span> <span class="ident">affinity</span> <span class="op">=</span> <span class="ident">Affinity</span>::<span class="ident">Reg</span>(<span class="ident">cand</span>.<span class="ident">regclass</span>.<span class="ident">into</span>());
+            <span class="kw">let</span> <span class="ident">affinity</span> <span class="op">=</span> <span class="ident">Affinity::Reg</span>(<span class="ident">cand</span>.<span class="ident">regclass</span>.<span class="ident">into</span>());
             <span class="self">self</span>.<span class="ident">liveness</span>.<span class="ident">create_dead</span>(<span class="ident">reg</span>, <span class="ident">fill</span>, <span class="ident">affinity</span>);
             <span class="self">self</span>.<span class="ident">liveness</span>
                 .<span class="ident">extend_locally</span>(<span class="ident">reg</span>, <span class="ident">block</span>, <span class="ident">inst</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">layout</span>);
@@ -890,7 +890,7 @@
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">constraints</span>) <span class="op">=</span> <span class="ident">constraints</span> {
             <span class="kw">for</span> (<span class="ident">argidx</span>, (<span class="ident">op</span>, <span class="kw-2">&amp;</span><span class="ident">arg</span>)) <span class="kw">in</span> <span class="ident">constraints</span>.<span class="ident">ins</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">args</span>).<span class="ident">enumerate</span>() {
-                <span class="kw">if</span> <span class="ident">op</span>.<span class="ident">kind</span> <span class="op">!</span><span class="op">=</span> <span class="ident">ConstraintKind</span>::<span class="ident">Stack</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">liveness</span>[<span class="ident">arg</span>].<span class="ident">affinity</span>.<span class="ident">is_stack</span>() {
+                <span class="kw">if</span> <span class="ident">op</span>.<span class="ident">kind</span> <span class="op">!</span><span class="op">=</span> <span class="ident">ConstraintKind::Stack</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">liveness</span>[<span class="ident">arg</span>].<span class="ident">affinity</span>.<span class="ident">is_stack</span>() {
                     <span class="self">self</span>.<span class="ident">candidates</span>.<span class="ident">push</span>(<span class="ident">ReloadCandidate</span> {
                         <span class="ident">argidx</span>,
                         <span class="ident">value</span>: <span class="ident">arg</span>,

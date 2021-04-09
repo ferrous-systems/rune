@@ -26,9 +26,9 @@ a value of type <code>T</code>.</p>
 <p>Alignment and padding:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">crossbeam_utils</span>::<span class="ident">CachePadded</span>;
+<span class="kw">use</span> <span class="ident">crossbeam_utils::CachePadded</span>;
 
-<span class="kw">let</span> <span class="ident">array</span> <span class="op">=</span> [<span class="ident">CachePadded</span>::<span class="ident">new</span>(<span class="number">1i8</span>), <span class="ident">CachePadded</span>::<span class="ident">new</span>(<span class="number">2i8</span>)];
+<span class="kw">let</span> <span class="ident">array</span> <span class="op">=</span> [<span class="ident">CachePadded::new</span>(<span class="number">1i8</span>), <span class="ident">CachePadded::new</span>(<span class="number">2i8</span>)];
 <span class="kw">let</span> <span class="ident">addr1</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">array</span>[<span class="number">0</span>] <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i8</span> <span class="kw">as</span> <span class="ident">usize</span>;
 <span class="kw">let</span> <span class="ident">addr2</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">array</span>[<span class="number">1</span>] <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i8</span> <span class="kw">as</span> <span class="ident">usize</span>;
 
@@ -40,8 +40,8 @@ different cache lines so that concurrent threads pushing and popping elements do
 each other’s cache lines:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">crossbeam_utils</span>::<span class="ident">CachePadded</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">atomic</span>::<span class="ident">AtomicUsize</span>;
+<span class="kw">use</span> <span class="ident">crossbeam_utils::CachePadded</span>;
+<span class="kw">use</span> <span class="ident">std::sync::atomic::AtomicUsize</span>;
 
 <span class="kw">struct</span> <span class="ident">Queue</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="ident">head</span>: <span class="ident">CachePadded</span><span class="op">&lt;</span><span class="ident">AtomicUsize</span><span class="op">&gt;</span>,
@@ -51,15 +51,15 @@ each other’s cache lines:</p>
 </div><h2 id="implementations" class="small-section-header">Implementations<a href="#implementations" class="anchor"></a></h2><h3 id="impl" class="impl"><code class="in-band">impl&lt;T&gt; <a class="struct" href="../crossbeam_utils/struct.CachePadded.html" title="struct crossbeam_utils::CachePadded">CachePadded</a>&lt;T&gt;</code><a href="#impl" class="anchor"></a><a class="srclink" href="../src/crossbeam_utils/cache_padded.rs.html#135-163" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.new" class="method"><code>pub const fn <a href="#method.new" class="fnname">new</a>(t: T) -&gt; <a class="struct" href="../crossbeam_utils/struct.CachePadded.html" title="struct crossbeam_utils::CachePadded">CachePadded</a>&lt;T&gt;</code><a class="srclink" href="../src/crossbeam_utils/cache_padded.rs.html#145-147" title="goto source code">[src]</a></h4><div class="docblock"><p>Pads and aligns a value to the length of a cache line.</p>
 <h1 id="examples-1" class="section-header"><a href="#examples-1">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">crossbeam_utils</span>::<span class="ident">CachePadded</span>;
+<span class="kw">use</span> <span class="ident">crossbeam_utils::CachePadded</span>;
 
-<span class="kw">let</span> <span class="ident">padded_value</span> <span class="op">=</span> <span class="ident">CachePadded</span>::<span class="ident">new</span>(<span class="number">1</span>);</pre></div>
+<span class="kw">let</span> <span class="ident">padded_value</span> <span class="op">=</span> <span class="ident">CachePadded::new</span>(<span class="number">1</span>);</pre></div>
 </div><h4 id="method.into_inner" class="method"><code>pub fn <a href="#method.into_inner" class="fnname">into_inner</a>(self) -&gt; T</code><a class="srclink" href="../src/crossbeam_utils/cache_padded.rs.html#160-162" title="goto source code">[src]</a></h4><div class="docblock"><p>Returns the inner value.</p>
 <h1 id="examples-2" class="section-header"><a href="#examples-2">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">crossbeam_utils</span>::<span class="ident">CachePadded</span>;
+<span class="kw">use</span> <span class="ident">crossbeam_utils::CachePadded</span>;
 
-<span class="kw">let</span> <span class="ident">padded_value</span> <span class="op">=</span> <span class="ident">CachePadded</span>::<span class="ident">new</span>(<span class="number">7</span>);
+<span class="kw">let</span> <span class="ident">padded_value</span> <span class="op">=</span> <span class="ident">CachePadded::new</span>(<span class="number">7</span>);
 <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">padded_value</span>.<span class="ident">into_inner</span>();
 <span class="macro">assert_eq!</span>(<span class="ident">value</span>, <span class="number">7</span>);</pre></div>
 </div></div><h2 id="trait-implementations" class="small-section-header">Trait Implementations<a href="#trait-implementations" class="anchor"></a></h2><div id="trait-implementations-list"><h3 id="impl-Clone" class="impl"><code class="in-band">impl&lt;T:&nbsp;<a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a>&gt; <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="struct" href="../crossbeam_utils/struct.CachePadded.html" title="struct crossbeam_utils::CachePadded">CachePadded</a>&lt;T&gt;</code><a href="#impl-Clone" class="anchor"></a><a class="srclink" href="../src/crossbeam_utils/cache_padded.rs.html#61" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.clone" class="method hidden"><code>fn <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone" class="fnname">clone</a>(&amp;self) -&gt; <a class="struct" href="../crossbeam_utils/struct.CachePadded.html" title="struct crossbeam_utils::CachePadded">CachePadded</a>&lt;T&gt;</code><a class="srclink" href="../src/crossbeam_utils/cache_padded.rs.html#61" title="goto source code">[src]</a></h4><div class='docblock hidden'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>

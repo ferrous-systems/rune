@@ -44,29 +44,29 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Expanding instructions as runtime library calls.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">libcall</span>::<span class="ident">get_libcall_funcref</span>, <span class="ident">InstBuilder</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::{<span class="ident">CallConv</span>, <span class="ident">TargetIsa</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">legalizer</span>::<span class="ident">boundary</span>::<span class="ident">legalize_libcall_signature</span>;
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">libcall::get_libcall_funcref</span>, <span class="ident">InstBuilder</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa</span>::{<span class="ident">CallConv</span>, <span class="ident">TargetIsa</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::legalizer::boundary::legalize_libcall_signature</span>;
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 
 <span class="doccomment">/// Try to expand `inst` as a library call, returning true is successful.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">expand_as_libcall</span>(<span class="ident">inst</span>: <span class="ident">ir</span>::<span class="ident">Inst</span>, <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir</span>::<span class="ident">Function</span>, <span class="ident">isa</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">expand_as_libcall</span>(<span class="ident">inst</span>: <span class="ident">ir::Inst</span>, <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir::Function</span>, <span class="ident">isa</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
     <span class="comment">// Does the opcode/ctrl_type combo even have a well-known runtime library name.</span>
-    <span class="kw">let</span> <span class="ident">libcall</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">ir</span>::<span class="ident">LibCall</span>::<span class="ident">for_inst</span>(<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>].<span class="ident">opcode</span>(), <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">ctrl_typevar</span>(<span class="ident">inst</span>))
+    <span class="kw">let</span> <span class="ident">libcall</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">ir::LibCall::for_inst</span>(<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>].<span class="ident">opcode</span>(), <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">ctrl_typevar</span>(<span class="ident">inst</span>))
     {
         <span class="prelude-val">Some</span>(<span class="ident">lc</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">lc</span>,
         <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="bool-val">false</span>,
     };
 
     <span class="comment">// Now we convert `inst` to a call. First save the arguments.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
     <span class="ident">args</span>.<span class="ident">extend_from_slice</span>(<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">inst_args</span>(<span class="ident">inst</span>));
 
-    <span class="kw">let</span> <span class="ident">call_conv</span> <span class="op">=</span> <span class="ident">CallConv</span>::<span class="ident">for_libcall</span>(<span class="ident">isa</span>.<span class="ident">flags</span>(), <span class="ident">isa</span>.<span class="ident">default_call_conv</span>());
+    <span class="kw">let</span> <span class="ident">call_conv</span> <span class="op">=</span> <span class="ident">CallConv::for_libcall</span>(<span class="ident">isa</span>.<span class="ident">flags</span>(), <span class="ident">isa</span>.<span class="ident">default_call_conv</span>());
     <span class="kw">if</span> <span class="ident">call_conv</span>.<span class="ident">extends_baldrdash</span>() {
         <span class="kw">let</span> <span class="ident">vmctx</span> <span class="op">=</span> <span class="ident">func</span>
-            .<span class="ident">special_param</span>(<span class="ident">ir</span>::<span class="ident">ArgumentPurpose</span>::<span class="ident">VMContext</span>)
+            .<span class="ident">special_param</span>(<span class="ident">ir::ArgumentPurpose::VMContext</span>)
             .<span class="ident">expect</span>(<span class="string">&quot;Missing vmctx parameter for baldrdash libcall&quot;</span>);
         <span class="ident">args</span>.<span class="ident">push</span>(<span class="ident">vmctx</span>);
     }

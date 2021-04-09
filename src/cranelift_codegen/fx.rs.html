@@ -126,21 +126,21 @@
 <span class="comment">// except according to those terms.</span>
 
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>};
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">default</span>::<span class="ident">Default</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">hash</span>::{<span class="ident">BuildHasherDefault</span>, <span class="ident">Hash</span>, <span class="ident">Hasher</span>};
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">ops</span>::<span class="ident">BitXor</span>;
+<span class="kw">use</span> <span class="ident">core::default::Default</span>;
+<span class="kw">use</span> <span class="ident">core::hash</span>::{<span class="ident">BuildHasherDefault</span>, <span class="ident">Hash</span>, <span class="ident">Hasher</span>};
+<span class="kw">use</span> <span class="ident">core::ops::BitXor</span>;
 
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">FxHashMap</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span>, <span class="ident">BuildHasherDefault</span><span class="op">&lt;</span><span class="ident">FxHasher</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 <span class="kw">pub</span> <span class="kw">type</span> <span class="ident">FxHashSet</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">V</span>, <span class="ident">BuildHasherDefault</span><span class="op">&lt;</span><span class="ident">FxHasher</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">FxHashMap</span><span class="op">&lt;</span><span class="ident">K</span>: <span class="ident">Hash</span> <span class="op">+</span> <span class="ident">Eq</span>, <span class="ident">V</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FxHashMap</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span> {
-    <span class="ident">HashMap</span>::<span class="ident">default</span>()
+    <span class="ident">HashMap::default</span>()
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_snake_case</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">FxHashSet</span><span class="op">&lt;</span><span class="ident">V</span>: <span class="ident">Hash</span> <span class="op">+</span> <span class="ident">Eq</span><span class="op">&gt;</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FxHashSet</span><span class="op">&lt;</span><span class="ident">V</span><span class="op">&gt;</span> {
-    <span class="ident">HashSet</span>::<span class="ident">default</span>()
+    <span class="ident">HashSet::default</span>()
 }
 
 <span class="doccomment">/// A speedy hash algorithm for use within rustc. The hashmap in liballoc</span>

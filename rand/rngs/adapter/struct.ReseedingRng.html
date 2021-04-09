@@ -32,14 +32,14 @@ data from the wrapped PRNG without reseeding.</p>
 reports the error.</p>
 <h1 id="example" class="section-header"><a href="#example">Example</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">rand</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">rand_chacha</span>::<span class="ident">ChaCha20Core</span>; <span class="comment">// Internal part of ChaChaRng that</span>
+<span class="kw">use</span> <span class="ident">rand::prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">rand_chacha::ChaCha20Core</span>; <span class="comment">// Internal part of ChaChaRng that</span>
                              <span class="comment">// implements BlockRngCore</span>
-<span class="kw">use</span> <span class="ident">rand</span>::<span class="ident">rngs</span>::<span class="ident">OsRng</span>;
-<span class="kw">use</span> <span class="ident">rand</span>::<span class="ident">rngs</span>::<span class="ident">adapter</span>::<span class="ident">ReseedingRng</span>;
+<span class="kw">use</span> <span class="ident">rand::rngs::OsRng</span>;
+<span class="kw">use</span> <span class="ident">rand::rngs::adapter::ReseedingRng</span>;
 
-<span class="kw">let</span> <span class="ident">prng</span> <span class="op">=</span> <span class="ident">ChaCha20Core</span>::<span class="ident">from_entropy</span>();
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reseeding_rng</span> <span class="op">=</span> <span class="ident">ReseedingRng</span>::<span class="ident">new</span>(<span class="ident">prng</span>, <span class="number">0</span>, <span class="ident">OsRng</span>);
+<span class="kw">let</span> <span class="ident">prng</span> <span class="op">=</span> <span class="ident">ChaCha20Core::from_entropy</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reseeding_rng</span> <span class="op">=</span> <span class="ident">ReseedingRng::new</span>(<span class="ident">prng</span>, <span class="number">0</span>, <span class="ident">OsRng</span>);
 
 <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">reseeding_rng</span>.<span class="ident">gen</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>());
 

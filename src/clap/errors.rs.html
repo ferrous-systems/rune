@@ -921,16 +921,16 @@
 <span id="918">918</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// Std</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">From</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">StdError</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span> <span class="kw">as</span> <span class="ident">std_fmt</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Display</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::{<span class="self">self</span>, <span class="ident">Write</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">process</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">result</span>::<span class="prelude-ty">Result</span> <span class="kw">as</span> <span class="ident">StdResult</span>;
+<span class="kw">use</span> <span class="ident">std::convert::From</span>;
+<span class="kw">use</span> <span class="ident">std::error::Error</span> <span class="kw">as</span> <span class="ident">StdError</span>;
+<span class="kw">use</span> <span class="ident">std::fmt</span> <span class="kw">as</span> <span class="ident">std_fmt</span>;
+<span class="kw">use</span> <span class="ident">std::fmt::Display</span>;
+<span class="kw">use</span> <span class="ident">std::io</span>::{<span class="self">self</span>, <span class="ident">Write</span>};
+<span class="kw">use</span> <span class="ident">std::process</span>;
+<span class="kw">use</span> <span class="ident">std::result::Result</span> <span class="kw">as</span> <span class="ident">StdResult</span>;
 
 <span class="comment">// Internal</span>
-<span class="kw">use</span> <span class="ident">args</span>::<span class="ident">AnyArg</span>;
+<span class="kw">use</span> <span class="ident">args::AnyArg</span>;
 <span class="kw">use</span> <span class="ident">fmt</span>::{<span class="ident">ColorWhen</span>, <span class="ident">Colorizer</span>, <span class="ident">ColorizerOption</span>};
 <span class="kw">use</span> <span class="ident">suggestions</span>;
 
@@ -1308,7 +1308,7 @@
     <span class="doccomment">/// Should the message be written to `stdout` or not</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">use_stderr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">kind</span> {
-            <span class="ident">ErrorKind</span>::<span class="ident">HelpDisplayed</span> <span class="op">|</span> <span class="ident">ErrorKind</span>::<span class="ident">VersionDisplayed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+            <span class="ident">ErrorKind::HelpDisplayed</span> <span class="op">|</span> <span class="ident">ErrorKind::VersionDisplayed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
         }
     }
@@ -1317,15 +1317,15 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">use_stderr</span>() {
             <span class="macro">wlnerr!</span>(<span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">message</span>);
-            <span class="ident">process</span>::<span class="ident">exit</span>(<span class="number">1</span>);
+            <span class="ident">process::exit</span>(<span class="number">1</span>);
         }
-        <span class="kw">let</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">stdout</span>();
+        <span class="kw">let</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">io::stdout</span>();
         <span class="macro">writeln!</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">out</span>.<span class="ident">lock</span>(), <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">message</span>).<span class="ident">expect</span>(<span class="string">&quot;Error writing Error to stdout&quot;</span>);
-        <span class="ident">process</span>::<span class="ident">exit</span>(<span class="number">0</span>);
+        <span class="ident">process::exit</span>(<span class="number">0</span>);
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_to</span><span class="op">&lt;</span><span class="ident">W</span>: <span class="ident">Write</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">W</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_to</span><span class="op">&lt;</span><span class="ident">W</span>: <span class="ident">Write</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">W</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="macro">write!</span>(<span class="ident">w</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">message</span>)
     }
 
@@ -1341,7 +1341,7 @@
         <span class="ident">U</span>: <span class="ident">Display</span>,
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">arg</span>.<span class="ident">name</span>().<span class="ident">to_owned</span>()];
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
             <span class="ident">when</span>: <span class="ident">color</span>,
         });
@@ -1363,7 +1363,7 @@
                 <span class="ident">usage</span>,
                 <span class="ident">c</span>.<span class="ident">good</span>(<span class="string">&quot;--help&quot;</span>)
             ),
-            <span class="ident">kind</span>: <span class="ident">ErrorKind</span>::<span class="ident">ArgumentConflict</span>,
+            <span class="ident">kind</span>: <span class="ident">ErrorKind::ArgumentConflict</span>,
             <span class="ident">info</span>: <span class="prelude-val">Some</span>(<span class="ident">v</span>),
         }
     }
@@ -1373,7 +1373,7 @@
     <span class="kw">where</span>
         <span class="ident">U</span>: <span class="ident">Display</span>,
     {
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
             <span class="ident">when</span>: <span class="ident">color</span>,
         });
@@ -1388,7 +1388,7 @@
                 <span class="ident">usage</span>,
                 <span class="ident">c</span>.<span class="ident">good</span>(<span class="string">&quot;--help&quot;</span>)
             ),
-            <span class="ident">kind</span>: <span class="ident">ErrorKind</span>::<span class="ident">EmptyValue</span>,
+            <span class="ident">kind</span>: <span class="ident">ErrorKind::EmptyValue</span>,
             <span class="ident">info</span>: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="ident">arg</span>.<span class="ident">name</span>().<span class="ident">to_owned</span>()]),
         }
     }
@@ -1406,11 +1406,11 @@
         <span class="ident">G</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Display</span>,
         <span class="ident">U</span>: <span class="ident">Display</span>,
     {
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
             <span class="ident">when</span>: <span class="ident">color</span>,
         });
-        <span class="kw">let</span> <span class="ident">suffix</span> <span class="op">=</span> <span class="ident">suggestions</span>::<span class="ident">did_you_mean_value_suffix</span>(<span class="ident">bad_val</span>.<span class="ident">as_ref</span>(), <span class="ident">good_vals</span>.<span class="ident">iter</span>());
+        <span class="kw">let</span> <span class="ident">suffix</span> <span class="op">=</span> <span class="ident">suggestions::did_you_mean_value_suffix</span>(<span class="ident">bad_val</span>.<span class="ident">as_ref</span>(), <span class="ident">good_vals</span>.<span class="ident">iter</span>());
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sorted</span> <span class="op">=</span> <span class="macro">vec!</span>[];
         <span class="kw">for</span> <span class="ident">v</span> <span class="kw">in</span> <span class="ident">good_vals</span> {
@@ -1434,7 +1434,7 @@
                 <span class="ident">usage</span>,
                 <span class="ident">c</span>.<span class="ident">good</span>(<span class="string">&quot;--help&quot;</span>)
             ),
-            <span class="ident">kind</span>: <span class="ident">ErrorKind</span>::<span class="ident">InvalidValue</span>,
+            <span class="ident">kind</span>: <span class="ident">ErrorKind::InvalidValue</span>,
             <span class="ident">info</span>: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="ident">arg</span>.<span class="ident">name</span>().<span class="ident">to_owned</span>(), <span class="ident">bad_val</span>.<span class="ident">as_ref</span>().<span class="ident">to_owned</span>()]),
         }
     }
@@ -1454,7 +1454,7 @@
         <span class="ident">U</span>: <span class="ident">Display</span>,
     {
         <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">subcmd</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
             <span class="ident">when</span>: <span class="ident">color</span>,
         });
@@ -1475,7 +1475,7 @@
                 <span class="ident">usage</span>,
                 <span class="ident">c</span>.<span class="ident">good</span>(<span class="string">&quot;--help&quot;</span>)
             ),
-            <span class="ident">kind</span>: <span class="ident">ErrorKind</span>::<span class="ident">InvalidSubcommand</span>,
+            <span class="ident">kind</span>: <span class="ident">ErrorKind::InvalidSubcommand</span>,
             <span class="ident">info</span>: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="ident">s</span>]),
         }
     }
@@ -1487,7 +1487,7 @@
         <span class="ident">N</span>: <span class="ident">Display</span>,
     {
         <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">subcmd</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
             <span class="ident">when</span>: <span class="ident">color</span>,
         });
@@ -1503,7 +1503,7 @@
                 <span class="ident">name</span>,
                 <span class="ident">c</span>.<span class="ident">good</span>(<span class="string">&quot;--help&quot;</span>)
             ),
-            <span class="ident">kind</span>: <span class="ident">ErrorKind</span>::<span class="ident">UnrecognizedSubcommand</span>,
+            <span class="ident">kind</span>: <span class="ident">ErrorKind::UnrecognizedSubcommand</span>,
             <span class="ident">info</span>: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="ident">s</span>]),
         }
     }
@@ -1514,7 +1514,7 @@
         <span class="ident">R</span>: <span class="ident">Display</span>,
         <span class="ident">U</span>: <span class="ident">Display</span>,
     {
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
             <span class="ident">when</span>: <span class="ident">color</span>,
         });
@@ -1528,7 +1528,7 @@
                 <span class="ident">usage</span>,
                 <span class="ident">c</span>.<span class="ident">good</span>(<span class="string">&quot;--help&quot;</span>)
             ),
-            <span class="ident">kind</span>: <span class="ident">ErrorKind</span>::<span class="ident">MissingRequiredArgument</span>,
+            <span class="ident">kind</span>: <span class="ident">ErrorKind::MissingRequiredArgument</span>,
             <span class="ident">info</span>: <span class="prelude-val">None</span>,
         }
     }
@@ -1539,7 +1539,7 @@
         <span class="ident">N</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Display</span>,
         <span class="ident">U</span>: <span class="ident">Display</span>,
     {
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
             <span class="ident">when</span>: <span class="ident">color</span>,
         });
@@ -1553,7 +1553,7 @@
                 <span class="ident">usage</span>,
                 <span class="ident">c</span>.<span class="ident">good</span>(<span class="string">&quot;--help&quot;</span>)
             ),
-            <span class="ident">kind</span>: <span class="ident">ErrorKind</span>::<span class="ident">MissingSubcommand</span>,
+            <span class="ident">kind</span>: <span class="ident">ErrorKind::MissingSubcommand</span>,
             <span class="ident">info</span>: <span class="prelude-val">None</span>,
         }
     }
@@ -1563,7 +1563,7 @@
     <span class="kw">where</span>
         <span class="ident">U</span>: <span class="ident">Display</span>,
     {
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
             <span class="ident">when</span>: <span class="ident">color</span>,
         });
@@ -1576,7 +1576,7 @@
                 <span class="ident">usage</span>,
                 <span class="ident">c</span>.<span class="ident">good</span>(<span class="string">&quot;--help&quot;</span>)
             ),
-            <span class="ident">kind</span>: <span class="ident">ErrorKind</span>::<span class="ident">InvalidUtf8</span>,
+            <span class="ident">kind</span>: <span class="ident">ErrorKind::InvalidUtf8</span>,
             <span class="ident">info</span>: <span class="prelude-val">None</span>,
         }
     }
@@ -1588,7 +1588,7 @@
         <span class="ident">U</span>: <span class="ident">Display</span>,
     {
         <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">val</span>.<span class="ident">as_ref</span>();
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
             <span class="ident">when</span>: <span class="ident">color</span>,
         });
@@ -1604,7 +1604,7 @@
                 <span class="ident">usage</span>,
                 <span class="ident">c</span>.<span class="ident">good</span>(<span class="string">&quot;--help&quot;</span>)
             ),
-            <span class="ident">kind</span>: <span class="ident">ErrorKind</span>::<span class="ident">TooManyValues</span>,
+            <span class="ident">kind</span>: <span class="ident">ErrorKind::TooManyValues</span>,
             <span class="ident">info</span>: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="ident">arg</span>.<span class="ident">name</span>().<span class="ident">to_owned</span>(), <span class="ident">v</span>.<span class="ident">to_owned</span>()]),
         }
     }
@@ -1620,7 +1620,7 @@
     <span class="kw">where</span>
         <span class="ident">U</span>: <span class="ident">Display</span>,
     {
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
             <span class="ident">when</span>: <span class="ident">color</span>,
         });
@@ -1638,14 +1638,14 @@
                 <span class="ident">usage</span>,
                 <span class="ident">c</span>.<span class="ident">good</span>(<span class="string">&quot;--help&quot;</span>)
             ),
-            <span class="ident">kind</span>: <span class="ident">ErrorKind</span>::<span class="ident">TooFewValues</span>,
+            <span class="ident">kind</span>: <span class="ident">ErrorKind::TooFewValues</span>,
             <span class="ident">info</span>: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="ident">arg</span>.<span class="ident">name</span>().<span class="ident">to_owned</span>()]),
         }
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">value_validation</span>(<span class="ident">arg</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">AnyArg</span><span class="op">&gt;</span>, <span class="ident">err</span>: <span class="ident">String</span>, <span class="ident">color</span>: <span class="ident">ColorWhen</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
             <span class="ident">when</span>: <span class="ident">color</span>,
         });
@@ -1660,7 +1660,7 @@
                 },
                 <span class="ident">err</span>
             ),
-            <span class="ident">kind</span>: <span class="ident">ErrorKind</span>::<span class="ident">ValueValidation</span>,
+            <span class="ident">kind</span>: <span class="ident">ErrorKind::ValueValidation</span>,
             <span class="ident">info</span>: <span class="prelude-val">None</span>,
         }
     }
@@ -1668,7 +1668,7 @@
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">value_validation_auto</span>(<span class="ident">err</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">n</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">AnyArg</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
-        <span class="ident">Error</span>::<span class="ident">value_validation</span>(<span class="ident">n</span>, <span class="ident">err</span>, <span class="ident">ColorWhen</span>::<span class="ident">Auto</span>)
+        <span class="ident">Error::value_validation</span>(<span class="ident">n</span>, <span class="ident">err</span>, <span class="ident">ColorWhen::Auto</span>)
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
@@ -1684,7 +1684,7 @@
         <span class="ident">S</span>: <span class="ident">Display</span>,
         <span class="ident">U</span>: <span class="ident">Display</span>,
     {
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
             <span class="ident">when</span>: <span class="ident">color</span>,
         });
@@ -1702,7 +1702,7 @@
                 <span class="ident">usage</span>,
                 <span class="ident">c</span>.<span class="ident">good</span>(<span class="string">&quot;--help&quot;</span>)
             ),
-            <span class="ident">kind</span>: <span class="ident">ErrorKind</span>::<span class="ident">WrongNumberOfValues</span>,
+            <span class="ident">kind</span>: <span class="ident">ErrorKind::WrongNumberOfValues</span>,
             <span class="ident">info</span>: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="ident">arg</span>.<span class="ident">name</span>().<span class="ident">to_owned</span>()]),
         }
     }
@@ -1712,7 +1712,7 @@
     <span class="kw">where</span>
         <span class="ident">U</span>: <span class="ident">Display</span>,
     {
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
             <span class="ident">when</span>: <span class="ident">color</span>,
         });
@@ -1727,7 +1727,7 @@
                 <span class="ident">usage</span>,
                 <span class="ident">c</span>.<span class="ident">good</span>(<span class="string">&quot;--help&quot;</span>)
             ),
-            <span class="ident">kind</span>: <span class="ident">ErrorKind</span>::<span class="ident">UnexpectedMultipleUsage</span>,
+            <span class="ident">kind</span>: <span class="ident">ErrorKind::UnexpectedMultipleUsage</span>,
             <span class="ident">info</span>: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="ident">arg</span>.<span class="ident">name</span>().<span class="ident">to_owned</span>()]),
         }
     }
@@ -1739,7 +1739,7 @@
         <span class="ident">U</span>: <span class="ident">Display</span>,
     {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">arg</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
             <span class="ident">when</span>: <span class="ident">color</span>,
         });
@@ -1759,20 +1759,20 @@
                 <span class="ident">usage</span>,
                 <span class="ident">c</span>.<span class="ident">good</span>(<span class="string">&quot;--help&quot;</span>)
             ),
-            <span class="ident">kind</span>: <span class="ident">ErrorKind</span>::<span class="ident">UnknownArgument</span>,
+            <span class="ident">kind</span>: <span class="ident">ErrorKind::UnknownArgument</span>,
             <span class="ident">info</span>: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="ident">a</span>]),
         }
     }
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">io_error</span>(<span class="ident">e</span>: <span class="kw-2">&amp;</span><span class="ident">Error</span>, <span class="ident">color</span>: <span class="ident">ColorWhen</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
             <span class="ident">when</span>: <span class="ident">color</span>,
         });
         <span class="ident">Error</span> {
             <span class="ident">message</span>: <span class="macro">format!</span>(<span class="string">&quot;{} {}&quot;</span>, <span class="ident">c</span>.<span class="ident">error</span>(<span class="string">&quot;error:&quot;</span>), <span class="ident">e</span>.<span class="ident">description</span>()),
-            <span class="ident">kind</span>: <span class="ident">ErrorKind</span>::<span class="ident">Io</span>,
+            <span class="ident">kind</span>: <span class="ident">ErrorKind::Io</span>,
             <span class="ident">info</span>: <span class="prelude-val">None</span>,
         }
     }
@@ -1783,9 +1783,9 @@
         <span class="ident">A</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">arg</span>.<span class="ident">into</span>();
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
-            <span class="ident">when</span>: <span class="ident">ColorWhen</span>::<span class="ident">Auto</span>,
+            <span class="ident">when</span>: <span class="ident">ColorWhen::Auto</span>,
         });
         <span class="ident">Error</span> {
             <span class="ident">message</span>: <span class="macro">format!</span>(
@@ -1793,7 +1793,7 @@
                 <span class="ident">c</span>.<span class="ident">error</span>(<span class="string">&quot;error:&quot;</span>),
                 <span class="ident">a</span>.<span class="ident">clone</span>()
             ),
-            <span class="ident">kind</span>: <span class="ident">ErrorKind</span>::<span class="ident">ArgumentNotFound</span>,
+            <span class="ident">kind</span>: <span class="ident">ErrorKind::ArgumentNotFound</span>,
             <span class="ident">info</span>: <span class="prelude-val">Some</span>(<span class="macro">vec!</span>[<span class="ident">a</span>]),
         }
     }
@@ -1803,9 +1803,9 @@
     <span class="doccomment">/// This can be used in combination with `Error::exit` to exit your program</span>
     <span class="doccomment">/// with a custom error message.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_description</span>(<span class="ident">description</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">kind</span>: <span class="ident">ErrorKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer</span>::<span class="ident">new</span>(<span class="ident">ColorizerOption</span> {
+        <span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">Colorizer::new</span>(<span class="ident">ColorizerOption</span> {
             <span class="ident">use_stderr</span>: <span class="bool-val">true</span>,
-            <span class="ident">when</span>: <span class="ident">ColorWhen</span>::<span class="ident">Auto</span>,
+            <span class="ident">when</span>: <span class="ident">ColorWhen::Auto</span>,
         });
         <span class="ident">Error</span> {
             <span class="ident">message</span>: <span class="macro">format!</span>(<span class="string">&quot;{} {}&quot;</span>, <span class="ident">c</span>.<span class="ident">error</span>(<span class="string">&quot;error:&quot;</span>), <span class="ident">description</span>),
@@ -1822,20 +1822,20 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std_fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std_fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std_fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std_fmt::Result</span> {
         <span class="macro">writeln!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="self">self</span>.<span class="ident">message</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">io</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Error</span>::<span class="ident">with_description</span>(<span class="ident">e</span>.<span class="ident">description</span>(), <span class="ident">ErrorKind</span>::<span class="ident">Io</span>)
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">io::Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">io::Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">Error::with_description</span>(<span class="ident">e</span>.<span class="ident">description</span>(), <span class="ident">ErrorKind::Io</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">std_fmt</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">std_fmt</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Error</span>::<span class="ident">with_description</span>(<span class="ident">e</span>.<span class="ident">description</span>(), <span class="ident">ErrorKind</span>::<span class="ident">Format</span>)
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">std_fmt::Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">std_fmt::Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">Error::with_description</span>(<span class="ident">e</span>.<span class="ident">description</span>(), <span class="ident">ErrorKind::Format</span>)
     }
 }
 </pre></div>

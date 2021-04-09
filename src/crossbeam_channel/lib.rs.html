@@ -703,9 +703,9 @@
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">missing_docs</span>, <span class="ident">missing_debug_implementations</span>, <span class="ident">rust_2018_idioms</span>)]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
 <span class="comment">// matches! requires Rust 1.42</span>
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">match_like_matches_macro</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::match_like_matches_macro</span>)]</span>
 
-<span class="kw">use</span> <span class="ident">cfg_if</span>::<span class="ident">cfg_if</span>;
+<span class="kw">use</span> <span class="ident">cfg_if::cfg_if</span>;
 
 <span class="macro">cfg_if!</span> {
     <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span> {
@@ -722,20 +722,20 @@
         <span class="doccomment">/// Crate internals used by the `select!` macro.</span>
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">internal</span> {
-            <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">select</span>::<span class="ident">SelectHandle</span>;
-            <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">select</span>::{<span class="ident">select</span>, <span class="ident">select_timeout</span>, <span class="ident">try_select</span>};
+            <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::select::SelectHandle</span>;
+            <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::select</span>::{<span class="ident">select</span>, <span class="ident">select_timeout</span>, <span class="ident">try_select</span>};
         }
 
-        <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">channel</span>::{<span class="ident">after</span>, <span class="ident">at</span>, <span class="ident">never</span>, <span class="ident">tick</span>};
-        <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">channel</span>::{<span class="ident">bounded</span>, <span class="ident">unbounded</span>};
-        <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">channel</span>::{<span class="ident">IntoIter</span>, <span class="ident">Iter</span>, <span class="ident">TryIter</span>};
-        <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">channel</span>::{<span class="ident">Receiver</span>, <span class="ident">Sender</span>};
+        <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::channel</span>::{<span class="ident">after</span>, <span class="ident">at</span>, <span class="ident">never</span>, <span class="ident">tick</span>};
+        <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::channel</span>::{<span class="ident">bounded</span>, <span class="ident">unbounded</span>};
+        <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::channel</span>::{<span class="ident">IntoIter</span>, <span class="ident">Iter</span>, <span class="ident">TryIter</span>};
+        <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::channel</span>::{<span class="ident">Receiver</span>, <span class="ident">Sender</span>};
 
-        <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">select</span>::{<span class="ident">Select</span>, <span class="ident">SelectedOperation</span>};
+        <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::select</span>::{<span class="ident">Select</span>, <span class="ident">SelectedOperation</span>};
 
-        <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">err</span>::{<span class="ident">ReadyTimeoutError</span>, <span class="ident">SelectTimeoutError</span>, <span class="ident">TryReadyError</span>, <span class="ident">TrySelectError</span>};
-        <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">err</span>::{<span class="ident">RecvError</span>, <span class="ident">RecvTimeoutError</span>, <span class="ident">TryRecvError</span>};
-        <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">err</span>::{<span class="ident">SendError</span>, <span class="ident">SendTimeoutError</span>, <span class="ident">TrySendError</span>};
+        <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::err</span>::{<span class="ident">ReadyTimeoutError</span>, <span class="ident">SelectTimeoutError</span>, <span class="ident">TryReadyError</span>, <span class="ident">TrySelectError</span>};
+        <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::err</span>::{<span class="ident">RecvError</span>, <span class="ident">RecvTimeoutError</span>, <span class="ident">TryRecvError</span>};
+        <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::err</span>::{<span class="ident">SendError</span>, <span class="ident">SendTimeoutError</span>, <span class="ident">TrySendError</span>};
     }
 }
 </pre></div>

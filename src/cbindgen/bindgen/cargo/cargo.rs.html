@@ -256,16 +256,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
+<span class="kw">use</span> <span class="ident">std::path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">cargo</span>::<span class="ident">cargo_expand</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">cargo</span>::<span class="ident">cargo_lock</span>::{<span class="self">self</span>, <span class="ident">Lock</span>};
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">cargo</span>::<span class="ident">cargo_metadata</span>::<span class="ident">PackageRef</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">cargo</span>::<span class="ident">cargo_metadata</span>::{<span class="self">self</span>, <span class="ident">Metadata</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">cargo</span>::<span class="ident">cargo_toml</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">config</span>::<span class="ident">Profile</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">error</span>::<span class="ident">Error</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">ir</span>::<span class="ident">Cfg</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::cargo::cargo_expand</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::cargo::cargo_lock</span>::{<span class="self">self</span>, <span class="ident">Lock</span>};
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::cargo::cargo_metadata::PackageRef</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::cargo::cargo_metadata</span>::{<span class="self">self</span>, <span class="ident">Metadata</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::cargo::cargo_toml</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::config::Profile</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::error::Error</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::ir::Cfg</span>;
 
 <span class="doccomment">/// Parse a dependency string used in Cargo.lock</span>
 <span class="kw">fn</span> <span class="ident">parse_dep_string</span>(<span class="ident">dep_string</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>) {
@@ -297,14 +297,14 @@
         <span class="ident">existing_metadata_file</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Path</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Cargo</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">toml_path</span> <span class="op">=</span> <span class="ident">crate_dir</span>.<span class="ident">join</span>(<span class="string">&quot;Cargo.toml&quot;</span>);
-        <span class="kw">let</span> <span class="ident">metadata</span> <span class="op">=</span> <span class="ident">cargo_metadata</span>::<span class="ident">metadata</span>(<span class="kw-2">&amp;</span><span class="ident">toml_path</span>, <span class="ident">existing_metadata_file</span>)
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">Error</span>::<span class="ident">CargoMetadata</span>(<span class="ident">toml_path</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>().<span class="ident">to_owned</span>(), <span class="ident">x</span>))<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">metadata</span> <span class="op">=</span> <span class="ident">cargo_metadata::metadata</span>(<span class="kw-2">&amp;</span><span class="ident">toml_path</span>, <span class="ident">existing_metadata_file</span>)
+            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">Error::CargoMetadata</span>(<span class="ident">toml_path</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>().<span class="ident">to_owned</span>(), <span class="ident">x</span>))<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">lock_path</span> <span class="op">=</span> <span class="ident">lock_file</span>
-            .<span class="ident">map</span>(<span class="ident">PathBuf</span>::<span class="ident">from</span>)
-            .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Path</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">metadata</span>.<span class="ident">workspace_root</span>).<span class="ident">join</span>(<span class="string">&quot;Cargo.lock&quot;</span>));
+            .<span class="ident">map</span>(<span class="ident">PathBuf::from</span>)
+            .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Path::new</span>(<span class="kw-2">&amp;</span><span class="ident">metadata</span>.<span class="ident">workspace_root</span>).<span class="ident">join</span>(<span class="string">&quot;Cargo.lock&quot;</span>));
 
         <span class="kw">let</span> <span class="ident">lock</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">use_cargo_lock</span> {
-            <span class="kw">match</span> <span class="ident">cargo_lock</span>::<span class="ident">lock</span>(<span class="kw-2">&amp;</span><span class="ident">lock_path</span>) {
+            <span class="kw">match</span> <span class="ident">cargo_lock::lock</span>(<span class="kw-2">&amp;</span><span class="ident">lock_path</span>) {
                 <span class="prelude-val">Ok</span>(<span class="ident">lock</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">lock</span>),
                 <span class="prelude-val">Err</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="macro">warn!</span>(<span class="string">&quot;Couldn&#39;t load lock file {:?}: {:?}&quot;</span>, <span class="ident">lock_path</span>, <span class="ident">x</span>);
@@ -319,8 +319,8 @@
         <span class="kw">let</span> <span class="ident">binding_crate_name</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">binding_crate_name</span> {
             <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">s</span>.<span class="ident">to_owned</span>(),
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">manifest</span> <span class="op">=</span> <span class="ident">cargo_toml</span>::<span class="ident">manifest</span>(<span class="kw-2">&amp;</span><span class="ident">toml_path</span>)
-                    .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">Error</span>::<span class="ident">CargoToml</span>(<span class="ident">toml_path</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>().<span class="ident">to_owned</span>(), <span class="ident">x</span>))<span class="question-mark">?</span>;
+                <span class="kw">let</span> <span class="ident">manifest</span> <span class="op">=</span> <span class="ident">cargo_toml::manifest</span>(<span class="kw-2">&amp;</span><span class="ident">toml_path</span>)
+                    .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">Error::CargoToml</span>(<span class="ident">toml_path</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>().<span class="ident">to_owned</span>(), <span class="ident">x</span>))<span class="question-mark">?</span>;
                 <span class="ident">manifest</span>.<span class="ident">package</span>.<span class="ident">name</span>
             }
         };
@@ -420,7 +420,7 @@
                     .<span class="ident">packages</span>
                     .<span class="ident">get</span>(<span class="ident">package</span>)
                     .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">meta_package</span><span class="op">|</span> <span class="ident">meta_package</span>.<span class="ident">dependencies</span>.<span class="ident">get</span>(<span class="ident">dep_name</span>))
-                    .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">meta_dep</span><span class="op">|</span> <span class="ident">Cfg</span>::<span class="ident">load_metadata</span>(<span class="ident">meta_dep</span>));
+                    .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">meta_dep</span><span class="op">|</span> <span class="ident">Cfg::load_metadata</span>(<span class="ident">meta_dep</span>));
 
                 <span class="kw">let</span> <span class="ident">package_ref</span> <span class="op">=</span> <span class="ident">PackageRef</span> {
                     <span class="ident">name</span>: <span class="ident">dep_name</span>.<span class="ident">to_owned</span>(),
@@ -450,7 +450,7 @@
             .<span class="ident">packages</span>
             .<span class="ident">get</span>(<span class="ident">package</span>)
             .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">meta_package</span><span class="op">|</span> {
-                <span class="ident">Path</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">meta_package</span>.<span class="ident">manifest_path</span>)
+                <span class="ident">Path::new</span>(<span class="kw-2">&amp;</span><span class="ident">meta_package</span>.<span class="ident">manifest_path</span>)
                     .<span class="ident">parent</span>()
                     .<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">to_owned</span>())
             })
@@ -458,11 +458,11 @@
 
     <span class="doccomment">/// Finds `src/lib.rs` for a specified package reference.</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">find_crate_src</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">package</span>: <span class="kw-2">&amp;</span><span class="ident">PackageRef</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">kind_lib</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;lib&quot;</span>);
-        <span class="kw">let</span> <span class="ident">kind_staticlib</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;staticlib&quot;</span>);
-        <span class="kw">let</span> <span class="ident">kind_rlib</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;rlib&quot;</span>);
-        <span class="kw">let</span> <span class="ident">kind_cdylib</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;cdylib&quot;</span>);
-        <span class="kw">let</span> <span class="ident">kind_dylib</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;dylib&quot;</span>);
+        <span class="kw">let</span> <span class="ident">kind_lib</span> <span class="op">=</span> <span class="ident">String::from</span>(<span class="string">&quot;lib&quot;</span>);
+        <span class="kw">let</span> <span class="ident">kind_staticlib</span> <span class="op">=</span> <span class="ident">String::from</span>(<span class="string">&quot;staticlib&quot;</span>);
+        <span class="kw">let</span> <span class="ident">kind_rlib</span> <span class="op">=</span> <span class="ident">String::from</span>(<span class="string">&quot;rlib&quot;</span>);
+        <span class="kw">let</span> <span class="ident">kind_cdylib</span> <span class="op">=</span> <span class="ident">String::from</span>(<span class="string">&quot;cdylib&quot;</span>);
+        <span class="kw">let</span> <span class="ident">kind_dylib</span> <span class="op">=</span> <span class="ident">String::from</span>(<span class="string">&quot;dylib&quot;</span>);
 
         <span class="self">self</span>.<span class="ident">metadata</span>
             .<span class="ident">packages</span>
@@ -475,7 +475,7 @@
                         <span class="op">|</span><span class="op">|</span> <span class="ident">target</span>.<span class="ident">kind</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">kind_cdylib</span>)
                         <span class="op">|</span><span class="op">|</span> <span class="ident">target</span>.<span class="ident">kind</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">kind_dylib</span>)
                     {
-                        <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="kw-2">&amp;</span><span class="ident">target</span>.<span class="ident">src_path</span>));
+                        <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">PathBuf::from</span>(<span class="kw-2">&amp;</span><span class="ident">target</span>.<span class="ident">src_path</span>));
                     }
                 }
                 <span class="prelude-val">None</span>
@@ -489,8 +489,8 @@
         <span class="ident">expand_default_features</span>: <span class="ident">bool</span>,
         <span class="ident">expand_features</span>: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">profile</span>: <span class="ident">Profile</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">cargo_expand</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="ident">cargo_expand</span>::<span class="ident">expand</span>(
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">cargo_expand::Error</span><span class="op">&gt;</span> {
+        <span class="ident">cargo_expand::expand</span>(
             <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">manifest_path</span>,
             <span class="kw-2">&amp;</span><span class="ident">package</span>.<span class="ident">name</span>,
             <span class="ident">package</span>.<span class="ident">version</span>.<span class="ident">as_deref</span>(),

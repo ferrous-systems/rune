@@ -171,15 +171,15 @@
 <span class="doccomment">//! the generated machine code, so a given frontend (JIT or native) can</span>
 <span class="doccomment">//! do the corresponding work to run it.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">lib</span>::<span class="ident">std</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">lib</span>::<span class="ident">std</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">section</span>::<span class="ident">SectionIndex</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::lib::std::fmt</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::lib::std::vec::Vec</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::section::SectionIndex</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Addend</span>, <span class="ident">CodeOffset</span>, <span class="ident">JumpTable</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;enable-serde&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-<span class="kw">use</span> <span class="ident">wasmer_types</span>::<span class="ident">entity</span>::<span class="ident">PrimaryMap</span>;
-<span class="kw">use</span> <span class="ident">wasmer_types</span>::<span class="ident">LocalFunctionIndex</span>;
-<span class="kw">use</span> <span class="ident">wasmer_vm</span>::<span class="ident">libcalls</span>::<span class="ident">LibCall</span>;
+<span class="kw">use</span> <span class="ident">wasmer_types::entity::PrimaryMap</span>;
+<span class="kw">use</span> <span class="ident">wasmer_types::LocalFunctionIndex</span>;
+<span class="kw">use</span> <span class="ident">wasmer_vm::libcalls::LibCall</span>;
 
 <span class="doccomment">/// Relocation kinds for every ISA.</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;enable-serde&quot;</span>, <span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>))]</span>
@@ -218,18 +218,18 @@
     <span class="comment">// MachOX86_64Tlv,</span>
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">RelocationKind</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">RelocationKind</span> {
     <span class="doccomment">/// Display trait implementation drops the arch, since its used in contexts where the arch is</span>
     <span class="doccomment">/// already unambiguous, e.g. clif syntax with isa specified. In other contexts, use Debug.</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Abs4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Abs4&quot;</span>),
-            <span class="self">Self</span>::<span class="ident">Abs8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Abs8&quot;</span>),
-            <span class="self">Self</span>::<span class="ident">X86PCRel4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;PCRel4&quot;</span>),
-            <span class="self">Self</span>::<span class="ident">X86PCRel8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;PCRel8&quot;</span>),
-            <span class="self">Self</span>::<span class="ident">X86PCRelRodata4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;PCRelRodata4&quot;</span>),
-            <span class="self">Self</span>::<span class="ident">X86CallPCRel4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;CallPCRel4&quot;</span>),
-            <span class="self">Self</span>::<span class="ident">X86CallPLTRel4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;CallPLTRel4&quot;</span>),
+            <span class="self">Self</span><span class="ident">::Abs4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Abs4&quot;</span>),
+            <span class="self">Self</span><span class="ident">::Abs8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Abs8&quot;</span>),
+            <span class="self">Self</span><span class="ident">::X86PCRel4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;PCRel4&quot;</span>),
+            <span class="self">Self</span><span class="ident">::X86PCRel8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;PCRel8&quot;</span>),
+            <span class="self">Self</span><span class="ident">::X86PCRelRodata4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;PCRelRodata4&quot;</span>),
+            <span class="self">Self</span><span class="ident">::X86CallPCRel4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;CallPCRel4&quot;</span>),
+            <span class="self">Self</span><span class="ident">::X86CallPLTRel4</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;CallPLTRel4&quot;</span>),
             <span class="comment">// Self::X86GOTPCRel4 =&gt; write!(f, &quot;GOTPCRel4&quot;),</span>
             <span class="comment">// Self::Arm32Call | Self::Arm64Call | Self::RiscvCall =&gt; write!(f, &quot;Call&quot;),</span>
 
@@ -274,7 +274,7 @@
     <span class="doccomment">/// The function returns the relocation address and the delta.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">for_address</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">start</span>: <span class="ident">usize</span>, <span class="ident">target_func_address</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="ident">u64</span>) {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">kind</span> {
-            <span class="ident">RelocationKind</span>::<span class="ident">Abs8</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">RelocationKind::Abs8</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">reloc_address</span> <span class="op">=</span> <span class="ident">start</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">usize</span>;
                 <span class="kw">let</span> <span class="ident">reloc_addend</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">addend</span> <span class="kw">as</span> <span class="ident">isize</span>;
                 <span class="kw">let</span> <span class="ident">reloc_abs</span> <span class="op">=</span> <span class="ident">target_func_address</span>
@@ -282,7 +282,7 @@
                     .<span class="ident">unwrap</span>();
                 (<span class="ident">reloc_address</span>, <span class="ident">reloc_abs</span>)
             }
-            <span class="ident">RelocationKind</span>::<span class="ident">X86PCRel4</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">RelocationKind::X86PCRel4</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">reloc_address</span> <span class="op">=</span> <span class="ident">start</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">usize</span>;
                 <span class="kw">let</span> <span class="ident">reloc_addend</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">addend</span> <span class="kw">as</span> <span class="ident">isize</span>;
                 <span class="kw">let</span> <span class="ident">reloc_delta_u32</span> <span class="op">=</span> (<span class="ident">target_func_address</span> <span class="kw">as</span> <span class="ident">u32</span>)
@@ -291,7 +291,7 @@
                     .<span class="ident">unwrap</span>();
                 (<span class="ident">reloc_address</span>, <span class="ident">reloc_delta_u32</span> <span class="kw">as</span> <span class="ident">u64</span>)
             }
-            <span class="ident">RelocationKind</span>::<span class="ident">X86PCRel8</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">RelocationKind::X86PCRel8</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">reloc_address</span> <span class="op">=</span> <span class="ident">start</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">usize</span>;
                 <span class="kw">let</span> <span class="ident">reloc_addend</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">addend</span> <span class="kw">as</span> <span class="ident">isize</span>;
                 <span class="kw">let</span> <span class="ident">reloc_delta</span> <span class="op">=</span> <span class="ident">target_func_address</span>
@@ -300,7 +300,7 @@
                     .<span class="ident">unwrap</span>();
                 (<span class="ident">reloc_address</span>, <span class="ident">reloc_delta</span>)
             }
-            <span class="ident">RelocationKind</span>::<span class="ident">X86CallPCRel4</span> <span class="op">|</span> <span class="ident">RelocationKind</span>::<span class="ident">X86CallPLTRel4</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">RelocationKind::X86CallPCRel4</span> <span class="op">|</span> <span class="ident">RelocationKind::X86CallPLTRel4</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">reloc_address</span> <span class="op">=</span> <span class="ident">start</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">offset</span> <span class="kw">as</span> <span class="ident">usize</span>;
                 <span class="kw">let</span> <span class="ident">reloc_addend</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">addend</span> <span class="kw">as</span> <span class="ident">isize</span>;
                 <span class="kw">let</span> <span class="ident">reloc_delta_u32</span> <span class="op">=</span> (<span class="ident">target_func_address</span> <span class="kw">as</span> <span class="ident">u32</span>)

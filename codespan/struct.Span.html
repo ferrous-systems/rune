@@ -8,9 +8,9 @@
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">codespan</span>::{<span class="ident">ByteIndex</span>, <span class="ident">Span</span>};
 
-<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">Span</span>::<span class="ident">from_str</span>(<span class="string">&quot;hello&quot;</span>);
+<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">Span::from_str</span>(<span class="string">&quot;hello&quot;</span>);
 
-<span class="macro">assert_eq!</span>(<span class="ident">span</span>, <span class="ident">Span</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">5</span>));</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">span</span>, <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">5</span>));</pre></div>
 </div><h4 id="method.merge" class="method"><code>pub fn <a href="#method.merge" class="fnname">merge</a>(self, other: <a class="struct" href="../codespan/struct.Span.html" title="struct codespan::Span">Span</a>) -&gt; <a class="struct" href="../codespan/struct.Span.html" title="struct codespan::Span">Span</a></code><a class="srclink" href="../src/codespan/span.rs.html#62-68" title="goto source code">[src]</a></h4><div class="docblock"><p>Combine two spans by taking the start of the earlier span
 and the end of the later span.</p>
 <p>Note: this will work even if the two spans are disjoint.
@@ -18,35 +18,35 @@ If this doesn’t make sense in your application, you should handle it yourself.
 In that case, you can use <code>Span::disjoint</code> as a convenience function.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">codespan</span>::<span class="ident">Span</span>;
+<span class="kw">use</span> <span class="ident">codespan::Span</span>;
 
-<span class="kw">let</span> <span class="ident">span1</span> <span class="op">=</span> <span class="ident">Span</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">4</span>);
-<span class="kw">let</span> <span class="ident">span2</span> <span class="op">=</span> <span class="ident">Span</span>::<span class="ident">new</span>(<span class="number">10</span>, <span class="number">16</span>);
+<span class="kw">let</span> <span class="ident">span1</span> <span class="op">=</span> <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">4</span>);
+<span class="kw">let</span> <span class="ident">span2</span> <span class="op">=</span> <span class="ident">Span::new</span>(<span class="number">10</span>, <span class="number">16</span>);
 
-<span class="macro">assert_eq!</span>(<span class="ident">Span</span>::<span class="ident">merge</span>(<span class="ident">span1</span>, <span class="ident">span2</span>), <span class="ident">Span</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">16</span>));</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">Span::merge</span>(<span class="ident">span1</span>, <span class="ident">span2</span>), <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">16</span>));</pre></div>
 </div><h4 id="method.disjoint" class="method"><code>pub fn <a href="#method.disjoint" class="fnname">disjoint</a>(self, other: <a class="struct" href="../codespan/struct.Span.html" title="struct codespan::Span">Span</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code><a class="srclink" href="../src/codespan/span.rs.html#78-85" title="goto source code">[src]</a></h4><div class="docblock"><p>A helper function to tell whether two spans do not overlap.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">codespan</span>::<span class="ident">Span</span>;
-<span class="kw">let</span> <span class="ident">span1</span> <span class="op">=</span> <span class="ident">Span</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">4</span>);
-<span class="kw">let</span> <span class="ident">span2</span> <span class="op">=</span> <span class="ident">Span</span>::<span class="ident">new</span>(<span class="number">10</span>, <span class="number">16</span>);
+<span class="kw">use</span> <span class="ident">codespan::Span</span>;
+<span class="kw">let</span> <span class="ident">span1</span> <span class="op">=</span> <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">4</span>);
+<span class="kw">let</span> <span class="ident">span2</span> <span class="op">=</span> <span class="ident">Span::new</span>(<span class="number">10</span>, <span class="number">16</span>);
 <span class="macro">assert!</span>(<span class="ident">span1</span>.<span class="ident">disjoint</span>(<span class="ident">span2</span>));</pre></div>
 </div><h4 id="method.start" class="method"><code>pub fn <a href="#method.start" class="fnname">start</a>(self) -&gt; <a class="struct" href="../codespan/struct.ByteIndex.html" title="struct codespan::ByteIndex">ByteIndex</a></code><a class="srclink" href="../src/codespan/span.rs.html#96-98" title="goto source code">[src]</a></h4><div class="docblock"><p>Get the starting byte index.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">codespan</span>::{<span class="ident">ByteIndex</span>, <span class="ident">Span</span>};
 
-<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">Span</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">4</span>);
+<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">4</span>);
 
-<span class="macro">assert_eq!</span>(<span class="ident">span</span>.<span class="ident">start</span>(), <span class="ident">ByteIndex</span>::<span class="ident">from</span>(<span class="number">0</span>));</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">span</span>.<span class="ident">start</span>(), <span class="ident">ByteIndex::from</span>(<span class="number">0</span>));</pre></div>
 </div><h4 id="method.end" class="method"><code>pub fn <a href="#method.end" class="fnname">end</a>(self) -&gt; <a class="struct" href="../codespan/struct.ByteIndex.html" title="struct codespan::ByteIndex">ByteIndex</a></code><a class="srclink" href="../src/codespan/span.rs.html#109-111" title="goto source code">[src]</a></h4><div class="docblock"><p>Get the ending byte index.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">codespan</span>::{<span class="ident">ByteIndex</span>, <span class="ident">Span</span>};
 
-<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">Span</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">4</span>);
+<span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">4</span>);
 
-<span class="macro">assert_eq!</span>(<span class="ident">span</span>.<span class="ident">end</span>(), <span class="ident">ByteIndex</span>::<span class="ident">from</span>(<span class="number">4</span>));</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">span</span>.<span class="ident">end</span>(), <span class="ident">ByteIndex::from</span>(<span class="number">4</span>));</pre></div>
 </div></div><h2 id="trait-implementations" class="small-section-header">Trait Implementations<a href="#trait-implementations" class="anchor"></a></h2><div id="trait-implementations-list"><h3 id="impl-Clone" class="impl"><code class="in-band">impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="struct" href="../codespan/struct.Span.html" title="struct codespan::Span">Span</a></code><a href="#impl-Clone" class="anchor"></a><a class="srclink" href="../src/codespan/span.rs.html#8" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.clone" class="method hidden"><code>fn <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone" class="fnname">clone</a>(&amp;self) -&gt; <a class="struct" href="../codespan/struct.Span.html" title="struct codespan::Span">Span</a></code><a class="srclink" href="../src/codespan/span.rs.html#8" title="goto source code">[src]</a></h4><div class='docblock hidden'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
 </div><h4 id="method.clone_from" class="method hidden"><code>pub fn <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from" class="fnname">clone_from</a>(&amp;mut self, source: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;</a>Self)</code><span class="since" title="Stable since Rust version 1.0.0">1.0.0</span><a class="srclink" href="https://doc.rust-lang.org/nightly/src/core/clone.rs.html#130" title="goto source code">[src]</a></h4><div class='docblock hidden'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
 </div></div><h3 id="impl-Copy" class="impl"><code class="in-band">impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html" title="trait core::marker::Copy">Copy</a> for <a class="struct" href="../codespan/struct.Span.html" title="struct codespan::Span">Span</a></code><a href="#impl-Copy" class="anchor"></a><a class="srclink" href="../src/codespan/span.rs.html#8" title="goto source code">[src]</a></h3><div class="impl-items"></div><h3 id="impl-Debug" class="impl"><code class="in-band">impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="struct" href="../codespan/struct.Span.html" title="struct codespan::Span">Span</a></code><a href="#impl-Debug" class="anchor"></a><a class="srclink" href="../src/codespan/span.rs.html#8" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.fmt" class="method hidden"><code>fn <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt" class="fnname">fmt</a>(&amp;self, f: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>&lt;'_&gt;) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html" title="type core::fmt::Result">Result</a></code><a class="srclink" href="../src/codespan/span.rs.html#8" title="goto source code">[src]</a></h4><div class='docblock hidden'><p>Formats the value using the given formatter. <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt">Read more</a></p>

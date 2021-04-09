@@ -185,12 +185,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">hash_map</span>::<span class="ident">Entry</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">FromStr</span>;
+<span class="kw">use</span> <span class="ident">std::collections::hash_map::Entry</span>;
+<span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
+<span class="kw">use</span> <span class="ident">std::str::FromStr</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">config</span>::{<span class="ident">Config</span>, <span class="ident">Language</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">utilities</span>::<span class="ident">SynAttributeHelpers</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::config</span>::{<span class="ident">Config</span>, <span class="ident">Language</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::utilities::SynAttributeHelpers</span>;
 
 <span class="comment">// A system for specifying properties on items. Annotations are</span>
 <span class="comment">// given through document comments and parsed by this code.</span>
@@ -223,7 +223,7 @@
 <span class="kw">impl</span> <span class="ident">AnnotationSet</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AnnotationSet</span> {
         <span class="ident">AnnotationSet</span> {
-            <span class="ident">annotations</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
+            <span class="ident">annotations</span>: <span class="ident">HashMap::new</span>(),
             <span class="ident">must_use</span>: <span class="bool-val">false</span>,
         }
     }
@@ -233,10 +233,10 @@
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">must_use</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">must_use</span> <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span>
+        <span class="self">self</span>.<span class="ident">must_use</span> <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cython</span>
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load</span>(<span class="ident">attrs</span>: <span class="kw-2">&amp;</span>[<span class="ident">syn</span>::<span class="ident">Attribute</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AnnotationSet</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load</span>(<span class="ident">attrs</span>: <span class="kw-2">&amp;</span>[<span class="ident">syn::Attribute</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">AnnotationSet</span>, <span class="ident">String</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">lines</span> <span class="op">=</span> <span class="ident">attrs</span>.<span class="ident">get_comment_lines</span>();
         <span class="kw">let</span> <span class="ident">lines</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">lines</span>
             .<span class="ident">iter</span>()
@@ -252,7 +252,7 @@
 
         <span class="kw">let</span> <span class="ident">must_use</span> <span class="op">=</span> <span class="ident">attrs</span>.<span class="ident">has_attr_word</span>(<span class="string">&quot;must_use&quot;</span>);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">annotations</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">annotations</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
 
         <span class="comment">// Look at each line for an annotation</span>
         <span class="kw">for</span> <span class="ident">line</span> <span class="kw">in</span> <span class="ident">lines</span> {
@@ -273,7 +273,7 @@
 
             <span class="comment">// If the annotation only has a name, assume it&#39;s setting a bool flag</span>
             <span class="kw">if</span> <span class="ident">parts</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
-                <span class="ident">annotations</span>.<span class="ident">insert</span>(<span class="ident">name</span>.<span class="ident">to_string</span>(), <span class="ident">AnnotationValue</span>::<span class="ident">Bool</span>(<span class="bool-val">true</span>));
+                <span class="ident">annotations</span>.<span class="ident">insert</span>(<span class="ident">name</span>.<span class="ident">to_string</span>(), <span class="ident">AnnotationValue::Bool</span>(<span class="bool-val">true</span>));
                 <span class="kw">continue</span>;
             }
 
@@ -281,19 +281,19 @@
             <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">parts</span>[<span class="number">1</span>];
 
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span> <span class="ident">parse_list</span>(<span class="ident">value</span>) {
-                <span class="ident">annotations</span>.<span class="ident">insert</span>(<span class="ident">name</span>.<span class="ident">to_string</span>(), <span class="ident">AnnotationValue</span>::<span class="ident">List</span>(<span class="ident">x</span>));
+                <span class="ident">annotations</span>.<span class="ident">insert</span>(<span class="ident">name</span>.<span class="ident">to_string</span>(), <span class="ident">AnnotationValue::List</span>(<span class="ident">x</span>));
                 <span class="kw">continue</span>;
             }
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">x</span>) <span class="op">=</span> <span class="ident">value</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>() {
-                <span class="ident">annotations</span>.<span class="ident">insert</span>(<span class="ident">name</span>.<span class="ident">to_string</span>(), <span class="ident">AnnotationValue</span>::<span class="ident">Bool</span>(<span class="ident">x</span>));
+                <span class="ident">annotations</span>.<span class="ident">insert</span>(<span class="ident">name</span>.<span class="ident">to_string</span>(), <span class="ident">AnnotationValue::Bool</span>(<span class="ident">x</span>));
                 <span class="kw">continue</span>;
             }
             <span class="ident">annotations</span>.<span class="ident">insert</span>(
                 <span class="ident">name</span>.<span class="ident">to_string</span>(),
                 <span class="kw">if</span> <span class="ident">value</span>.<span class="ident">is_empty</span>() {
-                    <span class="ident">AnnotationValue</span>::<span class="ident">Atom</span>(<span class="prelude-val">None</span>)
+                    <span class="ident">AnnotationValue::Atom</span>(<span class="prelude-val">None</span>)
                 } <span class="kw">else</span> {
-                    <span class="ident">AnnotationValue</span>::<span class="ident">Atom</span>(<span class="prelude-val">Some</span>(<span class="ident">value</span>.<span class="ident">to_string</span>()))
+                    <span class="ident">AnnotationValue::Atom</span>(<span class="prelude-val">Some</span>(<span class="ident">value</span>.<span class="ident">to_string</span>()))
                 },
             );
         }
@@ -306,26 +306,26 @@
 
     <span class="doccomment">/// Adds an annotation value if none is specified.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_default</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">value</span>: <span class="ident">AnnotationValue</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">annotations</span>.<span class="ident">entry</span>(<span class="ident">name</span>.<span class="ident">to_string</span>()) {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Entry::Vacant</span>(<span class="ident">e</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">annotations</span>.<span class="ident">entry</span>(<span class="ident">name</span>.<span class="ident">to_string</span>()) {
             <span class="ident">e</span>.<span class="ident">insert</span>(<span class="ident">value</span>);
         }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">list</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">annotations</span>.<span class="ident">get</span>(<span class="ident">name</span>) {
-            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">AnnotationValue</span>::<span class="ident">List</span>(<span class="kw-2">ref</span> <span class="ident">x</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>.<span class="ident">clone</span>()),
+            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">AnnotationValue::List</span>(<span class="kw-2">ref</span> <span class="ident">x</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>.<span class="ident">clone</span>()),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         }
     }
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">atom</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">annotations</span>.<span class="ident">get</span>(<span class="ident">name</span>) {
-            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">AnnotationValue</span>::<span class="ident">Atom</span>(<span class="kw-2">ref</span> <span class="ident">x</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>.<span class="ident">clone</span>()),
+            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">AnnotationValue::Atom</span>(<span class="kw-2">ref</span> <span class="ident">x</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">x</span>.<span class="ident">clone</span>()),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         }
     }
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bool</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">annotations</span>.<span class="ident">get</span>(<span class="ident">name</span>) {
-            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">AnnotationValue</span>::<span class="ident">Bool</span>(<span class="kw-2">ref</span> <span class="ident">x</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="kw-2">*</span><span class="ident">x</span>),
+            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">AnnotationValue::Bool</span>(<span class="kw-2">ref</span> <span class="ident">x</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="kw-2">*</span><span class="ident">x</span>),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         }
     }
@@ -335,9 +335,9 @@
         <span class="ident">T</span>: <span class="ident">Default</span> <span class="op">+</span> <span class="ident">FromStr</span>,
     {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">annotations</span>.<span class="ident">get</span>(<span class="ident">name</span>) {
-            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">AnnotationValue</span>::<span class="ident">Atom</span>(<span class="kw-2">ref</span> <span class="ident">x</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(
+            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">AnnotationValue::Atom</span>(<span class="kw-2">ref</span> <span class="ident">x</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(
                 <span class="ident">x</span>.<span class="ident">as_ref</span>()
-                    .<span class="ident">map_or</span>(<span class="ident">T</span>::<span class="ident">default</span>(), <span class="op">|</span><span class="ident">y</span><span class="op">|</span> <span class="ident">y</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>().<span class="ident">ok</span>().<span class="ident">unwrap</span>()),
+                    .<span class="ident">map_or</span>(<span class="ident">T::default</span>(), <span class="op">|</span><span class="ident">y</span><span class="op">|</span> <span class="ident">y</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>().<span class="ident">ok</span>().<span class="ident">unwrap</span>()),
             ),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         }

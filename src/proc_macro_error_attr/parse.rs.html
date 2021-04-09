@@ -93,14 +93,14 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">Error</span>, <span class="prelude-ty">Result</span>};
 <span class="kw">use</span> <span class="ident">proc_macro2</span>::{<span class="ident">Delimiter</span>, <span class="ident">Ident</span>, <span class="ident">Span</span>, <span class="ident">TokenStream</span>, <span class="ident">TokenTree</span>};
-<span class="kw">use</span> <span class="ident">quote</span>::<span class="ident">ToTokens</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">iter</span>::<span class="ident">Peekable</span>;
+<span class="kw">use</span> <span class="ident">quote::ToTokens</span>;
+<span class="kw">use</span> <span class="ident">std::iter::Peekable</span>;
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">parse_input</span>(
     <span class="ident">input</span>: <span class="ident">TokenStream</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Attribute</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TokenTree</span><span class="op">&gt;</span>, <span class="ident">TokenTree</span>)<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">into_iter</span>().<span class="ident">peekable</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">attrs</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">attrs</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
 
     <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">attr</span>) <span class="op">=</span> <span class="ident">parse_next_attr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">input</span>)<span class="question-mark">?</span> {
         <span class="ident">attrs</span>.<span class="ident">push</span>(<span class="ident">attr</span>);
@@ -108,8 +108,8 @@
 
     <span class="kw">let</span> <span class="ident">sig</span> <span class="op">=</span> <span class="ident">parse_signature</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">input</span>);
     <span class="kw">let</span> <span class="ident">body</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">next</span>().<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
-        <span class="ident">Error</span>::<span class="ident">new</span>(
-            <span class="ident">Span</span>::<span class="ident">call_site</span>(),
+        <span class="ident">Error::new</span>(
+            <span class="ident">Span::call_site</span>(),
             <span class="string">&quot;`#[proc_macro_error]` can be applied only to functions&quot;</span>.<span class="ident">to_string</span>(),
         )
     })<span class="question-mark">?</span>;
@@ -121,39 +121,39 @@
     <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Peekable</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">TokenTree</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Attribute</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">shebang</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">input</span>.<span class="ident">peek</span>() {
-        <span class="prelude-val">Some</span>(<span class="ident">TokenTree</span>::<span class="ident">Punct</span>(<span class="kw-2">ref</span> <span class="ident">punct</span>)) <span class="kw">if</span> <span class="ident">punct</span>.<span class="ident">as_char</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&#39;#&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">input</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>(),
+        <span class="prelude-val">Some</span>(<span class="ident">TokenTree::Punct</span>(<span class="kw-2">ref</span> <span class="ident">punct</span>)) <span class="kw">if</span> <span class="ident">punct</span>.<span class="ident">as_char</span>() <span class="op">=</span><span class="op">=</span> <span class="string">&#39;#&#39;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">input</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>(),
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>),
     };
 
     <span class="kw">let</span> <span class="ident">group</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">input</span>.<span class="ident">peek</span>() {
-        <span class="prelude-val">Some</span>(<span class="ident">TokenTree</span>::<span class="ident">Group</span>(<span class="kw-2">ref</span> <span class="ident">group</span>)) <span class="kw">if</span> <span class="ident">group</span>.<span class="ident">delimiter</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Delimiter</span>::<span class="ident">Bracket</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="prelude-val">Some</span>(<span class="ident">TokenTree::Group</span>(<span class="kw-2">ref</span> <span class="ident">group</span>)) <span class="kw">if</span> <span class="ident">group</span>.<span class="ident">delimiter</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Delimiter::Bracket</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="ident">group</span>.<span class="ident">clone</span>();
             <span class="ident">input</span>.<span class="ident">next</span>();
             <span class="ident">res</span>
         }
         <span class="ident">other</span> <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">other</span>.<span class="ident">map_or</span>(<span class="ident">Span</span>::<span class="ident">call_site</span>(), <span class="op">|</span><span class="ident">tt</span><span class="op">|</span> <span class="ident">tt</span>.<span class="ident">span</span>());
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">new</span>(<span class="ident">span</span>, <span class="string">&quot;expected `[`&quot;</span>.<span class="ident">to_string</span>()));
+            <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">other</span>.<span class="ident">map_or</span>(<span class="ident">Span::call_site</span>(), <span class="op">|</span><span class="ident">tt</span><span class="op">|</span> <span class="ident">tt</span>.<span class="ident">span</span>());
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::new</span>(<span class="ident">span</span>, <span class="string">&quot;expected `[`&quot;</span>.<span class="ident">to_string</span>()));
         }
     };
 
     <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">group</span>.<span class="ident">stream</span>().<span class="ident">into_iter</span>().<span class="ident">next</span>() {
-        <span class="prelude-val">Some</span>(<span class="ident">TokenTree</span>::<span class="ident">Ident</span>(<span class="ident">ident</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ident</span>),
+        <span class="prelude-val">Some</span>(<span class="ident">TokenTree::Ident</span>(<span class="ident">ident</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">ident</span>),
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
     };
 
     <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">Attribute</span> {
         <span class="ident">shebang</span>,
-        <span class="ident">group</span>: <span class="ident">TokenTree</span>::<span class="ident">Group</span>(<span class="ident">group</span>),
+        <span class="ident">group</span>: <span class="ident">TokenTree::Group</span>(<span class="ident">group</span>),
         <span class="ident">path</span>,
     }))
 }
 
 <span class="kw">fn</span> <span class="ident">parse_signature</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Peekable</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">TokenTree</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TokenTree</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sig</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sig</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
     <span class="kw">loop</span> {
         <span class="kw">match</span> <span class="ident">input</span>.<span class="ident">peek</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">TokenTree</span>::<span class="ident">Group</span>(<span class="kw-2">ref</span> <span class="ident">group</span>)) <span class="kw">if</span> <span class="ident">group</span>.<span class="ident">delimiter</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Delimiter</span>::<span class="ident">Brace</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">TokenTree::Group</span>(<span class="kw-2">ref</span> <span class="ident">group</span>)) <span class="kw">if</span> <span class="ident">group</span>.<span class="ident">delimiter</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Delimiter::Brace</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">return</span> <span class="ident">sig</span>;
             }
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">sig</span>,

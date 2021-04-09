@@ -8,15 +8,15 @@ the return value is unspecified. Uninhabited variants will be counted.</p>
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>;
+<span class="kw">use</span> <span class="ident">std::mem</span>;
 
 <span class="kw">enum</span> <span class="ident">Void</span> {}
 <span class="kw">enum</span> <span class="ident">Foo</span> { <span class="ident">A</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>), <span class="ident">B</span>(<span class="ident">i32</span>), <span class="ident">C</span>(<span class="ident">i32</span>) }
 
-<span class="macro">assert_eq!</span>(<span class="ident">mem</span>::<span class="ident">variant_count</span>::<span class="op">&lt;</span><span class="ident">Void</span><span class="op">&gt;</span>(), <span class="number">0</span>);
-<span class="macro">assert_eq!</span>(<span class="ident">mem</span>::<span class="ident">variant_count</span>::<span class="op">&lt;</span><span class="ident">Foo</span><span class="op">&gt;</span>(), <span class="number">3</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">mem::variant_count</span>::<span class="op">&lt;</span><span class="ident">Void</span><span class="op">&gt;</span>(), <span class="number">0</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">mem::variant_count</span>::<span class="op">&lt;</span><span class="ident">Foo</span><span class="op">&gt;</span>(), <span class="number">3</span>);
 
-<span class="macro">assert_eq!</span>(<span class="ident">mem</span>::<span class="ident">variant_count</span>::<span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">!</span><span class="op">&gt;</span><span class="op">&gt;</span>(), <span class="number">2</span>);
-<span class="macro">assert_eq!</span>(<span class="ident">mem</span>::<span class="ident">variant_count</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="op">!</span>, <span class="op">!</span><span class="op">&gt;</span><span class="op">&gt;</span>(), <span class="number">2</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">mem::variant_count</span>::<span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="op">!</span><span class="op">&gt;</span><span class="op">&gt;</span>(), <span class="number">2</span>);
+<span class="macro">assert_eq!</span>(<span class="ident">mem::variant_count</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="op">!</span>, <span class="op">!</span><span class="op">&gt;</span><span class="op">&gt;</span>(), <span class="number">2</span>);</pre></div>
 </div></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="wasmer_types" data-search-js="../../../../search-index.js"></div>
     <script src="../../../../main.js"></script></body></html>

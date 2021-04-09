@@ -16,10 +16,10 @@
 <span id="13">13</span>
 <span id="14">14</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">CodeOffset</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::CodeOffset</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;enable-serde&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-<span class="kw">use</span> <span class="ident">wasmer_vm</span>::<span class="ident">TrapCode</span>;
+<span class="kw">use</span> <span class="ident">wasmer_vm::TrapCode</span>;
 
 <span class="doccomment">/// Information about trap.</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;enable-serde&quot;</span>, <span class="ident">derive</span>(<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>))]</span>

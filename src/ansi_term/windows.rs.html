@@ -52,9 +52,9 @@
 <span class="doccomment">/// Returns a `Result` with the Windows error code if unsuccessful.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enable_ansi_support</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">u32</span><span class="op">&gt;</span> {
-    <span class="kw">use</span> <span class="ident">winapi</span>::<span class="ident">um</span>::<span class="ident">processenv</span>::<span class="ident">GetStdHandle</span>;
-    <span class="kw">use</span> <span class="ident">winapi</span>::<span class="ident">um</span>::<span class="ident">errhandlingapi</span>::<span class="ident">GetLastError</span>;
-    <span class="kw">use</span> <span class="ident">winapi</span>::<span class="ident">um</span>::<span class="ident">consoleapi</span>::{<span class="ident">GetConsoleMode</span>, <span class="ident">SetConsoleMode</span>};
+    <span class="kw">use</span> <span class="ident">winapi::um::processenv::GetStdHandle</span>;
+    <span class="kw">use</span> <span class="ident">winapi::um::errhandlingapi::GetLastError</span>;
+    <span class="kw">use</span> <span class="ident">winapi::um::consoleapi</span>::{<span class="ident">GetConsoleMode</span>, <span class="ident">SetConsoleMode</span>};
 
     <span class="kw">const</span> <span class="ident">STD_OUT_HANDLE</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="op">-</span><span class="number">11i32</span> <span class="kw">as</span> <span class="ident">u32</span>;
     <span class="kw">const</span> <span class="ident">ENABLE_VIRTUAL_TERMINAL_PROCESSING</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x0004</span>;

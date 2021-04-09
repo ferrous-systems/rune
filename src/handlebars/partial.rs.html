@@ -286,17 +286,17 @@
 <span id="283">283</span>
 <span id="284">284</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
+<span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
 
-<span class="kw">use</span> <span class="ident">serde_json</span>::<span class="ident">value</span>::<span class="ident">Value</span> <span class="kw">as</span> <span class="ident">Json</span>;
+<span class="kw">use</span> <span class="ident">serde_json::value::Value</span> <span class="kw">as</span> <span class="ident">Json</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">context</span>::{<span class="ident">merge_json</span>, <span class="ident">Context</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">RenderError</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">json</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">output</span>::<span class="ident">Output</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">registry</span>::<span class="ident">Registry</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">render</span>::{<span class="ident">Decorator</span>, <span class="ident">Evaluable</span>, <span class="ident">RenderContext</span>, <span class="ident">Renderable</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">template</span>::<span class="ident">Template</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::context</span>::{<span class="ident">merge_json</span>, <span class="ident">Context</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error::RenderError</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::json::path::Path</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::output::Output</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::registry::Registry</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::render</span>::{<span class="ident">Decorator</span>, <span class="ident">Evaluable</span>, <span class="ident">RenderContext</span>, <span class="ident">Renderable</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::template::Template</span>;
 
 <span class="kw">fn</span> <span class="ident">render_partial</span><span class="op">&lt;</span><span class="lifetime">&#39;reg</span>: <span class="lifetime">&#39;rc</span>, <span class="lifetime">&#39;rc</span><span class="op">&gt;</span>(
     <span class="ident">t</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;reg</span> <span class="ident">Template</span>,
@@ -326,10 +326,10 @@
             .<span class="ident">iter</span>()
             .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">k</span>, <span class="ident">v</span>)<span class="op">|</span> (<span class="ident">k</span>, <span class="ident">v</span>.<span class="ident">value</span>()))
             .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="op">&amp;&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">Json</span><span class="op">&gt;</span><span class="op">&gt;</span>();
-        <span class="kw">let</span> <span class="ident">current_path</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">current</span>();
+        <span class="kw">let</span> <span class="ident">current_path</span> <span class="op">=</span> <span class="ident">Path::current</span>();
         <span class="kw">let</span> <span class="ident">partial_context</span> <span class="op">=</span>
             <span class="ident">merge_json</span>(<span class="ident">local_rc</span>.<span class="ident">evaluate2</span>(<span class="ident">ctx</span>, <span class="kw-2">&amp;</span><span class="ident">current_path</span>)<span class="question-mark">?</span>.<span class="ident">as_json</span>(), <span class="kw-2">&amp;</span><span class="ident">hash_ctx</span>);
-        <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context</span>::<span class="ident">wraps</span>(<span class="kw-2">&amp;</span><span class="ident">partial_context</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context::wraps</span>(<span class="kw-2">&amp;</span><span class="ident">partial_context</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">partial_rc</span> <span class="op">=</span> <span class="ident">local_rc</span>.<span class="ident">new_for_block</span>();
         <span class="ident">t</span>.<span class="ident">render</span>(<span class="ident">r</span>, <span class="kw-2">&amp;</span><span class="ident">ctx</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">partial_rc</span>, <span class="ident">out</span>)
     };
@@ -353,7 +353,7 @@
 
     <span class="kw">let</span> <span class="ident">tname</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">name</span>();
     <span class="kw">if</span> <span class="ident">rc</span>.<span class="ident">is_current_template</span>(<span class="ident">tname</span>) {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RenderError</span>::<span class="ident">new</span>(<span class="string">&quot;Cannot include self in &gt;&quot;</span>));
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RenderError::new</span>(<span class="string">&quot;Cannot include self in &gt;&quot;</span>));
     }
 
     <span class="kw">let</span> <span class="ident">partial</span> <span class="op">=</span> <span class="ident">rc</span>.<span class="ident">get_partial</span>(<span class="ident">tname</span>);
@@ -376,15 +376,15 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">context</span>::<span class="ident">Context</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">RenderError</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">output</span>::<span class="ident">Output</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">registry</span>::<span class="ident">Registry</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">render</span>::{<span class="ident">Helper</span>, <span class="ident">RenderContext</span>};
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::context::Context</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error::RenderError</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::output::Output</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::registry::Registry</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::render</span>::{<span class="ident">Helper</span>, <span class="ident">RenderContext</span>};
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="macro">assert!</span>(<span class="ident">handlebars</span>
             .<span class="ident">register_template_string</span>(<span class="string">&quot;t0&quot;</span>, <span class="string">&quot;{{&gt; t1}}&quot;</span>)
             .<span class="ident">is_ok</span>());
@@ -449,7 +449,7 @@
         <span class="kw">let</span> <span class="ident">t0</span> <span class="op">=</span> <span class="string">&quot;hello {{&gt; @partial-block}}&quot;</span>;
         <span class="kw">let</span> <span class="ident">t1</span> <span class="op">=</span> <span class="string">&quot;{{#&gt; t0}}inner {{this}}{{/t0}}&quot;</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="macro">assert!</span>(<span class="ident">handlebars</span>.<span class="ident">register_template_string</span>(<span class="string">&quot;t0&quot;</span>, <span class="ident">t0</span>).<span class="ident">is_ok</span>());
         <span class="macro">assert!</span>(<span class="ident">handlebars</span>.<span class="ident">register_template_string</span>(<span class="string">&quot;t1&quot;</span>, <span class="ident">t1</span>).<span class="ident">is_ok</span>());
 
@@ -461,7 +461,7 @@
     <span class="kw">fn</span> <span class="ident">test_self_inclusion</span>() {
         <span class="kw">let</span> <span class="ident">t0</span> <span class="op">=</span> <span class="string">&quot;hello {{&gt; t1}} {{&gt; t0}}&quot;</span>;
         <span class="kw">let</span> <span class="ident">t1</span> <span class="op">=</span> <span class="string">&quot;some template&quot;</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="macro">assert!</span>(<span class="ident">handlebars</span>.<span class="ident">register_template_string</span>(<span class="string">&quot;t0&quot;</span>, <span class="ident">t0</span>).<span class="ident">is_ok</span>());
         <span class="macro">assert!</span>(<span class="ident">handlebars</span>.<span class="ident">register_template_string</span>(<span class="string">&quot;t1&quot;</span>, <span class="ident">t1</span>).<span class="ident">is_ok</span>());
 
@@ -474,7 +474,7 @@
         <span class="kw">let</span> <span class="ident">main_template</span> <span class="op">=</span> <span class="string">&quot;one{{&gt; two }}three{{&gt; two }}&quot;</span>;
         <span class="kw">let</span> <span class="ident">two_partial</span> <span class="op">=</span> <span class="string">&quot;--- two ---&quot;</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="macro">assert!</span>(<span class="ident">handlebars</span>
             .<span class="ident">register_template_string</span>(<span class="string">&quot;template&quot;</span>, <span class="ident">main_template</span>)
             .<span class="ident">is_ok</span>());
@@ -491,7 +491,7 @@
         <span class="kw">let</span> <span class="ident">main_template</span> <span class="op">=</span> <span class="string">&quot;In: {{&gt; p a=2}} Out: {{a}}&quot;</span>;
         <span class="kw">let</span> <span class="ident">p_partial</span> <span class="op">=</span> <span class="string">&quot;{{a}}&quot;</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="macro">assert!</span>(<span class="ident">handlebars</span>
             .<span class="ident">register_template_string</span>(<span class="string">&quot;template&quot;</span>, <span class="ident">main_template</span>)
             .<span class="ident">is_ok</span>());
@@ -503,7 +503,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_partial_context_hash</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hbs</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hbs</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="ident">hbs</span>.<span class="ident">register_template_string</span>(<span class="string">&quot;one&quot;</span>, <span class="string">&quot;This is a test. {{&gt; two name=\&quot;fred\&quot; }}&quot;</span>)
             .<span class="ident">unwrap</span>();
         <span class="ident">hbs</span>.<span class="ident">register_template_string</span>(<span class="string">&quot;two&quot;</span>, <span class="string">&quot;Lets test {{name}}&quot;</span>)
@@ -516,7 +516,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_partial_subexpression_context_hash</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hbs</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hbs</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="ident">hbs</span>.<span class="ident">register_template_string</span>(<span class="string">&quot;one&quot;</span>, <span class="string">&quot;This is a test. {{&gt; (x @root) name=\&quot;fred\&quot; }}&quot;</span>)
             .<span class="ident">unwrap</span>();
         <span class="ident">hbs</span>.<span class="ident">register_template_string</span>(<span class="string">&quot;two&quot;</span>, <span class="string">&quot;Lets test {{name}}&quot;</span>)
@@ -524,7 +524,7 @@
 
         <span class="ident">hbs</span>.<span class="ident">register_helper</span>(
             <span class="string">&quot;x&quot;</span>,
-            <span class="ident">Box</span>::<span class="ident">new</span>(
+            <span class="ident">Box::new</span>(
                 <span class="op">|</span><span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">Helper</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
                  <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">Registry</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
                  <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">Context</span>,
@@ -547,7 +547,7 @@
         <span class="kw">let</span> <span class="ident">t</span> <span class="op">=</span> <span class="string">&quot;{{#*inline \&quot;pp\&quot;}}{{a}} {{b}}{{/inline}}{{#each c}}{{&gt; pp a=2}}{{/each}}&quot;</span>;
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">json!</span>({<span class="string">&quot;c&quot;</span>: [{<span class="string">&quot;b&quot;</span>: <span class="bool-val">true</span>}, {<span class="string">&quot;b&quot;</span>: <span class="bool-val">false</span>}]});
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="macro">assert!</span>(<span class="ident">handlebars</span>.<span class="ident">register_template_string</span>(<span class="string">&quot;t&quot;</span>, <span class="ident">t</span>).<span class="ident">is_ok</span>());
         <span class="kw">let</span> <span class="ident">r0</span> <span class="op">=</span> <span class="ident">handlebars</span>.<span class="ident">render</span>(<span class="string">&quot;t&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">data</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">r0</span>.<span class="ident">ok</span>().<span class="ident">unwrap</span>(), <span class="string">&quot;2 true2 false&quot;</span>);
@@ -560,7 +560,7 @@
 
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">json!</span>({ <span class="string">&quot;fruits&quot;</span>: [<span class="string">&quot;carrot&quot;</span>, <span class="string">&quot;tomato&quot;</span>] });
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="ident">handlebars</span>.<span class="ident">register_template_string</span>(<span class="string">&quot;outer&quot;</span>, <span class="ident">outer</span>).<span class="ident">unwrap</span>();
         <span class="ident">handlebars</span>.<span class="ident">register_template_string</span>(<span class="string">&quot;inner&quot;</span>, <span class="ident">inner</span>).<span class="ident">unwrap</span>();
 

@@ -5,9 +5,9 @@
 <p>This structure is created by <a href="../../../../wasmer_types/entity/__core/panic/struct.PanicInfo.html#method.location" title="PanicInfo::location()"><code>PanicInfo::location()</code></a>.</p>
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
 <div class='information'><div class='tooltip should_panic'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered should_panic">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">panic</span>;
+<span class="kw">use</span> <span class="ident">std::panic</span>;
 
-<span class="ident">panic</span>::<span class="ident">set_hook</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="op">|</span><span class="ident">panic_info</span><span class="op">|</span> {
+<span class="ident">panic::set_hook</span>(<span class="ident">Box::new</span>(<span class="op">|</span><span class="ident">panic_info</span><span class="op">|</span> {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">location</span>) <span class="op">=</span> <span class="ident">panic_info</span>.<span class="ident">location</span>() {
         <span class="macro">println!</span>(<span class="string">&quot;panic occurred in file &#39;{}&#39; at line {}&quot;</span>, <span class="ident">location</span>.<span class="ident">file</span>(), <span class="ident">location</span>.<span class="ident">line</span>());
     } <span class="kw">else</span> {
@@ -25,12 +25,12 @@ annotated then its call location will be returned, and so on up the stack to the
 within a non-tracked function body.</p>
 <h1 id="examples-1" class="section-header"><a href="#examples-1">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">panic</span>::<span class="ident">Location</span>;
+<span class="kw">use</span> <span class="ident">std::panic::Location</span>;
 
 <span class="doccomment">/// Returns the [`Location`] at which it is called.</span>
 <span class="attribute">#[<span class="ident">track_caller</span>]</span>
 <span class="kw">fn</span> <span class="ident">get_caller_location</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">Location</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
-    <span class="ident">Location</span>::<span class="ident">caller</span>()
+    <span class="ident">Location::caller</span>()
 }
 
 <span class="doccomment">/// Returns a [`Location`] from within this function&#39;s definition.</span>
@@ -73,9 +73,9 @@ cause what appears to be identical code to return differing values from this fun
 platform and target platform differ.</p>
 <h1 id="examples-2" class="section-header"><a href="#examples-2">Examples</a></h1>
 <div class='information'><div class='tooltip should_panic'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered should_panic">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">panic</span>;
+<span class="kw">use</span> <span class="ident">std::panic</span>;
 
-<span class="ident">panic</span>::<span class="ident">set_hook</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="op">|</span><span class="ident">panic_info</span><span class="op">|</span> {
+<span class="ident">panic::set_hook</span>(<span class="ident">Box::new</span>(<span class="op">|</span><span class="ident">panic_info</span><span class="op">|</span> {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">location</span>) <span class="op">=</span> <span class="ident">panic_info</span>.<span class="ident">location</span>() {
         <span class="macro">println!</span>(<span class="string">&quot;panic occurred in file &#39;{}&#39;&quot;</span>, <span class="ident">location</span>.<span class="ident">file</span>());
     } <span class="kw">else</span> {
@@ -87,9 +87,9 @@ platform and target platform differ.</p>
 </div><h4 id="method.line" class="method"><code>pub fn <a href="#method.line" class="fnname">line</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></code><a class="srclink" href="https://doc.rust-lang.org/nightly/src/core/panic.rs.html#336" title="goto source code">[src]</a></h4><div class="docblock"><p>Returns the line number from which the panic originated.</p>
 <h1 id="examples-3" class="section-header"><a href="#examples-3">Examples</a></h1>
 <div class='information'><div class='tooltip should_panic'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered should_panic">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">panic</span>;
+<span class="kw">use</span> <span class="ident">std::panic</span>;
 
-<span class="ident">panic</span>::<span class="ident">set_hook</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="op">|</span><span class="ident">panic_info</span><span class="op">|</span> {
+<span class="ident">panic::set_hook</span>(<span class="ident">Box::new</span>(<span class="op">|</span><span class="ident">panic_info</span><span class="op">|</span> {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">location</span>) <span class="op">=</span> <span class="ident">panic_info</span>.<span class="ident">location</span>() {
         <span class="macro">println!</span>(<span class="string">&quot;panic occurred at line {}&quot;</span>, <span class="ident">location</span>.<span class="ident">line</span>());
     } <span class="kw">else</span> {
@@ -101,9 +101,9 @@ platform and target platform differ.</p>
 </div><h4 id="method.column" class="method"><code>pub fn <a href="#method.column" class="fnname">column</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a></code><span class="since" title="Stable since Rust version 1.25.0">1.25.0</span><a class="srclink" href="https://doc.rust-lang.org/nightly/src/core/panic.rs.html#358" title="goto source code">[src]</a></h4><div class="docblock"><p>Returns the column from which the panic originated.</p>
 <h1 id="examples-4" class="section-header"><a href="#examples-4">Examples</a></h1>
 <div class='information'><div class='tooltip should_panic'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered should_panic">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">panic</span>;
+<span class="kw">use</span> <span class="ident">std::panic</span>;
 
-<span class="ident">panic</span>::<span class="ident">set_hook</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="op">|</span><span class="ident">panic_info</span><span class="op">|</span> {
+<span class="ident">panic::set_hook</span>(<span class="ident">Box::new</span>(<span class="op">|</span><span class="ident">panic_info</span><span class="op">|</span> {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">location</span>) <span class="op">=</span> <span class="ident">panic_info</span>.<span class="ident">location</span>() {
         <span class="macro">println!</span>(<span class="string">&quot;panic occurred at column {}&quot;</span>, <span class="ident">location</span>.<span class="ident">column</span>());
     } <span class="kw">else</span> {

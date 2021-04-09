@@ -775,13 +775,13 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">dense</span>::{<span class="self">self</span>, <span class="ident">DenseDFA</span>};
-<span class="kw">use</span> <span class="ident">dfa</span>::<span class="ident">DFA</span>;
+<span class="kw">use</span> <span class="ident">dfa::DFA</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">error</span>::<span class="prelude-ty">Result</span>;
+<span class="kw">use</span> <span class="ident">error::Result</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">sparse</span>::<span class="ident">SparseDFA</span>;
+<span class="kw">use</span> <span class="ident">sparse::SparseDFA</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">state_id</span>::<span class="ident">StateID</span>;
+<span class="kw">use</span> <span class="ident">state_id::StateID</span>;
 
 <span class="doccomment">/// A regular expression that uses deterministic finite automata for fast</span>
 <span class="doccomment">/// searching.</span>
@@ -910,7 +910,7 @@
     <span class="doccomment">/// # Ok(()) }; example().unwrap()</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">pattern</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Regex</span><span class="op">&gt;</span> {
-        <span class="ident">RegexBuilder</span>::<span class="ident">new</span>().<span class="ident">build</span>(<span class="ident">pattern</span>)
+        <span class="ident">RegexBuilder::new</span>().<span class="ident">build</span>(<span class="ident">pattern</span>)
     }
 }
 
@@ -940,7 +940,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_sparse</span>(
         <span class="ident">pattern</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Regex</span><span class="op">&lt;</span><span class="ident">SparseDFA</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="ident">RegexBuilder</span>::<span class="ident">new</span>().<span class="ident">build_sparse</span>(<span class="ident">pattern</span>)
+        <span class="ident">RegexBuilder::new</span>().<span class="ident">build_sparse</span>(<span class="ident">pattern</span>)
     }
 }
 
@@ -1099,7 +1099,7 @@
     <span class="doccomment">/// # Ok(()) }; example().unwrap()</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">find_iter</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="lifetime">&#39;t</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;r</span> <span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;t</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Matches</span><span class="op">&lt;</span><span class="lifetime">&#39;r</span>, <span class="lifetime">&#39;t</span>, <span class="ident">D</span><span class="op">&gt;</span> {
-        <span class="ident">Matches</span>::<span class="ident">new</span>(<span class="self">self</span>, <span class="ident">input</span>)
+        <span class="ident">Matches::new</span>(<span class="self">self</span>, <span class="ident">input</span>)
     }
 
     <span class="doccomment">/// Build a new regex from its constituent forward and reverse DFAs.</span>
@@ -1245,14 +1245,14 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RegexBuilder</span> {
-    <span class="ident">dfa</span>: <span class="ident">dense</span>::<span class="ident">Builder</span>,
+    <span class="ident">dfa</span>: <span class="ident">dense::Builder</span>,
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">RegexBuilder</span> {
     <span class="doccomment">/// Create a new regex builder with the default configuration.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RegexBuilder</span> {
-        <span class="ident">RegexBuilder</span> { <span class="ident">dfa</span>: <span class="ident">dense</span>::<span class="ident">Builder</span>::<span class="ident">new</span>() }
+        <span class="ident">RegexBuilder</span> { <span class="ident">dfa</span>: <span class="ident">dense::Builder::new</span>() }
     }
 
     <span class="doccomment">/// Build a regex from the given pattern.</span>
@@ -1308,7 +1308,7 @@
             .<span class="ident">reverse</span>(<span class="bool-val">true</span>)
             .<span class="ident">longest_match</span>(<span class="bool-val">true</span>)
             .<span class="ident">build_with_size</span>(<span class="ident">pattern</span>)<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">Regex</span>::<span class="ident">from_dfas</span>(<span class="ident">forward</span>, <span class="ident">reverse</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">Regex::from_dfas</span>(<span class="ident">forward</span>, <span class="ident">reverse</span>))
     }
 
     <span class="doccomment">/// Build a regex from the given pattern using a specific representation</span>
@@ -1320,7 +1320,7 @@
         <span class="kw">let</span> <span class="ident">re</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">build_with_size</span>(<span class="ident">pattern</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">fwd</span> <span class="op">=</span> <span class="ident">re</span>.<span class="ident">forward</span>().<span class="ident">to_sparse</span>()<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">rev</span> <span class="op">=</span> <span class="ident">re</span>.<span class="ident">reverse</span>().<span class="ident">to_sparse</span>()<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(<span class="ident">Regex</span>::<span class="ident">from_dfas</span>(<span class="ident">fwd</span>, <span class="ident">rev</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">Regex::from_dfas</span>(<span class="ident">fwd</span>, <span class="ident">rev</span>))
     }
 
     <span class="doccomment">/// Set whether matching must be anchored at the beginning of the input.</span>
@@ -1541,7 +1541,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">RegexBuilder</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RegexBuilder</span> {
-        <span class="ident">RegexBuilder</span>::<span class="ident">new</span>()
+        <span class="ident">RegexBuilder::new</span>()
     }
 }
 </pre></div>

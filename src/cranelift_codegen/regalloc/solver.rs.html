@@ -1485,18 +1485,18 @@
 <span class="doccomment">//! appropriate candidate among the set of live register values, add it as a variable and start</span>
 <span class="doccomment">//! over.</span>
 
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">RegisterSet</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">dbg</span>::<span class="ident">DisplayList</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">entity</span>::{<span class="ident">SparseMap</span>, <span class="ident">SparseMapValue</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">Value</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::{<span class="ident">RegClass</span>, <span class="ident">RegUnit</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">register_set</span>::<span class="ident">RegSetIter</span>;
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">cmp</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">u16</span>;
-<span class="kw">use</span> <span class="ident">log</span>::<span class="ident">debug</span>;
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::RegisterSet</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::dbg::DisplayList</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::entity</span>::{<span class="ident">SparseMap</span>, <span class="ident">SparseMapValue</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::Value</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa</span>::{<span class="ident">RegClass</span>, <span class="ident">RegUnit</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::register_set::RegSetIter</span>;
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
+<span class="kw">use</span> <span class="ident">core::cmp</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
+<span class="kw">use</span> <span class="ident">core::mem</span>;
+<span class="kw">use</span> <span class="ident">core::u16</span>;
+<span class="kw">use</span> <span class="ident">log::debug</span>;
 
 <span class="doccomment">/// A variable in the constraint problem.</span>
 <span class="doccomment">///</span>
@@ -1590,8 +1590,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Variable</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Variable</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}({}&quot;</span>, <span class="self">self</span>.<span class="ident">value</span>, <span class="self">self</span>.<span class="ident">constraint</span>)<span class="question-mark">?</span>;
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">reg</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">from</span> {
             <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;, from {}&quot;</span>, <span class="self">self</span>.<span class="ident">constraint</span>.<span class="ident">info</span>.<span class="ident">display_regunit</span>(<span class="ident">reg</span>))<span class="question-mark">?</span>;
@@ -1629,8 +1629,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Assignment</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Assignment</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="ident">ri</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">rc</span>.<span class="ident">info</span>;
         <span class="macro">write!</span>(
             <span class="ident">f</span>,
@@ -1671,7 +1671,7 @@
     <span class="doccomment">/// Create a register move from an assignment, but not for identity assignments.</span>
     <span class="kw">fn</span> <span class="ident">with_assignment</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="ident">Assignment</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="ident">a</span>.<span class="ident">from</span> <span class="op">!</span><span class="op">=</span> <span class="ident">a</span>.<span class="ident">to</span> {
-            <span class="prelude-val">Some</span>(<span class="self">Self</span>::<span class="ident">Reg</span> {
+            <span class="prelude-val">Some</span>(<span class="self">Self</span><span class="ident">::Reg</span> {
                 <span class="ident">value</span>: <span class="ident">a</span>.<span class="ident">value</span>,
                 <span class="ident">from</span>: <span class="ident">a</span>.<span class="ident">from</span>,
                 <span class="ident">to</span>: <span class="ident">a</span>.<span class="ident">to</span>,
@@ -1683,28 +1683,28 @@
     }
 
     <span class="doccomment">/// Get the &quot;from&quot; register and register class, if possible.</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>, <span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">wrong_self_convention</span>))]</span>
+    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>, <span class="ident">allow</span>(<span class="ident">clippy::wrong_self_convention</span>))]</span>
     <span class="kw">fn</span> <span class="ident">from_reg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">RegClass</span>, <span class="ident">RegUnit</span>)<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Reg</span> { <span class="ident">rc</span>, <span class="ident">from</span>, .. } <span class="op">|</span> <span class="self">Self</span>::<span class="ident">Spill</span> { <span class="ident">rc</span>, <span class="ident">from</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">rc</span>, <span class="ident">from</span>)),
-            <span class="self">Self</span>::<span class="ident">Fill</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="self">Self</span><span class="ident">::Reg</span> { <span class="ident">rc</span>, <span class="ident">from</span>, .. } <span class="op">|</span> <span class="self">Self</span><span class="ident">::Spill</span> { <span class="ident">rc</span>, <span class="ident">from</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">rc</span>, <span class="ident">from</span>)),
+            <span class="self">Self</span><span class="ident">::Fill</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         }
     }
 
     <span class="doccomment">/// Get the &quot;to&quot; register and register class, if possible.</span>
     <span class="kw">fn</span> <span class="ident">to_reg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">RegClass</span>, <span class="ident">RegUnit</span>)<span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Reg</span> { <span class="ident">rc</span>, <span class="ident">to</span>, .. } <span class="op">|</span> <span class="self">Self</span>::<span class="ident">Fill</span> { <span class="ident">rc</span>, <span class="ident">to</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">rc</span>, <span class="ident">to</span>)),
-            <span class="self">Self</span>::<span class="ident">Spill</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="self">Self</span><span class="ident">::Reg</span> { <span class="ident">rc</span>, <span class="ident">to</span>, .. } <span class="op">|</span> <span class="self">Self</span><span class="ident">::Fill</span> { <span class="ident">rc</span>, <span class="ident">to</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">rc</span>, <span class="ident">to</span>)),
+            <span class="self">Self</span><span class="ident">::Spill</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         }
     }
 
     <span class="doccomment">/// Replace the &quot;to&quot; register with `new` and return the old value.</span>
     <span class="kw">fn</span> <span class="ident">replace_to_reg</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">new</span>: <span class="ident">RegUnit</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RegUnit</span> {
-        <span class="ident">mem</span>::<span class="ident">replace</span>(
+        <span class="ident">mem::replace</span>(
             <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-                <span class="self">Self</span>::<span class="ident">Reg</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">to</span>, .. } <span class="op">|</span> <span class="self">Self</span>::<span class="ident">Fill</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">to</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">to</span>,
-                <span class="self">Self</span>::<span class="ident">Spill</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;No to register in a spill {}&quot;</span>, <span class="self">self</span>),
+                <span class="self">Self</span><span class="ident">::Reg</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">to</span>, .. } <span class="op">|</span> <span class="self">Self</span><span class="ident">::Fill</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">to</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">to</span>,
+                <span class="self">Self</span><span class="ident">::Spill</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;No to register in a spill {}&quot;</span>, <span class="self">self</span>),
             },
             <span class="ident">new</span>,
         )
@@ -1713,13 +1713,13 @@
     <span class="doccomment">/// Convert this `Reg` move to a spill to `slot` and return the old &quot;to&quot; register.</span>
     <span class="kw">fn</span> <span class="ident">change_to_spill</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">slot</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RegUnit</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">clone</span>() {
-            <span class="self">Self</span>::<span class="ident">Reg</span> {
+            <span class="self">Self</span><span class="ident">::Reg</span> {
                 <span class="ident">value</span>,
                 <span class="ident">rc</span>,
                 <span class="ident">from</span>,
                 <span class="ident">to</span>,
             } <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">Spill</span> {
+                <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::Spill</span> {
                     <span class="ident">value</span>,
                     <span class="ident">rc</span>,
                     <span class="ident">from</span>,
@@ -1734,22 +1734,22 @@
     <span class="doccomment">/// Get the value being moved.</span>
     <span class="kw">fn</span> <span class="ident">value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Value</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Reg</span> { <span class="ident">value</span>, .. } <span class="op">|</span> <span class="self">Self</span>::<span class="ident">Fill</span> { <span class="ident">value</span>, .. } <span class="op">|</span> <span class="self">Self</span>::<span class="ident">Spill</span> { <span class="ident">value</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">value</span>,
+            <span class="self">Self</span><span class="ident">::Reg</span> { <span class="ident">value</span>, .. } <span class="op">|</span> <span class="self">Self</span><span class="ident">::Fill</span> { <span class="ident">value</span>, .. } <span class="op">|</span> <span class="self">Self</span><span class="ident">::Spill</span> { <span class="ident">value</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">value</span>,
         }
     }
 
     <span class="doccomment">/// Get the associated register class.</span>
     <span class="kw">fn</span> <span class="ident">rc</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RegClass</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Reg</span> { <span class="ident">rc</span>, .. } <span class="op">|</span> <span class="self">Self</span>::<span class="ident">Fill</span> { <span class="ident">rc</span>, .. } <span class="op">|</span> <span class="self">Self</span>::<span class="ident">Spill</span> { <span class="ident">rc</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">rc</span>,
+            <span class="self">Self</span><span class="ident">::Reg</span> { <span class="ident">rc</span>, .. } <span class="op">|</span> <span class="self">Self</span><span class="ident">::Fill</span> { <span class="ident">rc</span>, .. } <span class="op">|</span> <span class="self">Self</span><span class="ident">::Spill</span> { <span class="ident">rc</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">rc</span>,
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Move</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Move</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Reg</span> {
+            <span class="self">Self</span><span class="ident">::Reg</span> {
                 <span class="ident">value</span>,
                 <span class="ident">from</span>,
                 <span class="ident">to</span>,
@@ -1762,7 +1762,7 @@
                 <span class="ident">rc</span>.<span class="ident">info</span>.<span class="ident">display_regunit</span>(<span class="ident">from</span>),
                 <span class="ident">rc</span>.<span class="ident">info</span>.<span class="ident">display_regunit</span>(<span class="ident">to</span>)
             ),
-            <span class="self">Self</span>::<span class="ident">Spill</span> {
+            <span class="self">Self</span><span class="ident">::Spill</span> {
                 <span class="ident">value</span>,
                 <span class="ident">from</span>,
                 <span class="ident">to_slot</span>,
@@ -1775,7 +1775,7 @@
                 <span class="ident">rc</span>.<span class="ident">info</span>.<span class="ident">display_regunit</span>(<span class="ident">from</span>),
                 <span class="ident">to_slot</span>
             ),
-            <span class="self">Self</span>::<span class="ident">Fill</span> {
+            <span class="self">Self</span><span class="ident">::Fill</span> {
                 <span class="ident">value</span>,
                 <span class="ident">from_slot</span>,
                 <span class="ident">to</span>,
@@ -1792,9 +1792,9 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Move</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-        <span class="kw">let</span> <span class="ident">as_display</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="op">=</span> <span class="self">self</span>;
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Move</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        <span class="kw">let</span> <span class="ident">as_display</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">fmt::Display</span> <span class="op">=</span> <span class="self">self</span>;
         <span class="ident">as_display</span>.<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }
@@ -1877,13 +1877,13 @@
     <span class="doccomment">/// Create a new empty solver.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">assignments</span>: <span class="ident">SparseMap</span>::<span class="ident">new</span>(),
-            <span class="ident">vars</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
+            <span class="ident">assignments</span>: <span class="ident">SparseMap::new</span>(),
+            <span class="ident">vars</span>: <span class="ident">Vec::new</span>(),
             <span class="ident">inputs_done</span>: <span class="bool-val">false</span>,
-            <span class="ident">regs_in</span>: <span class="ident">RegisterSet</span>::<span class="ident">new</span>(),
-            <span class="ident">regs_out</span>: <span class="ident">RegisterSet</span>::<span class="ident">new</span>(),
-            <span class="ident">moves</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
-            <span class="ident">fills</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
+            <span class="ident">regs_in</span>: <span class="ident">RegisterSet::new</span>(),
+            <span class="ident">regs_out</span>: <span class="ident">RegisterSet::new</span>(),
+            <span class="ident">moves</span>: <span class="ident">Vec::new</span>(),
+            <span class="ident">fills</span>: <span class="ident">Vec::new</span>(),
         }
     }
 
@@ -1892,8 +1892,8 @@
         <span class="self">self</span>.<span class="ident">assignments</span>.<span class="ident">clear</span>();
         <span class="self">self</span>.<span class="ident">vars</span>.<span class="ident">clear</span>();
         <span class="self">self</span>.<span class="ident">inputs_done</span> <span class="op">=</span> <span class="bool-val">false</span>;
-        <span class="self">self</span>.<span class="ident">regs_in</span> <span class="op">=</span> <span class="ident">RegisterSet</span>::<span class="ident">new</span>();
-        <span class="self">self</span>.<span class="ident">regs_out</span> <span class="op">=</span> <span class="ident">RegisterSet</span>::<span class="ident">new</span>();
+        <span class="self">self</span>.<span class="ident">regs_in</span> <span class="op">=</span> <span class="ident">RegisterSet::new</span>();
+        <span class="self">self</span>.<span class="ident">regs_out</span> <span class="op">=</span> <span class="ident">RegisterSet::new</span>();
         <span class="self">self</span>.<span class="ident">moves</span>.<span class="ident">clear</span>();
         <span class="self">self</span>.<span class="ident">fills</span>.<span class="ident">clear</span>();
     }
@@ -1908,7 +1908,7 @@
         <span class="self">self</span>.<span class="ident">inputs_done</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="self">self</span>.<span class="ident">regs_in</span> <span class="op">=</span> <span class="ident">regs</span>.<span class="ident">clone</span>();
         <span class="comment">// Used for tracking fixed input assignments while `!inputs_done`:</span>
-        <span class="self">self</span>.<span class="ident">regs_out</span> <span class="op">=</span> <span class="ident">RegisterSet</span>::<span class="ident">new</span>();
+        <span class="self">self</span>.<span class="ident">regs_out</span> <span class="op">=</span> <span class="ident">RegisterSet::new</span>();
         <span class="self">self</span>.<span class="ident">moves</span>.<span class="ident">clear</span>();
         <span class="self">self</span>.<span class="ident">fills</span>.<span class="ident">clear</span>();
     }
@@ -2039,7 +2039,7 @@
             <span class="macro">panic!</span>(<span class="string">&quot;Wrong from register for {}&quot;</span>, <span class="ident">value</span>);
         }
 
-        <span class="kw">let</span> <span class="ident">new_var</span> <span class="op">=</span> <span class="ident">Variable</span>::<span class="ident">new_live</span>(<span class="ident">value</span>, <span class="ident">rc</span>, <span class="ident">from</span>, <span class="ident">live_through</span>);
+        <span class="kw">let</span> <span class="ident">new_var</span> <span class="op">=</span> <span class="ident">Variable::new_live</span>(<span class="ident">value</span>, <span class="ident">rc</span>, <span class="ident">from</span>, <span class="ident">live_through</span>);
         <span class="macro">debug!</span>(<span class="string">&quot;-&gt; new var: {}&quot;</span>, <span class="ident">new_var</span>);
 
         <span class="self">self</span>.<span class="ident">regs_in</span>.<span class="ident">free</span>(<span class="ident">rc</span>, <span class="ident">from</span>);
@@ -2154,7 +2154,7 @@
         <span class="comment">// However, if the tied output value has a global live range, we must create a variable to</span>
         <span class="comment">// avoid global interference too.</span>
         <span class="kw">if</span> <span class="ident">is_global</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_var</span> <span class="op">=</span> <span class="ident">Variable</span>::<span class="ident">new_live</span>(<span class="ident">value</span>, <span class="ident">rc</span>, <span class="ident">reg</span>, <span class="bool-val">true</span>);
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_var</span> <span class="op">=</span> <span class="ident">Variable::new_live</span>(<span class="ident">value</span>, <span class="ident">rc</span>, <span class="ident">reg</span>, <span class="bool-val">true</span>);
             <span class="ident">new_var</span>.<span class="ident">is_global</span> <span class="op">=</span> <span class="bool-val">true</span>;
             <span class="macro">debug!</span>(<span class="string">&quot;add_tied_input: new tied-global value: {}&quot;</span>, <span class="ident">new_var</span>);
             <span class="self">self</span>.<span class="ident">vars</span>.<span class="ident">push</span>(<span class="ident">new_var</span>);
@@ -2191,7 +2191,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_def</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">Value</span>, <span class="ident">constraint</span>: <span class="ident">RegClass</span>, <span class="ident">is_global</span>: <span class="ident">bool</span>) {
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">inputs_done</span>);
         <span class="self">self</span>.<span class="ident">vars</span>
-            .<span class="ident">push</span>(<span class="ident">Variable</span>::<span class="ident">new_def</span>(<span class="ident">value</span>, <span class="ident">constraint</span>, <span class="ident">is_global</span>));
+            .<span class="ident">push</span>(<span class="ident">Variable::new_def</span>(<span class="ident">value</span>, <span class="ident">constraint</span>, <span class="ident">is_global</span>));
     }
 
     <span class="doccomment">/// Clear the `is_global` flag on all solver variables.</span>
@@ -2253,7 +2253,7 @@
         <span class="comment">// Compute domain sizes for all the variables given the current register sets.</span>
         <span class="kw">for</span> <span class="ident">v</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">vars</span> {
             <span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">regs_in</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">regs_out</span>, <span class="ident">global_regs</span>).<span class="ident">len</span>();
-            <span class="ident">v</span>.<span class="ident">domain</span> <span class="op">=</span> <span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">d</span>, <span class="ident">u16</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="kw">as</span> <span class="ident">u16</span>;
+            <span class="ident">v</span>.<span class="ident">domain</span> <span class="op">=</span> <span class="ident">cmp::min</span>(<span class="ident">d</span>, <span class="ident">u16::MAX</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="kw">as</span> <span class="ident">u16</span>;
         }
 
         <span class="comment">// Solve for vars with small domains first to increase the chance of finding a solution.</span>
@@ -2327,9 +2327,9 @@
                     <span class="comment">// If `v` must avoid global interference, there is not point in requesting</span>
                     <span class="comment">// live registers be diverted. We need to make it a non-global value.</span>
                     <span class="kw">if</span> <span class="ident">v</span>.<span class="ident">is_global</span> <span class="op">&amp;&amp;</span> <span class="ident">gregs</span>.<span class="ident">iter</span>(<span class="ident">rc</span>).<span class="ident">next</span>().<span class="ident">is_none</span>() {
-                        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SolverError</span>::<span class="ident">Global</span>(<span class="ident">v</span>.<span class="ident">value</span>));
+                        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SolverError::Global</span>(<span class="ident">v</span>.<span class="ident">value</span>));
                     }
-                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SolverError</span>::<span class="ident">Divert</span>(<span class="ident">rc</span>));
+                    <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SolverError::Divert</span>(<span class="ident">rc</span>));
                 }
             };
 
@@ -2371,7 +2371,7 @@
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">from</span>) <span class="op">=</span> <span class="ident">v</span>.<span class="ident">from</span> {
                 <span class="comment">// Omit variable solutions that don&#39;t require the value to be moved.</span>
                 <span class="kw">if</span> <span class="ident">from</span> <span class="op">!</span><span class="op">=</span> <span class="ident">v</span>.<span class="ident">solution</span> {
-                    <span class="self">self</span>.<span class="ident">moves</span>.<span class="ident">push</span>(<span class="ident">Move</span>::<span class="ident">Reg</span> {
+                    <span class="self">self</span>.<span class="ident">moves</span>.<span class="ident">push</span>(<span class="ident">Move::Reg</span> {
                         <span class="ident">value</span>: <span class="ident">v</span>.<span class="ident">value</span>,
                         <span class="ident">from</span>,
                         <span class="ident">to</span>: <span class="ident">v</span>.<span class="ident">solution</span>,
@@ -2384,7 +2384,7 @@
         <span class="comment">// Convert all of the fixed register assignments into moves, but omit the ones that are</span>
         <span class="comment">// already in the right register.</span>
         <span class="self">self</span>.<span class="ident">moves</span>
-            .<span class="ident">extend</span>(<span class="self">self</span>.<span class="ident">assignments</span>.<span class="ident">values</span>().<span class="ident">filter_map</span>(<span class="ident">Move</span>::<span class="ident">with_assignment</span>));
+            .<span class="ident">extend</span>(<span class="self">self</span>.<span class="ident">assignments</span>.<span class="ident">values</span>().<span class="ident">filter_map</span>(<span class="ident">Move::with_assignment</span>));
 
         <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">moves</span>.<span class="ident">is_empty</span>() {
             <span class="macro">debug!</span>(<span class="string">&quot;collect_moves: {}&quot;</span>, <span class="ident">DisplayList</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">moves</span>));
@@ -2477,7 +2477,7 @@
                 <span class="comment">// Append a fixup move so we end up in the right place. This move will be scheduled</span>
                 <span class="comment">// later. That&#39;s ok because it is the single remaining move of `m.value` after the</span>
                 <span class="comment">// next iteration.</span>
-                <span class="self">self</span>.<span class="ident">moves</span>.<span class="ident">push</span>(<span class="ident">Move</span>::<span class="ident">Reg</span> {
+                <span class="self">self</span>.<span class="ident">moves</span>.<span class="ident">push</span>(<span class="ident">Move::Reg</span> {
                     <span class="ident">value</span>: <span class="ident">m</span>.<span class="ident">value</span>(),
                     <span class="ident">rc</span>: <span class="ident">toprc</span>,
                     <span class="ident">from</span>: <span class="ident">reg</span>,
@@ -2496,7 +2496,7 @@
             <span class="ident">num_spill_slots</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             <span class="macro">debug!</span>(<span class="string">&quot;breaking cycle at {} with slot {}&quot;</span>, <span class="ident">m</span>, <span class="ident">slot</span>);
             <span class="kw">let</span> <span class="ident">old_to_reg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">moves</span>[<span class="ident">i</span>].<span class="ident">change_to_spill</span>(<span class="ident">slot</span>);
-            <span class="self">self</span>.<span class="ident">fills</span>.<span class="ident">push</span>(<span class="ident">Move</span>::<span class="ident">Fill</span> {
+            <span class="self">self</span>.<span class="ident">fills</span>.<span class="ident">push</span>(<span class="ident">Move::Fill</span> {
                 <span class="ident">value</span>: <span class="ident">m</span>.<span class="ident">value</span>(),
                 <span class="ident">rc</span>: <span class="ident">toprc</span>,
                 <span class="ident">from_slot</span>: <span class="ident">slot</span>,
@@ -2513,8 +2513,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Solver</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Solver</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="ident">reginfo</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">vars</span>.<span class="ident">first</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">constraint</span>.<span class="ident">info</span>);
         <span class="macro">writeln!</span>(<span class="ident">f</span>, <span class="string">&quot;Solver {{ inputs_done: {},&quot;</span>, <span class="self">self</span>.<span class="ident">inputs_done</span>)<span class="question-mark">?</span>;
         <span class="macro">writeln!</span>(<span class="ident">f</span>, <span class="string">&quot;  in:  {}&quot;</span>, <span class="self">self</span>.<span class="ident">regs_in</span>.<span class="ident">display</span>(<span class="ident">reginfo</span>))<span class="question-mark">?</span>;
@@ -2534,12 +2534,12 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;arm32&quot;</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Move</span>, <span class="ident">Solver</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">entity</span>::<span class="ident">EntityRef</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">Value</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">registers</span>::{<span class="ident">RegBank</span>, <span class="ident">RegClassData</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::{<span class="ident">RegClass</span>, <span class="ident">RegInfo</span>, <span class="ident">RegUnit</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">RegisterSet</span>;
-    <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">borrow</span>::<span class="ident">Borrow</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::entity::EntityRef</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::Value</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::registers</span>::{<span class="ident">RegBank</span>, <span class="ident">RegClassData</span>};
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa</span>::{<span class="ident">RegClass</span>, <span class="ident">RegInfo</span>, <span class="ident">RegUnit</span>};
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::RegisterSet</span>;
+    <span class="kw">use</span> <span class="ident">core::borrow::Borrow</span>;
 
     <span class="comment">// Arm32 `TargetIsa` is now `TargetIsaAdapter`, which does not hold any info</span>
     <span class="comment">// about registers, so we directly access `INFO` from registers-arm32.rs.</span>
@@ -2556,7 +2556,7 @@
 
     <span class="comment">// Construct a register move.</span>
     <span class="kw">fn</span> <span class="ident">mov</span>(<span class="ident">value</span>: <span class="ident">Value</span>, <span class="ident">rc</span>: <span class="ident">RegClass</span>, <span class="ident">from</span>: <span class="ident">RegUnit</span>, <span class="ident">to</span>: <span class="ident">RegUnit</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Move</span> {
-        <span class="ident">Move</span>::<span class="ident">Reg</span> {
+        <span class="ident">Move::Reg</span> {
             <span class="ident">value</span>,
             <span class="ident">rc</span>,
             <span class="ident">from</span>,
@@ -2565,7 +2565,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">spill</span>(<span class="ident">value</span>: <span class="ident">Value</span>, <span class="ident">rc</span>: <span class="ident">RegClass</span>, <span class="ident">from</span>: <span class="ident">RegUnit</span>, <span class="ident">to_slot</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Move</span> {
-        <span class="ident">Move</span>::<span class="ident">Spill</span> {
+        <span class="ident">Move::Spill</span> {
             <span class="ident">value</span>,
             <span class="ident">rc</span>,
             <span class="ident">from</span>,
@@ -2574,7 +2574,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">fill</span>(<span class="ident">value</span>: <span class="ident">Value</span>, <span class="ident">rc</span>: <span class="ident">RegClass</span>, <span class="ident">from_slot</span>: <span class="ident">usize</span>, <span class="ident">to</span>: <span class="ident">RegUnit</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Move</span> {
-        <span class="ident">Move</span>::<span class="ident">Fill</span> {
+        <span class="ident">Move::Fill</span> {
             <span class="ident">value</span>,
             <span class="ident">rc</span>,
             <span class="ident">from_slot</span>,
@@ -2589,11 +2589,11 @@
         <span class="kw">let</span> <span class="ident">r0</span> <span class="op">=</span> <span class="ident">gpr</span>.<span class="ident">unit</span>(<span class="number">0</span>);
         <span class="kw">let</span> <span class="ident">r1</span> <span class="op">=</span> <span class="ident">gpr</span>.<span class="ident">unit</span>(<span class="number">1</span>);
         <span class="kw">let</span> <span class="ident">r2</span> <span class="op">=</span> <span class="ident">gpr</span>.<span class="ident">unit</span>(<span class="number">2</span>);
-        <span class="kw">let</span> <span class="ident">gregs</span> <span class="op">=</span> <span class="ident">RegisterSet</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">RegisterSet</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">solver</span> <span class="op">=</span> <span class="ident">Solver</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">v10</span> <span class="op">=</span> <span class="ident">Value</span>::<span class="ident">new</span>(<span class="number">10</span>);
-        <span class="kw">let</span> <span class="ident">v11</span> <span class="op">=</span> <span class="ident">Value</span>::<span class="ident">new</span>(<span class="number">11</span>);
+        <span class="kw">let</span> <span class="ident">gregs</span> <span class="op">=</span> <span class="ident">RegisterSet::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">RegisterSet::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">solver</span> <span class="op">=</span> <span class="ident">Solver::new</span>();
+        <span class="kw">let</span> <span class="ident">v10</span> <span class="op">=</span> <span class="ident">Value::new</span>(<span class="number">10</span>);
+        <span class="kw">let</span> <span class="ident">v11</span> <span class="op">=</span> <span class="ident">Value::new</span>(<span class="number">11</span>);
 
         <span class="comment">// As simple as it gets: Value is in r1, we want r0.</span>
         <span class="ident">regs</span>.<span class="ident">take</span>(<span class="ident">gpr</span>, <span class="ident">r1</span>);
@@ -2646,12 +2646,12 @@
         <span class="kw">let</span> <span class="ident">s1</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">unit</span>(<span class="number">1</span>);
         <span class="kw">let</span> <span class="ident">s2</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">unit</span>(<span class="number">2</span>);
         <span class="kw">let</span> <span class="ident">s3</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">unit</span>(<span class="number">3</span>);
-        <span class="kw">let</span> <span class="ident">gregs</span> <span class="op">=</span> <span class="ident">RegisterSet</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">RegisterSet</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">solver</span> <span class="op">=</span> <span class="ident">Solver</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">v10</span> <span class="op">=</span> <span class="ident">Value</span>::<span class="ident">new</span>(<span class="number">10</span>);
-        <span class="kw">let</span> <span class="ident">v11</span> <span class="op">=</span> <span class="ident">Value</span>::<span class="ident">new</span>(<span class="number">11</span>);
-        <span class="kw">let</span> <span class="ident">v12</span> <span class="op">=</span> <span class="ident">Value</span>::<span class="ident">new</span>(<span class="number">12</span>);
+        <span class="kw">let</span> <span class="ident">gregs</span> <span class="op">=</span> <span class="ident">RegisterSet::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">RegisterSet::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">solver</span> <span class="op">=</span> <span class="ident">Solver::new</span>();
+        <span class="kw">let</span> <span class="ident">v10</span> <span class="op">=</span> <span class="ident">Value::new</span>(<span class="number">10</span>);
+        <span class="kw">let</span> <span class="ident">v11</span> <span class="op">=</span> <span class="ident">Value::new</span>(<span class="number">11</span>);
+        <span class="kw">let</span> <span class="ident">v12</span> <span class="op">=</span> <span class="ident">Value::new</span>(<span class="number">12</span>);
 
         <span class="comment">// Not a simple cycle: Swap d0 &lt;-&gt; (s2, s3)</span>
         <span class="ident">regs</span>.<span class="ident">take</span>(<span class="ident">d</span>, <span class="ident">d0</span>);
@@ -2705,15 +2705,15 @@
         <span class="kw">let</span> <span class="ident">r3</span> <span class="op">=</span> <span class="ident">gpr</span>.<span class="ident">unit</span>(<span class="number">3</span>);
         <span class="kw">let</span> <span class="ident">r4</span> <span class="op">=</span> <span class="ident">gpr</span>.<span class="ident">unit</span>(<span class="number">4</span>);
         <span class="kw">let</span> <span class="ident">r5</span> <span class="op">=</span> <span class="ident">gpr</span>.<span class="ident">unit</span>(<span class="number">5</span>);
-        <span class="kw">let</span> <span class="ident">gregs</span> <span class="op">=</span> <span class="ident">RegisterSet</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">RegisterSet</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">solver</span> <span class="op">=</span> <span class="ident">Solver</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">v10</span> <span class="op">=</span> <span class="ident">Value</span>::<span class="ident">new</span>(<span class="number">10</span>);
-        <span class="kw">let</span> <span class="ident">v11</span> <span class="op">=</span> <span class="ident">Value</span>::<span class="ident">new</span>(<span class="number">11</span>);
-        <span class="kw">let</span> <span class="ident">v12</span> <span class="op">=</span> <span class="ident">Value</span>::<span class="ident">new</span>(<span class="number">12</span>);
-        <span class="kw">let</span> <span class="ident">v13</span> <span class="op">=</span> <span class="ident">Value</span>::<span class="ident">new</span>(<span class="number">13</span>);
-        <span class="kw">let</span> <span class="ident">v14</span> <span class="op">=</span> <span class="ident">Value</span>::<span class="ident">new</span>(<span class="number">14</span>);
-        <span class="kw">let</span> <span class="ident">v15</span> <span class="op">=</span> <span class="ident">Value</span>::<span class="ident">new</span>(<span class="number">15</span>);
+        <span class="kw">let</span> <span class="ident">gregs</span> <span class="op">=</span> <span class="ident">RegisterSet::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">RegisterSet::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">solver</span> <span class="op">=</span> <span class="ident">Solver::new</span>();
+        <span class="kw">let</span> <span class="ident">v10</span> <span class="op">=</span> <span class="ident">Value::new</span>(<span class="number">10</span>);
+        <span class="kw">let</span> <span class="ident">v11</span> <span class="op">=</span> <span class="ident">Value::new</span>(<span class="number">11</span>);
+        <span class="kw">let</span> <span class="ident">v12</span> <span class="op">=</span> <span class="ident">Value::new</span>(<span class="number">12</span>);
+        <span class="kw">let</span> <span class="ident">v13</span> <span class="op">=</span> <span class="ident">Value::new</span>(<span class="number">13</span>);
+        <span class="kw">let</span> <span class="ident">v14</span> <span class="op">=</span> <span class="ident">Value::new</span>(<span class="number">14</span>);
+        <span class="kw">let</span> <span class="ident">v15</span> <span class="op">=</span> <span class="ident">Value::new</span>(<span class="number">15</span>);
 
         <span class="comment">// Claim r0--r2 and r3--r15 for other values.</span>
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">16</span> {

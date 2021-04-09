@@ -15,8 +15,8 @@ convention compatible.  This means that for FFI you can only pass
 <p>Example of extern function declaration.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">num_complex</span>::<span class="ident">Complex</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">raw</span>::<span class="ident">c_int</span>;
+<span class="kw">use</span> <span class="ident">num_complex::Complex</span>;
+<span class="kw">use</span> <span class="ident">std::os::raw::c_int</span>;
 
 <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> {
     <span class="kw">fn</span> <span class="ident">zaxpy_</span>(<span class="ident">n</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_int</span>, <span class="ident">alpha</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">Complex</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,

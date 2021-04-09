@@ -21,8 +21,8 @@
 safely to an <code>ImageBuffer</code> with a large enough underlying buffer.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="ident">SampleLayout</span>::<span class="ident">row_major_packed</span>(<span class="number">3</span>, <span class="number">640</span>, <span class="number">480</span>);
-<span class="macro">assert!</span>(<span class="ident">layout</span>.<span class="ident">is_normal</span>(<span class="ident">NormalForm</span>::<span class="ident">RowMajorPacked</span>));</pre></div>
+<span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="ident">SampleLayout::row_major_packed</span>(<span class="number">3</span>, <span class="number">640</span>, <span class="number">480</span>);
+<span class="macro">assert!</span>(<span class="ident">layout</span>.<span class="ident">is_normal</span>(<span class="ident">NormalForm::RowMajorPacked</span>));</pre></div>
 <h1 id="panics" class="section-header"><a href="#panics">Panics</a></h1>
 <p>On platforms where <code>usize</code> has the same size as <code>u32</code> this panics when the resulting stride
 in the <code>height</code> direction would be larger than <code>usize::max_value()</code>. On other platforms
@@ -32,8 +32,8 @@ where it can surely accomodate `u8::max_value() * u32::max_value(), this can nev
 useful for conversion but can be used to describe such a buffer without pitfalls.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="ident">SampleLayout</span>::<span class="ident">column_major_packed</span>(<span class="number">3</span>, <span class="number">640</span>, <span class="number">480</span>);
-<span class="macro">assert!</span>(<span class="ident">layout</span>.<span class="ident">is_normal</span>(<span class="ident">NormalForm</span>::<span class="ident">ColumnMajorPacked</span>));</pre></div>
+<span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="ident">SampleLayout::column_major_packed</span>(<span class="number">3</span>, <span class="number">640</span>, <span class="number">480</span>);
+<span class="macro">assert!</span>(<span class="ident">layout</span>.<span class="ident">is_normal</span>(<span class="ident">NormalForm::ColumnMajorPacked</span>));</pre></div>
 <h1 id="panics-1" class="section-header"><a href="#panics-1">Panics</a></h1>
 <p>On platforms where <code>usize</code> has the same size as <code>u32</code> this panics when the resulting stride
 in the <code>width</code> direction would be larger than <code>usize::max_value()</code>. On other platforms

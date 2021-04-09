@@ -46,18 +46,18 @@
 <span id="43">43</span>
 <span id="44">44</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ast</span>::{<span class="self">self</span>, <span class="ident">kw</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">parser</span>::{<span class="ident">Parse</span>, <span class="ident">Parser</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ast</span>::{<span class="self">self</span>, <span class="ident">kw</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::parser</span>::{<span class="ident">Parse</span>, <span class="ident">Parser</span>, <span class="prelude-ty">Result</span>};
 
 <span class="doccomment">/// A WebAssembly event directive, part of the exception handling proposal.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Event</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Where this event was defined</span>
-    <span class="kw">pub</span> <span class="ident">span</span>: <span class="ident">ast</span>::<span class="ident">Span</span>,
+    <span class="kw">pub</span> <span class="ident">span</span>: <span class="ident">ast::Span</span>,
     <span class="doccomment">/// An optional name by which to refer to this event in name resolution.</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">Id</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ast::Id</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional export directives for this event.</span>
-    <span class="kw">pub</span> <span class="ident">exports</span>: <span class="ident">ast</span>::<span class="ident">InlineExport</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">exports</span>: <span class="ident">ast::InlineExport</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The type of event that is defined.</span>
     <span class="kw">pub</span> <span class="ident">ty</span>: <span class="ident">EventType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
 }
@@ -67,12 +67,12 @@
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EventType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// An exception event, where the payload is the type signature of the event</span>
     <span class="doccomment">/// (constructor parameters, etc).</span>
-    <span class="ident">Exception</span>(<span class="ident">ast</span>::<span class="ident">TypeUse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">ast</span>::<span class="ident">FunctionType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>),
+    <span class="ident">Exception</span>(<span class="ident">ast::TypeUse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">ast::FunctionType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>),
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Parse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Event</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">parser</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">event</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
+        <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::event</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
         <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">exports</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
@@ -87,7 +87,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Parse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">EventType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">parser</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Ok</span>(<span class="ident">EventType</span>::<span class="ident">Exception</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>))
+        <span class="prelude-val">Ok</span>(<span class="ident">EventType::Exception</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>))
     }
 }
 </pre></div>

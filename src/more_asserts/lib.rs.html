@@ -824,7 +824,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">panic</span>::<span class="ident">catch_unwind</span>;
+    <span class="kw">use</span> <span class="ident">std::panic::catch_unwind</span>;
 
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">PartialOrd</span>, <span class="ident">PartialEq</span>, <span class="ident">Debug</span>)]</span>
     <span class="kw">enum</span> <span class="ident">DummyType</span> {
@@ -836,16 +836,16 @@
         <span class="macro">assert_lt!</span>(<span class="number">3</span>, <span class="number">4</span>);
         <span class="macro">assert_lt!</span>(<span class="number">4.0</span>, <span class="number">4.5</span>);
         <span class="macro">assert_lt!</span>(<span class="string">&quot;a string&quot;</span>, <span class="string">&quot;b string&quot;</span>);
-        <span class="macro">assert_lt!</span>(<span class="ident">DummyType</span>::<span class="ident">Foo</span>, <span class="ident">DummyType</span>::<span class="ident">Bar</span>,
+        <span class="macro">assert_lt!</span>(<span class="ident">DummyType::Foo</span>, <span class="ident">DummyType::Bar</span>,
                    <span class="string">&quot;Message with {}&quot;</span>, <span class="string">&quot;cool formatting&quot;</span>);
 
-        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DummyType</span>::<span class="ident">Foo</span>;
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DummyType</span>::<span class="ident">Baz</span>;
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DummyType::Foo</span>;
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DummyType::Baz</span>;
         <span class="macro">assert_lt!</span>(<span class="ident">a</span>, <span class="ident">b</span>);
 
         <span class="macro">assert!</span>(<span class="ident">catch_unwind</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">assert_lt!</span>(<span class="number">5</span>, <span class="number">3</span>)).<span class="ident">is_err</span>());
         <span class="macro">assert!</span>(<span class="ident">catch_unwind</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">assert_lt!</span>(<span class="number">5</span>, <span class="number">5</span>)).<span class="ident">is_err</span>());
-        <span class="macro">assert!</span>(<span class="ident">catch_unwind</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">assert_lt!</span>(<span class="ident">DummyType</span>::<span class="ident">Bar</span>, <span class="ident">DummyType</span>::<span class="ident">Foo</span>)).<span class="ident">is_err</span>());
+        <span class="macro">assert!</span>(<span class="ident">catch_unwind</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">assert_lt!</span>(<span class="ident">DummyType::Bar</span>, <span class="ident">DummyType::Foo</span>)).<span class="ident">is_err</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -853,16 +853,16 @@
         <span class="macro">assert_gt!</span>(<span class="number">4</span>, <span class="number">3</span>);
         <span class="macro">assert_gt!</span>(<span class="number">4.5</span>, <span class="number">4.0</span>);
         <span class="macro">assert_gt!</span>(<span class="string">&quot;b string&quot;</span>, <span class="string">&quot;a string&quot;</span>);
-        <span class="macro">assert_gt!</span>(<span class="ident">DummyType</span>::<span class="ident">Bar</span>, <span class="ident">DummyType</span>::<span class="ident">Foo</span>,
+        <span class="macro">assert_gt!</span>(<span class="ident">DummyType::Bar</span>, <span class="ident">DummyType::Foo</span>,
                    <span class="string">&quot;Message with {}&quot;</span>, <span class="string">&quot;cool formatting&quot;</span>);
 
-        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DummyType</span>::<span class="ident">Foo</span>;
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DummyType</span>::<span class="ident">Baz</span>;
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DummyType::Foo</span>;
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DummyType::Baz</span>;
         <span class="macro">assert_gt!</span>(<span class="ident">b</span>, <span class="ident">a</span>);
 
         <span class="macro">assert!</span>(<span class="ident">catch_unwind</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">assert_gt!</span>(<span class="number">3</span>, <span class="number">5</span>)).<span class="ident">is_err</span>());
         <span class="macro">assert!</span>(<span class="ident">catch_unwind</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">assert_gt!</span>(<span class="number">5</span>, <span class="number">5</span>)).<span class="ident">is_err</span>());
-        <span class="macro">assert!</span>(<span class="ident">catch_unwind</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">assert_gt!</span>(<span class="ident">DummyType</span>::<span class="ident">Foo</span>, <span class="ident">DummyType</span>::<span class="ident">Bar</span>)).<span class="ident">is_err</span>());
+        <span class="macro">assert!</span>(<span class="ident">catch_unwind</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">assert_gt!</span>(<span class="ident">DummyType::Foo</span>, <span class="ident">DummyType::Bar</span>)).<span class="ident">is_err</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -872,17 +872,17 @@
         <span class="macro">assert_le!</span>(<span class="number">4.0</span>, <span class="number">4.5</span>);
         <span class="macro">assert_le!</span>(<span class="string">&quot;a string&quot;</span>, <span class="string">&quot;a string&quot;</span>);
         <span class="macro">assert_le!</span>(<span class="string">&quot;a string&quot;</span>, <span class="string">&quot;b string&quot;</span>);
-        <span class="macro">assert_le!</span>(<span class="ident">DummyType</span>::<span class="ident">Foo</span>, <span class="ident">DummyType</span>::<span class="ident">Bar</span>, <span class="string">&quot;Message&quot;</span>);
-        <span class="macro">assert_le!</span>(<span class="ident">DummyType</span>::<span class="ident">Foo</span>, <span class="ident">DummyType</span>::<span class="ident">Foo</span>,
+        <span class="macro">assert_le!</span>(<span class="ident">DummyType::Foo</span>, <span class="ident">DummyType::Bar</span>, <span class="string">&quot;Message&quot;</span>);
+        <span class="macro">assert_le!</span>(<span class="ident">DummyType::Foo</span>, <span class="ident">DummyType::Foo</span>,
                    <span class="string">&quot;Message with {}&quot;</span>, <span class="string">&quot;cool formatting&quot;</span>);
 
-        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DummyType</span>::<span class="ident">Foo</span>;
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DummyType</span>::<span class="ident">Baz</span>;
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DummyType::Foo</span>;
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DummyType::Baz</span>;
         <span class="macro">assert_le!</span>(<span class="ident">a</span>, <span class="ident">a</span>);
         <span class="macro">assert_le!</span>(<span class="ident">a</span>, <span class="ident">b</span>);
 
         <span class="macro">assert!</span>(<span class="ident">catch_unwind</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">assert_le!</span>(<span class="number">5</span>, <span class="number">3</span>)).<span class="ident">is_err</span>());
-        <span class="macro">assert!</span>(<span class="ident">catch_unwind</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">assert_le!</span>(<span class="ident">DummyType</span>::<span class="ident">Bar</span>, <span class="ident">DummyType</span>::<span class="ident">Foo</span>)).<span class="ident">is_err</span>());
+        <span class="macro">assert!</span>(<span class="ident">catch_unwind</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">assert_le!</span>(<span class="ident">DummyType::Bar</span>, <span class="ident">DummyType::Foo</span>)).<span class="ident">is_err</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -893,17 +893,17 @@
         <span class="macro">assert_ge!</span>(<span class="number">5.0</span>, <span class="number">5.0</span>);
         <span class="macro">assert_ge!</span>(<span class="string">&quot;a string&quot;</span>, <span class="string">&quot;a string&quot;</span>);
         <span class="macro">assert_ge!</span>(<span class="string">&quot;b string&quot;</span>, <span class="string">&quot;a string&quot;</span>);
-        <span class="macro">assert_ge!</span>(<span class="ident">DummyType</span>::<span class="ident">Bar</span>, <span class="ident">DummyType</span>::<span class="ident">Bar</span>, <span class="string">&quot;Example&quot;</span>);
-        <span class="macro">assert_ge!</span>(<span class="ident">DummyType</span>::<span class="ident">Bar</span>, <span class="ident">DummyType</span>::<span class="ident">Foo</span>,
+        <span class="macro">assert_ge!</span>(<span class="ident">DummyType::Bar</span>, <span class="ident">DummyType::Bar</span>, <span class="string">&quot;Example&quot;</span>);
+        <span class="macro">assert_ge!</span>(<span class="ident">DummyType::Bar</span>, <span class="ident">DummyType::Foo</span>,
                    <span class="string">&quot;Message with {}&quot;</span>, <span class="string">&quot;cool formatting&quot;</span>);
 
-        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DummyType</span>::<span class="ident">Foo</span>;
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DummyType</span>::<span class="ident">Baz</span>;
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DummyType::Foo</span>;
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">DummyType::Baz</span>;
         <span class="macro">assert_ge!</span>(<span class="ident">a</span>, <span class="ident">a</span>);
         <span class="macro">assert_ge!</span>(<span class="ident">b</span>, <span class="ident">a</span>);
 
         <span class="macro">assert!</span>(<span class="ident">catch_unwind</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">assert_ge!</span>(<span class="number">3</span>, <span class="number">5</span>)).<span class="ident">is_err</span>());
-        <span class="macro">assert!</span>(<span class="ident">catch_unwind</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">assert_ge!</span>(<span class="ident">DummyType</span>::<span class="ident">Foo</span>, <span class="ident">DummyType</span>::<span class="ident">Bar</span>)).<span class="ident">is_err</span>());
+        <span class="macro">assert!</span>(<span class="ident">catch_unwind</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">assert_ge!</span>(<span class="ident">DummyType::Foo</span>, <span class="ident">DummyType::Bar</span>)).<span class="ident">is_err</span>());
     }
 
     <span class="comment">// @@TODO: how to test the debug macros?</span>

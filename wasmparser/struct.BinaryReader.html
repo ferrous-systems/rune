@@ -6,7 +6,7 @@
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">let</span> <span class="ident">fn_body</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="number">0x41</span>, <span class="number">0x00</span>, <span class="number">0x10</span>, <span class="number">0x00</span>, <span class="number">0x0B</span>];
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">wasmparser</span>::<span class="ident">BinaryReader</span>::<span class="ident">new</span>(<span class="ident">fn_body</span>);
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">wasmparser::BinaryReader::new</span>(<span class="ident">fn_body</span>);
 <span class="kw">while</span> <span class="op">!</span><span class="ident">reader</span>.<span class="ident">eof</span>() {
     <span class="kw">let</span> <span class="ident">op</span> <span class="op">=</span> <span class="ident">reader</span>.<span class="ident">read_operator</span>();
     <span class="macro">println!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">op</span>)

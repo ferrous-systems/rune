@@ -6,9 +6,9 @@
 function.</p>
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
 <div class='information'><div class='tooltip should_panic'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered should_panic">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">panic</span>;
+<span class="kw">use</span> <span class="ident">std::panic</span>;
 
-<span class="ident">panic</span>::<span class="ident">set_hook</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="op">|</span><span class="ident">panic_info</span><span class="op">|</span> {
+<span class="ident">panic::set_hook</span>(<span class="ident">Box::new</span>(<span class="op">|</span><span class="ident">panic_info</span><span class="op">|</span> {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=</span> <span class="ident">panic_info</span>.<span class="ident">payload</span>().<span class="ident">downcast_ref</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>() {
         <span class="macro">println!</span>(<span class="string">&quot;panic occurred: {:?}&quot;</span>, <span class="ident">s</span>);
     } <span class="kw">else</span> {
@@ -21,9 +21,9 @@ function.</p>
 <p>This will commonly, but not always, be a <code>&amp;'static str</code> or <a href="../../std/string/struct.String.html"><code>String</code></a>.</p>
 <h1 id="examples-1" class="section-header"><a href="#examples-1">Examples</a></h1>
 <div class='information'><div class='tooltip should_panic'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered should_panic">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">panic</span>;
+<span class="kw">use</span> <span class="ident">std::panic</span>;
 
-<span class="ident">panic</span>::<span class="ident">set_hook</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="op">|</span><span class="ident">panic_info</span><span class="op">|</span> {
+<span class="ident">panic::set_hook</span>(<span class="ident">Box::new</span>(<span class="op">|</span><span class="ident">panic_info</span><span class="op">|</span> {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=</span> <span class="ident">panic_info</span>.<span class="ident">payload</span>().<span class="ident">downcast_ref</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>() {
         <span class="macro">println!</span>(<span class="string">&quot;panic occurred: {:?}&quot;</span>, <span class="ident">s</span>);
     } <span class="kw">else</span> {
@@ -41,9 +41,9 @@ if available.</p>
 in future versions.</p>
 <h1 id="examples-2" class="section-header"><a href="#examples-2">Examples</a></h1>
 <div class='information'><div class='tooltip should_panic'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered should_panic">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">panic</span>;
+<span class="kw">use</span> <span class="ident">std::panic</span>;
 
-<span class="ident">panic</span>::<span class="ident">set_hook</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="op">|</span><span class="ident">panic_info</span><span class="op">|</span> {
+<span class="ident">panic::set_hook</span>(<span class="ident">Box::new</span>(<span class="op">|</span><span class="ident">panic_info</span><span class="op">|</span> {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">location</span>) <span class="op">=</span> <span class="ident">panic_info</span>.<span class="ident">location</span>() {
         <span class="macro">println!</span>(<span class="string">&quot;panic occurred in file &#39;{}&#39; at line {}&quot;</span>,
             <span class="ident">location</span>.<span class="ident">file</span>(),

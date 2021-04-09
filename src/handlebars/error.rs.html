@@ -299,15 +299,15 @@
 <span id="296">296</span>
 <span id="297">297</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">IOError</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">num</span>::<span class="ident">ParseIntError</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">string</span>::<span class="ident">FromUtf8Error</span>;
+<span class="kw">use</span> <span class="ident">std::error::Error</span>;
+<span class="kw">use</span> <span class="ident">std::fmt</span>;
+<span class="kw">use</span> <span class="ident">std::io::Error</span> <span class="kw">as</span> <span class="ident">IOError</span>;
+<span class="kw">use</span> <span class="ident">std::num::ParseIntError</span>;
+<span class="kw">use</span> <span class="ident">std::string::FromUtf8Error</span>;
 
-<span class="kw">use</span> <span class="ident">serde_json</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">SerdeError</span>;
+<span class="kw">use</span> <span class="ident">serde_json::error::Error</span> <span class="kw">as</span> <span class="ident">SerdeError</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dir_source&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">walkdir</span>::<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">WalkdirError</span>;
+<span class="kw">use</span> <span class="ident">walkdir::Error</span> <span class="kw">as</span> <span class="ident">WalkdirError</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;script_helper&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">rhai</span>::{<span class="ident">EvalAltResult</span>, <span class="ident">ParseError</span>};
@@ -322,8 +322,8 @@
     <span class="ident">cause</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">RenderError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">RenderError</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> (<span class="self">self</span>.<span class="ident">line_no</span>, <span class="self">self</span>.<span class="ident">column_no</span>) {
             (<span class="prelude-val">Some</span>(<span class="ident">line</span>), <span class="prelude-val">Some</span>(<span class="ident">col</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(
                 <span class="ident">f</span>,
@@ -348,32 +348,32 @@
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">IOError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RenderError</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">IOError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RenderError</span> {
-        <span class="ident">RenderError</span>::<span class="ident">from_error</span>(<span class="string">&quot;Error on output generation.&quot;</span>, <span class="ident">e</span>)
+        <span class="ident">RenderError::from_error</span>(<span class="string">&quot;Error on output generation.&quot;</span>, <span class="ident">e</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">SerdeError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RenderError</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">SerdeError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RenderError</span> {
-        <span class="ident">RenderError</span>::<span class="ident">from_error</span>(<span class="string">&quot;Error when accessing JSON data.&quot;</span>, <span class="ident">e</span>)
+        <span class="ident">RenderError::from_error</span>(<span class="string">&quot;Error when accessing JSON data.&quot;</span>, <span class="ident">e</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">FromUtf8Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RenderError</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">FromUtf8Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RenderError</span> {
-        <span class="ident">RenderError</span>::<span class="ident">from_error</span>(<span class="string">&quot;Error on bytes generation.&quot;</span>, <span class="ident">e</span>)
+        <span class="ident">RenderError::from_error</span>(<span class="string">&quot;Error on bytes generation.&quot;</span>, <span class="ident">e</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ParseIntError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RenderError</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">ParseIntError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RenderError</span> {
-        <span class="ident">RenderError</span>::<span class="ident">from_error</span>(<span class="string">&quot;Error on accessing array/vector with string index.&quot;</span>, <span class="ident">e</span>)
+        <span class="ident">RenderError::from_error</span>(<span class="string">&quot;Error on accessing array/vector with string index.&quot;</span>, <span class="ident">e</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;script_helper&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">EvalAltResult</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">RenderError</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">EvalAltResult</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RenderError</span> {
-        <span class="ident">RenderError</span>::<span class="ident">from_error</span>(<span class="string">&quot;Error on converting data to Rhai dynamic.&quot;</span>, <span class="ident">e</span>)
+        <span class="ident">RenderError::from_error</span>(<span class="string">&quot;Error on converting data to Rhai dynamic.&quot;</span>, <span class="ident">e</span>)
     }
 }
 
@@ -393,7 +393,7 @@
             <span class="prelude-val">Some</span>(<span class="ident">path</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;Variable {:?} not found in strict mode.&quot;</span>, <span class="ident">path</span>),
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Value is missing in strict mode&quot;</span>.<span class="ident">to_owned</span>(),
         };
-        <span class="ident">RenderError</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>)
+        <span class="ident">RenderError::new</span>(<span class="kw-2">&amp;</span><span class="ident">msg</span>)
     }
 
     <span class="attribute">#[<span class="ident">deprecated</span>]</span>
@@ -401,8 +401,8 @@
     <span class="kw">where</span>
         <span class="ident">E</span>: <span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">RenderError</span>::<span class="ident">new</span>(<span class="ident">cause</span>.<span class="ident">to_string</span>());
-        <span class="ident">e</span>.<span class="ident">cause</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">cause</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">RenderError::new</span>(<span class="ident">cause</span>.<span class="ident">to_string</span>());
+        <span class="ident">e</span>.<span class="ident">cause</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Box::new</span>(<span class="ident">cause</span>));
 
         <span class="ident">e</span>
     }
@@ -411,8 +411,8 @@
     <span class="kw">where</span>
         <span class="ident">E</span>: <span class="ident">Error</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">RenderError</span>::<span class="ident">new</span>(<span class="macro">format!</span>(<span class="string">&quot;{}: {}&quot;</span>, <span class="ident">error_kind</span>, <span class="ident">cause</span>.<span class="ident">to_string</span>()));
-        <span class="ident">e</span>.<span class="ident">cause</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">cause</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">e</span> <span class="op">=</span> <span class="ident">RenderError::new</span>(<span class="macro">format!</span>(<span class="string">&quot;{}: {}&quot;</span>, <span class="ident">error_kind</span>, <span class="ident">cause</span>.<span class="ident">to_string</span>()));
+        <span class="ident">e</span>.<span class="ident">cause</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Box::new</span>(<span class="ident">cause</span>));
 
         <span class="ident">e</span>
     }
@@ -483,7 +483,7 @@
     <span class="kw">let</span> <span class="ident">line_start</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">line</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">range</span> { <span class="ident">line</span> <span class="op">-</span> <span class="ident">range</span> } <span class="kw">else</span> { <span class="number">0</span> };
     <span class="kw">let</span> <span class="ident">line_end</span> <span class="op">=</span> <span class="ident">line</span> <span class="op">+</span> <span class="ident">range</span>;
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
     <span class="kw">for</span> (<span class="ident">line_count</span>, <span class="ident">line_content</span>) <span class="kw">in</span> <span class="ident">template_str</span>.<span class="ident">lines</span>().<span class="ident">enumerate</span>() {
         <span class="kw">if</span> <span class="ident">line_count</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">line_start</span> <span class="op">&amp;&amp;</span> <span class="ident">line_count</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">line_end</span> {
             <span class="ident">buf</span>.<span class="ident">push_str</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{:4} | {}\n&quot;</span>, <span class="ident">line_count</span>, <span class="ident">line_content</span>));
@@ -504,8 +504,8 @@
     <span class="ident">buf</span>
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">TemplateError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">TemplateError</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> (<span class="self">self</span>.<span class="ident">line_no</span>, <span class="self">self</span>.<span class="ident">column_no</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">segment</span>) {
             (<span class="prelude-val">Some</span>(<span class="ident">line</span>), <span class="prelude-val">Some</span>(<span class="ident">col</span>), <span class="kw-2">&amp;</span><span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">seg</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">writeln!</span>(
                 <span class="ident">f</span>,
@@ -547,7 +547,7 @@
             .<span class="ident">path</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">to_string_lossy</span>().<span class="ident">to_string</span>())
             .<span class="ident">unwrap_or_default</span>();
-        <span class="ident">TemplateFileError</span>::<span class="ident">IOError</span>(<span class="ident">IOError</span>::<span class="ident">from</span>(<span class="ident">error</span>), <span class="ident">path_string</span>)
+        <span class="ident">TemplateFileError::IOError</span>(<span class="ident">IOError::from</span>(<span class="ident">error</span>), <span class="ident">path_string</span>)
     }
 }
 
@@ -574,7 +574,7 @@
 
 <span class="kw">impl</span> <span class="ident">TemplateRenderError</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_render_error</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">RenderError</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">TemplateRenderError</span>::<span class="ident">RenderError</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">TemplateRenderError::RenderError</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span> {
             <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">e</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>

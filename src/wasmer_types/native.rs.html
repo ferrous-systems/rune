@@ -245,9 +245,9 @@
 <span class="doccomment">//! This module permits to create native functions</span>
 <span class="doccomment">//! easily in Rust, thanks to its advanced typing system.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">lib</span>::<span class="ident">std</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::<span class="ident">Type</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">values</span>::<span class="ident">Value</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::lib::std::fmt</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::types::Type</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::values::Value</span>;
 
 <span class="doccomment">/// `NativeWasmType` represents a Wasm type that has a direct</span>
 <span class="doccomment">/// representation on the host (hence the “native” term).</span>
@@ -266,16 +266,16 @@
 <span class="doccomment">/// &gt; automatically detect the signature of a Rust function.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">NativeWasmType</span>: <span class="ident">Sized</span> {
     <span class="doccomment">/// The ABI for this type (i32, i64, f32, f64)</span>
-    <span class="kw">type</span> <span class="ident">Abi</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">fmt</span>::<span class="ident">Debug</span>;
+    <span class="kw">type</span> <span class="ident">Abi</span>: <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">fmt::Debug</span>;
 
     <span class="doccomment">/// Type for this `NativeWasmType`.</span>
     <span class="kw">const</span> <span class="ident">WASM_TYPE</span>: <span class="ident">Type</span>;
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">from_abi</span>(<span class="ident">abi</span>: <span class="self">Self</span>::<span class="ident">Abi</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+    <span class="kw">fn</span> <span class="ident">from_abi</span>(<span class="ident">abi</span>: <span class="self">Self</span><span class="ident">::Abi</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
 
     <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">into_abi</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Abi</span>;
+    <span class="kw">fn</span> <span class="ident">into_abi</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Abi</span>;
 
     <span class="doccomment">/// Convert self to i128 binary representation.</span>
     <span class="kw">fn</span> <span class="ident">to_binary</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i128</span>;
@@ -284,7 +284,7 @@
     <span class="kw">fn</span> <span class="ident">to_value</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Value</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">binary</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">to_binary</span>();
 
-        <span class="kw">unsafe</span> { <span class="ident">Value</span>::<span class="ident">read_value_from</span>(<span class="kw-2">&amp;</span><span class="ident">binary</span>, <span class="self">Self</span>::<span class="ident">WASM_TYPE</span>) }
+        <span class="kw">unsafe</span> { <span class="ident">Value::read_value_from</span>(<span class="kw-2">&amp;</span><span class="ident">binary</span>, <span class="self">Self</span><span class="ident">::WASM_TYPE</span>) }
     }
 
     <span class="doccomment">/// Convert to self from i128 binary representation.</span>
@@ -292,16 +292,16 @@
 }
 
 <span class="kw">impl</span> <span class="ident">NativeWasmType</span> <span class="kw">for</span> <span class="ident">i32</span> {
-    <span class="kw">const</span> <span class="ident">WASM_TYPE</span>: <span class="ident">Type</span> <span class="op">=</span> <span class="ident">Type</span>::<span class="ident">I32</span>;
+    <span class="kw">const</span> <span class="ident">WASM_TYPE</span>: <span class="ident">Type</span> <span class="op">=</span> <span class="ident">Type::I32</span>;
     <span class="kw">type</span> <span class="ident">Abi</span> <span class="op">=</span> <span class="self">Self</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_abi</span>(<span class="ident">abi</span>: <span class="self">Self</span>::<span class="ident">Abi</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_abi</span>(<span class="ident">abi</span>: <span class="self">Self</span><span class="ident">::Abi</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">abi</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_abi</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Abi</span> {
+    <span class="kw">fn</span> <span class="ident">into_abi</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Abi</span> {
         <span class="self">self</span>
     }
 
@@ -317,16 +317,16 @@
 }
 
 <span class="kw">impl</span> <span class="ident">NativeWasmType</span> <span class="kw">for</span> <span class="ident">i64</span> {
-    <span class="kw">const</span> <span class="ident">WASM_TYPE</span>: <span class="ident">Type</span> <span class="op">=</span> <span class="ident">Type</span>::<span class="ident">I64</span>;
+    <span class="kw">const</span> <span class="ident">WASM_TYPE</span>: <span class="ident">Type</span> <span class="op">=</span> <span class="ident">Type::I64</span>;
     <span class="kw">type</span> <span class="ident">Abi</span> <span class="op">=</span> <span class="self">Self</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_abi</span>(<span class="ident">abi</span>: <span class="self">Self</span>::<span class="ident">Abi</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_abi</span>(<span class="ident">abi</span>: <span class="self">Self</span><span class="ident">::Abi</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">abi</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_abi</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Abi</span> {
+    <span class="kw">fn</span> <span class="ident">into_abi</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Abi</span> {
         <span class="self">self</span>
     }
 
@@ -342,16 +342,16 @@
 }
 
 <span class="kw">impl</span> <span class="ident">NativeWasmType</span> <span class="kw">for</span> <span class="ident">f32</span> {
-    <span class="kw">const</span> <span class="ident">WASM_TYPE</span>: <span class="ident">Type</span> <span class="op">=</span> <span class="ident">Type</span>::<span class="ident">F32</span>;
+    <span class="kw">const</span> <span class="ident">WASM_TYPE</span>: <span class="ident">Type</span> <span class="op">=</span> <span class="ident">Type::F32</span>;
     <span class="kw">type</span> <span class="ident">Abi</span> <span class="op">=</span> <span class="self">Self</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_abi</span>(<span class="ident">abi</span>: <span class="self">Self</span>::<span class="ident">Abi</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_abi</span>(<span class="ident">abi</span>: <span class="self">Self</span><span class="ident">::Abi</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">abi</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_abi</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Abi</span> {
+    <span class="kw">fn</span> <span class="ident">into_abi</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Abi</span> {
         <span class="self">self</span>
     }
 
@@ -362,21 +362,21 @@
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">from_binary</span>(<span class="ident">bits</span>: <span class="ident">i128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">from_bits</span>(<span class="ident">bits</span> <span class="kw">as</span> <span class="kw">_</span>)
+        <span class="self">Self</span><span class="ident">::from_bits</span>(<span class="ident">bits</span> <span class="kw">as</span> <span class="kw">_</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">NativeWasmType</span> <span class="kw">for</span> <span class="ident">f64</span> {
-    <span class="kw">const</span> <span class="ident">WASM_TYPE</span>: <span class="ident">Type</span> <span class="op">=</span> <span class="ident">Type</span>::<span class="ident">F64</span>;
+    <span class="kw">const</span> <span class="ident">WASM_TYPE</span>: <span class="ident">Type</span> <span class="op">=</span> <span class="ident">Type::F64</span>;
     <span class="kw">type</span> <span class="ident">Abi</span> <span class="op">=</span> <span class="self">Self</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_abi</span>(<span class="ident">abi</span>: <span class="self">Self</span>::<span class="ident">Abi</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_abi</span>(<span class="ident">abi</span>: <span class="self">Self</span><span class="ident">::Abi</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">abi</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_abi</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Abi</span> {
+    <span class="kw">fn</span> <span class="ident">into_abi</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Abi</span> {
         <span class="self">self</span>
     }
 
@@ -387,21 +387,21 @@
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">from_binary</span>(<span class="ident">bits</span>: <span class="ident">i128</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">from_bits</span>(<span class="ident">bits</span> <span class="kw">as</span> <span class="kw">_</span>)
+        <span class="self">Self</span><span class="ident">::from_bits</span>(<span class="ident">bits</span> <span class="kw">as</span> <span class="kw">_</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">NativeWasmType</span> <span class="kw">for</span> <span class="ident">u128</span> {
-    <span class="kw">const</span> <span class="ident">WASM_TYPE</span>: <span class="ident">Type</span> <span class="op">=</span> <span class="ident">Type</span>::<span class="ident">V128</span>;
+    <span class="kw">const</span> <span class="ident">WASM_TYPE</span>: <span class="ident">Type</span> <span class="op">=</span> <span class="ident">Type::V128</span>;
     <span class="kw">type</span> <span class="ident">Abi</span> <span class="op">=</span> <span class="self">Self</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_abi</span>(<span class="ident">abi</span>: <span class="self">Self</span>::<span class="ident">Abi</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_abi</span>(<span class="ident">abi</span>: <span class="self">Self</span><span class="ident">::Abi</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">abi</span>
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_abi</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Abi</span> {
+    <span class="kw">fn</span> <span class="ident">into_abi</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Abi</span> {
         <span class="self">self</span>
     }
 
@@ -419,24 +419,24 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test_native_type</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::<span class="ident">Type</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::types::Type</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_wasm_types</span>() {
-        <span class="macro">assert_eq!</span>(<span class="ident">i32</span>::<span class="ident">WASM_TYPE</span>, <span class="ident">Type</span>::<span class="ident">I32</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">i64</span>::<span class="ident">WASM_TYPE</span>, <span class="ident">Type</span>::<span class="ident">I64</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">f32</span>::<span class="ident">WASM_TYPE</span>, <span class="ident">Type</span>::<span class="ident">F32</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">f64</span>::<span class="ident">WASM_TYPE</span>, <span class="ident">Type</span>::<span class="ident">F64</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">u128</span>::<span class="ident">WASM_TYPE</span>, <span class="ident">Type</span>::<span class="ident">V128</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">i32::WASM_TYPE</span>, <span class="ident">Type::I32</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">i64::WASM_TYPE</span>, <span class="ident">Type::I64</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">f32::WASM_TYPE</span>, <span class="ident">Type::F32</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">f64::WASM_TYPE</span>, <span class="ident">Type::F64</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">u128::WASM_TYPE</span>, <span class="ident">Type::V128</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_roundtrip</span>() {
-        <span class="macro">assert_eq!</span>(<span class="ident">i32</span>::<span class="ident">from_binary</span>(<span class="number">42i32</span>.<span class="ident">to_binary</span>()), <span class="number">42i32</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">i64</span>::<span class="ident">from_binary</span>(<span class="number">42i64</span>.<span class="ident">to_binary</span>()), <span class="number">42i64</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">f32</span>::<span class="ident">from_binary</span>(<span class="number">42f32</span>.<span class="ident">to_binary</span>()), <span class="number">42f32</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">f64</span>::<span class="ident">from_binary</span>(<span class="number">42f64</span>.<span class="ident">to_binary</span>()), <span class="number">42f64</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">u128</span>::<span class="ident">from_binary</span>(<span class="number">42u128</span>.<span class="ident">to_binary</span>()), <span class="number">42u128</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">i32::from_binary</span>(<span class="number">42i32</span>.<span class="ident">to_binary</span>()), <span class="number">42i32</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">i64::from_binary</span>(<span class="number">42i64</span>.<span class="ident">to_binary</span>()), <span class="number">42i64</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">f32::from_binary</span>(<span class="number">42f32</span>.<span class="ident">to_binary</span>()), <span class="number">42f32</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">f64::from_binary</span>(<span class="number">42f64</span>.<span class="ident">to_binary</span>()), <span class="number">42f64</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">u128::from_binary</span>(<span class="number">42u128</span>.<span class="ident">to_binary</span>()), <span class="number">42u128</span>);
     }
 }
 

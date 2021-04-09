@@ -1131,7 +1131,7 @@
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">do_add</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="bool-val">false</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">p</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">31</span>;
-    <span class="kw">let</span> <span class="ident">nc</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xFFFFFFFFu32</span> <span class="op">-</span> <span class="ident">u32</span>::<span class="ident">wrapping_neg</span>(<span class="ident">d</span>) <span class="op">%</span> <span class="ident">d</span>;
+    <span class="kw">let</span> <span class="ident">nc</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0xFFFFFFFFu32</span> <span class="op">-</span> <span class="ident">u32::wrapping_neg</span>(<span class="ident">d</span>) <span class="op">%</span> <span class="ident">d</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">q1</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x80000000u32</span> <span class="op">/</span> <span class="ident">nc</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r1</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x80000000u32</span> <span class="op">-</span> <span class="ident">q1</span> <span class="op">*</span> <span class="ident">nc</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">q2</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x7FFFFFFFu32</span> <span class="op">/</span> <span class="ident">d</span>;
@@ -1139,10 +1139,10 @@
     <span class="kw">loop</span> {
         <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span> <span class="op">+</span> <span class="number">1</span>;
         <span class="kw">if</span> <span class="ident">r1</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">nc</span> <span class="op">-</span> <span class="ident">r1</span> {
-            <span class="ident">q1</span> <span class="op">=</span> <span class="ident">u32</span>::<span class="ident">wrapping_add</span>(<span class="ident">u32</span>::<span class="ident">wrapping_mul</span>(<span class="number">2</span>, <span class="ident">q1</span>), <span class="number">1</span>);
-            <span class="ident">r1</span> <span class="op">=</span> <span class="ident">u32</span>::<span class="ident">wrapping_sub</span>(<span class="ident">u32</span>::<span class="ident">wrapping_mul</span>(<span class="number">2</span>, <span class="ident">r1</span>), <span class="ident">nc</span>);
+            <span class="ident">q1</span> <span class="op">=</span> <span class="ident">u32::wrapping_add</span>(<span class="ident">u32::wrapping_mul</span>(<span class="number">2</span>, <span class="ident">q1</span>), <span class="number">1</span>);
+            <span class="ident">r1</span> <span class="op">=</span> <span class="ident">u32::wrapping_sub</span>(<span class="ident">u32::wrapping_mul</span>(<span class="number">2</span>, <span class="ident">r1</span>), <span class="ident">nc</span>);
         } <span class="kw">else</span> {
-            <span class="ident">q1</span> <span class="op">=</span> <span class="ident">u32</span>::<span class="ident">wrapping_mul</span>(<span class="number">2</span>, <span class="ident">q1</span>);
+            <span class="ident">q1</span> <span class="op">=</span> <span class="ident">u32::wrapping_mul</span>(<span class="number">2</span>, <span class="ident">q1</span>);
             <span class="ident">r1</span> <span class="op">=</span> <span class="number">2</span> <span class="op">*</span> <span class="ident">r1</span>;
         }
         <span class="kw">if</span> <span class="ident">r2</span> <span class="op">+</span> <span class="number">1</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">d</span> <span class="op">-</span> <span class="ident">r2</span> {
@@ -1150,12 +1150,12 @@
                 <span class="ident">do_add</span> <span class="op">=</span> <span class="bool-val">true</span>;
             }
             <span class="ident">q2</span> <span class="op">=</span> <span class="number">2</span> <span class="op">*</span> <span class="ident">q2</span> <span class="op">+</span> <span class="number">1</span>;
-            <span class="ident">r2</span> <span class="op">=</span> <span class="ident">u32</span>::<span class="ident">wrapping_sub</span>(<span class="ident">u32</span>::<span class="ident">wrapping_add</span>(<span class="ident">u32</span>::<span class="ident">wrapping_mul</span>(<span class="number">2</span>, <span class="ident">r2</span>), <span class="number">1</span>), <span class="ident">d</span>);
+            <span class="ident">r2</span> <span class="op">=</span> <span class="ident">u32::wrapping_sub</span>(<span class="ident">u32::wrapping_add</span>(<span class="ident">u32::wrapping_mul</span>(<span class="number">2</span>, <span class="ident">r2</span>), <span class="number">1</span>), <span class="ident">d</span>);
         } <span class="kw">else</span> {
             <span class="kw">if</span> <span class="ident">q2</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0x80000000u32</span> {
                 <span class="ident">do_add</span> <span class="op">=</span> <span class="bool-val">true</span>;
             }
-            <span class="ident">q2</span> <span class="op">=</span> <span class="ident">u32</span>::<span class="ident">wrapping_mul</span>(<span class="number">2</span>, <span class="ident">q2</span>);
+            <span class="ident">q2</span> <span class="op">=</span> <span class="ident">u32::wrapping_mul</span>(<span class="number">2</span>, <span class="ident">q2</span>);
             <span class="ident">r2</span> <span class="op">=</span> <span class="number">2</span> <span class="op">*</span> <span class="ident">r2</span> <span class="op">+</span> <span class="number">1</span>;
         }
         <span class="kw">let</span> <span class="ident">delta</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">d</span> <span class="op">-</span> <span class="number">1</span> <span class="op">-</span> <span class="ident">r2</span>;
@@ -1177,7 +1177,7 @@
 
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">do_add</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="bool-val">false</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">p</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">63</span>;
-    <span class="kw">let</span> <span class="ident">nc</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">0xFFFFFFFFFFFFFFFFu64</span> <span class="op">-</span> <span class="ident">u64</span>::<span class="ident">wrapping_neg</span>(<span class="ident">d</span>) <span class="op">%</span> <span class="ident">d</span>;
+    <span class="kw">let</span> <span class="ident">nc</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">0xFFFFFFFFFFFFFFFFu64</span> <span class="op">-</span> <span class="ident">u64::wrapping_neg</span>(<span class="ident">d</span>) <span class="op">%</span> <span class="ident">d</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">q1</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">0x8000000000000000u64</span> <span class="op">/</span> <span class="ident">nc</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r1</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">0x8000000000000000u64</span> <span class="op">-</span> <span class="ident">q1</span> <span class="op">*</span> <span class="ident">nc</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">q2</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">0x7FFFFFFFFFFFFFFFu64</span> <span class="op">/</span> <span class="ident">d</span>;
@@ -1185,10 +1185,10 @@
     <span class="kw">loop</span> {
         <span class="ident">p</span> <span class="op">=</span> <span class="ident">p</span> <span class="op">+</span> <span class="number">1</span>;
         <span class="kw">if</span> <span class="ident">r1</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">nc</span> <span class="op">-</span> <span class="ident">r1</span> {
-            <span class="ident">q1</span> <span class="op">=</span> <span class="ident">u64</span>::<span class="ident">wrapping_add</span>(<span class="ident">u64</span>::<span class="ident">wrapping_mul</span>(<span class="number">2</span>, <span class="ident">q1</span>), <span class="number">1</span>);
-            <span class="ident">r1</span> <span class="op">=</span> <span class="ident">u64</span>::<span class="ident">wrapping_sub</span>(<span class="ident">u64</span>::<span class="ident">wrapping_mul</span>(<span class="number">2</span>, <span class="ident">r1</span>), <span class="ident">nc</span>);
+            <span class="ident">q1</span> <span class="op">=</span> <span class="ident">u64::wrapping_add</span>(<span class="ident">u64::wrapping_mul</span>(<span class="number">2</span>, <span class="ident">q1</span>), <span class="number">1</span>);
+            <span class="ident">r1</span> <span class="op">=</span> <span class="ident">u64::wrapping_sub</span>(<span class="ident">u64::wrapping_mul</span>(<span class="number">2</span>, <span class="ident">r1</span>), <span class="ident">nc</span>);
         } <span class="kw">else</span> {
-            <span class="ident">q1</span> <span class="op">=</span> <span class="ident">u64</span>::<span class="ident">wrapping_mul</span>(<span class="number">2</span>, <span class="ident">q1</span>);
+            <span class="ident">q1</span> <span class="op">=</span> <span class="ident">u64::wrapping_mul</span>(<span class="number">2</span>, <span class="ident">q1</span>);
             <span class="ident">r1</span> <span class="op">=</span> <span class="number">2</span> <span class="op">*</span> <span class="ident">r1</span>;
         }
         <span class="kw">if</span> <span class="ident">r2</span> <span class="op">+</span> <span class="number">1</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">d</span> <span class="op">-</span> <span class="ident">r2</span> {
@@ -1196,12 +1196,12 @@
                 <span class="ident">do_add</span> <span class="op">=</span> <span class="bool-val">true</span>;
             }
             <span class="ident">q2</span> <span class="op">=</span> <span class="number">2</span> <span class="op">*</span> <span class="ident">q2</span> <span class="op">+</span> <span class="number">1</span>;
-            <span class="ident">r2</span> <span class="op">=</span> <span class="ident">u64</span>::<span class="ident">wrapping_sub</span>(<span class="ident">u64</span>::<span class="ident">wrapping_add</span>(<span class="ident">u64</span>::<span class="ident">wrapping_mul</span>(<span class="number">2</span>, <span class="ident">r2</span>), <span class="number">1</span>), <span class="ident">d</span>);
+            <span class="ident">r2</span> <span class="op">=</span> <span class="ident">u64::wrapping_sub</span>(<span class="ident">u64::wrapping_add</span>(<span class="ident">u64::wrapping_mul</span>(<span class="number">2</span>, <span class="ident">r2</span>), <span class="number">1</span>), <span class="ident">d</span>);
         } <span class="kw">else</span> {
             <span class="kw">if</span> <span class="ident">q2</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">0x8000000000000000u64</span> {
                 <span class="ident">do_add</span> <span class="op">=</span> <span class="bool-val">true</span>;
             }
-            <span class="ident">q2</span> <span class="op">=</span> <span class="ident">u64</span>::<span class="ident">wrapping_mul</span>(<span class="number">2</span>, <span class="ident">q2</span>);
+            <span class="ident">q2</span> <span class="op">=</span> <span class="ident">u64::wrapping_mul</span>(<span class="number">2</span>, <span class="ident">q2</span>);
             <span class="ident">r2</span> <span class="op">=</span> <span class="number">2</span> <span class="op">*</span> <span class="ident">r2</span> <span class="op">+</span> <span class="number">1</span>;
         }
         <span class="kw">let</span> <span class="ident">delta</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">d</span> <span class="op">-</span> <span class="number">1</span> <span class="op">-</span> <span class="ident">r2</span>;
@@ -1223,9 +1223,9 @@
     <span class="macro">debug_assert_ne!</span>(<span class="ident">d</span>, <span class="number">1</span>);
     <span class="kw">let</span> <span class="ident">two31</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0x80000000u32</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">p</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">31</span>;
-    <span class="kw">let</span> <span class="ident">ad</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">i32</span>::<span class="ident">wrapping_abs</span>(<span class="ident">d</span>) <span class="kw">as</span> <span class="ident">u32</span>;
+    <span class="kw">let</span> <span class="ident">ad</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">i32::wrapping_abs</span>(<span class="ident">d</span>) <span class="kw">as</span> <span class="ident">u32</span>;
     <span class="kw">let</span> <span class="ident">t</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">two31</span> <span class="op">+</span> ((<span class="ident">d</span> <span class="kw">as</span> <span class="ident">u32</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">31</span>);
-    <span class="kw">let</span> <span class="ident">anc</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">u32</span>::<span class="ident">wrapping_sub</span>(<span class="ident">t</span> <span class="op">-</span> <span class="number">1</span>, <span class="ident">t</span> <span class="op">%</span> <span class="ident">ad</span>);
+    <span class="kw">let</span> <span class="ident">anc</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">u32::wrapping_sub</span>(<span class="ident">t</span> <span class="op">-</span> <span class="number">1</span>, <span class="ident">t</span> <span class="op">%</span> <span class="ident">ad</span>);
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">q1</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">two31</span> <span class="op">/</span> <span class="ident">anc</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r1</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">two31</span> <span class="op">-</span> <span class="ident">q1</span> <span class="op">*</span> <span class="ident">anc</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">q2</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">two31</span> <span class="op">/</span> <span class="ident">ad</span>;
@@ -1252,7 +1252,7 @@
 
     <span class="ident">MS32</span> {
         <span class="ident">mul_by</span>: (<span class="kw">if</span> <span class="ident">d</span> <span class="op">&lt;</span> <span class="number">0</span> {
-            <span class="ident">u32</span>::<span class="ident">wrapping_neg</span>(<span class="ident">q2</span> <span class="op">+</span> <span class="number">1</span>)
+            <span class="ident">u32::wrapping_neg</span>(<span class="ident">q2</span> <span class="op">+</span> <span class="number">1</span>)
         } <span class="kw">else</span> {
             <span class="ident">q2</span> <span class="op">+</span> <span class="number">1</span>
         }) <span class="kw">as</span> <span class="ident">i32</span>,
@@ -1266,9 +1266,9 @@
     <span class="macro">debug_assert_ne!</span>(<span class="ident">d</span>, <span class="number">1</span>);
     <span class="kw">let</span> <span class="ident">two63</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">0x8000000000000000u64</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">p</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="number">63</span>;
-    <span class="kw">let</span> <span class="ident">ad</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">i64</span>::<span class="ident">wrapping_abs</span>(<span class="ident">d</span>) <span class="kw">as</span> <span class="ident">u64</span>;
+    <span class="kw">let</span> <span class="ident">ad</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">i64::wrapping_abs</span>(<span class="ident">d</span>) <span class="kw">as</span> <span class="ident">u64</span>;
     <span class="kw">let</span> <span class="ident">t</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">two63</span> <span class="op">+</span> ((<span class="ident">d</span> <span class="kw">as</span> <span class="ident">u64</span>) <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">63</span>);
-    <span class="kw">let</span> <span class="ident">anc</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">u64</span>::<span class="ident">wrapping_sub</span>(<span class="ident">t</span> <span class="op">-</span> <span class="number">1</span>, <span class="ident">t</span> <span class="op">%</span> <span class="ident">ad</span>);
+    <span class="kw">let</span> <span class="ident">anc</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">u64::wrapping_sub</span>(<span class="ident">t</span> <span class="op">-</span> <span class="number">1</span>, <span class="ident">t</span> <span class="op">%</span> <span class="ident">ad</span>);
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">q1</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">two63</span> <span class="op">/</span> <span class="ident">anc</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r1</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">two63</span> <span class="op">-</span> <span class="ident">q1</span> <span class="op">*</span> <span class="ident">anc</span>;
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">q2</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="ident">two63</span> <span class="op">/</span> <span class="ident">ad</span>;
@@ -1295,7 +1295,7 @@
 
     <span class="ident">MS64</span> {
         <span class="ident">mul_by</span>: (<span class="kw">if</span> <span class="ident">d</span> <span class="op">&lt;</span> <span class="number">0</span> {
-            <span class="ident">u64</span>::<span class="ident">wrapping_neg</span>(<span class="ident">q2</span> <span class="op">+</span> <span class="number">1</span>)
+            <span class="ident">u64::wrapping_neg</span>(<span class="ident">q2</span> <span class="op">+</span> <span class="number">1</span>)
         } <span class="kw">else</span> {
             <span class="ident">q2</span> <span class="op">+</span> <span class="number">1</span>
         }) <span class="kw">as</span> <span class="ident">i64</span>,
@@ -1845,7 +1845,7 @@
                 <span class="kw">if</span> <span class="ident">x</span> <span class="op">&lt;</span> <span class="ident">MAX_U32</span> <span class="op">-</span> <span class="number">110</span> {
                     <span class="kw">return</span> <span class="ident">x</span> <span class="op">+</span> <span class="number">23</span>;
                 }
-                <span class="ident">u32</span>::<span class="ident">wrapping_add</span>(<span class="ident">x</span>, <span class="number">1</span>)
+                <span class="ident">u32::wrapping_add</span>(<span class="ident">x</span>, <span class="number">1</span>)
             }
 
             <span class="kw">let</span> <span class="ident">magic</span>: <span class="ident">MU32</span> <span class="op">=</span> <span class="ident">magic_u32</span>(<span class="ident">d</span>);
@@ -1960,7 +1960,7 @@
                 <span class="kw">if</span> <span class="ident">x</span> <span class="op">&lt;</span> <span class="ident">MAX_U64</span> <span class="op">-</span> <span class="number">110</span> {
                     <span class="kw">return</span> <span class="ident">x</span> <span class="op">+</span> <span class="number">23</span>;
                 }
-                <span class="ident">u64</span>::<span class="ident">wrapping_add</span>(<span class="ident">x</span>, <span class="number">1</span>)
+                <span class="ident">u64::wrapping_add</span>(<span class="ident">x</span>, <span class="number">1</span>)
             }
 
             <span class="kw">let</span> <span class="ident">magic</span>: <span class="ident">MU64</span> <span class="op">=</span> <span class="ident">magic_u64</span>(<span class="ident">d</span>);

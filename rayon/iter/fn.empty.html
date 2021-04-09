@@ -6,8 +6,8 @@
 deals with generic parallel iterators.</p>
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">rayon</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">rayon</span>::<span class="ident">iter</span>::<span class="ident">empty</span>;
+<span class="kw">use</span> <span class="ident">rayon::prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">rayon::iter::empty</span>;
 
 <span class="kw">let</span> <span class="ident">pi</span> <span class="op">=</span> (<span class="number">0</span>..<span class="number">1234</span>).<span class="ident">into_par_iter</span>()
     .<span class="ident">chain</span>(<span class="ident">empty</span>())

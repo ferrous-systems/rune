@@ -108,11 +108,11 @@
 <span class="comment">// Allow clippy warnings when we aren&#39;t building with clippy.</span>
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">unknown_lints</span>)]</span>
 <span class="comment">// False positives with `fallible_iterator`.</span>
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">should_implement_trait</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::should_implement_trait</span>)]</span>
 <span class="comment">// Many false positives involving `continue`.</span>
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">never_loop</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::never_loop</span>)]</span>
 <span class="comment">// False positives when block expressions are used inside an assertion.</span>
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">panic_params</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::panic_params</span>)]</span>
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_imports</span>)]</span>
@@ -127,17 +127,17 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">stable_deref_trait</span>::{<span class="ident">CloneStableDeref</span>, <span class="ident">StableDeref</span>};
 
 <span class="kw">mod</span> <span class="ident">common</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">common</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::common</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">arch</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">arch</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::arch</span>::<span class="kw-2">*</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">constants</span>;
 <span class="comment">// For backwards compat.</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">constants</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::constants</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod</span> <span class="ident">endianity</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">endianity</span>::{<span class="ident">BigEndian</span>, <span class="ident">Endianity</span>, <span class="ident">LittleEndian</span>, <span class="ident">NativeEndian</span>, <span class="ident">RunTimeEndian</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::endianity</span>::{<span class="ident">BigEndian</span>, <span class="ident">Endianity</span>, <span class="ident">LittleEndian</span>, <span class="ident">NativeEndian</span>, <span class="ident">RunTimeEndian</span>};
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">leb128</span>;
 
@@ -145,7 +145,7 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">read</span>;
 <span class="comment">// For backwards compat.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;read&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">read</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::read</span>::<span class="kw-2">*</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;write&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">write</span>;

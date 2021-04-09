@@ -545,9 +545,9 @@
 <span class="doccomment">//! The entity references all implement the `Display` trait in a way that matches the textual IR</span>
 <span class="doccomment">//! format.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">entity</span>::<span class="ident">entity_impl</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">u32</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::entity::entity_impl</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
+<span class="kw">use</span> <span class="ident">core::u32</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;enable-serde&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
@@ -567,7 +567,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method is for use by the parser.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_number</span>(<span class="ident">n</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32</span>::<span class="ident">MAX</span> {
+        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32::MAX</span> {
             <span class="prelude-val">Some</span>(<span class="self">Self</span>(<span class="ident">n</span>))
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -600,7 +600,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method is for use by the parser.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_number</span>(<span class="ident">n</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32</span>::<span class="ident">MAX</span> <span class="op">/</span> <span class="number">2</span> {
+        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32::MAX</span> <span class="op">/</span> <span class="number">2</span> {
             <span class="prelude-val">Some</span>(<span class="self">Self</span>(<span class="ident">n</span>))
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -650,7 +650,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method is for use by the parser.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_number</span>(<span class="ident">n</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32</span>::<span class="ident">MAX</span> {
+        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32::MAX</span> {
             <span class="prelude-val">Some</span>(<span class="self">Self</span>(<span class="ident">n</span>))
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -686,7 +686,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method is for use by the parser.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_number</span>(<span class="ident">n</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32</span>::<span class="ident">MAX</span> {
+        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32::MAX</span> {
             <span class="prelude-val">Some</span>(<span class="self">Self</span>(<span class="ident">n</span>))
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -711,7 +711,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method is for use by the parser.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_number</span>(<span class="ident">n</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32</span>::<span class="ident">MAX</span> {
+        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32::MAX</span> {
             <span class="prelude-val">Some</span>(<span class="self">Self</span>(<span class="ident">n</span>))
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -736,7 +736,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method is for use by the parser.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_number</span>(<span class="ident">n</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32</span>::<span class="ident">MAX</span> {
+        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32::MAX</span> {
             <span class="prelude-val">Some</span>(<span class="self">Self</span>(<span class="ident">n</span>))
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -766,7 +766,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method is for use by the parser.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_number</span>(<span class="ident">n</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32</span>::<span class="ident">MAX</span> {
+        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32::MAX</span> {
             <span class="prelude-val">Some</span>(<span class="self">Self</span>(<span class="ident">n</span>))
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -801,7 +801,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method is for use by the parser.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_number</span>(<span class="ident">n</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32</span>::<span class="ident">MAX</span> {
+        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32::MAX</span> {
             <span class="prelude-val">Some</span>(<span class="self">Self</span>(<span class="ident">n</span>))
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -832,7 +832,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method is for use by the parser.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_number</span>(<span class="ident">n</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32</span>::<span class="ident">MAX</span> {
+        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32::MAX</span> {
             <span class="prelude-val">Some</span>(<span class="self">Self</span>(<span class="ident">n</span>))
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -857,7 +857,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method is for use by the parser.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_number</span>(<span class="ident">n</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32</span>::<span class="ident">MAX</span> {
+        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32::MAX</span> {
             <span class="prelude-val">Some</span>(<span class="self">Self</span>(<span class="ident">n</span>))
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -883,7 +883,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method is for use by the parser.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_number</span>(<span class="ident">n</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32</span>::<span class="ident">MAX</span> {
+        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32::MAX</span> {
             <span class="prelude-val">Some</span>(<span class="self">Self</span>(<span class="ident">n</span>))
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
@@ -922,128 +922,128 @@
     <span class="ident">StackLimit</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">AnyEntity</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">AnyEntity</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Function</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;function&quot;</span>),
-            <span class="self">Self</span>::<span class="ident">Block</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
-            <span class="self">Self</span>::<span class="ident">Inst</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
-            <span class="self">Self</span>::<span class="ident">Value</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
-            <span class="self">Self</span>::<span class="ident">StackSlot</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
-            <span class="self">Self</span>::<span class="ident">GlobalValue</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
-            <span class="self">Self</span>::<span class="ident">JumpTable</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
-            <span class="self">Self</span>::<span class="ident">Constant</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
-            <span class="self">Self</span>::<span class="ident">FuncRef</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
-            <span class="self">Self</span>::<span class="ident">SigRef</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
-            <span class="self">Self</span>::<span class="ident">Heap</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
-            <span class="self">Self</span>::<span class="ident">Table</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
-            <span class="self">Self</span>::<span class="ident">StackLimit</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;stack_limit&quot;</span>),
+            <span class="self">Self</span><span class="ident">::Function</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;function&quot;</span>),
+            <span class="self">Self</span><span class="ident">::Block</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
+            <span class="self">Self</span><span class="ident">::Inst</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
+            <span class="self">Self</span><span class="ident">::Value</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
+            <span class="self">Self</span><span class="ident">::StackSlot</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
+            <span class="self">Self</span><span class="ident">::GlobalValue</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
+            <span class="self">Self</span><span class="ident">::JumpTable</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
+            <span class="self">Self</span><span class="ident">::Constant</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
+            <span class="self">Self</span><span class="ident">::FuncRef</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
+            <span class="self">Self</span><span class="ident">::SigRef</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
+            <span class="self">Self</span><span class="ident">::Heap</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
+            <span class="self">Self</span><span class="ident">::Table</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">fmt</span>(<span class="ident">f</span>),
+            <span class="self">Self</span><span class="ident">::StackLimit</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;stack_limit&quot;</span>),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">AnyEntity</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-        (<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">fmt</span>::<span class="ident">Display</span>).<span class="ident">fmt</span>(<span class="ident">f</span>)
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">AnyEntity</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        (<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">fmt::Display</span>).<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AnyEntity</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">Block</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Block</span>(<span class="ident">r</span>)
+        <span class="self">Self</span><span class="ident">::Block</span>(<span class="ident">r</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AnyEntity</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">Inst</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Inst</span>(<span class="ident">r</span>)
+        <span class="self">Self</span><span class="ident">::Inst</span>(<span class="ident">r</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AnyEntity</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">Value</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Value</span>(<span class="ident">r</span>)
+        <span class="self">Self</span><span class="ident">::Value</span>(<span class="ident">r</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">StackSlot</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AnyEntity</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">StackSlot</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">StackSlot</span>(<span class="ident">r</span>)
+        <span class="self">Self</span><span class="ident">::StackSlot</span>(<span class="ident">r</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">GlobalValue</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AnyEntity</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">GlobalValue</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">GlobalValue</span>(<span class="ident">r</span>)
+        <span class="self">Self</span><span class="ident">::GlobalValue</span>(<span class="ident">r</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">JumpTable</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AnyEntity</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">JumpTable</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">JumpTable</span>(<span class="ident">r</span>)
+        <span class="self">Self</span><span class="ident">::JumpTable</span>(<span class="ident">r</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Constant</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AnyEntity</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">Constant</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Constant</span>(<span class="ident">r</span>)
+        <span class="self">Self</span><span class="ident">::Constant</span>(<span class="ident">r</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">FuncRef</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AnyEntity</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">FuncRef</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">FuncRef</span>(<span class="ident">r</span>)
+        <span class="self">Self</span><span class="ident">::FuncRef</span>(<span class="ident">r</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">SigRef</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AnyEntity</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">SigRef</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">SigRef</span>(<span class="ident">r</span>)
+        <span class="self">Self</span><span class="ident">::SigRef</span>(<span class="ident">r</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Heap</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AnyEntity</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">Heap</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Heap</span>(<span class="ident">r</span>)
+        <span class="self">Self</span><span class="ident">::Heap</span>(<span class="ident">r</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Table</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AnyEntity</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">Table</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Table</span>(<span class="ident">r</span>)
+        <span class="self">Self</span><span class="ident">::Table</span>(<span class="ident">r</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">string</span>::<span class="ident">ToString</span>;
-    <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">u32</span>;
+    <span class="kw">use</span> <span class="ident">alloc::string::ToString</span>;
+    <span class="kw">use</span> <span class="ident">core::u32</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">value_with_number</span>() {
-        <span class="macro">assert_eq!</span>(<span class="ident">Value</span>::<span class="ident">with_number</span>(<span class="number">0</span>).<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="string">&quot;v0&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">Value</span>::<span class="ident">with_number</span>(<span class="number">1</span>).<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="string">&quot;v1&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Value::with_number</span>(<span class="number">0</span>).<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="string">&quot;v0&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Value::with_number</span>(<span class="number">1</span>).<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="string">&quot;v1&quot;</span>);
 
-        <span class="macro">assert_eq!</span>(<span class="ident">Value</span>::<span class="ident">with_number</span>(<span class="ident">u32</span>::<span class="ident">MAX</span> <span class="op">/</span> <span class="number">2</span>), <span class="prelude-val">None</span>);
-        <span class="macro">assert!</span>(<span class="ident">Value</span>::<span class="ident">with_number</span>(<span class="ident">u32</span>::<span class="ident">MAX</span> <span class="op">/</span> <span class="number">2</span> <span class="op">-</span> <span class="number">1</span>).<span class="ident">is_some</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">Value::with_number</span>(<span class="ident">u32::MAX</span> <span class="op">/</span> <span class="number">2</span>), <span class="prelude-val">None</span>);
+        <span class="macro">assert!</span>(<span class="ident">Value::with_number</span>(<span class="ident">u32::MAX</span> <span class="op">/</span> <span class="number">2</span> <span class="op">-</span> <span class="number">1</span>).<span class="ident">is_some</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">memory</span>() {
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">packed_option</span>::<span class="ident">PackedOption</span>;
-        <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>;
+        <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::packed_option::PackedOption</span>;
+        <span class="kw">use</span> <span class="ident">core::mem</span>;
         <span class="comment">// This is the whole point of `PackedOption`.</span>
         <span class="macro">assert_eq!</span>(
-            <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span>(),
-            <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">PackedOption</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span><span class="op">&gt;</span>()
+            <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span>(),
+            <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">PackedOption</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span><span class="op">&gt;</span>()
         );
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">constant_with_number</span>() {
-        <span class="macro">assert_eq!</span>(<span class="ident">Constant</span>::<span class="ident">with_number</span>(<span class="number">0</span>).<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="string">&quot;const0&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">Constant</span>::<span class="ident">with_number</span>(<span class="number">1</span>).<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="string">&quot;const1&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Constant::with_number</span>(<span class="number">0</span>).<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="string">&quot;const0&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Constant::with_number</span>(<span class="number">1</span>).<span class="ident">unwrap</span>().<span class="ident">to_string</span>(), <span class="string">&quot;const1&quot;</span>);
     }
 }
 </pre></div>

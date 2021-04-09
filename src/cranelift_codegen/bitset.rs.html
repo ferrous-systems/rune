@@ -173,13 +173,13 @@
 <span class="doccomment">//! If you would like to add support for larger bitsets in the future, you need to change the trait</span>
 <span class="doccomment">//! bound Into&lt;u32&gt; and the u32 in the implementation of `max_bits()`.</span>
 
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">convert</span>::{<span class="ident">From</span>, <span class="ident">Into</span>};
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">ops</span>::{<span class="ident">Add</span>, <span class="ident">BitOr</span>, <span class="ident">Shl</span>, <span class="ident">Sub</span>};
+<span class="kw">use</span> <span class="ident">core::convert</span>::{<span class="ident">From</span>, <span class="ident">Into</span>};
+<span class="kw">use</span> <span class="ident">core::mem::size_of</span>;
+<span class="kw">use</span> <span class="ident">core::ops</span>::{<span class="ident">Add</span>, <span class="ident">BitOr</span>, <span class="ident">Shl</span>, <span class="ident">Sub</span>};
 
 <span class="doccomment">/// A small bitset built on a single primitive integer type</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;enable-serde&quot;</span>, <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;enable-serde&quot;</span>, <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BitSet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">T</span>);
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">BitSet</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
@@ -205,8 +205,8 @@
 
     <span class="doccomment">/// Check if this BitSet contains the number num</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">num</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="macro">debug_assert!</span>((<span class="ident">num</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">&lt;</span> <span class="self">Self</span>::<span class="ident">bits</span>());
-        <span class="macro">debug_assert!</span>((<span class="ident">num</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">&lt;</span> <span class="self">Self</span>::<span class="ident">max_bits</span>());
+        <span class="macro">debug_assert!</span>((<span class="ident">num</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">&lt;</span> <span class="self">Self</span><span class="ident">::bits</span>());
+        <span class="macro">debug_assert!</span>((<span class="ident">num</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">&lt;</span> <span class="self">Self</span><span class="ident">::max_bits</span>());
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">into</span>() <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">num</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>
     }
 
@@ -225,20 +225,20 @@
             <span class="prelude-val">None</span>
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="ident">leading_zeroes</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">into</span>().<span class="ident">leading_zeros</span>() <span class="kw">as</span> <span class="ident">usize</span>;
-            <span class="prelude-val">Some</span>((<span class="self">Self</span>::<span class="ident">max_bits</span>() <span class="op">-</span> <span class="ident">leading_zeroes</span> <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u8</span>)
+            <span class="prelude-val">Some</span>((<span class="self">Self</span><span class="ident">::max_bits</span>() <span class="op">-</span> <span class="ident">leading_zeroes</span> <span class="op">-</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u8</span>)
         }
     }
 
     <span class="doccomment">/// Construct a BitSet with the half-open range [lo,hi) filled in</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_range</span>(<span class="ident">lo</span>: <span class="ident">u8</span>, <span class="ident">hi</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="macro">debug_assert!</span>(<span class="ident">lo</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">hi</span>);
-        <span class="macro">debug_assert!</span>((<span class="ident">hi</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">&lt;</span><span class="op">=</span> <span class="self">Self</span>::<span class="ident">bits</span>());
-        <span class="kw">let</span> <span class="ident">one</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">T</span>::<span class="ident">from</span>(<span class="number">1</span>);
+        <span class="macro">debug_assert!</span>((<span class="ident">hi</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">&lt;</span><span class="op">=</span> <span class="self">Self</span><span class="ident">::bits</span>());
+        <span class="kw">let</span> <span class="ident">one</span>: <span class="ident">T</span> <span class="op">=</span> <span class="ident">T::from</span>(<span class="number">1</span>);
         <span class="comment">// I can&#39;t just do (one &lt;&lt; hi) - one here as the shift may overflow</span>
         <span class="kw">let</span> <span class="ident">hi_rng</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">hi</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">1</span> {
             (<span class="ident">one</span> <span class="op">&lt;</span><span class="op">&lt;</span> (<span class="ident">hi</span> <span class="op">-</span> <span class="number">1</span>)) <span class="op">+</span> ((<span class="ident">one</span> <span class="op">&lt;</span><span class="op">&lt;</span> (<span class="ident">hi</span> <span class="op">-</span> <span class="number">1</span>)) <span class="op">-</span> <span class="ident">one</span>)
         } <span class="kw">else</span> {
-            <span class="ident">T</span>::<span class="ident">from</span>(<span class="number">0</span>)
+            <span class="ident">T::from</span>(<span class="number">0</span>)
         };
 
         <span class="kw">let</span> <span class="ident">lo_rng</span> <span class="op">=</span> (<span class="ident">one</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">lo</span>) <span class="op">-</span> <span class="ident">one</span>;
@@ -306,25 +306,25 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">from_range</span>() {
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">BitSet</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>::<span class="ident">from_range</span>(<span class="number">5</span>, <span class="number">5</span>);
+        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">BitSet</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="ident">::from_range</span>(<span class="number">5</span>, <span class="number">5</span>);
         <span class="macro">assert!</span>(<span class="ident">s</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>);
 
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">BitSet</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>::<span class="ident">from_range</span>(<span class="number">0</span>, <span class="number">8</span>);
+        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">BitSet</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="ident">::from_range</span>(<span class="number">0</span>, <span class="number">8</span>);
         <span class="macro">assert!</span>(<span class="ident">s</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="number">255</span>);
 
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">BitSet</span>::<span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>::<span class="ident">from_range</span>(<span class="number">0</span>, <span class="number">8</span>);
+        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">BitSet</span>::<span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span><span class="ident">::from_range</span>(<span class="number">0</span>, <span class="number">8</span>);
         <span class="macro">assert!</span>(<span class="ident">s</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="number">255u16</span>);
 
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">BitSet</span>::<span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>::<span class="ident">from_range</span>(<span class="number">0</span>, <span class="number">16</span>);
+        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">BitSet</span>::<span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span><span class="ident">::from_range</span>(<span class="number">0</span>, <span class="number">16</span>);
         <span class="macro">assert!</span>(<span class="ident">s</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="number">65535u16</span>);
 
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">BitSet</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>::<span class="ident">from_range</span>(<span class="number">5</span>, <span class="number">6</span>);
+        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">BitSet</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="ident">::from_range</span>(<span class="number">5</span>, <span class="number">6</span>);
         <span class="macro">assert!</span>(<span class="ident">s</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="number">32u8</span>);
 
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">BitSet</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>::<span class="ident">from_range</span>(<span class="number">3</span>, <span class="number">7</span>);
+        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">BitSet</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="ident">::from_range</span>(<span class="number">3</span>, <span class="number">7</span>);
         <span class="macro">assert!</span>(<span class="ident">s</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="number">8</span> <span class="op">|</span> <span class="number">16</span> <span class="op">|</span> <span class="number">32</span> <span class="op">|</span> <span class="number">64</span>);
 
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">BitSet</span>::<span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span>::<span class="ident">from_range</span>(<span class="number">5</span>, <span class="number">11</span>);
+        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">BitSet</span>::<span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span><span class="ident">::from_range</span>(<span class="number">5</span>, <span class="number">11</span>);
         <span class="macro">assert!</span>(<span class="ident">s</span>.<span class="number">0</span> <span class="op">=</span><span class="op">=</span> <span class="number">32</span> <span class="op">|</span> <span class="number">64</span> <span class="op">|</span> <span class="number">128</span> <span class="op">|</span> <span class="number">256</span> <span class="op">|</span> <span class="number">512</span> <span class="op">|</span> <span class="number">1024</span>);
     }
 }

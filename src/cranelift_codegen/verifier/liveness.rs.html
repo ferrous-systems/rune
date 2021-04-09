@@ -239,14 +239,14 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Liveness verifier.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">flowgraph</span>::{<span class="ident">BlockPredecessor</span>, <span class="ident">ControlFlowGraph</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">entities</span>::<span class="ident">AnyEntity</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">ExpandedProgramPoint</span>, <span class="ident">Function</span>, <span class="ident">ProgramPoint</span>, <span class="ident">Value</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">TargetIsa</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">liveness</span>::<span class="ident">Liveness</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">liverange</span>::<span class="ident">LiveRange</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">timing</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">verifier</span>::{<span class="ident">VerifierErrors</span>, <span class="ident">VerifierStepResult</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::flowgraph</span>::{<span class="ident">BlockPredecessor</span>, <span class="ident">ControlFlowGraph</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::entities::AnyEntity</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">ExpandedProgramPoint</span>, <span class="ident">Function</span>, <span class="ident">ProgramPoint</span>, <span class="ident">Value</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::TargetIsa</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::liveness::Liveness</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::liverange::LiveRange</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::timing</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::verifier</span>::{<span class="ident">VerifierErrors</span>, <span class="ident">VerifierStepResult</span>};
 
 <span class="doccomment">/// Verify liveness information for `func`.</span>
 <span class="doccomment">///</span>
@@ -267,7 +267,7 @@
     <span class="ident">liveness</span>: <span class="kw-2">&amp;</span><span class="ident">Liveness</span>,
     <span class="ident">errors</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">VerifierErrors</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VerifierStepResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">_tt</span> <span class="op">=</span> <span class="ident">timing</span>::<span class="ident">verify_liveness</span>();
+    <span class="kw">let</span> <span class="ident">_tt</span> <span class="op">=</span> <span class="ident">timing::verify_liveness</span>();
     <span class="kw">let</span> <span class="ident">verifier</span> <span class="op">=</span> <span class="ident">LivenessVerifier</span> {
         <span class="ident">isa</span>,
         <span class="ident">func</span>,
@@ -383,8 +383,8 @@
         <span class="kw">let</span> <span class="ident">l</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">func</span>.<span class="ident">layout</span>;
 
         <span class="kw">let</span> <span class="ident">loc</span>: <span class="ident">AnyEntity</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">def</span>.<span class="ident">into</span>() {
-            <span class="ident">ExpandedProgramPoint</span>::<span class="ident">Block</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">e</span>.<span class="ident">into</span>(),
-            <span class="ident">ExpandedProgramPoint</span>::<span class="ident">Inst</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">i</span>.<span class="ident">into</span>(),
+            <span class="ident">ExpandedProgramPoint::Block</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">e</span>.<span class="ident">into</span>(),
+            <span class="ident">ExpandedProgramPoint::Inst</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">i</span>.<span class="ident">into</span>(),
         };
         <span class="kw">if</span> <span class="ident">lr</span>.<span class="ident">def</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">def</span> {
             <span class="kw">return</span> <span class="ident">errors</span>.<span class="ident">fatal</span>((
@@ -400,17 +400,17 @@
             }
         }
         <span class="kw">let</span> <span class="ident">def_block</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">def</span>.<span class="ident">into</span>() {
-            <span class="ident">ExpandedProgramPoint</span>::<span class="ident">Block</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">e</span>,
-            <span class="ident">ExpandedProgramPoint</span>::<span class="ident">Inst</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">l</span>.<span class="ident">inst_block</span>(<span class="ident">i</span>).<span class="ident">unwrap</span>(),
+            <span class="ident">ExpandedProgramPoint::Block</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">e</span>,
+            <span class="ident">ExpandedProgramPoint::Inst</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">l</span>.<span class="ident">inst_block</span>(<span class="ident">i</span>).<span class="ident">unwrap</span>(),
         };
         <span class="kw">match</span> <span class="ident">lr</span>.<span class="ident">def_local_end</span>().<span class="ident">into</span>() {
-            <span class="ident">ExpandedProgramPoint</span>::<span class="ident">Block</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ExpandedProgramPoint::Block</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">return</span> <span class="ident">errors</span>.<span class="ident">fatal</span>((
                     <span class="ident">loc</span>,
                     <span class="macro">format!</span>(<span class="string">&quot;Def local range for {} can&#39;t end at {}&quot;</span>, <span class="ident">val</span>, <span class="ident">e</span>),
                 ));
             }
-            <span class="ident">ExpandedProgramPoint</span>::<span class="ident">Inst</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ExpandedProgramPoint::Inst</span>(<span class="ident">i</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">if</span> <span class="self">self</span>.<span class="ident">func</span>.<span class="ident">layout</span>.<span class="ident">inst_block</span>(<span class="ident">i</span>) <span class="op">!</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">def_block</span>) {
                     <span class="kw">return</span> <span class="ident">errors</span>
                         .<span class="ident">fatal</span>((<span class="ident">loc</span>, <span class="macro">format!</span>(<span class="string">&quot;Def local end for {} in wrong block&quot;</span>, <span class="ident">val</span>)));

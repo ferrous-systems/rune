@@ -6034,10 +6034,10 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! This module is the equivalent of /usr/include/elf.h, and is based heavily on it.</span>
 
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">identity_op</span>)]</span>
+<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">clippy::identity_op</span>)]</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">endian</span>::{<span class="ident">Endian</span>, <span class="ident">U32Bytes</span>, <span class="ident">U64Bytes</span>, <span class="ident">I32</span>, <span class="ident">I64</span>, <span class="ident">U16</span>, <span class="ident">U32</span>, <span class="ident">U64</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">pod</span>::<span class="ident">Pod</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::endian</span>::{<span class="ident">Endian</span>, <span class="ident">U32Bytes</span>, <span class="ident">U64Bytes</span>, <span class="ident">I32</span>, <span class="ident">I64</span>, <span class="ident">U16</span>, <span class="ident">U32</span>, <span class="ident">U64</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::pod::Pod</span>;
 
 <span class="doccomment">/// The header at the start of every 32-bit ELF file.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
@@ -7041,12 +7041,12 @@
 
     <span class="doccomment">/// Calculate the `r_info` field given the `r_sym` and `r_type` components.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_info</span>(<span class="ident">endian</span>: <span class="ident">E</span>, <span class="ident">r_sym</span>: <span class="ident">u32</span>, <span class="ident">r_type</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">U32</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-        <span class="ident">U32</span>::<span class="ident">new</span>(<span class="ident">endian</span>, (<span class="ident">r_sym</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span>) <span class="op">|</span> <span class="ident">u32</span>::<span class="ident">from</span>(<span class="ident">r_type</span>))
+        <span class="ident">U32::new</span>(<span class="ident">endian</span>, (<span class="ident">r_sym</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span>) <span class="op">|</span> <span class="ident">u32::from</span>(<span class="ident">r_type</span>))
     }
 
     <span class="doccomment">/// Set the `r_info` field given the `r_sym` and `r_type` components.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_r_info</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">endian</span>: <span class="ident">E</span>, <span class="ident">r_sym</span>: <span class="ident">u32</span>, <span class="ident">r_type</span>: <span class="ident">u8</span>) {
-        <span class="self">self</span>.<span class="ident">r_info</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">r_info</span>(<span class="ident">endian</span>, <span class="ident">r_sym</span>, <span class="ident">r_type</span>)
+        <span class="self">self</span>.<span class="ident">r_info</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::r_info</span>(<span class="ident">endian</span>, <span class="ident">r_sym</span>, <span class="ident">r_type</span>)
     }
 }
 
@@ -7077,12 +7077,12 @@
 
     <span class="doccomment">/// Calculate the `r_info` field given the `r_sym` and `r_type` components.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_info</span>(<span class="ident">endian</span>: <span class="ident">E</span>, <span class="ident">r_sym</span>: <span class="ident">u32</span>, <span class="ident">r_type</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">U32</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-        <span class="ident">U32</span>::<span class="ident">new</span>(<span class="ident">endian</span>, (<span class="ident">r_sym</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span>) <span class="op">|</span> <span class="ident">u32</span>::<span class="ident">from</span>(<span class="ident">r_type</span>))
+        <span class="ident">U32::new</span>(<span class="ident">endian</span>, (<span class="ident">r_sym</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">8</span>) <span class="op">|</span> <span class="ident">u32::from</span>(<span class="ident">r_type</span>))
     }
 
     <span class="doccomment">/// Set the `r_info` field given the `r_sym` and `r_type` components.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_r_info</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">endian</span>: <span class="ident">E</span>, <span class="ident">r_sym</span>: <span class="ident">u32</span>, <span class="ident">r_type</span>: <span class="ident">u8</span>) {
-        <span class="self">self</span>.<span class="ident">r_info</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">r_info</span>(<span class="ident">endian</span>, <span class="ident">r_sym</span>, <span class="ident">r_type</span>)
+        <span class="self">self</span>.<span class="ident">r_info</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::r_info</span>(<span class="ident">endian</span>, <span class="ident">r_sym</span>, <span class="ident">r_type</span>)
     }
 }
 
@@ -7091,7 +7091,7 @@
         <span class="ident">Rela32</span> {
             <span class="ident">r_offset</span>: <span class="ident">rel</span>.<span class="ident">r_offset</span>,
             <span class="ident">r_info</span>: <span class="ident">rel</span>.<span class="ident">r_info</span>,
-            <span class="ident">r_addend</span>: <span class="ident">I32</span>::<span class="ident">default</span>(),
+            <span class="ident">r_addend</span>: <span class="ident">I32::default</span>(),
         }
     }
 }
@@ -7121,12 +7121,12 @@
 
     <span class="doccomment">/// Calculate the `r_info` field given the `r_sym` and `r_type` components.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_info</span>(<span class="ident">endian</span>: <span class="ident">E</span>, <span class="ident">r_sym</span>: <span class="ident">u32</span>, <span class="ident">r_type</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">U64</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-        <span class="ident">U64</span>::<span class="ident">new</span>(<span class="ident">endian</span>, (<span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">r_sym</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>) <span class="op">|</span> <span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">r_type</span>))
+        <span class="ident">U64::new</span>(<span class="ident">endian</span>, (<span class="ident">u64::from</span>(<span class="ident">r_sym</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>) <span class="op">|</span> <span class="ident">u64::from</span>(<span class="ident">r_type</span>))
     }
 
     <span class="doccomment">/// Set the `r_info` field given the `r_sym` and `r_type` components.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_r_info</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">endian</span>: <span class="ident">E</span>, <span class="ident">r_sym</span>: <span class="ident">u32</span>, <span class="ident">r_type</span>: <span class="ident">u32</span>) {
-        <span class="self">self</span>.<span class="ident">r_info</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">r_info</span>(<span class="ident">endian</span>, <span class="ident">r_sym</span>, <span class="ident">r_type</span>)
+        <span class="self">self</span>.<span class="ident">r_info</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::r_info</span>(<span class="ident">endian</span>, <span class="ident">r_sym</span>, <span class="ident">r_type</span>)
     }
 }
 
@@ -7135,7 +7135,7 @@
         <span class="ident">Rela64</span> {
             <span class="ident">r_offset</span>: <span class="ident">rel</span>.<span class="ident">r_offset</span>,
             <span class="ident">r_info</span>: <span class="ident">rel</span>.<span class="ident">r_info</span>,
-            <span class="ident">r_addend</span>: <span class="ident">I64</span>::<span class="ident">default</span>(),
+            <span class="ident">r_addend</span>: <span class="ident">I64::default</span>(),
         }
     }
 }
@@ -7167,12 +7167,12 @@
 
     <span class="doccomment">/// Calculate the `r_info` field given the `r_sym` and `r_type` components.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">r_info</span>(<span class="ident">endian</span>: <span class="ident">E</span>, <span class="ident">r_sym</span>: <span class="ident">u32</span>, <span class="ident">r_type</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">U64</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-        <span class="ident">U64</span>::<span class="ident">new</span>(<span class="ident">endian</span>, (<span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">r_sym</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>) <span class="op">|</span> <span class="ident">u64</span>::<span class="ident">from</span>(<span class="ident">r_type</span>))
+        <span class="ident">U64::new</span>(<span class="ident">endian</span>, (<span class="ident">u64::from</span>(<span class="ident">r_sym</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">32</span>) <span class="op">|</span> <span class="ident">u64::from</span>(<span class="ident">r_type</span>))
     }
 
     <span class="doccomment">/// Set the `r_info` field given the `r_sym` and `r_type` components.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_r_info</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">endian</span>: <span class="ident">E</span>, <span class="ident">r_sym</span>: <span class="ident">u32</span>, <span class="ident">r_type</span>: <span class="ident">u32</span>) {
-        <span class="self">self</span>.<span class="ident">r_info</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">r_info</span>(<span class="ident">endian</span>, <span class="ident">r_sym</span>, <span class="ident">r_type</span>);
+        <span class="self">self</span>.<span class="ident">r_info</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::r_info</span>(<span class="ident">endian</span>, <span class="ident">r_sym</span>, <span class="ident">r_type</span>);
     }
 }
 

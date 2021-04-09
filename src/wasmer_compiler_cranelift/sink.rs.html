@@ -143,11 +143,11 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Support for compiling with Cranelift.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">translator</span>::{<span class="ident">irlibcall_to_libcall</span>, <span class="ident">irreloc_to_relocationkind</span>};
-<span class="kw">use</span> <span class="ident">cranelift_codegen</span>::<span class="ident">binemit</span>;
-<span class="kw">use</span> <span class="ident">cranelift_codegen</span>::<span class="ident">ir</span>::{<span class="self">self</span>, <span class="ident">ExternalName</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::translator</span>::{<span class="ident">irlibcall_to_libcall</span>, <span class="ident">irreloc_to_relocationkind</span>};
+<span class="kw">use</span> <span class="ident">cranelift_codegen::binemit</span>;
+<span class="kw">use</span> <span class="ident">cranelift_codegen::ir</span>::{<span class="self">self</span>, <span class="ident">ExternalName</span>};
 <span class="kw">use</span> <span class="ident">wasmer_compiler</span>::{<span class="ident">JumpTable</span>, <span class="ident">Relocation</span>, <span class="ident">RelocationTarget</span>, <span class="ident">TrapInformation</span>};
-<span class="kw">use</span> <span class="ident">wasmer_types</span>::<span class="ident">entity</span>::<span class="ident">EntityRef</span>;
+<span class="kw">use</span> <span class="ident">wasmer_types::entity::EntityRef</span>;
 <span class="kw">use</span> <span class="ident">wasmer_types</span>::{<span class="ident">FunctionIndex</span>, <span class="ident">LocalFunctionIndex</span>};
 <span class="kw">use</span> <span class="ident">wasmer_vm</span>::{<span class="ident">ModuleInfo</span>, <span class="ident">TrapCode</span>};
 
@@ -162,33 +162,33 @@
     <span class="kw">pub</span> <span class="ident">func_relocs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Relocation</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">binemit</span>::<span class="ident">RelocSink</span> <span class="kw">for</span> <span class="ident">RelocSink</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">binemit::RelocSink</span> <span class="kw">for</span> <span class="ident">RelocSink</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">reloc_block</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">_offset</span>: <span class="ident">binemit</span>::<span class="ident">CodeOffset</span>,
-        <span class="ident">_reloc</span>: <span class="ident">binemit</span>::<span class="ident">Reloc</span>,
-        <span class="ident">_block_offset</span>: <span class="ident">binemit</span>::<span class="ident">CodeOffset</span>,
+        <span class="ident">_offset</span>: <span class="ident">binemit::CodeOffset</span>,
+        <span class="ident">_reloc</span>: <span class="ident">binemit::Reloc</span>,
+        <span class="ident">_block_offset</span>: <span class="ident">binemit::CodeOffset</span>,
     ) {
         <span class="comment">// This should use the `offsets` field of `ir::Function`.</span>
         <span class="macro">panic!</span>(<span class="string">&quot;block headers not yet implemented&quot;</span>);
     }
     <span class="kw">fn</span> <span class="ident">reloc_external</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">offset</span>: <span class="ident">binemit</span>::<span class="ident">CodeOffset</span>,
-        <span class="ident">_source_loc</span>: <span class="ident">ir</span>::<span class="ident">SourceLoc</span>,
-        <span class="ident">reloc</span>: <span class="ident">binemit</span>::<span class="ident">Reloc</span>,
+        <span class="ident">offset</span>: <span class="ident">binemit::CodeOffset</span>,
+        <span class="ident">_source_loc</span>: <span class="ident">ir::SourceLoc</span>,
+        <span class="ident">reloc</span>: <span class="ident">binemit::Reloc</span>,
         <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">ExternalName</span>,
-        <span class="ident">addend</span>: <span class="ident">binemit</span>::<span class="ident">Addend</span>,
+        <span class="ident">addend</span>: <span class="ident">binemit::Addend</span>,
     ) {
-        <span class="kw">let</span> <span class="ident">reloc_target</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ExternalName</span>::<span class="ident">User</span> { <span class="ident">namespace</span>, <span class="ident">index</span> } <span class="op">=</span> <span class="kw-2">*</span><span class="ident">name</span> {
+        <span class="kw">let</span> <span class="ident">reloc_target</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ExternalName::User</span> { <span class="ident">namespace</span>, <span class="ident">index</span> } <span class="op">=</span> <span class="kw-2">*</span><span class="ident">name</span> {
             <span class="macro">debug_assert_eq!</span>(<span class="ident">namespace</span>, <span class="number">0</span>);
-            <span class="ident">RelocationTarget</span>::<span class="ident">LocalFunc</span>(
+            <span class="ident">RelocationTarget::LocalFunc</span>(
                 <span class="self">self</span>.<span class="ident">module</span>
-                    .<span class="ident">local_func_index</span>(<span class="ident">FunctionIndex</span>::<span class="ident">from_u32</span>(<span class="ident">index</span>))
+                    .<span class="ident">local_func_index</span>(<span class="ident">FunctionIndex::from_u32</span>(<span class="ident">index</span>))
                     .<span class="ident">expect</span>(<span class="string">&quot;The provided function should be local&quot;</span>),
             )
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ExternalName</span>::<span class="ident">LibCall</span>(<span class="ident">libcall</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="ident">name</span> {
-            <span class="ident">RelocationTarget</span>::<span class="ident">LibCall</span>(<span class="ident">irlibcall_to_libcall</span>(<span class="ident">libcall</span>))
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ExternalName::LibCall</span>(<span class="ident">libcall</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="ident">name</span> {
+            <span class="ident">RelocationTarget::LibCall</span>(<span class="ident">irlibcall_to_libcall</span>(<span class="ident">libcall</span>))
         } <span class="kw">else</span> {
             <span class="macro">panic!</span>(<span class="string">&quot;unrecognized external name&quot;</span>)
         };
@@ -202,20 +202,20 @@
 
     <span class="kw">fn</span> <span class="ident">reloc_constant</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">_code_offset</span>: <span class="ident">binemit</span>::<span class="ident">CodeOffset</span>,
-        <span class="ident">_reloc</span>: <span class="ident">binemit</span>::<span class="ident">Reloc</span>,
-        <span class="ident">_constant_offset</span>: <span class="ident">ir</span>::<span class="ident">ConstantOffset</span>,
+        <span class="ident">_code_offset</span>: <span class="ident">binemit::CodeOffset</span>,
+        <span class="ident">_reloc</span>: <span class="ident">binemit::Reloc</span>,
+        <span class="ident">_constant_offset</span>: <span class="ident">ir::ConstantOffset</span>,
     ) {
         <span class="comment">// Do nothing for now: cranelift emits constant data after the function code and also emits</span>
         <span class="comment">// function code with correct relative offsets to the constant data.</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">reloc_jt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">binemit</span>::<span class="ident">CodeOffset</span>, <span class="ident">reloc</span>: <span class="ident">binemit</span>::<span class="ident">Reloc</span>, <span class="ident">jt</span>: <span class="ident">ir</span>::<span class="ident">JumpTable</span>) {
+    <span class="kw">fn</span> <span class="ident">reloc_jt</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">binemit::CodeOffset</span>, <span class="ident">reloc</span>: <span class="ident">binemit::Reloc</span>, <span class="ident">jt</span>: <span class="ident">ir::JumpTable</span>) {
         <span class="self">self</span>.<span class="ident">func_relocs</span>.<span class="ident">push</span>(<span class="ident">Relocation</span> {
             <span class="ident">kind</span>: <span class="ident">irreloc_to_relocationkind</span>(<span class="ident">reloc</span>),
-            <span class="ident">reloc_target</span>: <span class="ident">RelocationTarget</span>::<span class="ident">JumpTable</span>(
+            <span class="ident">reloc_target</span>: <span class="ident">RelocationTarget::JumpTable</span>(
                 <span class="self">self</span>.<span class="ident">local_func_index</span>,
-                <span class="ident">JumpTable</span>::<span class="ident">new</span>(<span class="ident">jt</span>.<span class="ident">index</span>()),
+                <span class="ident">JumpTable::new</span>(<span class="ident">jt</span>.<span class="ident">index</span>()),
             ),
             <span class="ident">offset</span>,
             <span class="ident">addend</span>: <span class="number">0</span>,
@@ -232,7 +232,7 @@
         <span class="self">Self</span> {
             <span class="ident">module</span>,
             <span class="ident">local_func_index</span>,
-            <span class="ident">func_relocs</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
+            <span class="ident">func_relocs</span>: <span class="ident">Vec::new</span>(),
         }
     }
 }
@@ -243,16 +243,16 @@
 
 <span class="kw">impl</span> <span class="ident">TrapSink</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span> { <span class="ident">traps</span>: <span class="ident">Vec</span>::<span class="ident">new</span>() }
+        <span class="self">Self</span> { <span class="ident">traps</span>: <span class="ident">Vec::new</span>() }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">binemit</span>::<span class="ident">TrapSink</span> <span class="kw">for</span> <span class="ident">TrapSink</span> {
+<span class="kw">impl</span> <span class="ident">binemit::TrapSink</span> <span class="kw">for</span> <span class="ident">TrapSink</span> {
     <span class="kw">fn</span> <span class="ident">trap</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">code_offset</span>: <span class="ident">binemit</span>::<span class="ident">CodeOffset</span>,
-        <span class="ident">_source_loc</span>: <span class="ident">ir</span>::<span class="ident">SourceLoc</span>,
-        <span class="ident">trap_code</span>: <span class="ident">ir</span>::<span class="ident">TrapCode</span>,
+        <span class="ident">code_offset</span>: <span class="ident">binemit::CodeOffset</span>,
+        <span class="ident">_source_loc</span>: <span class="ident">ir::SourceLoc</span>,
+        <span class="ident">trap_code</span>: <span class="ident">ir::TrapCode</span>,
     ) {
         <span class="self">self</span>.<span class="ident">traps</span>.<span class="ident">push</span>(<span class="ident">TrapInformation</span> {
             <span class="ident">code_offset</span>,
@@ -263,20 +263,20 @@
 }
 
 <span class="doccomment">/// Translates the Cranelift IR TrapCode into generic Trap Code</span>
-<span class="kw">fn</span> <span class="ident">translate_ir_trapcode</span>(<span class="ident">trap</span>: <span class="ident">ir</span>::<span class="ident">TrapCode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TrapCode</span> {
+<span class="kw">fn</span> <span class="ident">translate_ir_trapcode</span>(<span class="ident">trap</span>: <span class="ident">ir::TrapCode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TrapCode</span> {
     <span class="kw">match</span> <span class="ident">trap</span> {
-        <span class="ident">ir</span>::<span class="ident">TrapCode</span>::<span class="ident">StackOverflow</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode</span>::<span class="ident">StackOverflow</span>,
-        <span class="ident">ir</span>::<span class="ident">TrapCode</span>::<span class="ident">HeapOutOfBounds</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode</span>::<span class="ident">HeapAccessOutOfBounds</span>,
-        <span class="ident">ir</span>::<span class="ident">TrapCode</span>::<span class="ident">HeapMisaligned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode</span>::<span class="ident">HeapMisaligned</span>,
-        <span class="ident">ir</span>::<span class="ident">TrapCode</span>::<span class="ident">TableOutOfBounds</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode</span>::<span class="ident">TableAccessOutOfBounds</span>,
-        <span class="ident">ir</span>::<span class="ident">TrapCode</span>::<span class="ident">IndirectCallToNull</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode</span>::<span class="ident">IndirectCallToNull</span>,
-        <span class="ident">ir</span>::<span class="ident">TrapCode</span>::<span class="ident">BadSignature</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode</span>::<span class="ident">BadSignature</span>,
-        <span class="ident">ir</span>::<span class="ident">TrapCode</span>::<span class="ident">IntegerOverflow</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode</span>::<span class="ident">IntegerOverflow</span>,
-        <span class="ident">ir</span>::<span class="ident">TrapCode</span>::<span class="ident">IntegerDivisionByZero</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode</span>::<span class="ident">IntegerDivisionByZero</span>,
-        <span class="ident">ir</span>::<span class="ident">TrapCode</span>::<span class="ident">BadConversionToInteger</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode</span>::<span class="ident">BadConversionToInteger</span>,
-        <span class="ident">ir</span>::<span class="ident">TrapCode</span>::<span class="ident">UnreachableCodeReached</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode</span>::<span class="ident">UnreachableCodeReached</span>,
-        <span class="ident">ir</span>::<span class="ident">TrapCode</span>::<span class="ident">Interrupt</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode</span>::<span class="ident">Interrupt</span>,
-        <span class="ident">ir</span>::<span class="ident">TrapCode</span>::<span class="ident">User</span>(<span class="ident">_user_code</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;User trap code not supported&quot;</span>),
+        <span class="ident">ir::TrapCode::StackOverflow</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode::StackOverflow</span>,
+        <span class="ident">ir::TrapCode::HeapOutOfBounds</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode::HeapAccessOutOfBounds</span>,
+        <span class="ident">ir::TrapCode::HeapMisaligned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode::HeapMisaligned</span>,
+        <span class="ident">ir::TrapCode::TableOutOfBounds</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode::TableAccessOutOfBounds</span>,
+        <span class="ident">ir::TrapCode::IndirectCallToNull</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode::IndirectCallToNull</span>,
+        <span class="ident">ir::TrapCode::BadSignature</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode::BadSignature</span>,
+        <span class="ident">ir::TrapCode::IntegerOverflow</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode::IntegerOverflow</span>,
+        <span class="ident">ir::TrapCode::IntegerDivisionByZero</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode::IntegerDivisionByZero</span>,
+        <span class="ident">ir::TrapCode::BadConversionToInteger</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode::BadConversionToInteger</span>,
+        <span class="ident">ir::TrapCode::UnreachableCodeReached</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode::UnreachableCodeReached</span>,
+        <span class="ident">ir::TrapCode::Interrupt</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">TrapCode::Interrupt</span>,
+        <span class="ident">ir::TrapCode::User</span>(<span class="ident">_user_code</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unimplemented!</span>(<span class="string">&quot;User trap code not supported&quot;</span>),
         <span class="comment">// ir::TrapCode::User(user_code) =&gt; TrapCode::User(user_code),</span>
     }
 }

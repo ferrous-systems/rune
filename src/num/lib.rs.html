@@ -174,20 +174,20 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>))]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">num_bigint</span>::{<span class="ident">BigInt</span>, <span class="ident">BigUint</span>};
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">num_complex</span>::<span class="ident">Complex</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">num_complex::Complex</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;alloc&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>))]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">num_rational</span>::<span class="ident">BigRational</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">num_rational::BigRational</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">num_rational</span>::<span class="ident">Rational</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">num_rational::Rational</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">num_rational</span>::{<span class="ident">Rational32</span>, <span class="ident">Rational64</span>};
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">num_integer</span>::<span class="ident">Integer</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">num_integer::Integer</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">num_iter</span>::{<span class="ident">range</span>, <span class="ident">range_inclusive</span>, <span class="ident">range_step</span>, <span class="ident">range_step_inclusive</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;libm&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>))]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">num_traits</span>::<span class="ident">Float</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">num_traits::Float</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">num_traits</span>::{
     <span class="ident">abs</span>, <span class="ident">abs_sub</span>, <span class="ident">cast</span>, <span class="ident">checked_pow</span>, <span class="ident">clamp</span>, <span class="ident">one</span>, <span class="ident">pow</span>, <span class="ident">signum</span>, <span class="ident">zero</span>, <span class="ident">Bounded</span>, <span class="ident">CheckedAdd</span>,
     <span class="ident">CheckedDiv</span>, <span class="ident">CheckedMul</span>, <span class="ident">CheckedSub</span>, <span class="ident">FromPrimitive</span>, <span class="ident">Num</span>, <span class="ident">NumCast</span>, <span class="ident">One</span>, <span class="ident">PrimInt</span>, <span class="ident">Saturating</span>,

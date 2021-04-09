@@ -19,17 +19,17 @@ for a <a href="https://doc.rust-lang.org/nightly/std/primitive.char.html" title=
 <p>Basic usage:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">char</span>;
+<span class="kw">use</span> <span class="ident">std::char</span>;
 
-<span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">char</span>::<span class="ident">from_u32</span>(<span class="number">0x2764</span>);
+<span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">char::from_u32</span>(<span class="number">0x2764</span>);
 
 <span class="macro">assert_eq!</span>(<span class="prelude-val">Some</span>(<span class="string">&#39;❤&#39;</span>), <span class="ident">c</span>);</pre></div>
 <p>Returning <code>None</code> when the input is not a valid <a href="https://doc.rust-lang.org/nightly/std/primitive.char.html" title="char"><code>char</code></a>:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">char</span>;
+<span class="kw">use</span> <span class="ident">std::char</span>;
 
-<span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">char</span>::<span class="ident">from_u32</span>(<span class="number">0x110000</span>);
+<span class="kw">let</span> <span class="ident">c</span> <span class="op">=</span> <span class="ident">char::from_u32</span>(<span class="number">0x110000</span>);
 
 <span class="macro">assert_eq!</span>(<span class="prelude-val">None</span>, <span class="ident">c</span>);</pre></div>
 </div></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="wasmer_types" data-search-js="../../../../search-index.js"></div>

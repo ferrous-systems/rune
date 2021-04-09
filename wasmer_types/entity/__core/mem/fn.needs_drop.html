@@ -33,9 +33,9 @@ values one at a time and should use this API.</p>
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">unsafe</span> {
             <span class="comment">// drop the data</span>
-            <span class="kw">if</span> <span class="ident">mem</span>::<span class="ident">needs_drop</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() {
+            <span class="kw">if</span> <span class="ident">mem::needs_drop</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() {
                 <span class="kw">for</span> <span class="ident">x</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">iter_mut</span>() {
-                    <span class="ident">ptr</span>::<span class="ident">drop_in_place</span>(<span class="ident">x</span>);
+                    <span class="ident">ptr::drop_in_place</span>(<span class="ident">x</span>);
                 }
             }
             <span class="self">self</span>.<span class="ident">free_buffer</span>();

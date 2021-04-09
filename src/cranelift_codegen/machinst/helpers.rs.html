@@ -33,12 +33,12 @@
 <span class="doccomment">//! Miscellaneous helpers for machine backends.</span>
 
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">InsnOutput</span>, <span class="ident">LowerCtx</span>, <span class="ident">VCodeInst</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">Type</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::Type</span>;
 <span class="kw">use</span> <span class="ident">regalloc</span>::{<span class="ident">Reg</span>, <span class="ident">Writable</span>};
 
 <span class="doccomment">/// Returns the size (in bits) of a given type.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ty_bits</span>(<span class="ident">ty</span>: <span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-    <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">ty</span>.<span class="ident">bits</span>())
+    <span class="ident">usize::from</span>(<span class="ident">ty</span>.<span class="ident">bits</span>())
 }
 
 <span class="doccomment">/// Is the type represented by an integer (not float) at the machine level?</span>

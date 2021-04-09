@@ -181,13 +181,13 @@
 <span id="178">178</span>
 <span id="179">179</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">lib</span>::<span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryFrom</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">lib</span>::<span class="ident">std</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">lib</span>::<span class="ident">std</span>::<span class="ident">ops</span>::{<span class="ident">Add</span>, <span class="ident">Sub</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::lib::std::convert::TryFrom</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::lib::std::fmt</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::lib::std::ops</span>::{<span class="ident">Add</span>, <span class="ident">Sub</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;enable-serde&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryInto</span>;
-<span class="kw">use</span> <span class="ident">thiserror</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="ident">std::convert::TryInto</span>;
+<span class="kw">use</span> <span class="ident">thiserror::Error</span>;
 
 <span class="doccomment">/// WebAssembly page sizes are fixed to be 64KiB.</span>
 <span class="doccomment">/// Note: large page support may be added in an opt-in manner in the [future].</span>
@@ -232,8 +232,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Pages</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Pages</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{} pages&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
     }
 }
@@ -249,8 +249,8 @@
 <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;enable-serde&quot;</span>, <span class="ident">derive</span>(<span class="ident">Serialize</span>, <span class="ident">Deserialize</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Bytes</span>(<span class="kw">pub</span> <span class="ident">usize</span>);
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Bytes</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Bytes</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{} bytes&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
     }
 }
@@ -301,7 +301,7 @@
 <span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">Bytes</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Pages</span> {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">PageCountOutOfRange</span>;
 
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">bytes</span>: <span class="ident">Bytes</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">bytes</span>: <span class="ident">Bytes</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span><span class="ident">::Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">pages</span>: <span class="ident">u32</span> <span class="op">=</span> (<span class="ident">bytes</span>.<span class="number">0</span> <span class="op">/</span> <span class="ident">WASM_PAGE_SIZE</span>)
             .<span class="ident">try_into</span>()
             .<span class="ident">or</span>(<span class="prelude-val">Err</span>(<span class="ident">PageCountOutOfRange</span>))<span class="question-mark">?</span>;
@@ -336,27 +336,27 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">convert_bytes_to_pages</span>() {
         <span class="comment">// rounds down</span>
-        <span class="kw">let</span> <span class="ident">pages</span> <span class="op">=</span> <span class="ident">Pages</span>::<span class="ident">try_from</span>(<span class="ident">Bytes</span>(<span class="number">0</span>)).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">pages</span> <span class="op">=</span> <span class="ident">Pages::try_from</span>(<span class="ident">Bytes</span>(<span class="number">0</span>)).<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">pages</span>, <span class="ident">Pages</span>(<span class="number">0</span>));
-        <span class="kw">let</span> <span class="ident">pages</span> <span class="op">=</span> <span class="ident">Pages</span>::<span class="ident">try_from</span>(<span class="ident">Bytes</span>(<span class="number">1</span>)).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">pages</span> <span class="op">=</span> <span class="ident">Pages::try_from</span>(<span class="ident">Bytes</span>(<span class="number">1</span>)).<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">pages</span>, <span class="ident">Pages</span>(<span class="number">0</span>));
-        <span class="kw">let</span> <span class="ident">pages</span> <span class="op">=</span> <span class="ident">Pages</span>::<span class="ident">try_from</span>(<span class="ident">Bytes</span>(<span class="ident">WASM_PAGE_SIZE</span> <span class="op">-</span> <span class="number">1</span>)).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">pages</span> <span class="op">=</span> <span class="ident">Pages::try_from</span>(<span class="ident">Bytes</span>(<span class="ident">WASM_PAGE_SIZE</span> <span class="op">-</span> <span class="number">1</span>)).<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">pages</span>, <span class="ident">Pages</span>(<span class="number">0</span>));
-        <span class="kw">let</span> <span class="ident">pages</span> <span class="op">=</span> <span class="ident">Pages</span>::<span class="ident">try_from</span>(<span class="ident">Bytes</span>(<span class="ident">WASM_PAGE_SIZE</span>)).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">pages</span> <span class="op">=</span> <span class="ident">Pages::try_from</span>(<span class="ident">Bytes</span>(<span class="ident">WASM_PAGE_SIZE</span>)).<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">pages</span>, <span class="ident">Pages</span>(<span class="number">1</span>));
-        <span class="kw">let</span> <span class="ident">pages</span> <span class="op">=</span> <span class="ident">Pages</span>::<span class="ident">try_from</span>(<span class="ident">Bytes</span>(<span class="ident">WASM_PAGE_SIZE</span> <span class="op">+</span> <span class="number">1</span>)).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">pages</span> <span class="op">=</span> <span class="ident">Pages::try_from</span>(<span class="ident">Bytes</span>(<span class="ident">WASM_PAGE_SIZE</span> <span class="op">+</span> <span class="number">1</span>)).<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">pages</span>, <span class="ident">Pages</span>(<span class="number">1</span>));
-        <span class="kw">let</span> <span class="ident">pages</span> <span class="op">=</span> <span class="ident">Pages</span>::<span class="ident">try_from</span>(<span class="ident">Bytes</span>(<span class="number">28</span> <span class="op">*</span> <span class="ident">WASM_PAGE_SIZE</span> <span class="op">+</span> <span class="number">42</span>)).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">pages</span> <span class="op">=</span> <span class="ident">Pages::try_from</span>(<span class="ident">Bytes</span>(<span class="number">28</span> <span class="op">*</span> <span class="ident">WASM_PAGE_SIZE</span> <span class="op">+</span> <span class="number">42</span>)).<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">pages</span>, <span class="ident">Pages</span>(<span class="number">28</span>));
-        <span class="kw">let</span> <span class="ident">pages</span> <span class="op">=</span> <span class="ident">Pages</span>::<span class="ident">try_from</span>(<span class="ident">Bytes</span>((<span class="ident">u32</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">*</span> <span class="ident">WASM_PAGE_SIZE</span>)).<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">pages</span>, <span class="ident">Pages</span>(<span class="ident">u32</span>::<span class="ident">MAX</span>));
-        <span class="kw">let</span> <span class="ident">pages</span> <span class="op">=</span> <span class="ident">Pages</span>::<span class="ident">try_from</span>(<span class="ident">Bytes</span>((<span class="ident">u32</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">*</span> <span class="ident">WASM_PAGE_SIZE</span> <span class="op">+</span> <span class="number">1</span>)).<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">pages</span>, <span class="ident">Pages</span>(<span class="ident">u32</span>::<span class="ident">MAX</span>));
+        <span class="kw">let</span> <span class="ident">pages</span> <span class="op">=</span> <span class="ident">Pages::try_from</span>(<span class="ident">Bytes</span>((<span class="ident">u32::MAX</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">*</span> <span class="ident">WASM_PAGE_SIZE</span>)).<span class="ident">unwrap</span>();
+        <span class="macro">assert_eq!</span>(<span class="ident">pages</span>, <span class="ident">Pages</span>(<span class="ident">u32::MAX</span>));
+        <span class="kw">let</span> <span class="ident">pages</span> <span class="op">=</span> <span class="ident">Pages::try_from</span>(<span class="ident">Bytes</span>((<span class="ident">u32::MAX</span> <span class="kw">as</span> <span class="ident">usize</span>) <span class="op">*</span> <span class="ident">WASM_PAGE_SIZE</span> <span class="op">+</span> <span class="number">1</span>)).<span class="ident">unwrap</span>();
+        <span class="macro">assert_eq!</span>(<span class="ident">pages</span>, <span class="ident">Pages</span>(<span class="ident">u32::MAX</span>));
 
         <span class="comment">// Errors when page count cannot be represented as u32</span>
-        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">Pages</span>::<span class="ident">try_from</span>(<span class="ident">Bytes</span>((<span class="ident">u32</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">+</span> <span class="number">1</span>) <span class="op">*</span> <span class="ident">WASM_PAGE_SIZE</span>));
+        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">Pages::try_from</span>(<span class="ident">Bytes</span>((<span class="ident">u32::MAX</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">+</span> <span class="number">1</span>) <span class="op">*</span> <span class="ident">WASM_PAGE_SIZE</span>));
         <span class="macro">assert_eq!</span>(<span class="ident">result</span>.<span class="ident">unwrap_err</span>(), <span class="ident">PageCountOutOfRange</span>);
-        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">Pages</span>::<span class="ident">try_from</span>(<span class="ident">Bytes</span>(<span class="ident">usize</span>::<span class="ident">MAX</span>));
+        <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">Pages::try_from</span>(<span class="ident">Bytes</span>(<span class="ident">usize::MAX</span>));
         <span class="macro">assert_eq!</span>(<span class="ident">result</span>.<span class="ident">unwrap_err</span>(), <span class="ident">PageCountOutOfRange</span>);
     }
 }

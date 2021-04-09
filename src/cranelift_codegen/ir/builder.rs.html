@@ -273,11 +273,11 @@
 <span class="doccomment">//! A `Builder` provides a convenient interface for inserting instructions into a Cranelift</span>
 <span class="doccomment">//! function. Many of its methods are generated from the meta language instruction definitions.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">types</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">DataFlowGraph</span>, <span class="ident">InstructionData</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">Inst</span>, <span class="ident">Opcode</span>, <span class="ident">Type</span>, <span class="ident">Value</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::types</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">DataFlowGraph</span>, <span class="ident">InstructionData</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">Inst</span>, <span class="ident">Opcode</span>, <span class="ident">Type</span>, <span class="ident">Value</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa</span>;
 
 <span class="doccomment">/// Base trait for instruction builders.</span>
 <span class="doccomment">///</span>
@@ -329,7 +329,7 @@
     <span class="kw">fn</span> <span class="ident">insert_built_inst</span>(<span class="self">self</span>, <span class="ident">inst</span>: <span class="ident">Inst</span>, <span class="ident">ctrl_typevar</span>: <span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;f</span> <span class="kw-2">mut</span> <span class="ident">DataFlowGraph</span>;
 }
 
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
+<span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
 
 <span class="doccomment">/// Builder that inserts an instruction at the current position.</span>
 <span class="doccomment">///</span>
@@ -485,17 +485,17 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">FuncCursor</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">condcodes</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">types</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">Function</span>, <span class="ident">InstBuilder</span>, <span class="ident">ValueDef</span>};
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">FuncCursor</span>};
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::condcodes</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::types</span>::<span class="kw-2">*</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">Function</span>, <span class="ident">InstBuilder</span>, <span class="ident">ValueDef</span>};
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">types</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">Function</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">Function::new</span>();
         <span class="kw">let</span> <span class="ident">block0</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">make_block</span>();
         <span class="kw">let</span> <span class="ident">arg0</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block0</span>, <span class="ident">I32</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">func</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">func</span>);
         <span class="ident">pos</span>.<span class="ident">insert_block</span>(<span class="ident">block0</span>);
 
         <span class="comment">// Explicit types.</span>
@@ -507,22 +507,22 @@
         <span class="macro">assert_eq!</span>(<span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">v1</span>), <span class="ident">I32</span>);
 
         <span class="comment">// Formula.</span>
-        <span class="kw">let</span> <span class="ident">cmp</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">icmp</span>(<span class="ident">IntCC</span>::<span class="ident">Equal</span>, <span class="ident">arg0</span>, <span class="ident">v0</span>);
+        <span class="kw">let</span> <span class="ident">cmp</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">icmp</span>(<span class="ident">IntCC::Equal</span>, <span class="ident">arg0</span>, <span class="ident">v0</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">cmp</span>), <span class="ident">B1</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">reuse_results</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">Function</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">Function::new</span>();
         <span class="kw">let</span> <span class="ident">block0</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">make_block</span>();
         <span class="kw">let</span> <span class="ident">arg0</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">append_block_param</span>(<span class="ident">block0</span>, <span class="ident">I32</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">func</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">func</span>);
         <span class="ident">pos</span>.<span class="ident">insert_block</span>(<span class="ident">block0</span>);
 
         <span class="kw">let</span> <span class="ident">v0</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">iadd_imm</span>(<span class="ident">arg0</span>, <span class="number">17</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">v0</span>), <span class="ident">I32</span>);
         <span class="kw">let</span> <span class="ident">iadd</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">prev_inst</span>().<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_def</span>(<span class="ident">v0</span>), <span class="ident">ValueDef</span>::<span class="prelude-ty">Result</span>(<span class="ident">iadd</span>, <span class="number">0</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_def</span>(<span class="ident">v0</span>), <span class="ident">ValueDef::Result</span>(<span class="ident">iadd</span>, <span class="number">0</span>));
 
         <span class="comment">// Detach v0 and reuse it for a different instruction.</span>
         <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">clear_results</span>(<span class="ident">iadd</span>);
@@ -531,7 +531,7 @@
         <span class="macro">assert_eq!</span>(<span class="ident">pos</span>.<span class="ident">current_inst</span>(), <span class="prelude-val">Some</span>(<span class="ident">iadd</span>));
         <span class="kw">let</span> <span class="ident">iconst</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">prev_inst</span>().<span class="ident">unwrap</span>();
         <span class="macro">assert!</span>(<span class="ident">iadd</span> <span class="op">!</span><span class="op">=</span> <span class="ident">iconst</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_def</span>(<span class="ident">v0</span>), <span class="ident">ValueDef</span>::<span class="prelude-ty">Result</span>(<span class="ident">iconst</span>, <span class="number">0</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_def</span>(<span class="ident">v0</span>), <span class="ident">ValueDef::Result</span>(<span class="ident">iconst</span>, <span class="number">0</span>));
     }
 }
 </pre></div>

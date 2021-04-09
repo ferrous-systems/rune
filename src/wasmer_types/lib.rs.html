@@ -102,18 +102,18 @@
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">unused_import_braces</span>)]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">deny</span>(<span class="ident">unstable_features</span>))]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>, <span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">new_without_default</span>))]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>, <span class="ident">allow</span>(<span class="ident">clippy::new_without_default</span>))]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>,
     <span class="ident">warn</span>(
-        <span class="ident">clippy</span>::<span class="ident">float_arithmetic</span>,
-        <span class="ident">clippy</span>::<span class="ident">mut_mut</span>,
-        <span class="ident">clippy</span>::<span class="ident">nonminimal_bool</span>,
-        <span class="ident">clippy</span>::<span class="ident">option_map_unwrap_or</span>,
-        <span class="ident">clippy</span>::<span class="ident">option_map_unwrap_or_else</span>,
-        <span class="ident">clippy</span>::<span class="ident">print_stdout</span>,
-        <span class="ident">clippy</span>::<span class="ident">unicode_not_nfc</span>,
-        <span class="ident">clippy</span>::<span class="ident">use_self</span>
+        <span class="ident">clippy::float_arithmetic</span>,
+        <span class="ident">clippy::mut_mut</span>,
+        <span class="ident">clippy::nonminimal_bool</span>,
+        <span class="ident">clippy::option_map_unwrap_or</span>,
+        <span class="ident">clippy::option_map_unwrap_or_else</span>,
+        <span class="ident">clippy::print_stdout</span>,
+        <span class="ident">clippy::unicode_not_nfc</span>,
+        <span class="ident">clippy::use_self</span>
     )
 )]</span>
 
@@ -159,22 +159,22 @@
     <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">cranelift_entity</span>::<span class="kw-2">*</span>;
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">features</span>::<span class="ident">Features</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">indexes</span>::{
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::features::Features</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::indexes</span>::{
     <span class="ident">CustomSectionIndex</span>, <span class="ident">DataIndex</span>, <span class="ident">ElemIndex</span>, <span class="ident">ExportIndex</span>, <span class="ident">FunctionIndex</span>, <span class="ident">GlobalIndex</span>, <span class="ident">ImportIndex</span>,
     <span class="ident">LocalFunctionIndex</span>, <span class="ident">LocalGlobalIndex</span>, <span class="ident">LocalMemoryIndex</span>, <span class="ident">LocalTableIndex</span>, <span class="ident">MemoryIndex</span>,
     <span class="ident">SignatureIndex</span>, <span class="ident">TableIndex</span>,
 };
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">initializers</span>::{
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::initializers</span>::{
     <span class="ident">DataInitializer</span>, <span class="ident">DataInitializerLocation</span>, <span class="ident">OwnedDataInitializer</span>, <span class="ident">TableInitializer</span>,
 };
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">memory_view</span>::{<span class="ident">Atomically</span>, <span class="ident">MemoryView</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">native</span>::{<span class="ident">NativeWasmType</span>, <span class="ident">ValueType</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::memory_view</span>::{<span class="ident">Atomically</span>, <span class="ident">MemoryView</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::native</span>::{<span class="ident">NativeWasmType</span>, <span class="ident">ValueType</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">r#ref</span>::{<span class="ident">ExternRef</span>, <span class="ident">HostInfo</span>, <span class="ident">HostRef</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">units</span>::{
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::units</span>::{
     <span class="ident">Bytes</span>, <span class="ident">PageCountOutOfRange</span>, <span class="ident">Pages</span>, <span class="ident">WASM_MAX_PAGES</span>, <span class="ident">WASM_MIN_PAGES</span>, <span class="ident">WASM_PAGE_SIZE</span>,
 };
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">values</span>::<span class="ident">Value</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::values::Value</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">types</span>::{
     <span class="ident">ExportType</span>, <span class="ident">ExternType</span>, <span class="ident">FunctionType</span>, <span class="ident">GlobalInit</span>, <span class="ident">GlobalType</span>, <span class="ident">ImportType</span>, <span class="ident">MemoryType</span>,
     <span class="ident">Mutability</span>, <span class="ident">TableType</span>, <span class="ident">Type</span>, <span class="ident">V128</span>,

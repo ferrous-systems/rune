@@ -991,36 +991,36 @@
 <span id="988">988</span>
 <span id="989">989</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>::{<span class="self">self</span>, <span class="ident">Debug</span>, <span class="ident">Formatter</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fs</span>::<span class="ident">File</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">BufReader</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">Path</span>;
+<span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
+<span class="kw">use</span> <span class="ident">std::fmt</span>::{<span class="self">self</span>, <span class="ident">Debug</span>, <span class="ident">Formatter</span>};
+<span class="kw">use</span> <span class="ident">std::fs::File</span>;
+<span class="kw">use</span> <span class="ident">std::io::prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">std::io::BufReader</span>;
+<span class="kw">use</span> <span class="ident">std::path::Path</span>;
 
-<span class="kw">use</span> <span class="ident">serde</span>::<span class="ident">Serialize</span>;
+<span class="kw">use</span> <span class="ident">serde::Serialize</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">context</span>::<span class="ident">Context</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">decorators</span>::{<span class="self">self</span>, <span class="ident">DecoratorDef</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::context::Context</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::decorators</span>::{<span class="self">self</span>, <span class="ident">DecoratorDef</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;script_helper&quot;</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">ScriptError</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::{<span class="ident">RenderError</span>, <span class="ident">TemplateError</span>, <span class="ident">TemplateFileError</span>, <span class="ident">TemplateRenderError</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">helpers</span>::{<span class="self">self</span>, <span class="ident">HelperDef</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">output</span>::{<span class="ident">Output</span>, <span class="ident">StringOutput</span>, <span class="ident">WriteOutput</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">render</span>::{<span class="ident">RenderContext</span>, <span class="ident">Renderable</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">support</span>::<span class="ident">str</span>::{<span class="self">self</span>, <span class="ident">StringWriter</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">template</span>::<span class="ident">Template</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error::ScriptError</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error</span>::{<span class="ident">RenderError</span>, <span class="ident">TemplateError</span>, <span class="ident">TemplateFileError</span>, <span class="ident">TemplateRenderError</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::helpers</span>::{<span class="self">self</span>, <span class="ident">HelperDef</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::output</span>::{<span class="ident">Output</span>, <span class="ident">StringOutput</span>, <span class="ident">WriteOutput</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::render</span>::{<span class="ident">RenderContext</span>, <span class="ident">Renderable</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::support::str</span>::{<span class="self">self</span>, <span class="ident">StringWriter</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::template::Template</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dir_source&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>;
+<span class="kw">use</span> <span class="ident">std::path</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dir_source&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">walkdir</span>::{<span class="ident">DirEntry</span>, <span class="ident">WalkDir</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;script_helper&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">rhai</span>::<span class="ident">Engine</span>;
+<span class="kw">use</span> <span class="ident">rhai::Engine</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;script_helper&quot;</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">helpers</span>::<span class="ident">scripting</span>::<span class="ident">ScriptHelper</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::helpers::scripting::ScriptHelper</span>;
 
 <span class="doccomment">/// This type represents an *escape fn*, that is a function whose purpose it is</span>
 <span class="doccomment">/// to escape potentially problematic characters in a string.</span>
@@ -1032,7 +1032,7 @@
 <span class="doccomment">/// The default *escape fn* replaces the characters `&amp;&quot;&lt;&gt;`</span>
 <span class="doccomment">/// with the equivalent html / xml entities.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">html_escape</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-    <span class="ident">str</span>::<span class="ident">escape_html</span>(<span class="ident">data</span>)
+    <span class="ident">str::escape_html</span>(<span class="ident">data</span>)
 }
 
 <span class="doccomment">/// `EscapeFn` that does not change anything. Useful when using in a non-html</span>
@@ -1056,7 +1056,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;reg</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Registry</span><span class="op">&lt;</span><span class="lifetime">&#39;reg</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Handlebars&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;templates&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">templates</span>)
             .<span class="ident">field</span>(<span class="string">&quot;helpers&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">helpers</span>.<span class="ident">keys</span>())
@@ -1068,7 +1068,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;reg</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Registry</span><span class="op">&lt;</span><span class="lifetime">&#39;reg</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">new</span>()
+        <span class="self">Self</span><span class="ident">::new</span>()
     }
 }
 
@@ -1089,16 +1089,16 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;script_helper&quot;</span>)]</span>
 <span class="kw">fn</span> <span class="ident">rhai_engine</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Engine</span> {
-    <span class="ident">Engine</span>::<span class="ident">new</span>()
+    <span class="ident">Engine::new</span>()
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;reg</span><span class="op">&gt;</span> <span class="ident">Registry</span><span class="op">&lt;</span><span class="lifetime">&#39;reg</span><span class="op">&gt;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Registry</span><span class="op">&lt;</span><span class="lifetime">&#39;reg</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Registry</span> {
-            <span class="ident">templates</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
-            <span class="ident">helpers</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
-            <span class="ident">decorators</span>: <span class="ident">HashMap</span>::<span class="ident">new</span>(),
-            <span class="ident">escape_fn</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">html_escape</span>),
+            <span class="ident">templates</span>: <span class="ident">HashMap::new</span>(),
+            <span class="ident">helpers</span>: <span class="ident">HashMap::new</span>(),
+            <span class="ident">decorators</span>: <span class="ident">HashMap::new</span>(),
+            <span class="ident">escape_fn</span>: <span class="ident">Box::new</span>(<span class="ident">html_escape</span>),
             <span class="ident">source_map</span>: <span class="bool-val">true</span>,
             <span class="ident">strict_mode</span>: <span class="bool-val">false</span>,
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;script_helper&quot;</span>)]</span>
@@ -1109,25 +1109,25 @@
     }
 
     <span class="kw">fn</span> <span class="ident">setup_builtins</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Registry</span><span class="op">&lt;</span><span class="lifetime">&#39;reg</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;if&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">helpers</span>::<span class="ident">IF_HELPER</span>));
-        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;unless&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">helpers</span>::<span class="ident">UNLESS_HELPER</span>));
-        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;each&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">helpers</span>::<span class="ident">EACH_HELPER</span>));
-        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;with&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">helpers</span>::<span class="ident">WITH_HELPER</span>));
-        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;lookup&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">helpers</span>::<span class="ident">LOOKUP_HELPER</span>));
-        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;raw&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">helpers</span>::<span class="ident">RAW_HELPER</span>));
-        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;log&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">helpers</span>::<span class="ident">LOG_HELPER</span>));
+        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;if&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">helpers::IF_HELPER</span>));
+        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;unless&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">helpers::UNLESS_HELPER</span>));
+        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;each&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">helpers::EACH_HELPER</span>));
+        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;with&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">helpers::WITH_HELPER</span>));
+        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;lookup&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">helpers::LOOKUP_HELPER</span>));
+        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;raw&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">helpers::RAW_HELPER</span>));
+        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;log&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">helpers::LOG_HELPER</span>));
 
-        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;eq&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">helpers</span>::<span class="ident">helper_boolean</span>::<span class="ident">eq</span>));
-        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;ne&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">helpers</span>::<span class="ident">helper_boolean</span>::<span class="ident">ne</span>));
-        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;gt&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">helpers</span>::<span class="ident">helper_boolean</span>::<span class="ident">gt</span>));
-        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;gte&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">helpers</span>::<span class="ident">helper_boolean</span>::<span class="ident">gte</span>));
-        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;lt&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">helpers</span>::<span class="ident">helper_boolean</span>::<span class="ident">lt</span>));
-        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;lte&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">helpers</span>::<span class="ident">helper_boolean</span>::<span class="ident">lte</span>));
-        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;and&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">helpers</span>::<span class="ident">helper_boolean</span>::<span class="ident">and</span>));
-        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;or&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">helpers</span>::<span class="ident">helper_boolean</span>::<span class="ident">or</span>));
-        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;not&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">helpers</span>::<span class="ident">helper_boolean</span>::<span class="ident">not</span>));
+        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;eq&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">helpers::helper_boolean::eq</span>));
+        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;ne&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">helpers::helper_boolean::ne</span>));
+        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;gt&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">helpers::helper_boolean::gt</span>));
+        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;gte&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">helpers::helper_boolean::gte</span>));
+        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;lt&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">helpers::helper_boolean::lt</span>));
+        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;lte&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">helpers::helper_boolean::lte</span>));
+        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;and&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">helpers::helper_boolean::and</span>));
+        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;or&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">helpers::helper_boolean::or</span>));
+        <span class="self">self</span>.<span class="ident">register_helper</span>(<span class="string">&quot;not&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">helpers::helper_boolean::not</span>));
 
-        <span class="self">self</span>.<span class="ident">register_decorator</span>(<span class="string">&quot;inline&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">decorators</span>::<span class="ident">INLINE_DECORATOR</span>));
+        <span class="self">self</span>.<span class="ident">register_decorator</span>(<span class="string">&quot;inline&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">decorators::INLINE_DECORATOR</span>));
         <span class="self">self</span>
     }
 
@@ -1183,7 +1183,7 @@
     <span class="kw">where</span>
         <span class="ident">S</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>,
     {
-        <span class="kw">let</span> <span class="ident">template</span> <span class="op">=</span> <span class="ident">Template</span>::<span class="ident">compile_with_name</span>(<span class="ident">tpl_str</span>, <span class="ident">name</span>.<span class="ident">to_owned</span>(), <span class="self">self</span>.<span class="ident">source_map</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">template</span> <span class="op">=</span> <span class="ident">Template::compile_with_name</span>(<span class="ident">tpl_str</span>, <span class="ident">name</span>.<span class="ident">to_owned</span>(), <span class="self">self</span>.<span class="ident">source_map</span>)<span class="question-mark">?</span>;
         <span class="self">self</span>.<span class="ident">register_template</span>(<span class="ident">name</span>, <span class="ident">template</span>);
         <span class="prelude-val">Ok</span>(())
     }
@@ -1208,8 +1208,8 @@
     <span class="kw">where</span>
         <span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>,
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">BufReader</span>::<span class="ident">new</span>(
-            <span class="ident">File</span>::<span class="ident">open</span>(<span class="ident">tpl_path</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">TemplateFileError</span>::<span class="ident">IOError</span>(<span class="ident">e</span>, <span class="ident">name</span>.<span class="ident">to_owned</span>()))<span class="question-mark">?</span>,
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">BufReader::new</span>(
+            <span class="ident">File::open</span>(<span class="ident">tpl_path</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">TemplateFileError::IOError</span>(<span class="ident">e</span>, <span class="ident">name</span>.<span class="ident">to_owned</span>()))<span class="question-mark">?</span>,
         );
         <span class="self">self</span>.<span class="ident">register_template_source</span>(<span class="ident">name</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">reader</span>)
     }
@@ -1247,7 +1247,7 @@
             <span class="ident">dir_path</span>.<span class="ident">to_string_lossy</span>().<span class="ident">len</span>() <span class="op">+</span> <span class="number">1</span>
         };
 
-        <span class="kw">let</span> <span class="ident">walker</span> <span class="op">=</span> <span class="ident">WalkDir</span>::<span class="ident">new</span>(<span class="ident">dir_path</span>);
+        <span class="kw">let</span> <span class="ident">walker</span> <span class="op">=</span> <span class="ident">WalkDir::new</span>(<span class="ident">dir_path</span>);
         <span class="kw">let</span> <span class="ident">dir_iter</span> <span class="op">=</span> <span class="ident">walker</span>
             .<span class="ident">min_depth</span>(<span class="number">1</span>)
             .<span class="ident">into_iter</span>()
@@ -1261,7 +1261,7 @@
 
             <span class="kw">let</span> <span class="ident">tpl_name</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">tpl_file_path</span>[<span class="ident">prefix_len</span>..<span class="ident">tpl_file_path</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="ident">tpl_extension</span>.<span class="ident">len</span>()];
             <span class="comment">// replace platform path separator with our internal one</span>
-            <span class="kw">let</span> <span class="ident">tpl_canonical_name</span> <span class="op">=</span> <span class="ident">tpl_name</span>.<span class="ident">replace</span>(<span class="ident">path</span>::<span class="ident">MAIN_SEPARATOR</span>, <span class="string">&quot;/&quot;</span>);
+            <span class="kw">let</span> <span class="ident">tpl_canonical_name</span> <span class="op">=</span> <span class="ident">tpl_name</span>.<span class="ident">replace</span>(<span class="ident">path::MAIN_SEPARATOR</span>, <span class="string">&quot;/&quot;</span>);
             <span class="self">self</span>.<span class="ident">register_template_file</span>(<span class="kw-2">&amp;</span><span class="ident">tpl_canonical_name</span>, <span class="kw-2">&amp;</span><span class="ident">tpl_path</span>)<span class="question-mark">?</span>;
         }
 
@@ -1277,10 +1277,10 @@
     <span class="kw">where</span>
         <span class="ident">R</span>: <span class="ident">Read</span>,
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="ident">String::new</span>();
         <span class="ident">tpl_source</span>
             .<span class="ident">read_to_string</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>)
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">TemplateFileError</span>::<span class="ident">IOError</span>(<span class="ident">e</span>, <span class="ident">name</span>.<span class="ident">to_owned</span>()))<span class="question-mark">?</span>;
+            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">TemplateFileError::IOError</span>(<span class="ident">e</span>, <span class="ident">name</span>.<span class="ident">to_owned</span>()))<span class="question-mark">?</span>;
         <span class="self">self</span>.<span class="ident">register_template_string</span>(<span class="ident">name</span>, <span class="ident">buf</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
@@ -1330,7 +1330,7 @@
         <span class="kw">let</span> <span class="ident">script_helper</span> <span class="op">=</span> <span class="ident">ScriptHelper</span> { <span class="ident">script</span>: <span class="ident">compiled</span> };
         <span class="prelude-val">Ok</span>(<span class="self">self</span>
             .<span class="ident">helpers</span>
-            .<span class="ident">insert</span>(<span class="ident">name</span>.<span class="ident">to_string</span>(), <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">script_helper</span>)))
+            .<span class="ident">insert</span>(<span class="ident">name</span>.<span class="ident">to_string</span>(), <span class="ident">Box::new</span>(<span class="ident">script_helper</span>)))
     }
 
     <span class="doccomment">/// Register a [rhai](https://docs.rs/rhai/) script from file</span>
@@ -1343,9 +1343,9 @@
     <span class="kw">where</span>
         <span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>,
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">script</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">script</span> <span class="op">=</span> <span class="ident">String::new</span>();
         {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">open</span>(<span class="ident">script_path</span>)<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">File::open</span>(<span class="ident">script_path</span>)<span class="question-mark">?</span>;
             <span class="ident">file</span>.<span class="ident">read_to_string</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">script</span>)<span class="question-mark">?</span>;
         }
 
@@ -1366,12 +1366,12 @@
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">escape_fn</span>: <span class="ident">F</span>,
     ) {
-        <span class="self">self</span>.<span class="ident">escape_fn</span> <span class="op">=</span> <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">escape_fn</span>);
+        <span class="self">self</span>.<span class="ident">escape_fn</span> <span class="op">=</span> <span class="ident">Box::new</span>(<span class="ident">escape_fn</span>);
     }
 
     <span class="doccomment">/// Restore the default *escape fn*.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unregister_escape_fn</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">escape_fn</span> <span class="op">=</span> <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">html_escape</span>);
+        <span class="self">self</span>.<span class="ident">escape_fn</span> <span class="op">=</span> <span class="ident">Box::new</span>(<span class="ident">html_escape</span>);
     }
 
     <span class="doccomment">/// Get a reference to the current *escape fn*.</span>
@@ -1424,9 +1424,9 @@
         <span class="ident">O</span>: <span class="ident">Output</span>,
     {
         <span class="self">self</span>.<span class="ident">get_template</span>(<span class="ident">name</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">RenderError</span>::<span class="ident">new</span>(<span class="macro">format!</span>(<span class="string">&quot;Template not found: {}&quot;</span>, <span class="ident">name</span>)))
+            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">RenderError::new</span>(<span class="macro">format!</span>(<span class="string">&quot;Template not found: {}&quot;</span>, <span class="ident">name</span>)))
             .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">render_context</span> <span class="op">=</span> <span class="ident">RenderContext</span>::<span class="ident">new</span>(<span class="ident">t</span>.<span class="ident">name</span>.<span class="ident">as_ref</span>());
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">render_context</span> <span class="op">=</span> <span class="ident">RenderContext::new</span>(<span class="ident">t</span>.<span class="ident">name</span>.<span class="ident">as_ref</span>());
                 <span class="ident">t</span>.<span class="ident">render</span>(<span class="self">self</span>, <span class="kw-2">&amp;</span><span class="ident">ctx</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">render_context</span>, <span class="ident">output</span>)
             })
     }
@@ -1441,17 +1441,17 @@
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Serialize</span>,
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">StringOutput</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context</span>::<span class="ident">wraps</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">StringOutput::new</span>();
+        <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context::wraps</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>)<span class="question-mark">?</span>;
         <span class="self">self</span>.<span class="ident">render_to_output</span>(<span class="ident">name</span>, <span class="kw-2">&amp;</span><span class="ident">ctx</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">output</span>)<span class="question-mark">?</span>;
-        <span class="ident">output</span>.<span class="ident">into_string</span>().<span class="ident">map_err</span>(<span class="ident">RenderError</span>::<span class="ident">from</span>)
+        <span class="ident">output</span>.<span class="ident">into_string</span>().<span class="ident">map_err</span>(<span class="ident">RenderError::from</span>)
     }
 
     <span class="doccomment">/// Render a registered template with reused context</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">render_with_context</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="ident">Context</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">RenderError</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">StringOutput</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">StringOutput::new</span>();
         <span class="self">self</span>.<span class="ident">render_to_output</span>(<span class="ident">name</span>, <span class="ident">ctx</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">output</span>)<span class="question-mark">?</span>;
-        <span class="ident">output</span>.<span class="ident">into_string</span>().<span class="ident">map_err</span>(<span class="ident">RenderError</span>::<span class="ident">from</span>)
+        <span class="ident">output</span>.<span class="ident">into_string</span>().<span class="ident">map_err</span>(<span class="ident">RenderError::from</span>)
     }
 
     <span class="doccomment">/// Render a registered template and write some data to the `std::io::Write`</span>
@@ -1460,8 +1460,8 @@
         <span class="ident">T</span>: <span class="ident">Serialize</span>,
         <span class="ident">W</span>: <span class="ident">Write</span>,
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">WriteOutput</span>::<span class="ident">new</span>(<span class="ident">writer</span>);
-        <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context</span>::<span class="ident">wraps</span>(<span class="ident">data</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">output</span> <span class="op">=</span> <span class="ident">WriteOutput::new</span>(<span class="ident">writer</span>);
+        <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context::wraps</span>(<span class="ident">data</span>)<span class="question-mark">?</span>;
         <span class="self">self</span>.<span class="ident">render_to_output</span>(<span class="ident">name</span>, <span class="kw-2">&amp;</span><span class="ident">ctx</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">output</span>)
     }
 
@@ -1474,7 +1474,7 @@
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">Serialize</span>,
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writer</span> <span class="op">=</span> <span class="ident">StringWriter</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writer</span> <span class="op">=</span> <span class="ident">StringWriter::new</span>();
         <span class="self">self</span>.<span class="ident">render_template_to_write</span>(<span class="ident">template_string</span>, <span class="ident">data</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writer</span>)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">writer</span>.<span class="ident">into_string</span>())
     }
@@ -1485,16 +1485,16 @@
         <span class="ident">template_string</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
         <span class="ident">ctx</span>: <span class="kw-2">&amp;</span><span class="ident">Context</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">TemplateRenderError</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">tpl</span> <span class="op">=</span> <span class="ident">Template</span>::<span class="ident">compile2</span>(<span class="ident">template_string</span>, <span class="self">self</span>.<span class="ident">source_map</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">tpl</span> <span class="op">=</span> <span class="ident">Template::compile2</span>(<span class="ident">template_string</span>, <span class="self">self</span>.<span class="ident">source_map</span>)<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">StringOutput</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">StringOutput::new</span>();
         {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">render_context</span> <span class="op">=</span> <span class="ident">RenderContext</span>::<span class="ident">new</span>(<span class="prelude-val">None</span>);
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">render_context</span> <span class="op">=</span> <span class="ident">RenderContext::new</span>(<span class="prelude-val">None</span>);
             <span class="ident">tpl</span>.<span class="ident">render</span>(<span class="self">self</span>, <span class="kw-2">&amp;</span><span class="ident">ctx</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">render_context</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">out</span>)<span class="question-mark">?</span>;
         }
 
         <span class="ident">out</span>.<span class="ident">into_string</span>()
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">TemplateRenderError</span>::<span class="ident">from</span>(<span class="ident">RenderError</span>::<span class="ident">from</span>(<span class="ident">e</span>)))
+            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">TemplateRenderError::from</span>(<span class="ident">RenderError::from</span>(<span class="ident">e</span>)))
     }
 
     <span class="doccomment">/// Render a template string using current registry without registering it</span>
@@ -1508,12 +1508,12 @@
         <span class="ident">T</span>: <span class="ident">Serialize</span>,
         <span class="ident">W</span>: <span class="ident">Write</span>,
     {
-        <span class="kw">let</span> <span class="ident">tpl</span> <span class="op">=</span> <span class="ident">Template</span>::<span class="ident">compile2</span>(<span class="ident">template_string</span>, <span class="self">self</span>.<span class="ident">source_map</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context</span>::<span class="ident">wraps</span>(<span class="ident">data</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">render_context</span> <span class="op">=</span> <span class="ident">RenderContext</span>::<span class="ident">new</span>(<span class="prelude-val">None</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">WriteOutput</span>::<span class="ident">new</span>(<span class="ident">writer</span>);
+        <span class="kw">let</span> <span class="ident">tpl</span> <span class="op">=</span> <span class="ident">Template::compile2</span>(<span class="ident">template_string</span>, <span class="self">self</span>.<span class="ident">source_map</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context::wraps</span>(<span class="ident">data</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">render_context</span> <span class="op">=</span> <span class="ident">RenderContext::new</span>(<span class="prelude-val">None</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">WriteOutput::new</span>(<span class="ident">writer</span>);
         <span class="ident">tpl</span>.<span class="ident">render</span>(<span class="self">self</span>, <span class="kw-2">&amp;</span><span class="ident">ctx</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">render_context</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">out</span>)
-            .<span class="ident">map_err</span>(<span class="ident">TemplateRenderError</span>::<span class="ident">from</span>)
+            .<span class="ident">map_err</span>(<span class="ident">TemplateRenderError::from</span>)
     }
 
     <span class="doccomment">/// Render a template source using current registry without registering it</span>
@@ -1528,30 +1528,30 @@
         <span class="ident">W</span>: <span class="ident">Write</span>,
         <span class="ident">R</span>: <span class="ident">Read</span>,
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tpl_str</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tpl_str</span> <span class="op">=</span> <span class="ident">String::new</span>();
         <span class="ident">template_source</span>
             .<span class="ident">read_to_string</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">tpl_str</span>)
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">TemplateRenderError</span>::<span class="ident">IOError</span>(<span class="ident">e</span>, <span class="string">&quot;Unnamed template source&quot;</span>.<span class="ident">to_owned</span>()))<span class="question-mark">?</span>;
+            .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">TemplateRenderError::IOError</span>(<span class="ident">e</span>, <span class="string">&quot;Unnamed template source&quot;</span>.<span class="ident">to_owned</span>()))<span class="question-mark">?</span>;
         <span class="self">self</span>.<span class="ident">render_template_to_write</span>(<span class="kw-2">&amp;</span><span class="ident">tpl_str</span>, <span class="ident">data</span>, <span class="ident">writer</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">context</span>::<span class="ident">Context</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">RenderError</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">helpers</span>::<span class="ident">HelperDef</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">output</span>::<span class="ident">Output</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">registry</span>::<span class="ident">Registry</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">render</span>::{<span class="ident">Helper</span>, <span class="ident">RenderContext</span>, <span class="ident">Renderable</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">support</span>::<span class="ident">str</span>::<span class="ident">StringWriter</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">template</span>::<span class="ident">Template</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::context::Context</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error::RenderError</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::helpers::HelperDef</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::output::Output</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::registry::Registry</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::render</span>::{<span class="ident">Helper</span>, <span class="ident">RenderContext</span>, <span class="ident">Renderable</span>};
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::support::str::StringWriter</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::template::Template</span>;
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dir_source&quot;</span>)]</span>
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fs</span>::{<span class="ident">DirBuilder</span>, <span class="ident">File</span>};
+    <span class="kw">use</span> <span class="ident">std::fs</span>::{<span class="ident">DirBuilder</span>, <span class="ident">File</span>};
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dir_source&quot;</span>)]</span>
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Write</span>;
+    <span class="kw">use</span> <span class="ident">std::io::Write</span>;
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dir_source&quot;</span>)]</span>
-    <span class="kw">use</span> <span class="ident">tempfile</span>::<span class="ident">tempdir</span>;
+    <span class="kw">use</span> <span class="ident">tempfile::tempdir</span>;
 
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
     <span class="kw">struct</span> <span class="ident">DummyHelper</span>;
@@ -1573,11 +1573,11 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_registry_operations</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
 
         <span class="macro">assert!</span>(<span class="ident">r</span>.<span class="ident">register_template_string</span>(<span class="string">&quot;index&quot;</span>, <span class="string">&quot;&lt;h1&gt;&lt;/h1&gt;&quot;</span>).<span class="ident">is_ok</span>());
 
-        <span class="kw">let</span> <span class="ident">tpl</span> <span class="op">=</span> <span class="ident">Template</span>::<span class="ident">compile</span>(<span class="string">&quot;&lt;h2&gt;&lt;/h2&gt;&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">tpl</span> <span class="op">=</span> <span class="ident">Template::compile</span>(<span class="string">&quot;&lt;h2&gt;&lt;/h2&gt;&quot;</span>).<span class="ident">unwrap</span>();
         <span class="ident">r</span>.<span class="ident">register_template</span>(<span class="string">&quot;index2&quot;</span>, <span class="ident">tpl</span>);
 
         <span class="macro">assert_eq!</span>(<span class="ident">r</span>.<span class="ident">templates</span>.<span class="ident">len</span>(), <span class="number">2</span>);
@@ -1588,7 +1588,7 @@
         <span class="ident">r</span>.<span class="ident">clear_templates</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">r</span>.<span class="ident">templates</span>.<span class="ident">len</span>(), <span class="number">0</span>);
 
-        <span class="ident">r</span>.<span class="ident">register_helper</span>(<span class="string">&quot;dummy&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">DUMMY_HELPER</span>));
+        <span class="ident">r</span>.<span class="ident">register_helper</span>(<span class="string">&quot;dummy&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">DUMMY_HELPER</span>));
 
         <span class="comment">// built-in helpers plus 1</span>
         <span class="kw">let</span> <span class="ident">num_helpers</span> <span class="op">=</span> <span class="number">7</span>;
@@ -1603,26 +1603,26 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dir_source&quot;</span>)]</span>
     <span class="kw">fn</span> <span class="ident">test_register_templates_directory</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         {
             <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">tempdir</span>().<span class="ident">unwrap</span>();
 
             <span class="macro">assert_eq!</span>(<span class="ident">r</span>.<span class="ident">templates</span>.<span class="ident">len</span>(), <span class="number">0</span>);
 
             <span class="kw">let</span> <span class="ident">file1_path</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;t1.hbs&quot;</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file1</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">file1_path</span>).<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file1</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File::create</span>(<span class="kw-2">&amp;</span><span class="ident">file1_path</span>).<span class="ident">unwrap</span>();
             <span class="macro">writeln!</span>(<span class="ident">file1</span>, <span class="string">&quot;&lt;h1&gt;Hello {{world}}!&lt;/h1&gt;&quot;</span>).<span class="ident">unwrap</span>();
 
             <span class="kw">let</span> <span class="ident">file2_path</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;t2.hbs&quot;</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file2</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">file2_path</span>).<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file2</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File::create</span>(<span class="kw-2">&amp;</span><span class="ident">file2_path</span>).<span class="ident">unwrap</span>();
             <span class="macro">writeln!</span>(<span class="ident">file2</span>, <span class="string">&quot;&lt;h1&gt;Hola {{world}}!&lt;/h1&gt;&quot;</span>).<span class="ident">unwrap</span>();
 
             <span class="kw">let</span> <span class="ident">file3_path</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;t3.hbs&quot;</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file3</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">file3_path</span>).<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file3</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File::create</span>(<span class="kw-2">&amp;</span><span class="ident">file3_path</span>).<span class="ident">unwrap</span>();
             <span class="macro">writeln!</span>(<span class="ident">file3</span>, <span class="string">&quot;&lt;h1&gt;Hallo {{world}}!&lt;/h1&gt;&quot;</span>).<span class="ident">unwrap</span>();
 
             <span class="kw">let</span> <span class="ident">file4_path</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;.t4.hbs&quot;</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file4</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">file4_path</span>).<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file4</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File::create</span>(<span class="kw-2">&amp;</span><span class="ident">file4_path</span>).<span class="ident">unwrap</span>();
             <span class="macro">writeln!</span>(<span class="ident">file4</span>, <span class="string">&quot;&lt;h1&gt;Hallo {{world}}!&lt;/h1&gt;&quot;</span>).<span class="ident">unwrap</span>();
 
             <span class="ident">r</span>.<span class="ident">register_templates_directory</span>(<span class="string">&quot;.hbs&quot;</span>, <span class="ident">dir</span>.<span class="ident">path</span>()).<span class="ident">unwrap</span>();
@@ -1644,15 +1644,15 @@
             <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">tempdir</span>().<span class="ident">unwrap</span>();
 
             <span class="kw">let</span> <span class="ident">file1_path</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;t4.hbs&quot;</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file1</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">file1_path</span>).<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file1</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File::create</span>(<span class="kw-2">&amp;</span><span class="ident">file1_path</span>).<span class="ident">unwrap</span>();
             <span class="macro">writeln!</span>(<span class="ident">file1</span>, <span class="string">&quot;&lt;h1&gt;Hello {{world}}!&lt;/h1&gt;&quot;</span>).<span class="ident">unwrap</span>();
 
             <span class="kw">let</span> <span class="ident">file2_path</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;t5.erb&quot;</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file2</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">file2_path</span>).<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file2</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File::create</span>(<span class="kw-2">&amp;</span><span class="ident">file2_path</span>).<span class="ident">unwrap</span>();
             <span class="macro">writeln!</span>(<span class="ident">file2</span>, <span class="string">&quot;&lt;h1&gt;Hello {{% world %}}!&lt;/h1&gt;&quot;</span>).<span class="ident">unwrap</span>();
 
             <span class="kw">let</span> <span class="ident">file3_path</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;t6.html&quot;</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file3</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">file3_path</span>).<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file3</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File::create</span>(<span class="kw-2">&amp;</span><span class="ident">file3_path</span>).<span class="ident">unwrap</span>();
             <span class="macro">writeln!</span>(<span class="ident">file3</span>, <span class="string">&quot;&lt;h1&gt;Hello world!&lt;/h1&gt;&quot;</span>).<span class="ident">unwrap</span>();
 
             <span class="ident">r</span>.<span class="ident">register_templates_directory</span>(<span class="string">&quot;.hbs&quot;</span>, <span class="ident">dir</span>.<span class="ident">path</span>()).<span class="ident">unwrap</span>();
@@ -1670,24 +1670,24 @@
         {
             <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">tempdir</span>().<span class="ident">unwrap</span>();
 
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">DirBuilder</span>::<span class="ident">new</span>().<span class="ident">create</span>(<span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;french&quot;</span>)).<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">DirBuilder</span>::<span class="ident">new</span>()
+            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">DirBuilder::new</span>().<span class="ident">create</span>(<span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;french&quot;</span>)).<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">DirBuilder::new</span>()
                 .<span class="ident">create</span>(<span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;portugese&quot;</span>))
                 .<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">DirBuilder</span>::<span class="ident">new</span>()
+            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">DirBuilder::new</span>()
                 .<span class="ident">create</span>(<span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;italian&quot;</span>))
                 .<span class="ident">unwrap</span>();
 
             <span class="kw">let</span> <span class="ident">file1_path</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;french/t7.hbs&quot;</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file1</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">file1_path</span>).<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file1</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File::create</span>(<span class="kw-2">&amp;</span><span class="ident">file1_path</span>).<span class="ident">unwrap</span>();
             <span class="macro">writeln!</span>(<span class="ident">file1</span>, <span class="string">&quot;&lt;h1&gt;Bonjour {{world}}!&lt;/h1&gt;&quot;</span>).<span class="ident">unwrap</span>();
 
             <span class="kw">let</span> <span class="ident">file2_path</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;portugese/t8.hbs&quot;</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file2</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">file2_path</span>).<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file2</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File::create</span>(<span class="kw-2">&amp;</span><span class="ident">file2_path</span>).<span class="ident">unwrap</span>();
             <span class="macro">writeln!</span>(<span class="ident">file2</span>, <span class="string">&quot;&lt;h1&gt;Ola {{world}}!&lt;/h1&gt;&quot;</span>).<span class="ident">unwrap</span>();
 
             <span class="kw">let</span> <span class="ident">file3_path</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;italian/t9.hbs&quot;</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file3</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">file3_path</span>).<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file3</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File::create</span>(<span class="kw-2">&amp;</span><span class="ident">file3_path</span>).<span class="ident">unwrap</span>();
             <span class="macro">writeln!</span>(<span class="ident">file3</span>, <span class="string">&quot;&lt;h1&gt;Ciao {{world}}!&lt;/h1&gt;&quot;</span>).<span class="ident">unwrap</span>();
 
             <span class="ident">r</span>.<span class="ident">register_templates_directory</span>(<span class="string">&quot;.hbs&quot;</span>, <span class="ident">dir</span>.<span class="ident">path</span>()).<span class="ident">unwrap</span>();
@@ -1708,13 +1708,13 @@
             <span class="kw">let</span> <span class="ident">dir</span> <span class="op">=</span> <span class="ident">tempdir</span>().<span class="ident">unwrap</span>();
 
             <span class="kw">let</span> <span class="ident">file1_path</span> <span class="op">=</span> <span class="ident">dir</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;t10.hbs&quot;</span>);
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file1</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File</span>::<span class="ident">create</span>(<span class="kw-2">&amp;</span><span class="ident">file1_path</span>).<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file1</span>: <span class="ident">File</span> <span class="op">=</span> <span class="ident">File::create</span>(<span class="kw-2">&amp;</span><span class="ident">file1_path</span>).<span class="ident">unwrap</span>();
             <span class="macro">writeln!</span>(<span class="ident">file1</span>, <span class="string">&quot;&lt;h1&gt;Bonjour {{world}}!&lt;/h1&gt;&quot;</span>).<span class="ident">unwrap</span>();
 
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dir_path</span> <span class="op">=</span> <span class="ident">dir</span>
                 .<span class="ident">path</span>()
                 .<span class="ident">to_string_lossy</span>()
-                .<span class="ident">replace</span>(<span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">MAIN_SEPARATOR</span>, <span class="string">&quot;/&quot;</span>);
+                .<span class="ident">replace</span>(<span class="ident">std::path::MAIN_SEPARATOR</span>, <span class="string">&quot;/&quot;</span>);
             <span class="kw">if</span> <span class="op">!</span><span class="ident">dir_path</span>.<span class="ident">ends_with</span>(<span class="string">&quot;/&quot;</span>) {
                 <span class="ident">dir_path</span>.<span class="ident">push</span>(<span class="string">&#39;/&#39;</span>);
             }
@@ -1730,11 +1730,11 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_render_to_write</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
 
         <span class="macro">assert!</span>(<span class="ident">r</span>.<span class="ident">register_template_string</span>(<span class="string">&quot;index&quot;</span>, <span class="string">&quot;&lt;h1&gt;&lt;/h1&gt;&quot;</span>).<span class="ident">is_ok</span>());
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sw</span> <span class="op">=</span> <span class="ident">StringWriter</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sw</span> <span class="op">=</span> <span class="ident">StringWriter::new</span>();
         {
             <span class="ident">r</span>.<span class="ident">render_to_write</span>(<span class="string">&quot;index&quot;</span>, <span class="kw-2">&amp;</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sw</span>).<span class="ident">ok</span>().<span class="ident">unwrap</span>();
         }
@@ -1744,11 +1744,11 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_escape_fn</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
 
-        <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;\&quot;&lt;&gt;&amp;&quot;</span>);
+        <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">String::from</span>(<span class="string">&quot;\&quot;&lt;&gt;&amp;&quot;</span>);
 
-        <span class="ident">r</span>.<span class="ident">register_template_string</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;{{this}}&quot;</span>))
+        <span class="ident">r</span>.<span class="ident">register_template_string</span>(<span class="string">&quot;test&quot;</span>, <span class="ident">String::from</span>(<span class="string">&quot;{{this}}&quot;</span>))
             .<span class="ident">unwrap</span>();
 
         <span class="macro">assert_eq!</span>(<span class="string">&quot;&amp;quot;&amp;lt;&amp;gt;&amp;amp;&quot;</span>, <span class="ident">r</span>.<span class="ident">render</span>(<span class="string">&quot;test&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">input</span>).<span class="ident">unwrap</span>());
@@ -1764,7 +1764,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_escape</span>() {
-        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">json!</span>({<span class="string">&quot;hello&quot;</span>: <span class="string">&quot;world&quot;</span>});
 
         <span class="macro">assert_eq!</span>(
@@ -1782,7 +1782,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_strict_mode</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">r</span>.<span class="ident">strict_mode</span>());
 
         <span class="ident">r</span>.<span class="ident">set_strict_mode</span>(<span class="bool-val">true</span>);
@@ -1823,7 +1823,7 @@
         );
     }
 
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">json</span>::<span class="ident">value</span>::<span class="ident">ScopedJson</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::json::value::ScopedJson</span>;
     <span class="kw">struct</span> <span class="ident">GenMissingHelper</span>;
     <span class="kw">impl</span> <span class="ident">HelperDef</span> <span class="kw">for</span> <span class="ident">GenMissingHelper</span> {
         <span class="kw">fn</span> <span class="ident">call_inner</span><span class="op">&lt;</span><span class="lifetime">&#39;reg</span>: <span class="lifetime">&#39;rc</span>, <span class="lifetime">&#39;rc</span><span class="op">&gt;</span>(
@@ -1833,18 +1833,18 @@
             <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;rc</span> <span class="ident">Context</span>,
             <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">RenderContext</span><span class="op">&lt;</span><span class="lifetime">&#39;reg</span>, <span class="lifetime">&#39;rc</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ScopedJson</span><span class="op">&lt;</span><span class="lifetime">&#39;reg</span>, <span class="lifetime">&#39;rc</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">RenderError</span><span class="op">&gt;</span> {
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">ScopedJson</span>::<span class="ident">Missing</span>))
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">ScopedJson::Missing</span>))
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_strict_mode_in_helper</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">r</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="ident">r</span>.<span class="ident">set_strict_mode</span>(<span class="bool-val">true</span>);
 
         <span class="ident">r</span>.<span class="ident">register_helper</span>(
             <span class="string">&quot;check_missing&quot;</span>,
-            <span class="ident">Box</span>::<span class="ident">new</span>(
+            <span class="ident">Box::new</span>(
                 <span class="op">|</span><span class="ident">h</span>: <span class="kw-2">&amp;</span><span class="ident">Helper</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
                  <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">Registry</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>,
                  <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">Context</span>,
@@ -1858,7 +1858,7 @@
             ),
         );
 
-        <span class="ident">r</span>.<span class="ident">register_helper</span>(<span class="string">&quot;generate_missing_value&quot;</span>, <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">GenMissingHelper</span>));
+        <span class="ident">r</span>.<span class="ident">register_helper</span>(<span class="string">&quot;generate_missing_value&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">GenMissingHelper</span>));
 
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">json!</span>({
             <span class="string">&quot;the_key_we_have&quot;</span>: <span class="string">&quot;the_value_we_have&quot;</span>
@@ -1882,7 +1882,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_html_expression</span>() {
-        <span class="kw">let</span> <span class="ident">reg</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="ident">reg</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="macro">assert_eq!</span>(
             <span class="ident">reg</span>.<span class="ident">render_template</span>(<span class="string">&quot;{{{ a }}}&quot;</span>, <span class="kw-2">&amp;</span><span class="macro">json!</span>({<span class="string">&quot;a&quot;</span>: <span class="string">&quot;&lt;b&gt;bold&lt;/b&gt;&quot;</span>}))
                 .<span class="ident">unwrap</span>(),
@@ -1897,7 +1897,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_render_context</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reg</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reg</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
 
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">json!</span>([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);
 
@@ -1905,7 +1905,7 @@
             <span class="string">&quot;0123&quot;</span>,
             <span class="ident">reg</span>.<span class="ident">render_template_with_context</span>(
                 <span class="string">&quot;{{#each this}}{{this}}{{/each}}&quot;</span>,
-                <span class="kw-2">&amp;</span><span class="ident">Context</span>::<span class="ident">wraps</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="ident">unwrap</span>()
+                <span class="kw-2">&amp;</span><span class="ident">Context::wraps</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="ident">unwrap</span>()
             )
             .<span class="ident">unwrap</span>()
         );
@@ -1914,15 +1914,15 @@
             .<span class="ident">unwrap</span>();
         <span class="macro">assert_eq!</span>(
             <span class="string">&quot;0123&quot;</span>,
-            <span class="ident">reg</span>.<span class="ident">render_with_context</span>(<span class="string">&quot;t0&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">Context</span>::<span class="ident">wraps</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="ident">unwrap</span>())
+            <span class="ident">reg</span>.<span class="ident">render_with_context</span>(<span class="string">&quot;t0&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">Context::wraps</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>).<span class="ident">unwrap</span>())
                 .<span class="ident">unwrap</span>()
         );
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_keys_starts_with_null</span>() {
-        <span class="ident">env_logger</span>::<span class="ident">init</span>();
-        <span class="kw">let</span> <span class="ident">reg</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="ident">env_logger::init</span>();
+        <span class="kw">let</span> <span class="ident">reg</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">json!</span>({
             <span class="string">&quot;optional&quot;</span>: <span class="bool-val">true</span>,
             <span class="string">&quot;is_null&quot;</span>: <span class="bool-val">true</span>,

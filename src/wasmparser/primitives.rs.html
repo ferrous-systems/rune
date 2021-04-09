@@ -825,9 +825,9 @@
  * limitations under the License.
  */</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">result</span>;
+<span class="kw">use</span> <span class="ident">std::error::Error</span>;
+<span class="kw">use</span> <span class="ident">std::fmt</span>;
+<span class="kw">use</span> <span class="ident">std::result</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BinaryReaderError</span> {
@@ -844,12 +844,12 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">needed_hint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">pub</span> <span class="kw">type</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span> <span class="op">=</span> <span class="ident">BinaryReaderError</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">result</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span> <span class="op">=</span> <span class="ident">BinaryReaderError</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">result::Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">E</span><span class="op">&gt;</span>;
 
 <span class="kw">impl</span> <span class="ident">Error</span> <span class="kw">for</span> <span class="ident">BinaryReaderError</span> {}
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">BinaryReaderError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">BinaryReaderError</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(
             <span class="ident">f</span>,
             <span class="string">&quot;{} (at offset {})&quot;</span>,
@@ -862,7 +862,7 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">message</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">offset</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">message</span>.<span class="ident">into</span>();
         <span class="ident">BinaryReaderError</span> {
-            <span class="ident">inner</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">BinaryReaderErrorInner</span> {
+            <span class="ident">inner</span>: <span class="ident">Box::new</span>(<span class="ident">BinaryReaderErrorInner</span> {
                 <span class="ident">message</span>,
                 <span class="ident">offset</span>,
                 <span class="ident">needed_hint</span>: <span class="prelude-val">None</span>,
@@ -872,7 +872,7 @@
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">eof</span>(<span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">needed_hint</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">BinaryReaderError</span> {
-            <span class="ident">inner</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">BinaryReaderErrorInner</span> {
+            <span class="ident">inner</span>: <span class="ident">Box::new</span>(<span class="ident">BinaryReaderErrorInner</span> {
                 <span class="ident">message</span>: <span class="string">&quot;Unexpected EOF&quot;</span>.<span class="ident">to_string</span>(),
                 <span class="ident">offset</span>,
                 <span class="ident">needed_hint</span>: <span class="prelude-val">Some</span>(<span class="ident">needed_hint</span>),
@@ -991,7 +991,7 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ModuleType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="ident">imports</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="kw">crate</span>::<span class="ident">Import</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>]<span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">imports</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="kw">crate</span><span class="ident">::Import</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>]<span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">exports</span>: <span class="ident">Box</span><span class="op">&lt;</span>[<span class="ident">ExportType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>]<span class="op">&gt;</span>,
 }
 
@@ -1033,8 +1033,8 @@
 <span class="kw">impl</span> <span class="ident">MemoryType</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">index_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Type</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">MemoryType</span>::<span class="ident">M32</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type</span>::<span class="ident">I32</span>,
-            <span class="ident">MemoryType</span>::<span class="ident">M64</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type</span>::<span class="ident">I64</span>,
+            <span class="ident">MemoryType::M32</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type::I32</span>,
+            <span class="ident">MemoryType::M64</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Type::I64</span>,
         }
     }
 }
@@ -1096,7 +1096,7 @@
 <span class="doccomment">/// A br_table entries representation.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BrTable</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">reader</span>: <span class="kw">crate</span>::<span class="ident">BinaryReader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">reader</span>: <span class="kw">crate</span><span class="ident">::BinaryReader</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">cnt</span>: <span class="ident">usize</span>,
 }
 

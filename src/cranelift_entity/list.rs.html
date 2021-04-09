@@ -710,11 +710,11 @@
 <span id="707">707</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Small lists of entity references.</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">packed_option</span>::<span class="ident">ReservedValue</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">EntityRef</span>;
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::packed_option::ReservedValue</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::EntityRef</span>;
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
+<span class="kw">use</span> <span class="ident">core::marker::PhantomData</span>;
+<span class="kw">use</span> <span class="ident">core::mem</span>;
 
 <span class="doccomment">/// A small list of entity references allocated from a pool.</span>
 <span class="doccomment">///</span>
@@ -821,8 +821,8 @@
     <span class="doccomment">/// Create a new list pool.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">data</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
-            <span class="ident">free</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
+            <span class="ident">data</span>: <span class="ident">Vec::new</span>(),
+            <span class="ident">free</span>: <span class="ident">Vec::new</span>(),
         }
     }
 
@@ -869,7 +869,7 @@
                 <span class="comment">// Nothing on the free list. Allocate more memory.</span>
                 <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">data</span>.<span class="ident">len</span>();
                 <span class="self">self</span>.<span class="ident">data</span>
-                    .<span class="ident">resize</span>(<span class="ident">offset</span> <span class="op">+</span> <span class="ident">sclass_size</span>(<span class="ident">sclass</span>), <span class="ident">T</span>::<span class="ident">reserved_value</span>());
+                    .<span class="ident">resize</span>(<span class="ident">offset</span> <span class="op">+</span> <span class="ident">sclass_size</span>(<span class="ident">sclass</span>), <span class="ident">T::reserved_value</span>());
                 <span class="ident">offset</span>
             }
         }
@@ -887,9 +887,9 @@
         }
 
         <span class="comment">// Make sure the length field is cleared.</span>
-        <span class="self">self</span>.<span class="ident">data</span>[<span class="ident">block</span>] <span class="op">=</span> <span class="ident">T</span>::<span class="ident">new</span>(<span class="number">0</span>);
+        <span class="self">self</span>.<span class="ident">data</span>[<span class="ident">block</span>] <span class="op">=</span> <span class="ident">T::new</span>(<span class="number">0</span>);
         <span class="comment">// Insert the block on the free list which is a single linked list.</span>
-        <span class="self">self</span>.<span class="ident">data</span>[<span class="ident">block</span> <span class="op">+</span> <span class="number">1</span>] <span class="op">=</span> <span class="ident">T</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">free</span>[<span class="ident">sclass</span>]);
+        <span class="self">self</span>.<span class="ident">data</span>[<span class="ident">block</span> <span class="op">+</span> <span class="number">1</span>] <span class="op">=</span> <span class="ident">T::new</span>(<span class="self">self</span>.<span class="ident">free</span>[<span class="ident">sclass</span>]);
         <span class="self">self</span>.<span class="ident">free</span>[<span class="ident">sclass</span>] <span class="op">=</span> <span class="ident">block</span> <span class="op">+</span> <span class="number">1</span>
     }
 
@@ -934,18 +934,18 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">EntityRef</span> <span class="op">+</span> <span class="ident">ReservedValue</span><span class="op">&gt;</span> <span class="ident">EntityList</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Create a new empty list.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Default</span>::<span class="ident">default</span>()
+        <span class="ident">Default::default</span>()
     }
 
     <span class="doccomment">/// Create a new list with the contents initialized from a slice.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_slice</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>], <span class="ident">pool</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ListPool</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">slice</span>.<span class="ident">len</span>();
         <span class="kw">if</span> <span class="ident">len</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="kw">return</span> <span class="self">Self</span>::<span class="ident">new</span>();
+            <span class="kw">return</span> <span class="self">Self</span><span class="ident">::new</span>();
         }
 
         <span class="kw">let</span> <span class="ident">block</span> <span class="op">=</span> <span class="ident">pool</span>.<span class="ident">alloc</span>(<span class="ident">sclass_for_length</span>(<span class="ident">len</span>));
-        <span class="ident">pool</span>.<span class="ident">data</span>[<span class="ident">block</span>] <span class="op">=</span> <span class="ident">T</span>::<span class="ident">new</span>(<span class="ident">len</span>);
+        <span class="ident">pool</span>.<span class="ident">data</span>[<span class="ident">block</span>] <span class="op">=</span> <span class="ident">T::new</span>(<span class="ident">len</span>);
         <span class="ident">pool</span>.<span class="ident">data</span>[<span class="ident">block</span> <span class="op">+</span> <span class="number">1</span>..<span class="op">=</span><span class="ident">block</span> <span class="op">+</span> <span class="ident">len</span>].<span class="ident">copy_from_slice</span>(<span class="ident">slice</span>);
 
         <span class="self">Self</span> {
@@ -1027,7 +1027,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This is the equivalent of `Option::take()`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">take</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">mem</span>::<span class="ident">replace</span>(<span class="self">self</span>, <span class="ident">Default</span>::<span class="ident">default</span>())
+        <span class="ident">mem::replace</span>(<span class="self">self</span>, <span class="ident">Default::default</span>())
     }
 
     <span class="doccomment">/// Appends an element to the back of the list.</span>
@@ -1039,7 +1039,7 @@
                 <span class="comment">// This is an empty list. Allocate a block and set length=1.</span>
                 <span class="macro">debug_assert_eq!</span>(<span class="ident">idx</span>, <span class="number">0</span>, <span class="string">&quot;Invalid pool&quot;</span>);
                 <span class="kw">let</span> <span class="ident">block</span> <span class="op">=</span> <span class="ident">pool</span>.<span class="ident">alloc</span>(<span class="ident">sclass_for_length</span>(<span class="number">1</span>));
-                <span class="ident">pool</span>.<span class="ident">data</span>[<span class="ident">block</span>] <span class="op">=</span> <span class="ident">T</span>::<span class="ident">new</span>(<span class="number">1</span>);
+                <span class="ident">pool</span>.<span class="ident">data</span>[<span class="ident">block</span>] <span class="op">=</span> <span class="ident">T::new</span>(<span class="number">1</span>);
                 <span class="ident">pool</span>.<span class="ident">data</span>[<span class="ident">block</span> <span class="op">+</span> <span class="number">1</span>] <span class="op">=</span> <span class="ident">element</span>;
                 <span class="self">self</span>.<span class="ident">index</span> <span class="op">=</span> (<span class="ident">block</span> <span class="op">+</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u32</span>;
                 <span class="number">0</span>
@@ -1057,7 +1057,7 @@
                     <span class="ident">block</span> <span class="op">=</span> <span class="ident">idx</span> <span class="op">-</span> <span class="number">1</span>;
                 }
                 <span class="ident">pool</span>.<span class="ident">data</span>[<span class="ident">block</span> <span class="op">+</span> <span class="ident">new_len</span>] <span class="op">=</span> <span class="ident">element</span>;
-                <span class="ident">pool</span>.<span class="ident">data</span>[<span class="ident">block</span>] <span class="op">=</span> <span class="ident">T</span>::<span class="ident">new</span>(<span class="ident">new_len</span>);
+                <span class="ident">pool</span>.<span class="ident">data</span>[<span class="ident">block</span>] <span class="op">=</span> <span class="ident">T::new</span>(<span class="ident">new_len</span>);
                 <span class="ident">len</span>
             }
         }
@@ -1094,7 +1094,7 @@
                 }
             }
         }
-        <span class="ident">pool</span>.<span class="ident">data</span>[<span class="ident">block</span>] <span class="op">=</span> <span class="ident">T</span>::<span class="ident">new</span>(<span class="ident">new_len</span>);
+        <span class="ident">pool</span>.<span class="ident">data</span>[<span class="ident">block</span>] <span class="op">=</span> <span class="ident">T::new</span>(<span class="ident">new_len</span>);
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">pool</span>.<span class="ident">data</span>[<span class="ident">block</span> <span class="op">+</span> <span class="number">1</span>..<span class="ident">block</span> <span class="op">+</span> <span class="number">1</span> <span class="op">+</span> <span class="ident">new_len</span>]
     }
 
@@ -1157,7 +1157,7 @@
         }
 
         <span class="comment">// Finally adjust the length.</span>
-        <span class="ident">pool</span>.<span class="ident">data</span>[<span class="ident">block</span>] <span class="op">=</span> <span class="ident">T</span>::<span class="ident">new</span>(<span class="ident">len</span> <span class="op">-</span> <span class="number">1</span>);
+        <span class="ident">pool</span>.<span class="ident">data</span>[<span class="ident">block</span>] <span class="op">=</span> <span class="ident">T::new</span>(<span class="ident">len</span> <span class="op">-</span> <span class="number">1</span>);
     }
 
     <span class="doccomment">/// Removes the element at `index` in constant time by switching it with the last element of</span>
@@ -1195,7 +1195,7 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">sclass_for_length</span>, <span class="ident">sclass_size</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">EntityRef</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::EntityRef</span>;
 
     <span class="doccomment">/// An opaque reference to an instruction in a function.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>)]</span>
@@ -1220,7 +1220,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">block_allocator</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pool</span> <span class="op">=</span> <span class="ident">ListPool</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pool</span> <span class="op">=</span> <span class="ident">ListPool</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span><span class="ident">::new</span>();
         <span class="kw">let</span> <span class="ident">b1</span> <span class="op">=</span> <span class="ident">pool</span>.<span class="ident">alloc</span>(<span class="number">0</span>);
         <span class="kw">let</span> <span class="ident">b2</span> <span class="op">=</span> <span class="ident">pool</span>.<span class="ident">alloc</span>(<span class="number">1</span>);
         <span class="kw">let</span> <span class="ident">b3</span> <span class="op">=</span> <span class="ident">pool</span>.<span class="ident">alloc</span>(<span class="number">0</span>);
@@ -1246,8 +1246,8 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">empty_list</span>() {
-        <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ListPool</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">EntityList</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ListPool</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span><span class="ident">::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">EntityList</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span><span class="ident">::default</span>();
         {
             <span class="kw">let</span> <span class="ident">ilist</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">list</span>;
             <span class="macro">assert!</span>(<span class="ident">ilist</span>.<span class="ident">is_empty</span>());
@@ -1269,16 +1269,16 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">from_slice</span>() {
-        <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ListPool</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ListPool</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span><span class="ident">::new</span>();
 
-        <span class="kw">let</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">EntityList</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span>::<span class="ident">from_slice</span>(<span class="kw-2">&amp;</span>[<span class="ident">Inst</span>(<span class="number">0</span>), <span class="ident">Inst</span>(<span class="number">1</span>)], <span class="ident">pool</span>);
+        <span class="kw">let</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">EntityList</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span><span class="ident">::from_slice</span>(<span class="kw-2">&amp;</span>[<span class="ident">Inst</span>(<span class="number">0</span>), <span class="ident">Inst</span>(<span class="number">1</span>)], <span class="ident">pool</span>);
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">list</span>.<span class="ident">is_empty</span>());
         <span class="macro">assert_eq!</span>(<span class="ident">list</span>.<span class="ident">len</span>(<span class="ident">pool</span>), <span class="number">2</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">list</span>.<span class="ident">as_slice</span>(<span class="ident">pool</span>), <span class="kw-2">&amp;</span>[<span class="ident">Inst</span>(<span class="number">0</span>), <span class="ident">Inst</span>(<span class="number">1</span>)]);
         <span class="macro">assert_eq!</span>(<span class="ident">list</span>.<span class="ident">get</span>(<span class="number">0</span>, <span class="ident">pool</span>), <span class="prelude-val">Some</span>(<span class="ident">Inst</span>(<span class="number">0</span>)));
         <span class="macro">assert_eq!</span>(<span class="ident">list</span>.<span class="ident">get</span>(<span class="number">100</span>, <span class="ident">pool</span>), <span class="prelude-val">None</span>);
 
-        <span class="kw">let</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">EntityList</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span>::<span class="ident">from_slice</span>(<span class="kw-2">&amp;</span>[], <span class="ident">pool</span>);
+        <span class="kw">let</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">EntityList</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span><span class="ident">::from_slice</span>(<span class="kw-2">&amp;</span>[], <span class="ident">pool</span>);
         <span class="macro">assert!</span>(<span class="ident">list</span>.<span class="ident">is_empty</span>());
         <span class="macro">assert_eq!</span>(<span class="ident">list</span>.<span class="ident">len</span>(<span class="ident">pool</span>), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">list</span>.<span class="ident">as_slice</span>(<span class="ident">pool</span>), <span class="kw-2">&amp;</span>[]);
@@ -1288,13 +1288,13 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">push</span>() {
-        <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ListPool</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">EntityList</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ListPool</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span><span class="ident">::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">EntityList</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span><span class="ident">::default</span>();
 
-        <span class="kw">let</span> <span class="ident">i1</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">new</span>(<span class="number">1</span>);
-        <span class="kw">let</span> <span class="ident">i2</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">new</span>(<span class="number">2</span>);
-        <span class="kw">let</span> <span class="ident">i3</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">new</span>(<span class="number">3</span>);
-        <span class="kw">let</span> <span class="ident">i4</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">new</span>(<span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">i1</span> <span class="op">=</span> <span class="ident">Inst::new</span>(<span class="number">1</span>);
+        <span class="kw">let</span> <span class="ident">i2</span> <span class="op">=</span> <span class="ident">Inst::new</span>(<span class="number">2</span>);
+        <span class="kw">let</span> <span class="ident">i3</span> <span class="op">=</span> <span class="ident">Inst::new</span>(<span class="number">3</span>);
+        <span class="kw">let</span> <span class="ident">i4</span> <span class="op">=</span> <span class="ident">Inst::new</span>(<span class="number">4</span>);
 
         <span class="macro">assert_eq!</span>(<span class="ident">list</span>.<span class="ident">push</span>(<span class="ident">i1</span>, <span class="ident">pool</span>), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">list</span>.<span class="ident">len</span>(<span class="ident">pool</span>), <span class="number">1</span>);
@@ -1345,13 +1345,13 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">insert_remove</span>() {
-        <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ListPool</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">EntityList</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ListPool</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span><span class="ident">::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">EntityList</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span><span class="ident">::default</span>();
 
-        <span class="kw">let</span> <span class="ident">i1</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">new</span>(<span class="number">1</span>);
-        <span class="kw">let</span> <span class="ident">i2</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">new</span>(<span class="number">2</span>);
-        <span class="kw">let</span> <span class="ident">i3</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">new</span>(<span class="number">3</span>);
-        <span class="kw">let</span> <span class="ident">i4</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">new</span>(<span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">i1</span> <span class="op">=</span> <span class="ident">Inst::new</span>(<span class="number">1</span>);
+        <span class="kw">let</span> <span class="ident">i2</span> <span class="op">=</span> <span class="ident">Inst::new</span>(<span class="number">2</span>);
+        <span class="kw">let</span> <span class="ident">i3</span> <span class="op">=</span> <span class="ident">Inst::new</span>(<span class="number">3</span>);
+        <span class="kw">let</span> <span class="ident">i4</span> <span class="op">=</span> <span class="ident">Inst::new</span>(<span class="number">4</span>);
 
         <span class="ident">list</span>.<span class="ident">insert</span>(<span class="number">0</span>, <span class="ident">i4</span>, <span class="ident">pool</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">list</span>.<span class="ident">as_slice</span>(<span class="ident">pool</span>), <span class="kw-2">&amp;</span>[<span class="ident">i4</span>]);
@@ -1381,13 +1381,13 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">growing</span>() {
-        <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ListPool</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">EntityList</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ListPool</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span><span class="ident">::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">list</span> <span class="op">=</span> <span class="ident">EntityList</span>::<span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span><span class="ident">::default</span>();
 
-        <span class="kw">let</span> <span class="ident">i1</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">new</span>(<span class="number">1</span>);
-        <span class="kw">let</span> <span class="ident">i2</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">new</span>(<span class="number">2</span>);
-        <span class="kw">let</span> <span class="ident">i3</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">new</span>(<span class="number">3</span>);
-        <span class="kw">let</span> <span class="ident">i4</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">new</span>(<span class="number">4</span>);
+        <span class="kw">let</span> <span class="ident">i1</span> <span class="op">=</span> <span class="ident">Inst::new</span>(<span class="number">1</span>);
+        <span class="kw">let</span> <span class="ident">i2</span> <span class="op">=</span> <span class="ident">Inst::new</span>(<span class="number">2</span>);
+        <span class="kw">let</span> <span class="ident">i3</span> <span class="op">=</span> <span class="ident">Inst::new</span>(<span class="number">3</span>);
+        <span class="kw">let</span> <span class="ident">i4</span> <span class="op">=</span> <span class="ident">Inst::new</span>(<span class="number">4</span>);
 
         <span class="comment">// This is not supposed to change the list.</span>
         <span class="ident">list</span>.<span class="ident">grow_at</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="ident">pool</span>);

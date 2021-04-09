@@ -224,8 +224,8 @@
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">std</span>;
 
-<span class="kw">use</span> <span class="ident">runic_types</span>::<span class="ident">Transform</span>;
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">collections</span>::<span class="ident">VecDeque</span>;
+<span class="kw">use</span> <span class="ident">runic_types::Transform</span>;
+<span class="kw">use</span> <span class="ident">alloc::collections::VecDeque</span>;
 
 <span class="doccomment">/// Person Detection Aggregator takes a list of confidences and returns the</span>
 <span class="doccomment">/// associated label of the most confident person_detection so it identifies</span>
@@ -247,7 +247,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">PersonDetectionAgg</span> {
             <span class="ident">labels</span>: [<span class="string">&quot;&quot;</span>; <span class="ident">N</span>],
-            <span class="ident">history</span>: <span class="ident">VecDeque</span>::<span class="ident">new</span>(),
+            <span class="ident">history</span>: <span class="ident">VecDeque::new</span>(),
             <span class="ident">max_capacity</span>: <span class="ident">MAX_CAPACITY</span>,
             <span class="ident">unknown</span>: <span class="ident">UNKNOWN_LABEL</span>,
             <span class="ident">throttle_interval</span>: <span class="ident">DEFAULT_THROTTLE_INTERVAL</span>,
@@ -306,7 +306,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Transform</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="ident">N</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PersonDetectionAgg</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>;
 
-    <span class="kw">fn</span> <span class="ident">transform</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">input</span>: [<span class="ident">u8</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">transform</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">input</span>: [<span class="ident">u8</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
         <span class="comment">// This is a rust port of https://github.com/andriyadi/MagicWand-TFLite-ESP32/blob/00fd15f0861b27437236689ceb642a05cf5fb028/src/gesture_predictor.cpp#L35-L101</span>
 
         <span class="self">self</span>.<span class="ident">add_history</span>(<span class="ident">input</span>);
@@ -325,18 +325,18 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">PersonDetectionAgg</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">PersonDetectionAgg</span>::<span class="ident">new</span>() }
+    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">PersonDetectionAgg::new</span>() }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">runic_types</span>::<span class="ident">Transform</span>;
+    <span class="kw">use</span> <span class="ident">runic_types::Transform</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">it_works</span>() {
         <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> [<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>];
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pb</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg</span>::<span class="ident">new</span>()
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pb</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg::new</span>()
             .<span class="ident">with_labels</span>([<span class="string">&quot;unknown&quot;</span>, <span class="string">&quot;silence&quot;</span>, <span class="string">&quot;yes&quot;</span>, <span class="string">&quot;no&quot;</span>]);
 
         <span class="kw">let</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">pb</span>.<span class="ident">transform</span>(<span class="ident">input</span>);
@@ -346,7 +346,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">add_one_in_to_history</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ges</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ges</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg::new</span>();
         <span class="macro">assert!</span>(<span class="ident">ges</span>.<span class="ident">history</span>.<span class="ident">is_empty</span>());
 
         <span class="ident">ges</span>.<span class="ident">add_history</span>([<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>]);
@@ -354,7 +354,7 @@
     }
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">history_buf_is_less_than_1024</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ges</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ges</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg::new</span>();
 
         <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">MAX_CAPACITY</span> {
             <span class="ident">ges</span>.<span class="ident">add_history</span>([<span class="number">2</span>])
@@ -367,7 +367,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">empty_history_has_no_most_likely_ges</span>() {
-        <span class="kw">let</span> <span class="ident">ges</span>: <span class="ident">PersonDetectionAgg</span><span class="op">&lt;</span><span class="number">42</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="ident">ges</span>: <span class="ident">PersonDetectionAgg</span><span class="op">&lt;</span><span class="number">42</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg::new</span>();
 
         <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">ges</span>.<span class="ident">most_likely_person_detection</span>();
 
@@ -376,7 +376,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">previous_most_likely_ges</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ges</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ges</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg::new</span>();
         <span class="ident">ges</span>.<span class="ident">add_history</span>([<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>]);
 
         <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">ges</span>.<span class="ident">most_likely_person_detection</span>();
@@ -386,7 +386,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">labels_for_valid_index</span>() {
-        <span class="kw">let</span> <span class="ident">ges</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg</span>::<span class="ident">new</span>()
+        <span class="kw">let</span> <span class="ident">ges</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg::new</span>()
             .<span class="ident">with_labels</span>([<span class="string">&quot;unknown&quot;</span>, <span class="string">&quot;silence&quot;</span>, <span class="string">&quot;yes&quot;</span>, <span class="string">&quot;no&quot;</span>]);
 
         <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">ges</span>.<span class="ident">label_for_index</span>(<span class="prelude-val">Some</span>(<span class="number">2</span>));
@@ -395,7 +395,7 @@
     }
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">labels_for_out_of_bounds_index</span>() {
-        <span class="kw">let</span> <span class="ident">ges</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg</span>::<span class="ident">new</span>()
+        <span class="kw">let</span> <span class="ident">ges</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg::new</span>()
             .<span class="ident">with_labels</span>([<span class="string">&quot;unknown&quot;</span>, <span class="string">&quot;silence&quot;</span>, <span class="string">&quot;yes&quot;</span>, <span class="string">&quot;no&quot;</span>]);
 
         <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">ges</span>.<span class="ident">label_for_index</span>(<span class="prelude-val">Some</span>(<span class="number">5</span>));
@@ -405,7 +405,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">labels_for_no_index</span>() {
-        <span class="kw">let</span> <span class="ident">ges</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg</span>::<span class="ident">new</span>()
+        <span class="kw">let</span> <span class="ident">ges</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg::new</span>()
             .<span class="ident">with_labels</span>([<span class="string">&quot;unknown&quot;</span>, <span class="string">&quot;silence&quot;</span>, <span class="string">&quot;yes&quot;</span>, <span class="string">&quot;no&quot;</span>]);
 
         <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">ges</span>.<span class="ident">label_for_index</span>(<span class="prelude-val">None</span>);
@@ -415,7 +415,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">throttling</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ges</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg</span>::<span class="ident">new</span>()
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ges</span> <span class="op">=</span> <span class="ident">PersonDetectionAgg::new</span>()
             .<span class="ident">with_labels</span>([<span class="string">&quot;unknown&quot;</span>, <span class="string">&quot;silence&quot;</span>, <span class="string">&quot;yes&quot;</span>, <span class="string">&quot;no&quot;</span>])
             .<span class="ident">with_throttle_interval</span>(<span class="number">3</span>);
 

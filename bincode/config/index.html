@@ -6,8 +6,8 @@ crate. This means that if you need to customize the behavior of <code>bincode</c
 instance of the <code>DefaultOptions</code> struct:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">bincode</span>::<span class="ident">Options</span>;
-<span class="kw">let</span> <span class="ident">my_options</span> <span class="op">=</span> <span class="ident">bincode</span>::<span class="ident">DefaultOptions</span>::<span class="ident">new</span>();</pre></div>
+<span class="kw">use</span> <span class="ident">bincode::Options</span>;
+<span class="kw">let</span> <span class="ident">my_options</span> <span class="op">=</span> <span class="ident">bincode::DefaultOptions::new</span>();</pre></div>
 <h1 id="options-struct-vs-bincode-functions" class="section-header"><a href="#options-struct-vs-bincode-functions">Options Struct vs bincode functions</a></h1>
 <p>Due to historical reasons, the default options used by the <code>serialize()</code> and <code>deserialize()</code>
 family of functions are different than the default options created by the <code>DefaultOptions</code> struct:</p>
@@ -19,8 +19,8 @@ family of functions are different than the default options created by the <code>
 settings as the functions, you should adjust the <code>DefaultOptions</code> struct like so:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">bincode</span>::<span class="ident">Options</span>;
-<span class="kw">let</span> <span class="ident">my_options</span> <span class="op">=</span> <span class="ident">bincode</span>::<span class="ident">DefaultOptions</span>::<span class="ident">new</span>()
+<span class="kw">use</span> <span class="ident">bincode::Options</span>;
+<span class="kw">let</span> <span class="ident">my_options</span> <span class="op">=</span> <span class="ident">bincode::DefaultOptions::new</span>()
     .<span class="ident">with_fixint_encoding</span>()
     .<span class="ident">allow_trailing_bytes</span>();</pre></div>
 </div><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>

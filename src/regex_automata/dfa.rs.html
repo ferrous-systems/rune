@@ -365,7 +365,7 @@
 <span id="362">362</span>
 <span id="363">363</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">state_id</span>::<span class="ident">StateID</span>;
+<span class="kw">use</span> <span class="ident">state_id::StateID</span>;
 
 <span class="doccomment">/// A trait describing the interface of a deterministic finite automaton (DFA).</span>
 <span class="doccomment">///</span>
@@ -390,16 +390,16 @@
     <span class="kw">type</span> <span class="ident">ID</span>: <span class="ident">StateID</span>;
 
     <span class="doccomment">/// Return the identifier of this DFA&#39;s start state.</span>
-    <span class="kw">fn</span> <span class="ident">start_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">ID</span>;
+    <span class="kw">fn</span> <span class="ident">start_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::ID</span>;
 
     <span class="doccomment">/// Returns true if and only if the given identifier corresponds to a match</span>
     <span class="doccomment">/// state.</span>
-    <span class="kw">fn</span> <span class="ident">is_match_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="self">Self</span>::<span class="ident">ID</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
+    <span class="kw">fn</span> <span class="ident">is_match_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="self">Self</span><span class="ident">::ID</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
 
     <span class="doccomment">/// Returns true if and only if the given identifier corresponds to a dead</span>
     <span class="doccomment">/// state. When a DFA enters a dead state, it is impossible to leave and</span>
     <span class="doccomment">/// thus can never lead to a match.</span>
-    <span class="kw">fn</span> <span class="ident">is_dead_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="self">Self</span>::<span class="ident">ID</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
+    <span class="kw">fn</span> <span class="ident">is_dead_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="self">Self</span><span class="ident">::ID</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
 
     <span class="doccomment">/// Returns true if and only if the given identifier corresponds to either</span>
     <span class="doccomment">/// a dead state or a match state, such that one of `is_match_state(id)`</span>
@@ -409,7 +409,7 @@
     <span class="doccomment">/// to save a branch in the core matching loop. Nevertheless,</span>
     <span class="doccomment">/// `is_match_state(id) || is_dead_state(id)` is always a valid</span>
     <span class="doccomment">/// implementation.</span>
-    <span class="kw">fn</span> <span class="ident">is_match_or_dead_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="self">Self</span>::<span class="ident">ID</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
+    <span class="kw">fn</span> <span class="ident">is_match_or_dead_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="self">Self</span><span class="ident">::ID</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
 
     <span class="doccomment">/// Returns true if and only if this DFA is anchored.</span>
     <span class="doccomment">///</span>
@@ -420,7 +420,7 @@
     <span class="doccomment">/// Given the current state that this DFA is in and the next input byte,</span>
     <span class="doccomment">/// this method returns the identifier of the next state. The identifier</span>
     <span class="doccomment">/// returned is always valid, but it may correspond to a dead state.</span>
-    <span class="kw">fn</span> <span class="ident">next_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">current</span>: <span class="self">Self</span>::<span class="ident">ID</span>, <span class="ident">input</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">ID</span>;
+    <span class="kw">fn</span> <span class="ident">next_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">current</span>: <span class="self">Self</span><span class="ident">::ID</span>, <span class="ident">input</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::ID</span>;
 
     <span class="doccomment">/// Like `next_state`, but its implementation may look up the next state</span>
     <span class="doccomment">/// without memory safety checks such as bounds checks. As such, callers</span>
@@ -429,9 +429,9 @@
     <span class="doccomment">/// for all valid state identifiers and for all possible `u8` values.</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">next_state_unchecked</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">current</span>: <span class="self">Self</span>::<span class="ident">ID</span>,
+        <span class="ident">current</span>: <span class="self">Self</span><span class="ident">::ID</span>,
         <span class="ident">input</span>: <span class="ident">u8</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">ID</span>;
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::ID</span>;
 
     <span class="doccomment">/// Returns true if and only if the given bytes match this DFA.</span>
     <span class="doccomment">///</span>
@@ -687,25 +687,25 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">DFA</span><span class="op">&gt;</span> <span class="ident">DFA</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span> {
-    <span class="kw">type</span> <span class="ident">ID</span> <span class="op">=</span> <span class="ident">T</span>::<span class="ident">ID</span>;
+    <span class="kw">type</span> <span class="ident">ID</span> <span class="op">=</span> <span class="ident">T::ID</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">start_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">ID</span> {
+    <span class="kw">fn</span> <span class="ident">start_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::ID</span> {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">start_state</span>()
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">is_match_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="self">Self</span>::<span class="ident">ID</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">is_match_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="self">Self</span><span class="ident">::ID</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">is_match_state</span>(<span class="ident">id</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">is_match_or_dead_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="self">Self</span>::<span class="ident">ID</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">is_match_or_dead_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="self">Self</span><span class="ident">::ID</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">is_match_or_dead_state</span>(<span class="ident">id</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">is_dead_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="self">Self</span>::<span class="ident">ID</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">fn</span> <span class="ident">is_dead_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="self">Self</span><span class="ident">::ID</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">is_dead_state</span>(<span class="ident">id</span>)
     }
 
@@ -715,16 +715,16 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">current</span>: <span class="self">Self</span>::<span class="ident">ID</span>, <span class="ident">input</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">ID</span> {
+    <span class="kw">fn</span> <span class="ident">next_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">current</span>: <span class="self">Self</span><span class="ident">::ID</span>, <span class="ident">input</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::ID</span> {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">next_state</span>(<span class="ident">current</span>, <span class="ident">input</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">next_state_unchecked</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">current</span>: <span class="self">Self</span>::<span class="ident">ID</span>,
+        <span class="ident">current</span>: <span class="self">Self</span><span class="ident">::ID</span>,
         <span class="ident">input</span>: <span class="ident">u8</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">ID</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::ID</span> {
         (<span class="kw-2">*</span><span class="kw-2">*</span><span class="self">self</span>).<span class="ident">next_state_unchecked</span>(<span class="ident">current</span>, <span class="ident">input</span>)
     }
 }

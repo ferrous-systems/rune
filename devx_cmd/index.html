@@ -12,7 +12,7 @@ Here is the basic usage example:</p>
 <span class="kw">use</span> <span class="ident">devx_cmd</span>::{<span class="ident">read</span>, <span class="ident">run</span>, <span class="ident">cmd</span>, <span class="ident">Cmd</span>};
 
 <span class="comment">// Initialize some low-overhead logger implementation for the `log` crate</span>
-<span class="ident">simple_logger</span>::<span class="ident">SimpleLogger</span>::<span class="ident">new</span>().<span class="ident">init</span>().<span class="ident">unwrap</span>();
+<span class="ident">simple_logger::SimpleLogger::new</span>().<span class="ident">init</span>().<span class="ident">unwrap</span>();
 
 <span class="comment">// Run the program, logging the invocation via [`log`] crate and waiting until it finishes</span>
 <span class="comment">// This is used only for side-effects.</span>
@@ -27,7 +27,7 @@ Here is the basic usage example:</p>
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cmd</span> <span class="op">=</span> <span class="macro">cmd!</span>(<span class="string">&quot;rustfmt&quot;</span>);
 <span class="ident">cmd</span>
     <span class="comment">// Set `trace` level for logging command invocation and output (`debug` by default)</span>
-    .<span class="ident">log_cmd</span>(<span class="ident">log</span>::<span class="ident">Level</span>::<span class="ident">Trace</span>)
+    .<span class="ident">log_cmd</span>(<span class="ident">log::Level::Trace</span>)
     <span class="comment">// Don&#39;t log error if the command fails</span>
     .<span class="ident">log_err</span>(<span class="prelude-val">None</span>)
     .<span class="ident">stdin</span>(<span class="string">&quot;fn foo () -&gt; u32 {42}\n&quot;</span>);

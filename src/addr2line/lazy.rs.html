@@ -31,7 +31,7 @@
 <span id="28">28</span>
 <span id="29">29</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">cell</span>::<span class="ident">UnsafeCell</span>;
+<span class="kw">use</span> <span class="ident">core::cell::UnsafeCell</span>;
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LazyCell</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="ident">contents</span>: <span class="ident">UnsafeCell</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span>,
@@ -39,7 +39,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">LazyCell</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LazyCell</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">LazyCell</span> {
-            <span class="ident">contents</span>: <span class="ident">UnsafeCell</span>::<span class="ident">new</span>(<span class="prelude-val">None</span>),
+            <span class="ident">contents</span>: <span class="ident">UnsafeCell::new</span>(<span class="prelude-val">None</span>),
         }
     }
 

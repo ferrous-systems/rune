@@ -35,31 +35,31 @@
 <span class="kw">mod</span> <span class="ident">windows</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">windows</span>::{<span class="ident">get_region</span>, <span class="ident">lock</span>, <span class="ident">page_size</span>, <span class="ident">set_protection</span>, <span class="ident">unlock</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::windows</span>::{<span class="ident">get_region</span>, <span class="ident">lock</span>, <span class="ident">page_size</span>, <span class="ident">set_protection</span>, <span class="ident">unlock</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
 <span class="kw">mod</span> <span class="ident">unix</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">unix</span>::{<span class="ident">lock</span>, <span class="ident">page_size</span>, <span class="ident">set_protection</span>, <span class="ident">unlock</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::unix</span>::{<span class="ident">lock</span>, <span class="ident">page_size</span>, <span class="ident">set_protection</span>, <span class="ident">unlock</span>};
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>))]</span>
 <span class="kw">mod</span> <span class="ident">macos</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>))]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">macos</span>::<span class="ident">get_region</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::macos::get_region</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;android&quot;</span>))]</span>
 <span class="kw">mod</span> <span class="ident">linux</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;android&quot;</span>))]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">linux</span>::<span class="ident">get_region</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::linux::get_region</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;freebsd&quot;</span>)]</span>
 <span class="kw">mod</span> <span class="ident">freebsd</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;freebsd&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">freebsd</span>::<span class="ident">get_region</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::freebsd::get_region</span>;
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="region" data-search-js="../../../search-index.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

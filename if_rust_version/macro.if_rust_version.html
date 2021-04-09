@@ -30,12 +30,12 @@ condition match).</p>
 }}</pre></div>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="macro">if_rust_version!</span>{ <span class="op">&gt;</span><span class="op">=</span> <span class="number">1.36</span> { <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">MaybeUninit</span>; }}
+<span class="macro">if_rust_version!</span>{ <span class="op">&gt;</span><span class="op">=</span> <span class="number">1.36</span> { <span class="kw">use</span> <span class="ident">std::mem::MaybeUninit</span>; }}
 <span class="comment">// ...</span>
 <span class="macro">if_rust_version!</span>{ <span class="op">&lt;</span> <span class="number">1.36</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">foo</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">uninitialized</span>() };
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">foo</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">::std::mem::uninitialized</span>() };
 } <span class="kw">else</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">foo</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="kw">unsafe</span> { ::<span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">MaybeUninit</span>::<span class="ident">uninit</span>().<span class="ident">assume_init</span>() };
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">foo</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">::std::mem::MaybeUninit::uninit</span>().<span class="ident">assume_init</span>() };
 }}</pre></div>
 <p>Note that in case this is used as an expression, no blocks will be added.</p>
 <pre><code class="language-ignored">// Error

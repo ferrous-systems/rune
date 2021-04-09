@@ -474,7 +474,7 @@
         <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;expected Start {{ rule: {:?}, pos: Position {{ pos: {} }} }}&quot;</span>,
                                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rules</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">start</span>);
         <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>.<span class="ident">next</span>().<span class="ident">expect</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{} but found nothing&quot;</span>, <span class="ident">expected</span>)) {
-            <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Token</span>::<span class="ident">Start</span> { <span class="ident">rule</span>, <span class="ident">pos</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::Token::Start</span> { <span class="ident">rule</span>, <span class="ident">pos</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{} but found Start {{ rule: {:?}, pos: Position {{ {} }} }}&quot;</span>,
                                       <span class="ident">expected</span>, <span class="ident">rule</span>, <span class="ident">pos</span>.<span class="ident">pos</span>());
 
@@ -488,7 +488,7 @@
         <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;expected End {{ rule: {:?}, pos: Position {{ pos: {} }} }}&quot;</span>,
                                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rules</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">end</span>);
         <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>.<span class="ident">next</span>().<span class="ident">expect</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{} but found nothing&quot;</span>, <span class="ident">expected</span>)) {
-            <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Token</span>::<span class="ident">End</span> { <span class="ident">rule</span>, <span class="ident">pos</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::Token::End</span> { <span class="ident">rule</span>, <span class="ident">pos</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{} but found End {{ rule: {:?}, pos: Position {{ {} }} }}&quot;</span>,
                                       <span class="ident">expected</span>, <span class="ident">rule</span>, <span class="ident">pos</span>.<span class="ident">pos</span>());
 
@@ -505,7 +505,7 @@
         <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;expected Start {{ rule: {:?}, pos: Position {{ pos: {} }} }}&quot;</span>,
                                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rules</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">start</span>);
         <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>.<span class="ident">next</span>().<span class="ident">expect</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{} but found nothing&quot;</span>, <span class="ident">expected</span>)) {
-            <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Token</span>::<span class="ident">Start</span> { <span class="ident">rule</span>, <span class="ident">pos</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::Token::Start</span> { <span class="ident">rule</span>, <span class="ident">pos</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{} but found Start {{ rule: {:?}, pos: Position {{ {} }} }}&quot;</span>,
                                       <span class="ident">expected</span>, <span class="ident">rule</span>, <span class="ident">pos</span>.<span class="ident">pos</span>());
 
@@ -519,7 +519,7 @@
         <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;expected End {{ rule: {:?}, pos: Position {{ pos: {} }} }}&quot;</span>,
                                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rules</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">end</span>);
         <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>.<span class="ident">next</span>().<span class="ident">expect</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{} but found nothing&quot;</span>, <span class="ident">expected</span>)) {
-            <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Token</span>::<span class="ident">End</span> { <span class="ident">rule</span>, <span class="ident">pos</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::Token::End</span> { <span class="ident">rule</span>, <span class="ident">pos</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{} but found End {{ rule: {:?}, pos: Position {{ {} }} }}&quot;</span>,
                                       <span class="ident">expected</span>, <span class="ident">rule</span>, <span class="ident">pos</span>.<span class="ident">pos</span>());
 
@@ -537,7 +537,7 @@
         <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;expected Start {{ rule: {:?}, pos: Position {{ pos: {} }} }}&quot;</span>,
                                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rules</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">start</span>);
         <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>.<span class="ident">next</span>().<span class="ident">expect</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{} but found nothing&quot;</span>, <span class="ident">expected</span>)) {
-            <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Token</span>::<span class="ident">Start</span> { <span class="ident">rule</span>, <span class="ident">pos</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::Token::Start</span> { <span class="ident">rule</span>, <span class="ident">pos</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{} but found Start {{ rule: {:?}, pos: Position {{ {} }} }}&quot;</span>,
                                       <span class="ident">expected</span>, <span class="ident">rule</span>, <span class="ident">pos</span>.<span class="ident">pos</span>());
 
@@ -553,7 +553,7 @@
         <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;expected End {{ rule: {:?}, pos: Position {{ pos: {} }} }}&quot;</span>,
                                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rules</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">end</span>);
         <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>.<span class="ident">next</span>().<span class="ident">expect</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{} but found nothing&quot;</span>, <span class="ident">expected</span>)) {
-            <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Token</span>::<span class="ident">End</span> { <span class="ident">rule</span>, <span class="ident">pos</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::Token::End</span> { <span class="ident">rule</span>, <span class="ident">pos</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{} but found End {{ rule: {:?}, pos: Position {{ {} }} }}&quot;</span>,
                                       <span class="ident">expected</span>, <span class="ident">rule</span>, <span class="ident">pos</span>.<span class="ident">pos</span>());
 
@@ -572,7 +572,7 @@
         <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;expected Start {{ rule: {:?}, pos: Position {{ pos: {} }} }}&quot;</span>,
                                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rules</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">start</span>);
         <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>.<span class="ident">next</span>().<span class="ident">expect</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{} but found nothing&quot;</span>, <span class="ident">expected</span>)) {
-            <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Token</span>::<span class="ident">Start</span> { <span class="ident">rule</span>, <span class="ident">pos</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::Token::Start</span> { <span class="ident">rule</span>, <span class="ident">pos</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{} but found Start {{ rule: {:?}, pos: Position {{ {} }} }}&quot;</span>,
                                       <span class="ident">expected</span>, <span class="ident">rule</span>, <span class="ident">pos</span>.<span class="ident">pos</span>());
 
@@ -588,7 +588,7 @@
         <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;expected End {{ rule: {:?}, pos: Position {{ pos: {} }} }}&quot;</span>,
                                <span class="macro-nonterminal">$</span><span class="macro-nonterminal">rules</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">end</span>);
         <span class="kw">match</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">tokens</span>.<span class="ident">next</span>().<span class="ident">expect</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{} but found nothing&quot;</span>, <span class="ident">expected</span>)) {
-            <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Token</span>::<span class="ident">End</span> { <span class="ident">rule</span>, <span class="ident">pos</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::Token::End</span> { <span class="ident">rule</span>, <span class="ident">pos</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{} but found End {{ rule: {:?}, pos: Position {{ {} }} }}&quot;</span>,
                                       <span class="ident">expected</span>, <span class="ident">rule</span>, <span class="ident">pos</span>.<span class="ident">pos</span>());
 
@@ -668,9 +668,9 @@
 
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_mut</span>)]</span>
         {
-            <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Parser</span>;
+            <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::Parser</span>;
 
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tokens</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">parser</span>::<span class="ident">parse</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rules</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rule</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">string</span>).<span class="ident">unwrap</span>().<span class="ident">tokens</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">tokens</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">parser::parse</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rules</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rule</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">string</span>).<span class="ident">unwrap</span>().<span class="ident">tokens</span>();
 
             <span class="macro">consumes_to!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rules</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">tokens</span>, [ $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">names</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">calls</span> ),<span class="op">*</span> ]);
 
@@ -683,8 +683,8 @@
 
                     <span class="kw">match</span> (<span class="ident">first</span>, <span class="ident">second</span>) {
                         (
-                            <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Token</span>::<span class="ident">Start</span> { <span class="ident">rule</span>: <span class="kw-2">ref</span> <span class="ident">first_rule</span>, .. },
-                            <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Token</span>::<span class="ident">End</span> { <span class="ident">rule</span>: <span class="kw-2">ref</span> <span class="ident">second_rule</span>, .. }
+                            <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::Token::Start</span> { <span class="ident">rule</span>: <span class="kw-2">ref</span> <span class="ident">first_rule</span>, .. },
+                            <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::Token::End</span> { <span class="ident">rule</span>: <span class="kw-2">ref</span> <span class="ident">second_rule</span>, .. }
                         ) <span class="op">=</span><span class="op">&gt;</span> {
                             <span class="macro">assert!</span>(
                                 <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">first_rule</span>) <span class="op">=</span><span class="op">=</span> <span class="string">&quot;EOI&quot;</span>,
@@ -765,12 +765,12 @@
       <span class="ident">positives</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">positives</span>:<span class="ident">expr</span>, <span class="ident">negatives</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">negatives</span>:<span class="ident">expr</span>, <span class="ident">pos</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">pos</span>:<span class="ident">expr</span> ) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_mut</span>)]</span>
         {
-            <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Parser</span>;
+            <span class="kw">use</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::Parser</span>;
 
-            <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">parser</span>::<span class="ident">parse</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rules</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rule</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">string</span>).<span class="ident">unwrap_err</span>();
+            <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">parser::parse</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rules</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">rule</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">string</span>).<span class="ident">unwrap_err</span>();
 
             <span class="kw">match</span> <span class="ident">error</span>.<span class="ident">variant</span> {
-                <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">error</span>::<span class="ident">ErrorVariant</span>::<span class="ident">ParsingError</span> {
+                <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::error::ErrorVariant::ParsingError</span> {
                     <span class="ident">positives</span>,
                     <span class="ident">negatives</span>,
                 } <span class="op">=</span><span class="op">&gt;</span> {
@@ -781,7 +781,7 @@
             };
 
             <span class="kw">match</span> <span class="ident">error</span>.<span class="ident">location</span> {
-                <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">error</span>::<span class="ident">InputLocation</span>::<span class="ident">Pos</span>(<span class="ident">pos</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq!</span>(<span class="ident">pos</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">pos</span>),
+                <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::error::InputLocation::Pos</span>(<span class="ident">pos</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq!</span>(<span class="ident">pos</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">pos</span>),
                 <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
             }
         }
@@ -790,8 +790,8 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">error</span>::<span class="ident">Error</span>;
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">iterators</span>::<span class="ident">Pairs</span>;
+    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw">super</span><span class="ident">::error::Error</span>;
+    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw">super</span><span class="ident">::iterators::Pairs</span>;
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw">super</span>::{<span class="ident">state</span>, <span class="ident">Parser</span>};
 
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">non_camel_case_types</span>)]</span>
@@ -808,14 +808,14 @@
         <span class="kw">fn</span> <span class="ident">parse</span><span class="op">&lt;</span><span class="lifetime">&#39;i</span><span class="op">&gt;</span>(<span class="kw">_</span>: <span class="ident">Rule</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;i</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Pairs</span><span class="op">&lt;</span><span class="lifetime">&#39;i</span>, <span class="ident">Rule</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&lt;</span><span class="ident">Rule</span><span class="op">&gt;</span><span class="op">&gt;</span> {
             <span class="ident">state</span>(<span class="ident">input</span>, <span class="op">|</span><span class="ident">state</span><span class="op">|</span> {
                 <span class="ident">state</span>
-                    .<span class="ident">rule</span>(<span class="ident">Rule</span>::<span class="ident">a</span>, <span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
+                    .<span class="ident">rule</span>(<span class="ident">Rule::a</span>, <span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
                         <span class="ident">s</span>.<span class="ident">skip</span>(<span class="number">1</span>)
                             .<span class="ident">unwrap</span>()
-                            .<span class="ident">rule</span>(<span class="ident">Rule</span>::<span class="ident">b</span>, <span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">skip</span>(<span class="number">1</span>))
+                            .<span class="ident">rule</span>(<span class="ident">Rule::b</span>, <span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">skip</span>(<span class="number">1</span>))
                             .<span class="ident">unwrap</span>()
                             .<span class="ident">skip</span>(<span class="number">1</span>)
                     })
-                    .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">skip</span>(<span class="number">1</span>).<span class="ident">unwrap</span>().<span class="ident">rule</span>(<span class="ident">Rule</span>::<span class="ident">c</span>, <span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">match_string</span>(<span class="string">&quot;e&quot;</span>)))
+                    .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">skip</span>(<span class="number">1</span>).<span class="ident">unwrap</span>().<span class="ident">rule</span>(<span class="ident">Rule::c</span>, <span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">match_string</span>(<span class="string">&quot;e&quot;</span>)))
             })
         }
     }
@@ -825,7 +825,7 @@
         <span class="macro">parses_to!</span> {
             <span class="ident">parser</span>: <span class="ident">AbcParser</span>,
             <span class="ident">input</span>: <span class="string">&quot;abcde&quot;</span>,
-            <span class="ident">rule</span>: <span class="ident">Rule</span>::<span class="ident">a</span>,
+            <span class="ident">rule</span>: <span class="ident">Rule::a</span>,
             <span class="ident">tokens</span>: [
                 <span class="ident">a</span>(<span class="number">0</span>, <span class="number">3</span>, [
                     <span class="ident">b</span>(<span class="number">1</span>, <span class="number">2</span>),
@@ -841,7 +841,7 @@
         <span class="macro">parses_to!</span> {
             <span class="ident">parser</span>: <span class="ident">AbcParser</span>,
             <span class="ident">input</span>: <span class="string">&quot;abcde&quot;</span>,
-            <span class="ident">rule</span>: <span class="ident">Rule</span>::<span class="ident">a</span>,
+            <span class="ident">rule</span>: <span class="ident">Rule::a</span>,
             <span class="ident">tokens</span>: [
                 <span class="ident">a</span>(<span class="number">0</span>, <span class="number">3</span>, [
                     <span class="ident">b</span>(<span class="number">1</span>, <span class="number">2</span>)
@@ -856,7 +856,7 @@
         <span class="macro">parses_to!</span> {
             <span class="ident">parser</span>: <span class="ident">AbcParser</span>,
             <span class="ident">input</span>: <span class="string">&quot;abcde&quot;</span>,
-            <span class="ident">rule</span>: <span class="ident">Rule</span>::<span class="ident">a</span>,
+            <span class="ident">rule</span>: <span class="ident">Rule::a</span>,
             <span class="ident">tokens</span>: []
         };
     }
@@ -866,8 +866,8 @@
         <span class="macro">fails_with!</span> {
             <span class="ident">parser</span>: <span class="ident">AbcParser</span>,
             <span class="ident">input</span>: <span class="string">&quot;abcdf&quot;</span>,
-            <span class="ident">rule</span>: <span class="ident">Rule</span>::<span class="ident">a</span>,
-            <span class="ident">positives</span>: <span class="macro">vec!</span>[<span class="ident">Rule</span>::<span class="ident">c</span>],
+            <span class="ident">rule</span>: <span class="ident">Rule::a</span>,
+            <span class="ident">positives</span>: <span class="macro">vec!</span>[<span class="ident">Rule::c</span>],
             <span class="ident">negatives</span>: <span class="macro">vec!</span>[],
             <span class="ident">pos</span>: <span class="number">4</span>
         };
@@ -879,8 +879,8 @@
         <span class="macro">fails_with!</span> {
             <span class="ident">parser</span>: <span class="ident">AbcParser</span>,
             <span class="ident">input</span>: <span class="string">&quot;abcdf&quot;</span>,
-            <span class="ident">rule</span>: <span class="ident">Rule</span>::<span class="ident">a</span>,
-            <span class="ident">positives</span>: <span class="macro">vec!</span>[<span class="ident">Rule</span>::<span class="ident">a</span>],
+            <span class="ident">rule</span>: <span class="ident">Rule::a</span>,
+            <span class="ident">positives</span>: <span class="macro">vec!</span>[<span class="ident">Rule::a</span>],
             <span class="ident">negatives</span>: <span class="macro">vec!</span>[],
             <span class="ident">pos</span>: <span class="number">4</span>
         };
@@ -892,9 +892,9 @@
         <span class="macro">fails_with!</span> {
             <span class="ident">parser</span>: <span class="ident">AbcParser</span>,
             <span class="ident">input</span>: <span class="string">&quot;abcdf&quot;</span>,
-            <span class="ident">rule</span>: <span class="ident">Rule</span>::<span class="ident">a</span>,
-            <span class="ident">positives</span>: <span class="macro">vec!</span>[<span class="ident">Rule</span>::<span class="ident">c</span>],
-            <span class="ident">negatives</span>: <span class="macro">vec!</span>[<span class="ident">Rule</span>::<span class="ident">c</span>],
+            <span class="ident">rule</span>: <span class="ident">Rule::a</span>,
+            <span class="ident">positives</span>: <span class="macro">vec!</span>[<span class="ident">Rule::c</span>],
+            <span class="ident">negatives</span>: <span class="macro">vec!</span>[<span class="ident">Rule::c</span>],
             <span class="ident">pos</span>: <span class="number">4</span>
         };
     }
@@ -905,8 +905,8 @@
         <span class="macro">fails_with!</span> {
             <span class="ident">parser</span>: <span class="ident">AbcParser</span>,
             <span class="ident">input</span>: <span class="string">&quot;abcdf&quot;</span>,
-            <span class="ident">rule</span>: <span class="ident">Rule</span>::<span class="ident">a</span>,
-            <span class="ident">positives</span>: <span class="macro">vec!</span>[<span class="ident">Rule</span>::<span class="ident">c</span>],
+            <span class="ident">rule</span>: <span class="ident">Rule::a</span>,
+            <span class="ident">positives</span>: <span class="macro">vec!</span>[<span class="ident">Rule::c</span>],
             <span class="ident">negatives</span>: <span class="macro">vec!</span>[],
             <span class="ident">pos</span>: <span class="number">3</span>
         };

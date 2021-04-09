@@ -29,22 +29,22 @@ region = &quot;2.2.0&quot;
 <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> [<span class="number">0xDE</span>, <span class="number">0xAD</span>, <span class="number">0xBE</span>, <span class="number">0xEF</span>];
 
 <span class="comment">// Page size</span>
-<span class="kw">let</span> <span class="ident">pz</span> <span class="op">=</span> <span class="ident">region</span>::<span class="ident">page</span>::<span class="ident">size</span>();
-<span class="kw">let</span> <span class="ident">pc</span> <span class="op">=</span> <span class="ident">region</span>::<span class="ident">page</span>::<span class="ident">ceil</span>(<span class="number">1234</span>);
-<span class="kw">let</span> <span class="ident">pf</span> <span class="op">=</span> <span class="ident">region</span>::<span class="ident">page</span>::<span class="ident">floor</span>(<span class="number">1234</span>);
+<span class="kw">let</span> <span class="ident">pz</span> <span class="op">=</span> <span class="ident">region::page::size</span>();
+<span class="kw">let</span> <span class="ident">pc</span> <span class="op">=</span> <span class="ident">region::page::ceil</span>(<span class="number">1234</span>);
+<span class="kw">let</span> <span class="ident">pf</span> <span class="op">=</span> <span class="ident">region::page::floor</span>(<span class="number">1234</span>);
 
 <span class="comment">// VirtualQuery | &#39;/proc/self/maps&#39;</span>
-<span class="kw">let</span> <span class="ident">q</span>  <span class="op">=</span> <span class="ident">region</span>::<span class="ident">query</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>())<span class="question-mark">?</span>;
-<span class="kw">let</span> <span class="ident">qr</span> <span class="op">=</span> <span class="ident">region</span>::<span class="ident">query_range</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>(), <span class="ident">data</span>.<span class="ident">len</span>())<span class="question-mark">?</span>;
+<span class="kw">let</span> <span class="ident">q</span>  <span class="op">=</span> <span class="ident">region::query</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>())<span class="question-mark">?</span>;
+<span class="kw">let</span> <span class="ident">qr</span> <span class="op">=</span> <span class="ident">region::query_range</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>(), <span class="ident">data</span>.<span class="ident">len</span>())<span class="question-mark">?</span>;
 
 <span class="comment">// VirtualProtect | mprotect</span>
-<span class="ident">region</span>::<span class="ident">protect</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>(), <span class="ident">data</span>.<span class="ident">len</span>(), <span class="ident">Protection</span>::<span class="ident">READ_WRITE_EXECUTE</span>)<span class="question-mark">?</span>;
+<span class="ident">region::protect</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>(), <span class="ident">data</span>.<span class="ident">len</span>(), <span class="ident">Protection::READ_WRITE_EXECUTE</span>)<span class="question-mark">?</span>;
 
 <span class="comment">// ... you can also temporarily change a region&#39;s protection</span>
-<span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">region</span>::<span class="ident">protect_with_handle</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>(), <span class="ident">data</span>.<span class="ident">len</span>(), <span class="ident">Protection</span>::<span class="ident">READ_WRITE_EXECUTE</span>)<span class="question-mark">?</span>;
+<span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">region::protect_with_handle</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>(), <span class="ident">data</span>.<span class="ident">len</span>(), <span class="ident">Protection::READ_WRITE_EXECUTE</span>)<span class="question-mark">?</span>;
 
 <span class="comment">// VirtualLock | mlock</span>
-<span class="kw">let</span> <span class="ident">guard</span> <span class="op">=</span> <span class="ident">region</span>::<span class="ident">lock</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>(), <span class="ident">data</span>.<span class="ident">len</span>())<span class="question-mark">?</span>;</pre></div>
+<span class="kw">let</span> <span class="ident">guard</span> <span class="op">=</span> <span class="ident">region::lock</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>(), <span class="ident">data</span>.<span class="ident">len</span>())<span class="question-mark">?</span>;</pre></div>
 </li>
 </ul>
 </div><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2>

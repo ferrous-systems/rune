@@ -222,10 +222,10 @@
 <span id="219">219</span>
 <span id="220">220</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">regex_automata</span>::<span class="ident">DFA</span>;
+<span class="kw">use</span> <span class="ident">regex_automata::DFA</span>;
 
-<span class="kw">use</span> <span class="ident">ext_slice</span>::<span class="ident">ByteSlice</span>;
-<span class="kw">use</span> <span class="ident">unicode</span>::<span class="ident">fsm</span>::<span class="ident">sentence_break_fwd</span>::<span class="ident">SENTENCE_BREAK_FWD</span>;
+<span class="kw">use</span> <span class="ident">ext_slice::ByteSlice</span>;
+<span class="kw">use</span> <span class="ident">unicode::fsm::sentence_break_fwd::SENTENCE_BREAK_FWD</span>;
 <span class="kw">use</span> <span class="ident">utf8</span>;
 
 <span class="doccomment">/// An iterator over sentences in a byte string.</span>
@@ -375,16 +375,16 @@
     } <span class="kw">else</span> {
         <span class="kw">const</span> <span class="ident">INVALID</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;\u{FFFD}&quot;</span>;
         <span class="comment">// No match on non-empty bytes implies we found invalid UTF-8.</span>
-        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">size</span>) <span class="op">=</span> <span class="ident">utf8</span>::<span class="ident">decode_lossy</span>(<span class="ident">bs</span>);
+        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">size</span>) <span class="op">=</span> <span class="ident">utf8::decode_lossy</span>(<span class="ident">bs</span>);
         (<span class="ident">INVALID</span>, <span class="ident">size</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">ucd_parse</span>::<span class="ident">SentenceBreakTest</span>;
+    <span class="kw">use</span> <span class="ident">ucd_parse::SentenceBreakTest</span>;
 
-    <span class="kw">use</span> <span class="ident">ext_slice</span>::<span class="ident">ByteSlice</span>;
+    <span class="kw">use</span> <span class="ident">ext_slice::ByteSlice</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">forward_ucd</span>() {

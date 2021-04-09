@@ -259,11 +259,11 @@
 <span class="doccomment">//! relocations to a `RelocSink` trait object. Relocations are less frequent than the</span>
 <span class="doccomment">//! `CodeSink::put*` methods, so the performance impact of the virtual callbacks is less severe.</span>
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Addend</span>, <span class="ident">CodeInfo</span>, <span class="ident">CodeOffset</span>, <span class="ident">CodeSink</span>, <span class="ident">Reloc</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">binemit</span>::<span class="ident">stack_map</span>::<span class="ident">StackMap</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">entities</span>::<span class="ident">Value</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">ConstantOffset</span>, <span class="ident">ExternalName</span>, <span class="ident">Function</span>, <span class="ident">JumpTable</span>, <span class="ident">Opcode</span>, <span class="ident">SourceLoc</span>, <span class="ident">TrapCode</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">TargetIsa</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">ptr</span>::<span class="ident">write_unaligned</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::binemit::stack_map::StackMap</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::entities::Value</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">ConstantOffset</span>, <span class="ident">ExternalName</span>, <span class="ident">Function</span>, <span class="ident">JumpTable</span>, <span class="ident">Opcode</span>, <span class="ident">SourceLoc</span>, <span class="ident">TrapCode</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::TargetIsa</span>;
+<span class="kw">use</span> <span class="ident">core::ptr::write_unaligned</span>;
 
 <span class="doccomment">/// A `CodeSink` that writes binary machine code directly into memory.</span>
 <span class="doccomment">///</span>
@@ -355,9 +355,9 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">MemoryCodeSink</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">write</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">T</span>) {
         <span class="kw">unsafe</span> {
-            <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>, <span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">cast_ptr_alignment</span>))]</span>
+            <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>, <span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>))]</span>
             <span class="ident">write_unaligned</span>(<span class="self">self</span>.<span class="ident">data</span>.<span class="ident">offset</span>(<span class="self">self</span>.<span class="ident">offset</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T</span>, <span class="ident">x</span>);
-            <span class="self">self</span>.<span class="ident">offset</span> <span class="op">+</span><span class="op">=</span> <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">isize</span>;
+            <span class="self">self</span>.<span class="ident">offset</span> <span class="op">+</span><span class="op">=</span> <span class="ident">core::mem::size_of</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">isize</span>;
         }
     }
 }
@@ -429,7 +429,7 @@
 
     <span class="kw">fn</span> <span class="ident">add_stack_map</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">val_list</span>: <span class="kw-2">&amp;</span>[<span class="ident">Value</span>], <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>, <span class="ident">isa</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span>) {
         <span class="kw">let</span> <span class="ident">ofs</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">offset</span>();
-        <span class="kw">let</span> <span class="ident">stack_map</span> <span class="op">=</span> <span class="ident">StackMap</span>::<span class="ident">from_values</span>(<span class="kw-2">&amp;</span><span class="ident">val_list</span>, <span class="ident">func</span>, <span class="ident">isa</span>);
+        <span class="kw">let</span> <span class="ident">stack_map</span> <span class="op">=</span> <span class="ident">StackMap::from_values</span>(<span class="kw-2">&amp;</span><span class="ident">val_list</span>, <span class="ident">func</span>, <span class="ident">isa</span>);
         <span class="self">self</span>.<span class="ident">stack_maps</span>.<span class="ident">add_stack_map</span>(<span class="ident">ofs</span>, <span class="ident">stack_map</span>);
     }
 

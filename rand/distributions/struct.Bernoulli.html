@@ -3,10 +3,10 @@
 <p>This is a special case of the Binomial distribution where <code>n = 1</code>.</p>
 <h1 id="example" class="section-header"><a href="#example">Example</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">rand</span>::<span class="ident">distributions</span>::{<span class="ident">Bernoulli</span>, <span class="ident">Distribution</span>};
+<span class="kw">use</span> <span class="ident">rand::distributions</span>::{<span class="ident">Bernoulli</span>, <span class="ident">Distribution</span>};
 
-<span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">Bernoulli</span>::<span class="ident">new</span>(<span class="number">0.3</span>).<span class="ident">unwrap</span>();
-<span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">sample</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rand</span>::<span class="ident">thread_rng</span>());
+<span class="kw">let</span> <span class="ident">d</span> <span class="op">=</span> <span class="ident">Bernoulli::new</span>(<span class="number">0.3</span>).<span class="ident">unwrap</span>();
+<span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">sample</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rand::thread_rng</span>());
 <span class="macro">println!</span>(<span class="string">&quot;{} is from a Bernoulli distribution&quot;</span>, <span class="ident">v</span>);</pre></div>
 <h1 id="precision" class="section-header"><a href="#precision">Precision</a></h1>
 <p>This <code>Bernoulli</code> distribution uses 64 bits from the RNG (a <code>u64</code>),

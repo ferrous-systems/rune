@@ -17,7 +17,7 @@ It also comes with inbuilt logging of the invocations via <a href="https://docs.
 <p>Example:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cmd</span> <span class="op">=</span> <span class="ident">Cmd</span>::<span class="ident">new</span>(<span class="string">&quot;cargo&quot;</span>);
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cmd</span> <span class="op">=</span> <span class="ident">Cmd::new</span>(<span class="string">&quot;cargo&quot;</span>);
 <span class="ident">cmd</span>
     <span class="comment">// `arg*()` methods append arguments</span>
     .<span class="ident">arg</span>(<span class="string">&quot;metadata&quot;</span>)
@@ -26,7 +26,7 @@ It also comes with inbuilt logging of the invocations via <a href="https://docs.
     .<span class="ident">replace_arg</span>(<span class="number">3</span>, <span class="string">&quot;--quiet&quot;</span>)
     <span class="comment">// These are at `debug` and `error` level by default, `None` disables logging</span>
     .<span class="ident">log_cmd</span>(<span class="prelude-val">None</span>)
-    .<span class="ident">log_err</span>(<span class="ident">log</span>::<span class="ident">Level</span>::<span class="ident">Warn</span>)
+    .<span class="ident">log_err</span>(<span class="ident">log::Level::Warn</span>)
     <span class="comment">// repetated `stdin*()` calls overwrite previous ones</span>
     .<span class="ident">stdin</span>(<span class="string">&quot;Hi&quot;</span>)
     .<span class="ident">stdin_bytes</span>(<span class="macro">vec!</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>]);

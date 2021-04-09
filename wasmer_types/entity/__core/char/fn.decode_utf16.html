@@ -7,7 +7,7 @@ returning unpaired surrogates as <code>Err</code>s.</p>
 <p>Basic usage:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">char</span>::<span class="ident">decode_utf16</span>;
+<span class="kw">use</span> <span class="ident">std::char::decode_utf16</span>;
 
 <span class="comment">// 𝄞mus&lt;invalid&gt;ic&lt;invalid&gt;</span>
 <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> [
@@ -29,7 +29,7 @@ returning unpaired surrogates as <code>Err</code>s.</p>
 <p>A lossy decoder can be obtained by replacing <code>Err</code> results with the replacement character:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">char</span>::{<span class="ident">decode_utf16</span>, <span class="ident">REPLACEMENT_CHARACTER</span>};
+<span class="kw">use</span> <span class="ident">std::char</span>::{<span class="ident">decode_utf16</span>, <span class="ident">REPLACEMENT_CHARACTER</span>};
 
 <span class="comment">// 𝄞mus&lt;invalid&gt;ic&lt;invalid&gt;</span>
 <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> [

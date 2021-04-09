@@ -39,23 +39,23 @@ after <code>IS_READY</code> is updated, then the signal handler will see
 Using a <code>compiler_fence</code> remedies this situation.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">atomic</span>::{<span class="ident">AtomicBool</span>, <span class="ident">AtomicUsize</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">atomic</span>::<span class="ident">Ordering</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">atomic</span>::<span class="ident">compiler_fence</span>;
+<span class="kw">use</span> <span class="ident">std::sync::atomic</span>::{<span class="ident">AtomicBool</span>, <span class="ident">AtomicUsize</span>};
+<span class="kw">use</span> <span class="ident">std::sync::atomic::Ordering</span>;
+<span class="kw">use</span> <span class="ident">std::sync::atomic::compiler_fence</span>;
 
-<span class="kw">static</span> <span class="ident">IMPORTANT_VARIABLE</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize</span>::<span class="ident">new</span>(<span class="number">0</span>);
-<span class="kw">static</span> <span class="ident">IS_READY</span>: <span class="ident">AtomicBool</span> <span class="op">=</span> <span class="ident">AtomicBool</span>::<span class="ident">new</span>(<span class="bool-val">false</span>);
+<span class="kw">static</span> <span class="ident">IMPORTANT_VARIABLE</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">AtomicUsize::new</span>(<span class="number">0</span>);
+<span class="kw">static</span> <span class="ident">IS_READY</span>: <span class="ident">AtomicBool</span> <span class="op">=</span> <span class="ident">AtomicBool::new</span>(<span class="bool-val">false</span>);
 
 <span class="kw">fn</span> <span class="ident">main</span>() {
-    <span class="ident">IMPORTANT_VARIABLE</span>.<span class="ident">store</span>(<span class="number">42</span>, <span class="ident">Ordering</span>::<span class="ident">Relaxed</span>);
+    <span class="ident">IMPORTANT_VARIABLE</span>.<span class="ident">store</span>(<span class="number">42</span>, <span class="ident">Ordering::Relaxed</span>);
     <span class="comment">// prevent earlier writes from being moved beyond this point</span>
-    <span class="ident">compiler_fence</span>(<span class="ident">Ordering</span>::<span class="ident">Release</span>);
-    <span class="ident">IS_READY</span>.<span class="ident">store</span>(<span class="bool-val">true</span>, <span class="ident">Ordering</span>::<span class="ident">Relaxed</span>);
+    <span class="ident">compiler_fence</span>(<span class="ident">Ordering::Release</span>);
+    <span class="ident">IS_READY</span>.<span class="ident">store</span>(<span class="bool-val">true</span>, <span class="ident">Ordering::Relaxed</span>);
 }
 
 <span class="kw">fn</span> <span class="ident">signal_handler</span>() {
-    <span class="kw">if</span> <span class="ident">IS_READY</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Relaxed</span>) {
-        <span class="macro">assert_eq!</span>(<span class="ident">IMPORTANT_VARIABLE</span>.<span class="ident">load</span>(<span class="ident">Ordering</span>::<span class="ident">Relaxed</span>), <span class="number">42</span>);
+    <span class="kw">if</span> <span class="ident">IS_READY</span>.<span class="ident">load</span>(<span class="ident">Ordering::Relaxed</span>) {
+        <span class="macro">assert_eq!</span>(<span class="ident">IMPORTANT_VARIABLE</span>.<span class="ident">load</span>(<span class="ident">Ordering::Relaxed</span>), <span class="number">42</span>);
     }
 }</pre></div>
 </div></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="wasmer_types" data-search-js="../../../../../search-index.js"></div>

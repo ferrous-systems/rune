@@ -63,19 +63,19 @@
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">trayt</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">func</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">syn</span>:<span class="ident">path</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">trayt</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">trayt</span> <span class="kw">for</span> <span class="ident">WithOriginal</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">syn</span><span class="op">&gt;</span> {
             <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">func</span>(<span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">syn</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-                <span class="prelude-val">Ok</span>(<span class="ident">WithOriginal</span>::<span class="ident">new</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">trayt</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">func</span>(<span class="ident">value</span>)<span class="question-mark">?</span>, <span class="ident">value</span>.<span class="ident">clone</span>()))
+                <span class="prelude-val">Ok</span>(<span class="ident">WithOriginal::new</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">trayt</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">func</span>(<span class="ident">value</span>)<span class="question-mark">?</span>, <span class="ident">value</span>.<span class="ident">clone</span>()))
             }
         }
     };
 }
 
-<span class="macro">with_original!</span>(<span class="ident">FromDeriveInput</span>, <span class="ident">from_derive_input</span>, <span class="ident">syn</span>::<span class="ident">DeriveInput</span>);
-<span class="macro">with_original!</span>(<span class="ident">FromField</span>, <span class="ident">from_field</span>, <span class="ident">syn</span>::<span class="ident">Field</span>);
-<span class="macro">with_original!</span>(<span class="ident">FromGenerics</span>, <span class="ident">from_generics</span>, <span class="ident">syn</span>::<span class="ident">Generics</span>);
-<span class="macro">with_original!</span>(<span class="ident">FromGenericParam</span>, <span class="ident">from_generic_param</span>, <span class="ident">syn</span>::<span class="ident">GenericParam</span>);
-<span class="macro">with_original!</span>(<span class="ident">FromMeta</span>, <span class="ident">from_meta</span>, <span class="ident">syn</span>::<span class="ident">Meta</span>);
-<span class="macro">with_original!</span>(<span class="ident">FromTypeParam</span>, <span class="ident">from_type_param</span>, <span class="ident">syn</span>::<span class="ident">TypeParam</span>);
-<span class="macro">with_original!</span>(<span class="ident">FromVariant</span>, <span class="ident">from_variant</span>, <span class="ident">syn</span>::<span class="ident">Variant</span>);
+<span class="macro">with_original!</span>(<span class="ident">FromDeriveInput</span>, <span class="ident">from_derive_input</span>, <span class="ident">syn::DeriveInput</span>);
+<span class="macro">with_original!</span>(<span class="ident">FromField</span>, <span class="ident">from_field</span>, <span class="ident">syn::Field</span>);
+<span class="macro">with_original!</span>(<span class="ident">FromGenerics</span>, <span class="ident">from_generics</span>, <span class="ident">syn::Generics</span>);
+<span class="macro">with_original!</span>(<span class="ident">FromGenericParam</span>, <span class="ident">from_generic_param</span>, <span class="ident">syn::GenericParam</span>);
+<span class="macro">with_original!</span>(<span class="ident">FromMeta</span>, <span class="ident">from_meta</span>, <span class="ident">syn::Meta</span>);
+<span class="macro">with_original!</span>(<span class="ident">FromTypeParam</span>, <span class="ident">from_type_param</span>, <span class="ident">syn::TypeParam</span>);
+<span class="macro">with_original!</span>(<span class="ident">FromVariant</span>, <span class="ident">from_variant</span>, <span class="ident">syn::Variant</span>);
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="darling_core" data-search-js="../../../search-index.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

@@ -121,7 +121,7 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Memory operation flags.</span>
 
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
 
 <span class="kw">enum</span> <span class="ident">FlagBit</span> {
     <span class="ident">Notrap</span>,
@@ -150,7 +150,7 @@
     <span class="doccomment">/// Create a set of flags representing an access from a &quot;trusted&quot; address, meaning it&#39;s</span>
     <span class="doccomment">/// known to be aligned and non-trapping.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">trusted</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::new</span>();
         <span class="ident">result</span>.<span class="ident">set_notrap</span>();
         <span class="ident">result</span>.<span class="ident">set_aligned</span>();
         <span class="ident">result</span>
@@ -189,12 +189,12 @@
     <span class="doccomment">/// accesses will not trap. This makes it possible to delete an unused load or a dead store</span>
     <span class="doccomment">/// instruction.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">notrap</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">FlagBit</span>::<span class="ident">Notrap</span>)
+        <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">FlagBit::Notrap</span>)
     }
 
     <span class="doccomment">/// Set the `notrap` flag.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_notrap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">set</span>(<span class="ident">FlagBit</span>::<span class="ident">Notrap</span>)
+        <span class="self">self</span>.<span class="ident">set</span>(<span class="ident">FlagBit::Notrap</span>)
     }
 
     <span class="doccomment">/// Test if the `aligned` flag is set.</span>
@@ -203,12 +203,12 @@
     <span class="doccomment">/// `aligned` flag is set, the instruction is permitted to trap or return a wrong result if the</span>
     <span class="doccomment">/// effective address is misaligned.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">aligned</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">FlagBit</span>::<span class="ident">Aligned</span>)
+        <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">FlagBit::Aligned</span>)
     }
 
     <span class="doccomment">/// Set the `aligned` flag.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_aligned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">set</span>(<span class="ident">FlagBit</span>::<span class="ident">Aligned</span>)
+        <span class="self">self</span>.<span class="ident">set</span>(<span class="ident">FlagBit::Aligned</span>)
     }
 
     <span class="doccomment">/// Test if the `readonly` flag is set.</span>
@@ -217,17 +217,17 @@
     <span class="doccomment">/// This results in undefined behavior if the dereferenced memory is mutated at any time</span>
     <span class="doccomment">/// between when the function is called and when it is exited.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">readonly</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">FlagBit</span>::<span class="ident">Readonly</span>)
+        <span class="self">self</span>.<span class="ident">read</span>(<span class="ident">FlagBit::Readonly</span>)
     }
 
     <span class="doccomment">/// Set the `readonly` flag.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_readonly</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="self">self</span>.<span class="ident">set</span>(<span class="ident">FlagBit</span>::<span class="ident">Readonly</span>)
+        <span class="self">self</span>.<span class="ident">set</span>(<span class="ident">FlagBit::Readonly</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">MemFlags</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">MemFlags</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">n</span>) <span class="kw">in</span> <span class="ident">NAMES</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
             <span class="kw">if</span> <span class="self">self</span>.<span class="ident">bits</span> <span class="op">&amp;</span> (<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">i</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
                 <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">n</span>)<span class="question-mark">?</span>;

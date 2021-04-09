@@ -43,11 +43,11 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Error types and utilities.</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">StdError</span>;
+<span class="kw">use</span> <span class="ident">std::error::Error</span> <span class="kw">as</span> <span class="ident">StdError</span>;
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">io</span>};
 
 <span class="doccomment">/// The result type used by this library.</span>
-<span class="kw">pub</span> <span class="kw">type</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> ::<span class="ident">std</span>::<span class="ident">result</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
+<span class="kw">pub</span> <span class="kw">type</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">::std::result::Result</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Error</span><span class="op">&gt;</span>;
 
 <span class="doccomment">/// A collection of possible errors.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
@@ -61,20 +61,20 @@
   <span class="doccomment">/// Invalid procfs input.</span>
   <span class="ident">ProcfsInput</span>,
   <span class="doccomment">/// A system call failed.</span>
-  <span class="ident">SystemCall</span>(<span class="ident">io</span>::<span class="ident">Error</span>),
+  <span class="ident">SystemCall</span>(<span class="ident">io::Error</span>),
   <span class="doccomment">/// A macOS kernel call failed</span>
-  <span class="ident">MachRegion</span>(::<span class="ident">libc</span>::<span class="ident">c_int</span>),
+  <span class="ident">MachRegion</span>(<span class="ident">::libc::c_int</span>),
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Error</span> {
-  <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Error</span> {
+  <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
     <span class="kw">match</span> <span class="self">self</span> {
-      <span class="ident">Error</span>::<span class="ident">NullAddress</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Address must not be null&quot;</span>),
-      <span class="ident">Error</span>::<span class="ident">EmptyRange</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Address range must be larger than zero&quot;</span>),
-      <span class="ident">Error</span>::<span class="ident">FreeMemory</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Address does not contain allocated memory&quot;</span>),
-      <span class="ident">Error</span>::<span class="ident">ProcfsInput</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Invalid procfs input&quot;</span>),
-      <span class="ident">Error</span>::<span class="ident">SystemCall</span>(<span class="kw-2">ref</span> <span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;System call failed: {}&quot;</span>, <span class="ident">error</span>),
-      <span class="ident">Error</span>::<span class="ident">MachRegion</span>(<span class="ident">code</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;macOS kernel call failed: {}&quot;</span>, <span class="ident">code</span>),
+      <span class="ident">Error::NullAddress</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Address must not be null&quot;</span>),
+      <span class="ident">Error::EmptyRange</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Address range must be larger than zero&quot;</span>),
+      <span class="ident">Error::FreeMemory</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Address does not contain allocated memory&quot;</span>),
+      <span class="ident">Error::ProcfsInput</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;Invalid procfs input&quot;</span>),
+      <span class="ident">Error::SystemCall</span>(<span class="kw-2">ref</span> <span class="ident">error</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;System call failed: {}&quot;</span>, <span class="ident">error</span>),
+      <span class="ident">Error::MachRegion</span>(<span class="ident">code</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;macOS kernel call failed: {}&quot;</span>, <span class="ident">code</span>),
     }
   }
 }

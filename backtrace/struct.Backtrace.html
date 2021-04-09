@@ -22,9 +22,9 @@ avoids the symbol resolution step (which typically takes the longest)
 and allows deferring that to a later date.</p>
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">backtrace</span>::<span class="ident">Backtrace</span>;
+<span class="kw">use</span> <span class="ident">backtrace::Backtrace</span>;
 
-<span class="kw">let</span> <span class="ident">current_backtrace</span> <span class="op">=</span> <span class="ident">Backtrace</span>::<span class="ident">new</span>();</pre></div>
+<span class="kw">let</span> <span class="ident">current_backtrace</span> <span class="op">=</span> <span class="ident">Backtrace::new</span>();</pre></div>
 <h1 id="required-features-1" class="section-header"><a href="#required-features-1">Required features</a></h1>
 <p>This function requires the <code>std</code> feature of the <code>backtrace</code> crate to be
 enabled, and the <code>std</code> feature is enabled by default.</p>
@@ -36,9 +36,9 @@ the resolution process can sometimes take a significant amount of time
 whereas any one backtrace may only be rarely printed.</p>
 <h1 id="examples-1" class="section-header"><a href="#examples-1">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">backtrace</span>::<span class="ident">Backtrace</span>;
+<span class="kw">use</span> <span class="ident">backtrace::Backtrace</span>;
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">current_backtrace</span> <span class="op">=</span> <span class="ident">Backtrace</span>::<span class="ident">new_unresolved</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">current_backtrace</span> <span class="op">=</span> <span class="ident">Backtrace::new_unresolved</span>();
 <span class="macro">println!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">current_backtrace</span>); <span class="comment">// no symbol names</span>
 <span class="ident">current_backtrace</span>.<span class="ident">resolve</span>();
 <span class="macro">println!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">current_backtrace</span>); <span class="comment">// symbol names now present</span></pre></div>

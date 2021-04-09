@@ -21,8 +21,8 @@ unwound through, so panicking from <code>cb</code> may trigger a process abort.<
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">backtrace</span>;
 
 <span class="kw">fn</span> <span class="ident">main</span>() {
-    <span class="ident">backtrace</span>::<span class="ident">trace</span>(<span class="op">|</span><span class="ident">frame</span><span class="op">|</span> {
-        <span class="ident">backtrace</span>::<span class="ident">resolve_frame</span>(<span class="ident">frame</span>, <span class="op">|</span><span class="ident">symbol</span><span class="op">|</span> {
+    <span class="ident">backtrace::trace</span>(<span class="op">|</span><span class="ident">frame</span><span class="op">|</span> {
+        <span class="ident">backtrace::resolve_frame</span>(<span class="ident">frame</span>, <span class="op">|</span><span class="ident">symbol</span><span class="op">|</span> {
             <span class="comment">// ...</span>
         });
 

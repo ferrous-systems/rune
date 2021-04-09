@@ -18,8 +18,8 @@ closure-like:</p>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">generators</span>, <span class="ident">generator_trait</span>)]</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::{<span class="ident">Generator</span>, <span class="ident">GeneratorState</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">pin</span>::<span class="ident">Pin</span>;
+<span class="kw">use</span> <span class="ident">std::ops</span>::{<span class="ident">Generator</span>, <span class="ident">GeneratorState</span>};
+<span class="kw">use</span> <span class="ident">std::pin::Pin</span>;
 
 <span class="kw">fn</span> <span class="ident">main</span>() {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">generator</span> <span class="op">=</span> <span class="op">|</span><span class="op">|</span> {
@@ -27,12 +27,12 @@ closure-like:</p>
         <span class="kw">return</span> <span class="string">&quot;foo&quot;</span>
     };
 
-    <span class="kw">match</span> <span class="ident">Pin</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">generator</span>).<span class="ident">resume</span>(()) {
-        <span class="ident">GeneratorState</span>::<span class="ident">Yielded</span>(<span class="number">1</span>) <span class="op">=</span><span class="op">&gt;</span> {}
+    <span class="kw">match</span> <span class="ident">Pin::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">generator</span>).<span class="ident">resume</span>(()) {
+        <span class="ident">GeneratorState::Yielded</span>(<span class="number">1</span>) <span class="op">=</span><span class="op">&gt;</span> {}
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;unexpected return from resume&quot;</span>),
     }
-    <span class="kw">match</span> <span class="ident">Pin</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">generator</span>).<span class="ident">resume</span>(()) {
-        <span class="ident">GeneratorState</span>::<span class="ident">Complete</span>(<span class="string">&quot;foo&quot;</span>) <span class="op">=</span><span class="op">&gt;</span> {}
+    <span class="kw">match</span> <span class="ident">Pin::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">generator</span>).<span class="ident">resume</span>(()) {
+        <span class="ident">GeneratorState::Complete</span>(<span class="string">&quot;foo&quot;</span>) <span class="op">=</span><span class="op">&gt;</span> {}
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;unexpected return from resume&quot;</span>),
     }
 }</pre></div>

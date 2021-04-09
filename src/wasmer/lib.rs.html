@@ -384,19 +384,19 @@
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">unused_import_braces</span>)]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>,
-    <span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">new_without_default</span>, <span class="ident">vtable_address_comparisons</span>)
+    <span class="ident">allow</span>(<span class="ident">clippy::new_without_default</span>, <span class="ident">vtable_address_comparisons</span>)
 )]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>,
     <span class="ident">warn</span>(
-        <span class="ident">clippy</span>::<span class="ident">float_arithmetic</span>,
-        <span class="ident">clippy</span>::<span class="ident">mut_mut</span>,
-        <span class="ident">clippy</span>::<span class="ident">nonminimal_bool</span>,
-        <span class="ident">clippy</span>::<span class="ident">option_map_unwrap_or</span>,
-        <span class="ident">clippy</span>::<span class="ident">option_map_unwrap_or_else</span>,
-        <span class="ident">clippy</span>::<span class="ident">print_stdout</span>,
-        <span class="ident">clippy</span>::<span class="ident">unicode_not_nfc</span>,
-        <span class="ident">clippy</span>::<span class="ident">use_self</span>
+        <span class="ident">clippy::float_arithmetic</span>,
+        <span class="ident">clippy::mut_mut</span>,
+        <span class="ident">clippy::nonminimal_bool</span>,
+        <span class="ident">clippy::option_map_unwrap_or</span>,
+        <span class="ident">clippy::option_map_unwrap_or_else</span>,
+        <span class="ident">clippy::print_stdout</span>,
+        <span class="ident">clippy::unicode_not_nfc</span>,
+        <span class="ident">clippy::use_self</span>
     )
 )]</span>
 
@@ -642,7 +642,7 @@
 <span class="doccomment">/// Implement [`WasmerEnv`] for your type with `#[derive(WasmerEnv)]`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// See the [`WasmerEnv`] trait for more information.</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">wasmer_derive</span>::<span class="ident">WasmerEnv</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">wasmer_derive::WasmerEnv</span>;
 
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">internals</span> {
@@ -652,28 +652,28 @@
     <span class="doccomment">//! they might change frequently or be removed in the future.</span>
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deprecated&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">externals</span>::{<span class="ident">UnsafeMutableEnv</span>, <span class="ident">WithUnsafeMutableEnv</span>};
-    <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">externals</span>::{<span class="ident">WithEnv</span>, <span class="ident">WithoutEnv</span>};
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::externals</span>::{<span class="ident">UnsafeMutableEnv</span>, <span class="ident">WithUnsafeMutableEnv</span>};
+    <span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::externals</span>::{<span class="ident">WithEnv</span>, <span class="ident">WithoutEnv</span>};
 }
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">env</span>::{<span class="ident">HostEnvInitError</span>, <span class="ident">LazyInit</span>, <span class="ident">WasmerEnv</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">exports</span>::{<span class="ident">ExportError</span>, <span class="ident">Exportable</span>, <span class="ident">Exports</span>, <span class="ident">ExportsIterator</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">externals</span>::{
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::env</span>::{<span class="ident">HostEnvInitError</span>, <span class="ident">LazyInit</span>, <span class="ident">WasmerEnv</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::exports</span>::{<span class="ident">ExportError</span>, <span class="ident">Exportable</span>, <span class="ident">Exports</span>, <span class="ident">ExportsIterator</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::externals</span>::{
     <span class="ident">Extern</span>, <span class="ident">FromToNativeWasmType</span>, <span class="ident">Function</span>, <span class="ident">Global</span>, <span class="ident">HostFunction</span>, <span class="ident">Memory</span>, <span class="ident">Table</span>, <span class="ident">WasmTypeList</span>,
 };
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">import_object</span>::{<span class="ident">ImportObject</span>, <span class="ident">ImportObjectIterator</span>, <span class="ident">LikeNamespace</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">instance</span>::{<span class="ident">Instance</span>, <span class="ident">InstantiationError</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">module</span>::<span class="ident">Module</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">native</span>::<span class="ident">NativeFunc</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ptr</span>::{<span class="ident">Array</span>, <span class="ident">Item</span>, <span class="ident">WasmPtr</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">store</span>::{<span class="ident">Store</span>, <span class="ident">StoreObject</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">tunables</span>::<span class="ident">BaseTunables</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::{
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::import_object</span>::{<span class="ident">ImportObject</span>, <span class="ident">ImportObjectIterator</span>, <span class="ident">LikeNamespace</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::instance</span>::{<span class="ident">Instance</span>, <span class="ident">InstantiationError</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::module::Module</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::native::NativeFunc</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ptr</span>::{<span class="ident">Array</span>, <span class="ident">Item</span>, <span class="ident">WasmPtr</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::store</span>::{<span class="ident">Store</span>, <span class="ident">StoreObject</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::tunables::BaseTunables</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::types</span>::{
     <span class="ident">ExportType</span>, <span class="ident">ExternRef</span>, <span class="ident">ExternType</span>, <span class="ident">FunctionType</span>, <span class="ident">GlobalType</span>, <span class="ident">HostInfo</span>, <span class="ident">HostRef</span>, <span class="ident">ImportType</span>,
     <span class="ident">MemoryType</span>, <span class="ident">Mutability</span>, <span class="ident">TableType</span>, <span class="ident">Val</span>, <span class="ident">ValType</span>,
 };
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">types</span>::{<span class="ident">Val</span> <span class="kw">as</span> <span class="ident">Value</span>, <span class="ident">ValType</span> <span class="kw">as</span> <span class="ident">Type</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">utils</span>::<span class="ident">is_wasm</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::types</span>::{<span class="ident">Val</span> <span class="kw">as</span> <span class="ident">Value</span>, <span class="ident">ValType</span> <span class="kw">as</span> <span class="ident">Type</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::utils::is_wasm</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">target_lexicon</span>::{<span class="ident">Architecture</span>, <span class="ident">CallingConvention</span>, <span class="ident">OperatingSystem</span>, <span class="ident">Triple</span>, <span class="ident">HOST</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;compiler&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">wasmer_compiler</span>::{
@@ -703,7 +703,7 @@
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;wat&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">wat</span>::<span class="ident">parse_bytes</span> <span class="kw">as</span> <span class="ident">wat2wasm</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">wat::parse_bytes</span> <span class="kw">as</span> <span class="ident">wat2wasm</span>;
 
 <span class="comment">// The compilers are mutually exclusive</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
@@ -726,7 +726,7 @@ let store = Store::new(&amp;engine);
 );
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;singlepass&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">wasmer_compiler_singlepass</span>::<span class="ident">Singlepass</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">wasmer_compiler_singlepass::Singlepass</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cranelift&quot;</span>)]</span>
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">wasmer_compiler_cranelift</span>::{<span class="ident">Cranelift</span>, <span class="ident">CraneliftOptLevel</span>};

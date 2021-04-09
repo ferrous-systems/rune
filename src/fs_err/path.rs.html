@@ -45,47 +45,47 @@
 <span id="42">42</span>
 <span id="43">43</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fs</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
+<span class="kw">use</span> <span class="ident">std::fs</span>;
+<span class="kw">use</span> <span class="ident">std::io</span>;
+<span class="kw">use</span> <span class="ident">std::path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
 
 <span class="doccomment">/// Defines aliases on [`Path`](https://doc.rust-lang.org/std/path/struct.Path.html) for `fs_err` functions.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This trait is sealed and can not be implemented by other crates.</span>
 <span class="comment">//</span>
 <span class="comment">// Because noone else can implement it, we can add methods backwards-compatibly.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PathExt</span>: <span class="kw">crate</span>::<span class="ident">Sealed</span> {
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PathExt</span>: <span class="kw">crate</span><span class="ident">::Sealed</span> {
     <span class="doccomment">/// Wrapper for [`crate::metadata`].</span>
-    <span class="kw">fn</span> <span class="ident">fs_err_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">fs</span>::<span class="ident">Metadata</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">fs_err_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">fs::Metadata</span><span class="op">&gt;</span>;
     <span class="doccomment">/// Wrapper for [`crate::symlink_metadata`].</span>
-    <span class="kw">fn</span> <span class="ident">fs_err_symlink_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">fs</span>::<span class="ident">Metadata</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">fs_err_symlink_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">fs::Metadata</span><span class="op">&gt;</span>;
     <span class="doccomment">/// Wrapper for [`crate::canonicalize`].</span>
-    <span class="kw">fn</span> <span class="ident">fs_err_canonicalize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">fs_err_canonicalize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>;
     <span class="doccomment">/// Wrapper for [`crate::read_link`].</span>
-    <span class="kw">fn</span> <span class="ident">fs_err_read_link</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">fs_err_read_link</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>;
     <span class="doccomment">/// Wrapper for [`crate::read_dir`].</span>
-    <span class="kw">fn</span> <span class="ident">fs_err_read_dir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">ReadDir</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">fs_err_read_dir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::ReadDir</span><span class="op">&gt;</span>;
 }
 
 <span class="kw">impl</span> <span class="ident">PathExt</span> <span class="kw">for</span> <span class="ident">Path</span> {
-    <span class="kw">fn</span> <span class="ident">fs_err_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">fs</span>::<span class="ident">Metadata</span><span class="op">&gt;</span> {
-        <span class="kw">crate</span>::<span class="ident">metadata</span>(<span class="self">self</span>)
+    <span class="kw">fn</span> <span class="ident">fs_err_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">fs::Metadata</span><span class="op">&gt;</span> {
+        <span class="kw">crate</span><span class="ident">::metadata</span>(<span class="self">self</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">fs_err_symlink_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">fs</span>::<span class="ident">Metadata</span><span class="op">&gt;</span> {
-        <span class="kw">crate</span>::<span class="ident">symlink_metadata</span>(<span class="self">self</span>)
+    <span class="kw">fn</span> <span class="ident">fs_err_symlink_metadata</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">fs::Metadata</span><span class="op">&gt;</span> {
+        <span class="kw">crate</span><span class="ident">::symlink_metadata</span>(<span class="self">self</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">fs_err_canonicalize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
-        <span class="kw">crate</span>::<span class="ident">canonicalize</span>(<span class="self">self</span>)
+    <span class="kw">fn</span> <span class="ident">fs_err_canonicalize</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
+        <span class="kw">crate</span><span class="ident">::canonicalize</span>(<span class="self">self</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">fs_err_read_link</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
-        <span class="kw">crate</span>::<span class="ident">read_link</span>(<span class="self">self</span>)
+    <span class="kw">fn</span> <span class="ident">fs_err_read_link</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
+        <span class="kw">crate</span><span class="ident">::read_link</span>(<span class="self">self</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">fs_err_read_dir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">ReadDir</span><span class="op">&gt;</span> {
-        <span class="kw">crate</span>::<span class="ident">read_dir</span>(<span class="self">self</span>)
+    <span class="kw">fn</span> <span class="ident">fs_err_read_dir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::ReadDir</span><span class="op">&gt;</span> {
+        <span class="kw">crate</span><span class="ident">::read_dir</span>(<span class="self">self</span>)
     }
 }
 </pre></div>

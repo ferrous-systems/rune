@@ -156,8 +156,8 @@
 <span id="153">153</span>
 <span id="154">154</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ast</span>::{<span class="ident">kw</span>, <span class="ident">Float32</span>, <span class="ident">Float64</span>, <span class="ident">Index</span>, <span class="ident">HeapType</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">parser</span>::{<span class="ident">Parse</span>, <span class="ident">Parser</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ast</span>::{<span class="ident">kw</span>, <span class="ident">Float32</span>, <span class="ident">Float64</span>, <span class="ident">Index</span>, <span class="ident">HeapType</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::parser</span>::{<span class="ident">Parse</span>, <span class="ident">Parser</span>, <span class="prelude-ty">Result</span>};
 
 <span class="doccomment">/// An expression that is valid inside an `assert_return` directive.</span>
 <span class="doccomment">///</span>
@@ -193,14 +193,14 @@
         })<span class="question-mark">?</span>;
 
         <span class="kw">match</span> <span class="ident">keyword</span> {
-            <span class="string">&quot;i32.const&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AssertExpression</span>::<span class="ident">I32</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>)),
-            <span class="string">&quot;i64.const&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AssertExpression</span>::<span class="ident">I64</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>)),
-            <span class="string">&quot;f32.const&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AssertExpression</span>::<span class="ident">F32</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>)),
-            <span class="string">&quot;f64.const&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AssertExpression</span>::<span class="ident">F64</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>)),
-            <span class="string">&quot;v128.const&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AssertExpression</span>::<span class="ident">V128</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>)),
-            <span class="string">&quot;ref.null&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AssertExpression</span>::<span class="ident">RefNull</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>)),
-            <span class="string">&quot;ref.extern&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AssertExpression</span>::<span class="ident">RefExtern</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>)),
-            <span class="string">&quot;ref.func&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AssertExpression</span>::<span class="ident">RefFunc</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>)),
+            <span class="string">&quot;i32.const&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AssertExpression::I32</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>)),
+            <span class="string">&quot;i64.const&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AssertExpression::I64</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>)),
+            <span class="string">&quot;f32.const&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AssertExpression::F32</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>)),
+            <span class="string">&quot;f64.const&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AssertExpression::F64</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>)),
+            <span class="string">&quot;v128.const&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AssertExpression::V128</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>)),
+            <span class="string">&quot;ref.null&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AssertExpression::RefNull</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>)),
+            <span class="string">&quot;ref.extern&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AssertExpression::RefExtern</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>)),
+            <span class="string">&quot;ref.func&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">AssertExpression::RefFunc</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>)),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">parser</span>.<span class="ident">error</span>(<span class="string">&quot;expected a [type].const expression&quot;</span>)),
         }
     }
@@ -220,15 +220,15 @@
     <span class="ident">T</span>: <span class="ident">Parse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
 {
     <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">parser</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">parser</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">nan_canonical</span><span class="op">&gt;</span>() {
-            <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">nan_canonical</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">NanPattern</span>::<span class="ident">CanonicalNan</span>)
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">parser</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">nan_arithmetic</span><span class="op">&gt;</span>() {
-            <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">nan_arithmetic</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">NanPattern</span>::<span class="ident">ArithmeticNan</span>)
+        <span class="kw">if</span> <span class="ident">parser</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw::nan_canonical</span><span class="op">&gt;</span>() {
+            <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::nan_canonical</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<span class="ident">NanPattern::CanonicalNan</span>)
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">parser</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw::nan_arithmetic</span><span class="op">&gt;</span>() {
+            <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::nan_arithmetic</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<span class="ident">NanPattern::ArithmeticNan</span>)
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">NanPattern</span>::<span class="ident">Value</span>(<span class="ident">val</span>))
+            <span class="prelude-val">Ok</span>(<span class="ident">NanPattern::Value</span>(<span class="ident">val</span>))
         }
     }
 }
@@ -251,9 +251,9 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Parse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">V128Pattern</span> {
     <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">parser</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">l</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">lookahead1</span>();
-        <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">i8x16</span><span class="op">&gt;</span>() {
-            <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">i8x16</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">V128Pattern</span>::<span class="ident">I8x16</span>([
+        <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw::i8x16</span><span class="op">&gt;</span>() {
+            <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::i8x16</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<span class="ident">V128Pattern::I8x16</span>([
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
@@ -271,9 +271,9 @@
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
             ]))
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">i16x8</span><span class="op">&gt;</span>() {
-            <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">i16x8</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">V128Pattern</span>::<span class="ident">I16x8</span>([
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw::i16x8</span><span class="op">&gt;</span>() {
+            <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::i16x8</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<span class="ident">V128Pattern::I16x8</span>([
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
@@ -283,28 +283,28 @@
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
             ]))
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">i32x4</span><span class="op">&gt;</span>() {
-            <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">i32x4</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">V128Pattern</span>::<span class="ident">I32x4</span>([
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw::i32x4</span><span class="op">&gt;</span>() {
+            <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::i32x4</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<span class="ident">V128Pattern::I32x4</span>([
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
             ]))
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">i64x2</span><span class="op">&gt;</span>() {
-            <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">i64x2</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">V128Pattern</span>::<span class="ident">I64x2</span>([<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>, <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>]))
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">f32x4</span><span class="op">&gt;</span>() {
-            <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">f32x4</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">V128Pattern</span>::<span class="ident">F32x4</span>([
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw::i64x2</span><span class="op">&gt;</span>() {
+            <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::i64x2</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<span class="ident">V128Pattern::I64x2</span>([<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>, <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>]))
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw::f32x4</span><span class="op">&gt;</span>() {
+            <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::f32x4</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<span class="ident">V128Pattern::F32x4</span>([
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
             ]))
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">f64x2</span><span class="op">&gt;</span>() {
-            <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">f64x2</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
-            <span class="prelude-val">Ok</span>(<span class="ident">V128Pattern</span>::<span class="ident">F64x2</span>([<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>, <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>]))
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw::f64x2</span><span class="op">&gt;</span>() {
+            <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::f64x2</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(<span class="ident">V128Pattern::F64x2</span>([<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>, <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>]))
         } <span class="kw">else</span> {
             <span class="prelude-val">Err</span>(<span class="ident">l</span>.<span class="ident">error</span>())
         }

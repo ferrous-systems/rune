@@ -312,16 +312,16 @@
 <span id="311">311</span>
 <span id="312">312</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">externals</span>::{<span class="ident">Extern</span>, <span class="ident">Function</span>, <span class="ident">Global</span>, <span class="ident">Memory</span>, <span class="ident">Table</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">import_object</span>::<span class="ident">LikeNamespace</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">native</span>::<span class="ident">NativeFunc</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">WasmTypeList</span>;
-<span class="kw">use</span> <span class="ident">indexmap</span>::<span class="ident">IndexMap</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">iter</span>::{<span class="ident">ExactSizeIterator</span>, <span class="ident">FromIterator</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
-<span class="kw">use</span> <span class="ident">thiserror</span>::<span class="ident">Error</span>;
-<span class="kw">use</span> <span class="ident">wasmer_engine</span>::<span class="ident">Export</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::externals</span>::{<span class="ident">Extern</span>, <span class="ident">Function</span>, <span class="ident">Global</span>, <span class="ident">Memory</span>, <span class="ident">Table</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::import_object::LikeNamespace</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::native::NativeFunc</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::WasmTypeList</span>;
+<span class="kw">use</span> <span class="ident">indexmap::IndexMap</span>;
+<span class="kw">use</span> <span class="ident">std::fmt</span>;
+<span class="kw">use</span> <span class="ident">std::iter</span>::{<span class="ident">ExactSizeIterator</span>, <span class="ident">FromIterator</span>};
+<span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
+<span class="kw">use</span> <span class="ident">thiserror::Error</span>;
+<span class="kw">use</span> <span class="ident">wasmer_engine::Export</span>;
 
 <span class="doccomment">/// The `ExportError` can happen when trying to get a specific</span>
 <span class="doccomment">/// export [`Extern`] from the [`Instance`] exports.</span>
@@ -383,13 +383,13 @@
 <span class="kw">impl</span> <span class="ident">Exports</span> {
     <span class="doccomment">/// Creates a new `Exports`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Default</span>::<span class="ident">default</span>()
+        <span class="ident">Default::default</span>()
     }
 
     <span class="doccomment">/// Creates a new `Exports` with capacity `n`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_capacity</span>(<span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">map</span>: <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">IndexMap</span>::<span class="ident">with_capacity</span>(<span class="ident">n</span>)),
+            <span class="ident">map</span>: <span class="ident">Arc::new</span>(<span class="ident">IndexMap::with_capacity</span>(<span class="ident">n</span>)),
         }
     }
 
@@ -409,7 +409,7 @@
         <span class="ident">S</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
         <span class="ident">E</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Extern</span><span class="op">&gt;</span>,
     {
-        <span class="ident">Arc</span>::<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">map</span>)
+        <span class="ident">Arc::get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">map</span>)
             .<span class="ident">unwrap</span>()
             .<span class="ident">insert</span>(<span class="ident">name</span>.<span class="ident">into</span>(), <span class="ident">value</span>.<span class="ident">into</span>());
     }
@@ -427,8 +427,8 @@
     <span class="doccomment">/// type checking manually, please use `get_extern`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Exportable</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>, <span class="ident">ExportError</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">map</span>.<span class="ident">get</span>(<span class="ident">name</span>) {
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ExportError</span>::<span class="ident">Missing</span>(<span class="ident">name</span>.<span class="ident">to_string</span>())),
-            <span class="prelude-val">Some</span>(<span class="ident">extern_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">T</span>::<span class="ident">get_self_from_extern</span>(<span class="ident">extern_</span>),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ExportError::Missing</span>(<span class="ident">name</span>.<span class="ident">to_string</span>())),
+            <span class="prelude-val">Some</span>(<span class="ident">extern_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">T::get_self_from_extern</span>(<span class="ident">extern_</span>),
         }
     }
 
@@ -463,7 +463,7 @@
     {
         <span class="self">self</span>.<span class="ident">get_function</span>(<span class="ident">name</span>)<span class="question-mark">?</span>
             .<span class="ident">native</span>()
-            .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">ExportError</span>::<span class="ident">IncompatibleType</span>)
+            .<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">ExportError::IncompatibleType</span>)
     }
 
     <span class="doccomment">/// Hack to get this working with nativefunc too</span>
@@ -474,8 +474,8 @@
         <span class="ident">T</span>: <span class="ident">ExportableWithGenerics</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Args</span>, <span class="ident">Rets</span><span class="op">&gt;</span>,
     {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">map</span>.<span class="ident">get</span>(<span class="ident">name</span>) {
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ExportError</span>::<span class="ident">Missing</span>(<span class="ident">name</span>.<span class="ident">to_string</span>())),
-            <span class="prelude-val">Some</span>(<span class="ident">extern_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">T</span>::<span class="ident">get_self_from_extern_with_generics</span>(<span class="ident">extern_</span>),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">ExportError::Missing</span>(<span class="ident">name</span>.<span class="ident">to_string</span>())),
+            <span class="prelude-val">Some</span>(<span class="ident">extern_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">T::get_self_from_extern_with_generics</span>(<span class="ident">extern_</span>),
         }
     }
 
@@ -500,8 +500,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Exports</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Exports</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_set</span>().<span class="ident">entries</span>(<span class="self">self</span>.<span class="ident">iter</span>()).<span class="ident">finish</span>()
     }
 }
@@ -520,7 +520,7 @@
 {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">String</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Extern</span>);
 
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">next</span>()
     }
 }
@@ -541,7 +541,7 @@
     <span class="doccomment">/// Get only the functions.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">functions</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">String</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Function</span>)<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">filter_map</span>(<span class="op">|</span>(<span class="ident">name</span>, <span class="ident">export</span>)<span class="op">|</span> <span class="kw">match</span> <span class="ident">export</span> {
-            <span class="ident">Extern</span>::<span class="ident">Function</span>(<span class="ident">function</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">name</span>, <span class="ident">function</span>)),
+            <span class="ident">Extern::Function</span>(<span class="ident">function</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">name</span>, <span class="ident">function</span>)),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         })
     }
@@ -549,7 +549,7 @@
     <span class="doccomment">/// Get only the memories.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">memories</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">String</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Memory</span>)<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">filter_map</span>(<span class="op">|</span>(<span class="ident">name</span>, <span class="ident">export</span>)<span class="op">|</span> <span class="kw">match</span> <span class="ident">export</span> {
-            <span class="ident">Extern</span>::<span class="ident">Memory</span>(<span class="ident">memory</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">name</span>, <span class="ident">memory</span>)),
+            <span class="ident">Extern::Memory</span>(<span class="ident">memory</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">name</span>, <span class="ident">memory</span>)),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         })
     }
@@ -557,7 +557,7 @@
     <span class="doccomment">/// Get only the globals.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">globals</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">String</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Global</span>)<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">filter_map</span>(<span class="op">|</span>(<span class="ident">name</span>, <span class="ident">export</span>)<span class="op">|</span> <span class="kw">match</span> <span class="ident">export</span> {
-            <span class="ident">Extern</span>::<span class="ident">Global</span>(<span class="ident">global</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">name</span>, <span class="ident">global</span>)),
+            <span class="ident">Extern::Global</span>(<span class="ident">global</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">name</span>, <span class="ident">global</span>)),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         })
     }
@@ -565,7 +565,7 @@
     <span class="doccomment">/// Get only the tables.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">tables</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">String</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Table</span>)<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Sized</span> {
         <span class="self">self</span>.<span class="ident">iter</span>.<span class="ident">filter_map</span>(<span class="op">|</span>(<span class="ident">name</span>, <span class="ident">export</span>)<span class="op">|</span> <span class="kw">match</span> <span class="ident">export</span> {
-            <span class="ident">Extern</span>::<span class="ident">Table</span>(<span class="ident">table</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">name</span>, <span class="ident">table</span>)),
+            <span class="ident">Extern::Table</span>(<span class="ident">table</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">name</span>, <span class="ident">table</span>)),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         })
     }
@@ -574,7 +574,7 @@
 <span class="kw">impl</span> <span class="ident">FromIterator</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="ident">Extern</span>)<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Exports</span> {
     <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> (<span class="ident">String</span>, <span class="ident">Extern</span>)<span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">map</span>: <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">IndexMap</span>::<span class="ident">from_iter</span>(<span class="ident">iter</span>)),
+            <span class="ident">map</span>: <span class="ident">Arc::new</span>(<span class="ident">IndexMap::from_iter</span>(<span class="ident">iter</span>)),
         }
     }
 }
@@ -621,7 +621,7 @@
 <span class="doccomment">/// with empty `Args` and `Rets`.</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="ident">Exportable</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> <span class="ident">ExportableWithGenerics</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, (), ()<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">T</span> {
     <span class="kw">fn</span> <span class="ident">get_self_from_extern_with_generics</span>(<span class="ident">_extern</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Extern</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">ExportError</span><span class="op">&gt;</span> {
-        <span class="ident">T</span>::<span class="ident">get_self_from_extern</span>(<span class="ident">_extern</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">i</span>.<span class="ident">clone</span>())
+        <span class="ident">T::get_self_from_extern</span>(<span class="ident">_extern</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">i</span>.<span class="ident">clone</span>())
     }
 }
 </pre></div>

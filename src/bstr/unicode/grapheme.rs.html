@@ -357,12 +357,12 @@
 <span id="354">354</span>
 <span id="355">355</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">regex_automata</span>::<span class="ident">DFA</span>;
+<span class="kw">use</span> <span class="ident">regex_automata::DFA</span>;
 
-<span class="kw">use</span> <span class="ident">ext_slice</span>::<span class="ident">ByteSlice</span>;
-<span class="kw">use</span> <span class="ident">unicode</span>::<span class="ident">fsm</span>::<span class="ident">grapheme_break_fwd</span>::<span class="ident">GRAPHEME_BREAK_FWD</span>;
-<span class="kw">use</span> <span class="ident">unicode</span>::<span class="ident">fsm</span>::<span class="ident">grapheme_break_rev</span>::<span class="ident">GRAPHEME_BREAK_REV</span>;
-<span class="kw">use</span> <span class="ident">unicode</span>::<span class="ident">fsm</span>::<span class="ident">regional_indicator_rev</span>::<span class="ident">REGIONAL_INDICATOR_REV</span>;
+<span class="kw">use</span> <span class="ident">ext_slice::ByteSlice</span>;
+<span class="kw">use</span> <span class="ident">unicode::fsm::grapheme_break_fwd::GRAPHEME_BREAK_FWD</span>;
+<span class="kw">use</span> <span class="ident">unicode::fsm::grapheme_break_rev::GRAPHEME_BREAK_REV</span>;
+<span class="kw">use</span> <span class="ident">unicode::fsm::regional_indicator_rev::REGIONAL_INDICATOR_REV</span>;
 <span class="kw">use</span> <span class="ident">utf8</span>;
 
 <span class="doccomment">/// An iterator over grapheme clusters in a byte string.</span>
@@ -557,7 +557,7 @@
     } <span class="kw">else</span> {
         <span class="kw">const</span> <span class="ident">INVALID</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;\u{FFFD}&quot;</span>;
         <span class="comment">// No match on non-empty bytes implies we found invalid UTF-8.</span>
-        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">size</span>) <span class="op">=</span> <span class="ident">utf8</span>::<span class="ident">decode_lossy</span>(<span class="ident">bs</span>);
+        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">size</span>) <span class="op">=</span> <span class="ident">utf8::decode_lossy</span>(<span class="ident">bs</span>);
         (<span class="ident">INVALID</span>, <span class="ident">size</span>)
     }
 }
@@ -573,7 +573,7 @@
     } <span class="kw">else</span> {
         <span class="kw">const</span> <span class="ident">INVALID</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;\u{FFFD}&quot;</span>;
         <span class="comment">// No match on non-empty bytes implies we found invalid UTF-8.</span>
-        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">size</span>) <span class="op">=</span> <span class="ident">utf8</span>::<span class="ident">decode_last_lossy</span>(<span class="ident">bs</span>);
+        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">size</span>) <span class="op">=</span> <span class="ident">utf8::decode_last_lossy</span>(<span class="ident">bs</span>);
         (<span class="ident">INVALID</span>, <span class="ident">size</span>)
     }
 }
@@ -618,17 +618,17 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">ucd_parse</span>::<span class="ident">GraphemeClusterBreakTest</span>;
+    <span class="kw">use</span> <span class="ident">ucd_parse::GraphemeClusterBreakTest</span>;
 
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">ext_slice</span>::<span class="ident">ByteSlice</span>;
-    <span class="kw">use</span> <span class="ident">tests</span>::<span class="ident">LOSSY_TESTS</span>;
+    <span class="kw">use</span> <span class="ident">ext_slice::ByteSlice</span>;
+    <span class="kw">use</span> <span class="ident">tests::LOSSY_TESTS</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">forward_ucd</span>() {
         <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">test</span>) <span class="kw">in</span> <span class="ident">ucdtests</span>().<span class="ident">into_iter</span>().<span class="ident">enumerate</span>() {
             <span class="kw">let</span> <span class="ident">given</span> <span class="op">=</span> <span class="ident">test</span>.<span class="ident">grapheme_clusters</span>.<span class="ident">concat</span>();
-            <span class="kw">let</span> <span class="ident">got</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Graphemes</span>::<span class="ident">new</span>(<span class="ident">given</span>.<span class="ident">as_bytes</span>())
+            <span class="kw">let</span> <span class="ident">got</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Graphemes::new</span>(<span class="ident">given</span>.<span class="ident">as_bytes</span>())
                 .<span class="ident">map</span>(<span class="op">|</span><span class="ident">cluster</span><span class="op">|</span> <span class="ident">cluster</span>.<span class="ident">to_string</span>())
                 .<span class="ident">collect</span>();
             <span class="macro">assert_eq!</span>(
@@ -650,7 +650,7 @@
     <span class="kw">fn</span> <span class="ident">reverse_ucd</span>() {
         <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">test</span>) <span class="kw">in</span> <span class="ident">ucdtests</span>().<span class="ident">into_iter</span>().<span class="ident">enumerate</span>() {
             <span class="kw">let</span> <span class="ident">given</span> <span class="op">=</span> <span class="ident">test</span>.<span class="ident">grapheme_clusters</span>.<span class="ident">concat</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">got</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Graphemes</span>::<span class="ident">new</span>(<span class="ident">given</span>.<span class="ident">as_bytes</span>())
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">got</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Graphemes::new</span>(<span class="ident">given</span>.<span class="ident">as_bytes</span>())
                 .<span class="ident">rev</span>()
                 .<span class="ident">map</span>(<span class="op">|</span><span class="ident">cluster</span><span class="op">|</span> <span class="ident">cluster</span>.<span class="ident">to_string</span>())
                 .<span class="ident">collect</span>();
@@ -673,7 +673,7 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">forward_lossy</span>() {
         <span class="kw">for</span> <span class="kw-2">&amp;</span>(<span class="ident">expected</span>, <span class="ident">input</span>) <span class="kw">in</span> <span class="ident">LOSSY_TESTS</span> {
-            <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">Graphemes</span>::<span class="ident">new</span>(<span class="ident">input</span>.<span class="ident">as_bytes</span>()).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>();
+            <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">Graphemes::new</span>(<span class="ident">input</span>.<span class="ident">as_bytes</span>()).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>();
             <span class="macro">assert_eq!</span>(<span class="ident">expected</span>, <span class="ident">got</span>);
         }
     }
@@ -683,7 +683,7 @@
         <span class="kw">for</span> <span class="kw-2">&amp;</span>(<span class="ident">expected</span>, <span class="ident">input</span>) <span class="kw">in</span> <span class="ident">LOSSY_TESTS</span> {
             <span class="kw">let</span> <span class="ident">expected</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">expected</span>.<span class="ident">chars</span>().<span class="ident">rev</span>().<span class="ident">collect</span>();
             <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span>
-                <span class="ident">Graphemes</span>::<span class="ident">new</span>(<span class="ident">input</span>.<span class="ident">as_bytes</span>()).<span class="ident">rev</span>().<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>();
+                <span class="ident">Graphemes::new</span>(<span class="ident">input</span>.<span class="ident">as_bytes</span>()).<span class="ident">rev</span>().<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>();
             <span class="macro">assert_eq!</span>(<span class="ident">expected</span>, <span class="ident">got</span>);
         }
     }

@@ -178,14 +178,14 @@
 <span id="175">175</span>
 <span id="176">176</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ast</span>::{<span class="self">self</span>, <span class="ident">kw</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">parser</span>::{<span class="ident">Cursor</span>, <span class="ident">Parse</span>, <span class="ident">Parser</span>, <span class="ident">Peek</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ast</span>::{<span class="self">self</span>, <span class="ident">kw</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::parser</span>::{<span class="ident">Cursor</span>, <span class="ident">Parse</span>, <span class="ident">Parser</span>, <span class="ident">Peek</span>, <span class="prelude-ty">Result</span>};
 
 <span class="doccomment">/// An `import` statement and entry in a WebAssembly module.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Import</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Where this `import` was defined</span>
-    <span class="kw">pub</span> <span class="ident">span</span>: <span class="ident">ast</span>::<span class="ident">Span</span>,
+    <span class="kw">pub</span> <span class="ident">span</span>: <span class="ident">ast::Span</span>,
     <span class="doccomment">/// The module that this statement is importing from</span>
     <span class="kw">pub</span> <span class="ident">module</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
     <span class="doccomment">/// The name of the field in the module this statement imports from.</span>
@@ -196,7 +196,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Parse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Import</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">parser</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">import</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
+        <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::import</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
         <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">field</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">item</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parens</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">parse</span>())<span class="question-mark">?</span>;
@@ -213,13 +213,13 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ItemSig</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Where this item is defined in the source.</span>
-    <span class="kw">pub</span> <span class="ident">span</span>: <span class="ident">ast</span>::<span class="ident">Span</span>,
+    <span class="kw">pub</span> <span class="ident">span</span>: <span class="ident">ast::Span</span>,
     <span class="doccomment">/// An optional identifier used during name resolution to refer to this item</span>
     <span class="doccomment">/// from the rest of the module.</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">Id</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ast::Id</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// An optional name which, for functions, will be stored in the</span>
     <span class="doccomment">/// custom `name` section.</span>
-    <span class="kw">pub</span> <span class="ident">name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">NameAnnotation</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ast::NameAnnotation</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// What kind of item this is.</span>
     <span class="kw">pub</span> <span class="ident">kind</span>: <span class="ident">ItemKind</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
 }
@@ -227,73 +227,73 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ItemKind</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">Func</span>(<span class="ident">ast</span>::<span class="ident">TypeUse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">ast</span>::<span class="ident">FunctionType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>),
-    <span class="ident">Table</span>(<span class="ident">ast</span>::<span class="ident">TableType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>),
-    <span class="ident">Memory</span>(<span class="ident">ast</span>::<span class="ident">MemoryType</span>),
-    <span class="ident">Global</span>(<span class="ident">ast</span>::<span class="ident">GlobalType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>),
-    <span class="ident">Event</span>(<span class="ident">ast</span>::<span class="ident">EventType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>),
-    <span class="ident">Module</span>(<span class="ident">ast</span>::<span class="ident">TypeUse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">ast</span>::<span class="ident">ModuleType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>),
-    <span class="ident">Instance</span>(<span class="ident">ast</span>::<span class="ident">TypeUse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">ast</span>::<span class="ident">InstanceType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>),
+    <span class="ident">Func</span>(<span class="ident">ast::TypeUse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">ast::FunctionType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>),
+    <span class="ident">Table</span>(<span class="ident">ast::TableType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>),
+    <span class="ident">Memory</span>(<span class="ident">ast::MemoryType</span>),
+    <span class="ident">Global</span>(<span class="ident">ast::GlobalType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>),
+    <span class="ident">Event</span>(<span class="ident">ast::EventType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>),
+    <span class="ident">Module</span>(<span class="ident">ast::TypeUse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">ast::ModuleType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>),
+    <span class="ident">Instance</span>(<span class="ident">ast::TypeUse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">ast::InstanceType</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>),
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Parse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ItemSig</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">parser</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">l</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">lookahead1</span>();
-        <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">func</span><span class="op">&gt;</span>() {
-            <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">func</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
+        <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw::func</span><span class="op">&gt;</span>() {
+            <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::func</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
             <span class="prelude-val">Ok</span>(<span class="ident">ItemSig</span> {
                 <span class="ident">span</span>,
                 <span class="ident">id</span>: <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">name</span>: <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
-                <span class="ident">kind</span>: <span class="ident">ItemKind</span>::<span class="ident">Func</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>),
+                <span class="ident">kind</span>: <span class="ident">ItemKind::Func</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>),
             })
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">table</span><span class="op">&gt;</span>() {
-            <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">table</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw::table</span><span class="op">&gt;</span>() {
+            <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::table</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
             <span class="prelude-val">Ok</span>(<span class="ident">ItemSig</span> {
                 <span class="ident">span</span>,
                 <span class="ident">id</span>: <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">name</span>: <span class="prelude-val">None</span>,
-                <span class="ident">kind</span>: <span class="ident">ItemKind</span>::<span class="ident">Table</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>),
+                <span class="ident">kind</span>: <span class="ident">ItemKind::Table</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>),
             })
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">memory</span><span class="op">&gt;</span>() {
-            <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">memory</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw::memory</span><span class="op">&gt;</span>() {
+            <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::memory</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
             <span class="prelude-val">Ok</span>(<span class="ident">ItemSig</span> {
                 <span class="ident">span</span>,
                 <span class="ident">id</span>: <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">name</span>: <span class="prelude-val">None</span>,
-                <span class="ident">kind</span>: <span class="ident">ItemKind</span>::<span class="ident">Memory</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>),
+                <span class="ident">kind</span>: <span class="ident">ItemKind::Memory</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>),
             })
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">global</span><span class="op">&gt;</span>() {
-            <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">global</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw::global</span><span class="op">&gt;</span>() {
+            <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::global</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
             <span class="prelude-val">Ok</span>(<span class="ident">ItemSig</span> {
                 <span class="ident">span</span>,
                 <span class="ident">id</span>: <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">name</span>: <span class="prelude-val">None</span>,
-                <span class="ident">kind</span>: <span class="ident">ItemKind</span>::<span class="ident">Global</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>),
+                <span class="ident">kind</span>: <span class="ident">ItemKind::Global</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>),
             })
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">event</span><span class="op">&gt;</span>() {
-            <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">event</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw::event</span><span class="op">&gt;</span>() {
+            <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::event</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
             <span class="prelude-val">Ok</span>(<span class="ident">ItemSig</span> {
                 <span class="ident">span</span>,
                 <span class="ident">id</span>: <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">name</span>: <span class="prelude-val">None</span>,
-                <span class="ident">kind</span>: <span class="ident">ItemKind</span>::<span class="ident">Event</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>),
+                <span class="ident">kind</span>: <span class="ident">ItemKind::Event</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>),
             })
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">module</span><span class="op">&gt;</span>() {
-            <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">module</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw::module</span><span class="op">&gt;</span>() {
+            <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::module</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
             <span class="prelude-val">Ok</span>(<span class="ident">ItemSig</span> {
                 <span class="ident">span</span>,
                 <span class="ident">id</span>: <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">name</span>: <span class="prelude-val">None</span>,
-                <span class="ident">kind</span>: <span class="ident">ItemKind</span>::<span class="ident">Module</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>),
+                <span class="ident">kind</span>: <span class="ident">ItemKind::Module</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>),
             })
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">instance</span><span class="op">&gt;</span>() {
-            <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">instance</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">l</span>.<span class="ident">peek</span>::<span class="op">&lt;</span><span class="ident">kw::instance</span><span class="op">&gt;</span>() {
+            <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::instance</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
             <span class="prelude-val">Ok</span>(<span class="ident">ItemSig</span> {
                 <span class="ident">span</span>,
                 <span class="ident">id</span>: <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">name</span>: <span class="prelude-val">None</span>,
-                <span class="ident">kind</span>: <span class="ident">ItemKind</span>::<span class="ident">Instance</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>),
+                <span class="ident">kind</span>: <span class="ident">ItemKind::Instance</span>(<span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>),
             })
         } <span class="kw">else</span> {
             <span class="prelude-val">Err</span>(<span class="ident">l</span>.<span class="ident">error</span>())
@@ -317,7 +317,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Parse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">InlineImport</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">parser</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="ident">parser</span>.<span class="ident">parens</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> {
-            <span class="ident">p</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">import</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+            <span class="ident">p</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::import</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(<span class="ident">InlineImport</span> {
                 <span class="ident">module</span>: <span class="ident">p</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">field</span>: <span class="ident">p</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,

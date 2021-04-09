@@ -3,14 +3,14 @@
 a-z, A-Z and 0-9.</p>
 <h1 id="example" class="section-header"><a href="#example">Example</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">iter</span>;
+<span class="kw">use</span> <span class="ident">std::iter</span>;
 <span class="kw">use</span> <span class="ident">rand</span>::{<span class="ident">Rng</span>, <span class="ident">thread_rng</span>};
-<span class="kw">use</span> <span class="ident">rand</span>::<span class="ident">distributions</span>::<span class="ident">Alphanumeric</span>;
+<span class="kw">use</span> <span class="ident">rand::distributions::Alphanumeric</span>;
 
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rng</span> <span class="op">=</span> <span class="ident">thread_rng</span>();
-<span class="kw">let</span> <span class="ident">chars</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">iter</span>::<span class="ident">repeat</span>(())
+<span class="kw">let</span> <span class="ident">chars</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">iter::repeat</span>(())
         .<span class="ident">map</span>(<span class="op">|</span>()<span class="op">|</span> <span class="ident">rng</span>.<span class="ident">sample</span>(<span class="ident">Alphanumeric</span>))
-        .<span class="ident">map</span>(<span class="ident">char</span>::<span class="ident">from</span>)
+        .<span class="ident">map</span>(<span class="ident">char::from</span>)
         .<span class="ident">take</span>(<span class="number">7</span>)
         .<span class="ident">collect</span>();
 <span class="macro">println!</span>(<span class="string">&quot;Random chars: {}&quot;</span>, <span class="ident">chars</span>);</pre></div>

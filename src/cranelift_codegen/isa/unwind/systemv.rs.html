@@ -310,11 +310,11 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! System V ABI unwind information.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">unwind</span>::<span class="ident">input</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">result</span>::{<span class="ident">CodegenError</span>, <span class="ident">CodegenResult</span>};
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
-<span class="kw">use</span> <span class="ident">gimli</span>::<span class="ident">write</span>::{<span class="ident">Address</span>, <span class="ident">FrameDescriptionEntry</span>};
-<span class="kw">use</span> <span class="ident">thiserror</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::unwind::input</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::result</span>::{<span class="ident">CodegenError</span>, <span class="ident">CodegenResult</span>};
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
+<span class="kw">use</span> <span class="ident">gimli::write</span>::{<span class="ident">Address</span>, <span class="ident">FrameDescriptionEntry</span>};
+<span class="kw">use</span> <span class="ident">thiserror::Error</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;enable-serde&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
@@ -354,23 +354,23 @@
     <span class="ident">ArgsSize</span>(<span class="ident">u32</span>),
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">gimli</span>::<span class="ident">write</span>::<span class="ident">CallFrameInstruction</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CallFrameInstruction</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">cfi</span>: <span class="ident">gimli</span>::<span class="ident">write</span>::<span class="ident">CallFrameInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="ident">gimli</span>::<span class="ident">write</span>::<span class="ident">CallFrameInstruction</span>;
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">gimli::write::CallFrameInstruction</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CallFrameInstruction</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">cfi</span>: <span class="ident">gimli::write::CallFrameInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">use</span> <span class="ident">gimli::write::CallFrameInstruction</span>;
 
         <span class="kw">match</span> <span class="ident">cfi</span> {
-            <span class="ident">CallFrameInstruction</span>::<span class="ident">Cfa</span>(<span class="ident">reg</span>, <span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Cfa</span>(<span class="ident">reg</span>.<span class="number">0</span>, <span class="ident">offset</span>),
-            <span class="ident">CallFrameInstruction</span>::<span class="ident">CfaRegister</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">CfaRegister</span>(<span class="ident">reg</span>.<span class="number">0</span>),
-            <span class="ident">CallFrameInstruction</span>::<span class="ident">CfaOffset</span>(<span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">CfaOffset</span>(<span class="ident">offset</span>),
-            <span class="ident">CallFrameInstruction</span>::<span class="ident">Restore</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Restore</span>(<span class="ident">reg</span>.<span class="number">0</span>),
-            <span class="ident">CallFrameInstruction</span>::<span class="ident">Undefined</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Undefined</span>(<span class="ident">reg</span>.<span class="number">0</span>),
-            <span class="ident">CallFrameInstruction</span>::<span class="ident">SameValue</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">SameValue</span>(<span class="ident">reg</span>.<span class="number">0</span>),
-            <span class="ident">CallFrameInstruction</span>::<span class="ident">Offset</span>(<span class="ident">reg</span>, <span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Offset</span>(<span class="ident">reg</span>.<span class="number">0</span>, <span class="ident">offset</span>),
-            <span class="ident">CallFrameInstruction</span>::<span class="ident">ValOffset</span>(<span class="ident">reg</span>, <span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">ValOffset</span>(<span class="ident">reg</span>.<span class="number">0</span>, <span class="ident">offset</span>),
-            <span class="ident">CallFrameInstruction</span>::<span class="ident">Register</span>(<span class="ident">reg1</span>, <span class="ident">reg2</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Register</span>(<span class="ident">reg1</span>.<span class="number">0</span>, <span class="ident">reg2</span>.<span class="number">0</span>),
-            <span class="ident">CallFrameInstruction</span>::<span class="ident">RememberState</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">RememberState</span>,
-            <span class="ident">CallFrameInstruction</span>::<span class="ident">RestoreState</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">RestoreState</span>,
-            <span class="ident">CallFrameInstruction</span>::<span class="ident">ArgsSize</span>(<span class="ident">size</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">ArgsSize</span>(<span class="ident">size</span>),
+            <span class="ident">CallFrameInstruction::Cfa</span>(<span class="ident">reg</span>, <span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Cfa</span>(<span class="ident">reg</span>.<span class="number">0</span>, <span class="ident">offset</span>),
+            <span class="ident">CallFrameInstruction::CfaRegister</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::CfaRegister</span>(<span class="ident">reg</span>.<span class="number">0</span>),
+            <span class="ident">CallFrameInstruction::CfaOffset</span>(<span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::CfaOffset</span>(<span class="ident">offset</span>),
+            <span class="ident">CallFrameInstruction::Restore</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Restore</span>(<span class="ident">reg</span>.<span class="number">0</span>),
+            <span class="ident">CallFrameInstruction::Undefined</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Undefined</span>(<span class="ident">reg</span>.<span class="number">0</span>),
+            <span class="ident">CallFrameInstruction::SameValue</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::SameValue</span>(<span class="ident">reg</span>.<span class="number">0</span>),
+            <span class="ident">CallFrameInstruction::Offset</span>(<span class="ident">reg</span>, <span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Offset</span>(<span class="ident">reg</span>.<span class="number">0</span>, <span class="ident">offset</span>),
+            <span class="ident">CallFrameInstruction::ValOffset</span>(<span class="ident">reg</span>, <span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::ValOffset</span>(<span class="ident">reg</span>.<span class="number">0</span>, <span class="ident">offset</span>),
+            <span class="ident">CallFrameInstruction::Register</span>(<span class="ident">reg1</span>, <span class="ident">reg2</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Register</span>(<span class="ident">reg1</span>.<span class="number">0</span>, <span class="ident">reg2</span>.<span class="number">0</span>),
+            <span class="ident">CallFrameInstruction::RememberState</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::RememberState</span>,
+            <span class="ident">CallFrameInstruction::RestoreState</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::RestoreState</span>,
+            <span class="ident">CallFrameInstruction::ArgsSize</span>(<span class="ident">size</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::ArgsSize</span>(<span class="ident">size</span>),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="comment">// Cranelift&#39;s unwind support does not generate `CallFrameInstruction`s with</span>
                 <span class="comment">// Expression at this moment, and it is not trivial to</span>
@@ -381,25 +381,25 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">gimli</span>::<span class="ident">write</span>::<span class="ident">CallFrameInstruction</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CallFrameInstruction</span> {
-    <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">gimli</span>::<span class="ident">write</span>::<span class="ident">CallFrameInstruction</span> {
-        <span class="kw">use</span> <span class="ident">gimli</span>::{<span class="ident">write</span>::<span class="ident">CallFrameInstruction</span>, <span class="ident">Register</span>};
+<span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">gimli::write::CallFrameInstruction</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CallFrameInstruction</span> {
+    <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">gimli::write::CallFrameInstruction</span> {
+        <span class="kw">use</span> <span class="ident">gimli</span>::{<span class="ident">write::CallFrameInstruction</span>, <span class="ident">Register</span>};
 
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Cfa</span>(<span class="ident">reg</span>, <span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction</span>::<span class="ident">Cfa</span>(<span class="ident">Register</span>(<span class="ident">reg</span>), <span class="ident">offset</span>),
-            <span class="self">Self</span>::<span class="ident">CfaRegister</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction</span>::<span class="ident">CfaRegister</span>(<span class="ident">Register</span>(<span class="ident">reg</span>)),
-            <span class="self">Self</span>::<span class="ident">CfaOffset</span>(<span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction</span>::<span class="ident">CfaOffset</span>(<span class="ident">offset</span>),
-            <span class="self">Self</span>::<span class="ident">Restore</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction</span>::<span class="ident">Restore</span>(<span class="ident">Register</span>(<span class="ident">reg</span>)),
-            <span class="self">Self</span>::<span class="ident">Undefined</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction</span>::<span class="ident">Undefined</span>(<span class="ident">Register</span>(<span class="ident">reg</span>)),
-            <span class="self">Self</span>::<span class="ident">SameValue</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction</span>::<span class="ident">SameValue</span>(<span class="ident">Register</span>(<span class="ident">reg</span>)),
-            <span class="self">Self</span>::<span class="ident">Offset</span>(<span class="ident">reg</span>, <span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction</span>::<span class="ident">Offset</span>(<span class="ident">Register</span>(<span class="ident">reg</span>), <span class="ident">offset</span>),
-            <span class="self">Self</span>::<span class="ident">ValOffset</span>(<span class="ident">reg</span>, <span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction</span>::<span class="ident">ValOffset</span>(<span class="ident">Register</span>(<span class="ident">reg</span>), <span class="ident">offset</span>),
-            <span class="self">Self</span>::<span class="ident">Register</span>(<span class="ident">reg1</span>, <span class="ident">reg2</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">CallFrameInstruction</span>::<span class="ident">Register</span>(<span class="ident">Register</span>(<span class="ident">reg1</span>), <span class="ident">Register</span>(<span class="ident">reg2</span>))
+            <span class="self">Self</span><span class="ident">::Cfa</span>(<span class="ident">reg</span>, <span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction::Cfa</span>(<span class="ident">Register</span>(<span class="ident">reg</span>), <span class="ident">offset</span>),
+            <span class="self">Self</span><span class="ident">::CfaRegister</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction::CfaRegister</span>(<span class="ident">Register</span>(<span class="ident">reg</span>)),
+            <span class="self">Self</span><span class="ident">::CfaOffset</span>(<span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction::CfaOffset</span>(<span class="ident">offset</span>),
+            <span class="self">Self</span><span class="ident">::Restore</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction::Restore</span>(<span class="ident">Register</span>(<span class="ident">reg</span>)),
+            <span class="self">Self</span><span class="ident">::Undefined</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction::Undefined</span>(<span class="ident">Register</span>(<span class="ident">reg</span>)),
+            <span class="self">Self</span><span class="ident">::SameValue</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction::SameValue</span>(<span class="ident">Register</span>(<span class="ident">reg</span>)),
+            <span class="self">Self</span><span class="ident">::Offset</span>(<span class="ident">reg</span>, <span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction::Offset</span>(<span class="ident">Register</span>(<span class="ident">reg</span>), <span class="ident">offset</span>),
+            <span class="self">Self</span><span class="ident">::ValOffset</span>(<span class="ident">reg</span>, <span class="ident">offset</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction::ValOffset</span>(<span class="ident">Register</span>(<span class="ident">reg</span>), <span class="ident">offset</span>),
+            <span class="self">Self</span><span class="ident">::Register</span>(<span class="ident">reg1</span>, <span class="ident">reg2</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">CallFrameInstruction::Register</span>(<span class="ident">Register</span>(<span class="ident">reg1</span>), <span class="ident">Register</span>(<span class="ident">reg2</span>))
             }
-            <span class="self">Self</span>::<span class="ident">RememberState</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction</span>::<span class="ident">RememberState</span>,
-            <span class="self">Self</span>::<span class="ident">RestoreState</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction</span>::<span class="ident">RestoreState</span>,
-            <span class="self">Self</span>::<span class="ident">ArgsSize</span>(<span class="ident">size</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction</span>::<span class="ident">ArgsSize</span>(<span class="ident">size</span>),
+            <span class="self">Self</span><span class="ident">::RememberState</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction::RememberState</span>,
+            <span class="self">Self</span><span class="ident">::RestoreState</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction::RestoreState</span>,
+            <span class="self">Self</span><span class="ident">::ArgsSize</span>(<span class="ident">size</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CallFrameInstruction::ArgsSize</span>(<span class="ident">size</span>),
         }
     }
 }
@@ -424,11 +424,11 @@
 
 <span class="kw">impl</span> <span class="ident">UnwindInfo</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">build</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>, <span class="ident">Reg</span>: <span class="ident">PartialEq</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(
-        <span class="ident">unwind</span>: <span class="ident">input</span>::<span class="ident">UnwindInfo</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span>,
+        <span class="ident">unwind</span>: <span class="ident">input::UnwindInfo</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span>,
         <span class="ident">map_reg</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw">dyn</span> <span class="ident">RegisterMapper</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CodegenResult</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="ident">input</span>::<span class="ident">UnwindCode</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">InstructionBuilder</span>::<span class="ident">new</span>(<span class="ident">unwind</span>.<span class="ident">word_size</span>, <span class="ident">map_reg</span>);
+        <span class="kw">use</span> <span class="ident">input::UnwindCode</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">InstructionBuilder::new</span>(<span class="ident">unwind</span>.<span class="ident">word_size</span>, <span class="ident">map_reg</span>);
 
         <span class="kw">for</span> <span class="ident">c</span> <span class="kw">in</span> <span class="ident">unwind</span>.<span class="ident">prologue_unwind_codes</span>.<span class="ident">iter</span>().<span class="ident">chain</span>(
             <span class="ident">unwind</span>
@@ -438,35 +438,35 @@
                 .<span class="ident">flatten</span>(),
         ) {
             <span class="kw">match</span> <span class="ident">c</span> {
-                <span class="ident">UnwindCode</span>::<span class="ident">SaveRegister</span> {
+                <span class="ident">UnwindCode::SaveRegister</span> {
                     <span class="ident">offset</span>,
                     <span class="ident">reg</span>,
                     <span class="ident">stack_offset</span>: <span class="number">0</span>,
                 } <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">builder</span>
                         .<span class="ident">save_reg</span>(<span class="kw-2">*</span><span class="ident">offset</span>, <span class="kw-2">*</span><span class="ident">reg</span>)
-                        .<span class="ident">map_err</span>(<span class="ident">CodegenError</span>::<span class="ident">RegisterMappingError</span>)<span class="question-mark">?</span>;
+                        .<span class="ident">map_err</span>(<span class="ident">CodegenError::RegisterMappingError</span>)<span class="question-mark">?</span>;
                 }
-                <span class="ident">UnwindCode</span>::<span class="ident">StackAlloc</span> { <span class="ident">offset</span>, <span class="ident">size</span> } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">UnwindCode::StackAlloc</span> { <span class="ident">offset</span>, <span class="ident">size</span> } <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">builder</span>.<span class="ident">adjust_sp_down_imm</span>(<span class="kw-2">*</span><span class="ident">offset</span>, <span class="kw-2">*</span><span class="ident">size</span> <span class="kw">as</span> <span class="ident">i64</span>);
                 }
-                <span class="ident">UnwindCode</span>::<span class="ident">StackDealloc</span> { <span class="ident">offset</span>, <span class="ident">size</span> } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">UnwindCode::StackDealloc</span> { <span class="ident">offset</span>, <span class="ident">size</span> } <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">builder</span>.<span class="ident">adjust_sp_up_imm</span>(<span class="kw-2">*</span><span class="ident">offset</span>, <span class="kw-2">*</span><span class="ident">size</span> <span class="kw">as</span> <span class="ident">i64</span>);
                 }
-                <span class="ident">UnwindCode</span>::<span class="ident">RestoreRegister</span> { <span class="ident">offset</span>, <span class="ident">reg</span> } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">UnwindCode::RestoreRegister</span> { <span class="ident">offset</span>, <span class="ident">reg</span> } <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">builder</span>
                         .<span class="ident">restore_reg</span>(<span class="kw-2">*</span><span class="ident">offset</span>, <span class="kw-2">*</span><span class="ident">reg</span>)
-                        .<span class="ident">map_err</span>(<span class="ident">CodegenError</span>::<span class="ident">RegisterMappingError</span>)<span class="question-mark">?</span>;
+                        .<span class="ident">map_err</span>(<span class="ident">CodegenError::RegisterMappingError</span>)<span class="question-mark">?</span>;
                 }
-                <span class="ident">UnwindCode</span>::<span class="ident">SetFramePointer</span> { <span class="ident">offset</span>, <span class="ident">reg</span> } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">UnwindCode::SetFramePointer</span> { <span class="ident">offset</span>, <span class="ident">reg</span> } <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">builder</span>
                         .<span class="ident">set_cfa_reg</span>(<span class="kw-2">*</span><span class="ident">offset</span>, <span class="kw-2">*</span><span class="ident">reg</span>)
-                        .<span class="ident">map_err</span>(<span class="ident">CodegenError</span>::<span class="ident">RegisterMappingError</span>)<span class="question-mark">?</span>;
+                        .<span class="ident">map_err</span>(<span class="ident">CodegenError::RegisterMappingError</span>)<span class="question-mark">?</span>;
                 }
-                <span class="ident">UnwindCode</span>::<span class="ident">RememberState</span> { <span class="ident">offset</span> } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">UnwindCode::RememberState</span> { <span class="ident">offset</span> } <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">builder</span>.<span class="ident">remember_state</span>(<span class="kw-2">*</span><span class="ident">offset</span>);
                 }
-                <span class="ident">UnwindCode</span>::<span class="ident">RestoreState</span> { <span class="ident">offset</span> } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">UnwindCode::RestoreState</span> { <span class="ident">offset</span> } <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">builder</span>.<span class="ident">restore_state</span>(<span class="kw-2">*</span><span class="ident">offset</span>);
                 }
                 <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
@@ -480,8 +480,8 @@
     }
 
     <span class="doccomment">/// Converts the unwind information into a `FrameDescriptionEntry`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_fde</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">address</span>: <span class="ident">Address</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">gimli</span>::<span class="ident">write</span>::<span class="ident">FrameDescriptionEntry</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fde</span> <span class="op">=</span> <span class="ident">FrameDescriptionEntry</span>::<span class="ident">new</span>(<span class="ident">address</span>, <span class="self">self</span>.<span class="ident">len</span>);
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_fde</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">address</span>: <span class="ident">Address</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">gimli::write::FrameDescriptionEntry</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fde</span> <span class="op">=</span> <span class="ident">FrameDescriptionEntry::new</span>(<span class="ident">address</span>, <span class="self">self</span>.<span class="ident">len</span>);
 
         <span class="kw">for</span> (<span class="ident">offset</span>, <span class="ident">inst</span>) <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">instructions</span> {
             <span class="ident">fde</span>.<span class="ident">add_instruction</span>(<span class="kw-2">*</span><span class="ident">offset</span>, <span class="ident">inst</span>.<span class="ident">clone</span>().<span class="ident">into</span>());
@@ -506,7 +506,7 @@
             <span class="ident">saved_state</span>: <span class="prelude-val">None</span>,
             <span class="ident">frame_register</span>: <span class="prelude-val">None</span>,
             <span class="ident">map_reg</span>,
-            <span class="ident">instructions</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
+            <span class="ident">instructions</span>: <span class="ident">Vec::new</span>(),
         }
     }
 
@@ -514,14 +514,14 @@
         <span class="comment">// Pushes in the prologue are register saves, so record an offset of the save</span>
         <span class="self">self</span>.<span class="ident">instructions</span>.<span class="ident">push</span>((
             <span class="ident">offset</span>,
-            <span class="ident">CallFrameInstruction</span>::<span class="ident">Offset</span>(<span class="self">self</span>.<span class="ident">map_reg</span>.<span class="ident">map</span>(<span class="ident">reg</span>)<span class="question-mark">?</span>, <span class="op">-</span><span class="self">self</span>.<span class="ident">sp_offset</span>),
+            <span class="ident">CallFrameInstruction::Offset</span>(<span class="self">self</span>.<span class="ident">map_reg</span>.<span class="ident">map</span>(<span class="ident">reg</span>)<span class="question-mark">?</span>, <span class="op">-</span><span class="self">self</span>.<span class="ident">sp_offset</span>),
         ));
 
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="kw">fn</span> <span class="ident">adjust_sp_down_imm</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">u32</span>, <span class="ident">imm</span>: <span class="ident">i64</span>) {
-        <span class="macro">assert!</span>(<span class="ident">imm</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">core</span>::<span class="ident">u32</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">i64</span>);
+        <span class="macro">assert!</span>(<span class="ident">imm</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">core::u32::MAX</span> <span class="kw">as</span> <span class="ident">i64</span>);
 
         <span class="self">self</span>.<span class="ident">sp_offset</span> <span class="op">+</span><span class="op">=</span> <span class="ident">imm</span> <span class="kw">as</span> <span class="ident">i32</span>;
 
@@ -531,11 +531,11 @@
         }
 
         <span class="self">self</span>.<span class="ident">instructions</span>
-            .<span class="ident">push</span>((<span class="ident">offset</span>, <span class="ident">CallFrameInstruction</span>::<span class="ident">CfaOffset</span>(<span class="self">self</span>.<span class="ident">sp_offset</span>)));
+            .<span class="ident">push</span>((<span class="ident">offset</span>, <span class="ident">CallFrameInstruction::CfaOffset</span>(<span class="self">self</span>.<span class="ident">sp_offset</span>)));
     }
 
     <span class="kw">fn</span> <span class="ident">adjust_sp_up_imm</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">u32</span>, <span class="ident">imm</span>: <span class="ident">i64</span>) {
-        <span class="macro">assert!</span>(<span class="ident">imm</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">core</span>::<span class="ident">u32</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">i64</span>);
+        <span class="macro">assert!</span>(<span class="ident">imm</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">core::u32::MAX</span> <span class="kw">as</span> <span class="ident">i64</span>);
 
         <span class="self">self</span>.<span class="ident">sp_offset</span> <span class="op">-</span><span class="op">=</span> <span class="ident">imm</span> <span class="kw">as</span> <span class="ident">i32</span>;
 
@@ -550,7 +550,7 @@
             <span class="kw">loop</span> {
                 <span class="kw">match</span> <span class="ident">it</span>.<span class="ident">next_back</span>() {
                     <span class="prelude-val">Some</span>((<span class="ident">i_offset</span>, <span class="ident">i</span>)) <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">i_offset</span> <span class="op">=</span><span class="op">=</span> <span class="ident">offset</span> <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">CallFrameInstruction</span>::<span class="ident">Cfa</span>(<span class="kw">_</span>, <span class="ident">o</span>) <span class="op">=</span> <span class="ident">i</span> {
+                        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">CallFrameInstruction::Cfa</span>(<span class="kw">_</span>, <span class="ident">o</span>) <span class="op">=</span> <span class="ident">i</span> {
                             <span class="kw">break</span> <span class="prelude-val">Some</span>(<span class="ident">o</span>);
                         }
                     }
@@ -567,14 +567,14 @@
         } <span class="kw">else</span> {
             <span class="comment">// Add just CFA offset instruction.</span>
             <span class="self">self</span>.<span class="ident">instructions</span>
-                .<span class="ident">push</span>((<span class="ident">offset</span>, <span class="ident">CallFrameInstruction</span>::<span class="ident">CfaOffset</span>(<span class="self">self</span>.<span class="ident">sp_offset</span>)));
+                .<span class="ident">push</span>((<span class="ident">offset</span>, <span class="ident">CallFrameInstruction::CfaOffset</span>(<span class="self">self</span>.<span class="ident">sp_offset</span>)));
         }
     }
 
     <span class="kw">fn</span> <span class="ident">set_cfa_reg</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">u32</span>, <span class="ident">reg</span>: <span class="ident">Reg</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">RegisterMappingError</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">instructions</span>.<span class="ident">push</span>((
             <span class="ident">offset</span>,
-            <span class="ident">CallFrameInstruction</span>::<span class="ident">CfaRegister</span>(<span class="self">self</span>.<span class="ident">map_reg</span>.<span class="ident">map</span>(<span class="ident">reg</span>)<span class="question-mark">?</span>),
+            <span class="ident">CallFrameInstruction::CfaRegister</span>(<span class="self">self</span>.<span class="ident">map_reg</span>.<span class="ident">map</span>(<span class="ident">reg</span>)<span class="question-mark">?</span>),
         ));
         <span class="self">self</span>.<span class="ident">frame_register</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">reg</span>);
         <span class="prelude-val">Ok</span>(())
@@ -586,13 +586,13 @@
             <span class="self">self</span>.<span class="ident">frame_register</span> <span class="op">=</span> <span class="prelude-val">None</span>;
             <span class="self">self</span>.<span class="ident">instructions</span>.<span class="ident">push</span>((
                 <span class="ident">offset</span>,
-                <span class="ident">CallFrameInstruction</span>::<span class="ident">Cfa</span>(<span class="self">self</span>.<span class="ident">map_reg</span>.<span class="ident">rsp</span>(), <span class="self">self</span>.<span class="ident">sp_offset</span>),
+                <span class="ident">CallFrameInstruction::Cfa</span>(<span class="self">self</span>.<span class="ident">map_reg</span>.<span class="ident">rsp</span>(), <span class="self">self</span>.<span class="ident">sp_offset</span>),
             ));
         }
         <span class="comment">// Pops in the epilogue are register restores, so record a &quot;same value&quot; for the register</span>
         <span class="self">self</span>.<span class="ident">instructions</span>.<span class="ident">push</span>((
             <span class="ident">offset</span>,
-            <span class="ident">CallFrameInstruction</span>::<span class="ident">SameValue</span>(<span class="self">self</span>.<span class="ident">map_reg</span>.<span class="ident">map</span>(<span class="ident">reg</span>)<span class="question-mark">?</span>),
+            <span class="ident">CallFrameInstruction::SameValue</span>(<span class="self">self</span>.<span class="ident">map_reg</span>.<span class="ident">map</span>(<span class="ident">reg</span>)<span class="question-mark">?</span>),
         ));
 
         <span class="prelude-val">Ok</span>(())
@@ -602,7 +602,7 @@
         <span class="self">self</span>.<span class="ident">saved_state</span> <span class="op">=</span> <span class="prelude-val">Some</span>((<span class="self">self</span>.<span class="ident">sp_offset</span>, <span class="self">self</span>.<span class="ident">frame_register</span>));
 
         <span class="self">self</span>.<span class="ident">instructions</span>
-            .<span class="ident">push</span>((<span class="ident">offset</span>, <span class="ident">CallFrameInstruction</span>::<span class="ident">RememberState</span>));
+            .<span class="ident">push</span>((<span class="ident">offset</span>, <span class="ident">CallFrameInstruction::RememberState</span>));
     }
 
     <span class="kw">fn</span> <span class="ident">restore_state</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">u32</span>) {
@@ -611,7 +611,7 @@
         <span class="self">self</span>.<span class="ident">frame_register</span> <span class="op">=</span> <span class="ident">frame_register</span>;
 
         <span class="self">self</span>.<span class="ident">instructions</span>
-            .<span class="ident">push</span>((<span class="ident">offset</span>, <span class="ident">CallFrameInstruction</span>::<span class="ident">RestoreState</span>));
+            .<span class="ident">push</span>((<span class="ident">offset</span>, <span class="ident">CallFrameInstruction::RestoreState</span>));
     }
 }
 </pre></div>

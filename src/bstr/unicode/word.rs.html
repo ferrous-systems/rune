@@ -408,11 +408,11 @@
 <span id="405">405</span>
 <span id="406">406</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">regex_automata</span>::<span class="ident">DFA</span>;
+<span class="kw">use</span> <span class="ident">regex_automata::DFA</span>;
 
-<span class="kw">use</span> <span class="ident">ext_slice</span>::<span class="ident">ByteSlice</span>;
-<span class="kw">use</span> <span class="ident">unicode</span>::<span class="ident">fsm</span>::<span class="ident">simple_word_fwd</span>::<span class="ident">SIMPLE_WORD_FWD</span>;
-<span class="kw">use</span> <span class="ident">unicode</span>::<span class="ident">fsm</span>::<span class="ident">word_break_fwd</span>::<span class="ident">WORD_BREAK_FWD</span>;
+<span class="kw">use</span> <span class="ident">ext_slice::ByteSlice</span>;
+<span class="kw">use</span> <span class="ident">unicode::fsm::simple_word_fwd::SIMPLE_WORD_FWD</span>;
+<span class="kw">use</span> <span class="ident">unicode::fsm::word_break_fwd::WORD_BREAK_FWD</span>;
 <span class="kw">use</span> <span class="ident">utf8</span>;
 
 <span class="doccomment">/// An iterator over words in a byte string.</span>
@@ -440,7 +440,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Words</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">bs</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Words</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-        <span class="ident">Words</span>(<span class="ident">WordsWithBreaks</span>::<span class="ident">new</span>(<span class="ident">bs</span>))
+        <span class="ident">Words</span>(<span class="ident">WordsWithBreaks::new</span>(<span class="ident">bs</span>))
     }
 
     <span class="doccomment">/// View the underlying data as a subslice of the original data.</span>
@@ -515,7 +515,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">WordIndices</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">bs</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WordIndices</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-        <span class="ident">WordIndices</span>(<span class="ident">WordsWithBreakIndices</span>::<span class="ident">new</span>(<span class="ident">bs</span>))
+        <span class="ident">WordIndices</span>(<span class="ident">WordsWithBreakIndices::new</span>(<span class="ident">bs</span>))
     }
 
     <span class="doccomment">/// View the underlying data as a subslice of the original data.</span>
@@ -721,16 +721,16 @@
     } <span class="kw">else</span> {
         <span class="kw">const</span> <span class="ident">INVALID</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;\u{FFFD}&quot;</span>;
         <span class="comment">// No match on non-empty bytes implies we found invalid UTF-8.</span>
-        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">size</span>) <span class="op">=</span> <span class="ident">utf8</span>::<span class="ident">decode_lossy</span>(<span class="ident">bs</span>);
+        <span class="kw">let</span> (<span class="kw">_</span>, <span class="ident">size</span>) <span class="op">=</span> <span class="ident">utf8::decode_lossy</span>(<span class="ident">bs</span>);
         (<span class="ident">INVALID</span>, <span class="ident">size</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">ucd_parse</span>::<span class="ident">WordBreakTest</span>;
+    <span class="kw">use</span> <span class="ident">ucd_parse::WordBreakTest</span>;
 
-    <span class="kw">use</span> <span class="ident">ext_slice</span>::<span class="ident">ByteSlice</span>;
+    <span class="kw">use</span> <span class="ident">ext_slice::ByteSlice</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">forward_ucd</span>() {

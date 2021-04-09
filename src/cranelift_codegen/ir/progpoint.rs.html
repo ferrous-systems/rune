@@ -168,11 +168,11 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Program points.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">entity</span>::<span class="ident">EntityRef</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">Block</span>, <span class="ident">Inst</span>, <span class="ident">ValueDef</span>};
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">cmp</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">u32</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::entity::EntityRef</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">Block</span>, <span class="ident">Inst</span>, <span class="ident">ValueDef</span>};
+<span class="kw">use</span> <span class="ident">core::cmp</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
+<span class="kw">use</span> <span class="ident">core::u32</span>;
 
 <span class="doccomment">/// A `ProgramPoint` represents a position in a function where the live range of an SSA value can</span>
 <span class="doccomment">/// begin or end. It can be either:</span>
@@ -187,7 +187,7 @@
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ProgramPoint</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">inst</span>: <span class="ident">Inst</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">idx</span> <span class="op">=</span> <span class="ident">inst</span>.<span class="ident">index</span>();
-        <span class="macro">debug_assert!</span>(<span class="ident">idx</span> <span class="op">&lt;</span> (<span class="ident">u32</span>::<span class="ident">MAX</span> <span class="op">/</span> <span class="number">2</span>) <span class="kw">as</span> <span class="ident">usize</span>);
+        <span class="macro">debug_assert!</span>(<span class="ident">idx</span> <span class="op">&lt;</span> (<span class="ident">u32::MAX</span> <span class="op">/</span> <span class="number">2</span>) <span class="kw">as</span> <span class="ident">usize</span>);
         <span class="self">Self</span>((<span class="ident">idx</span> <span class="op">*</span> <span class="number">2</span>) <span class="kw">as</span> <span class="ident">u32</span>)
     }
 }
@@ -195,7 +195,7 @@
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ProgramPoint</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">block</span>: <span class="ident">Block</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">idx</span> <span class="op">=</span> <span class="ident">block</span>.<span class="ident">index</span>();
-        <span class="macro">debug_assert!</span>(<span class="ident">idx</span> <span class="op">&lt;</span> (<span class="ident">u32</span>::<span class="ident">MAX</span> <span class="op">/</span> <span class="number">2</span>) <span class="kw">as</span> <span class="ident">usize</span>);
+        <span class="macro">debug_assert!</span>(<span class="ident">idx</span> <span class="op">&lt;</span> (<span class="ident">u32::MAX</span> <span class="op">/</span> <span class="number">2</span>) <span class="kw">as</span> <span class="ident">usize</span>);
         <span class="self">Self</span>((<span class="ident">idx</span> <span class="op">*</span> <span class="number">2</span> <span class="op">+</span> <span class="number">1</span>) <span class="kw">as</span> <span class="ident">u32</span>)
     }
 }
@@ -203,8 +203,8 @@
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ValueDef</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ProgramPoint</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">def</span>: <span class="ident">ValueDef</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">def</span> {
-            <span class="ident">ValueDef</span>::<span class="prelude-ty">Result</span>(<span class="ident">inst</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">inst</span>.<span class="ident">into</span>(),
-            <span class="ident">ValueDef</span>::<span class="ident">Param</span>(<span class="ident">block</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">block</span>.<span class="ident">into</span>(),
+            <span class="ident">ValueDef::Result</span>(<span class="ident">inst</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">inst</span>.<span class="ident">into</span>(),
+            <span class="ident">ValueDef::Param</span>(<span class="ident">block</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">block</span>.<span class="ident">into</span>(),
         }
     }
 }
@@ -223,29 +223,29 @@
     <span class="doccomment">/// Get the instruction we know is inside.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unwrap_inst</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Inst</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Inst</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>,
-            <span class="self">Self</span>::<span class="ident">Block</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;expected inst: {}&quot;</span>, <span class="ident">x</span>),
+            <span class="self">Self</span><span class="ident">::Inst</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">x</span>,
+            <span class="self">Self</span><span class="ident">::Block</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;expected inst: {}&quot;</span>, <span class="ident">x</span>),
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ExpandedProgramPoint</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">inst</span>: <span class="ident">Inst</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Inst</span>(<span class="ident">inst</span>)
+        <span class="self">Self</span><span class="ident">::Inst</span>(<span class="ident">inst</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Block</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ExpandedProgramPoint</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">block</span>: <span class="ident">Block</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Block</span>(<span class="ident">block</span>)
+        <span class="self">Self</span><span class="ident">::Block</span>(<span class="ident">block</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ValueDef</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ExpandedProgramPoint</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">def</span>: <span class="ident">ValueDef</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">def</span> {
-            <span class="ident">ValueDef</span>::<span class="prelude-ty">Result</span>(<span class="ident">inst</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">inst</span>.<span class="ident">into</span>(),
-            <span class="ident">ValueDef</span>::<span class="ident">Param</span>(<span class="ident">block</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">block</span>.<span class="ident">into</span>(),
+            <span class="ident">ValueDef::Result</span>(<span class="ident">inst</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">inst</span>.<span class="ident">into</span>(),
+            <span class="ident">ValueDef::Param</span>(<span class="ident">block</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">block</span>.<span class="ident">into</span>(),
         }
     }
 }
@@ -253,37 +253,37 @@
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ProgramPoint</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ExpandedProgramPoint</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">pp</span>: <span class="ident">ProgramPoint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">if</span> <span class="ident">pp</span>.<span class="number">0</span> <span class="op">&amp;</span> <span class="number">1</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="self">Self</span>::<span class="ident">Inst</span>(<span class="ident">Inst</span>::<span class="ident">from_u32</span>(<span class="ident">pp</span>.<span class="number">0</span> <span class="op">/</span> <span class="number">2</span>))
+            <span class="self">Self</span><span class="ident">::Inst</span>(<span class="ident">Inst::from_u32</span>(<span class="ident">pp</span>.<span class="number">0</span> <span class="op">/</span> <span class="number">2</span>))
         } <span class="kw">else</span> {
-            <span class="self">Self</span>::<span class="ident">Block</span>(<span class="ident">Block</span>::<span class="ident">from_u32</span>(<span class="ident">pp</span>.<span class="number">0</span> <span class="op">/</span> <span class="number">2</span>))
+            <span class="self">Self</span><span class="ident">::Block</span>(<span class="ident">Block::from_u32</span>(<span class="ident">pp</span>.<span class="number">0</span> <span class="op">/</span> <span class="number">2</span>))
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">ExpandedProgramPoint</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">ExpandedProgramPoint</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Inst</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">x</span>),
-            <span class="self">Self</span>::<span class="ident">Block</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">x</span>),
+            <span class="self">Self</span><span class="ident">::Inst</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">x</span>),
+            <span class="self">Self</span><span class="ident">::Block</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">x</span>),
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">ProgramPoint</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">ProgramPoint</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="ident">epp</span>: <span class="ident">ExpandedProgramPoint</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="self">self</span>).<span class="ident">into</span>();
         <span class="ident">epp</span>.<span class="ident">fmt</span>(<span class="ident">f</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ExpandedProgramPoint</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">ExpandedProgramPoint</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;ExpandedProgramPoint({})&quot;</span>, <span class="self">self</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ProgramPoint</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">ProgramPoint</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;ProgramPoint({})&quot;</span>, <span class="self">self</span>)
     }
 }
@@ -300,7 +300,7 @@
     <span class="doccomment">/// This is declared as a generic such that it can be called with `Inst` and `Block` arguments</span>
     <span class="doccomment">/// directly. Depending on the implementation, there is a good chance performance will be</span>
     <span class="doccomment">/// improved for those cases where the type of either argument is known statically.</span>
-    <span class="kw">fn</span> <span class="ident">cmp</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">a</span>: <span class="ident">A</span>, <span class="ident">b</span>: <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">cmp</span>::<span class="ident">Ordering</span>
+    <span class="kw">fn</span> <span class="ident">cmp</span><span class="op">&lt;</span><span class="ident">A</span>, <span class="ident">B</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">a</span>: <span class="ident">A</span>, <span class="ident">b</span>: <span class="ident">B</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">cmp::Ordering</span>
     <span class="kw">where</span>
         <span class="ident">A</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ExpandedProgramPoint</span><span class="op">&gt;</span>,
         <span class="ident">B</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">ExpandedProgramPoint</span><span class="op">&gt;</span>;
@@ -314,14 +314,14 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">entity</span>::<span class="ident">EntityRef</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">Block</span>, <span class="ident">Inst</span>};
-    <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">string</span>::<span class="ident">ToString</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::entity::EntityRef</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">Block</span>, <span class="ident">Inst</span>};
+    <span class="kw">use</span> <span class="ident">alloc::string::ToString</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">convert</span>() {
-        <span class="kw">let</span> <span class="ident">i5</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">new</span>(<span class="number">5</span>);
-        <span class="kw">let</span> <span class="ident">b3</span> <span class="op">=</span> <span class="ident">Block</span>::<span class="ident">new</span>(<span class="number">3</span>);
+        <span class="kw">let</span> <span class="ident">i5</span> <span class="op">=</span> <span class="ident">Inst::new</span>(<span class="number">5</span>);
+        <span class="kw">let</span> <span class="ident">b3</span> <span class="op">=</span> <span class="ident">Block::new</span>(<span class="number">3</span>);
 
         <span class="kw">let</span> <span class="ident">pp1</span>: <span class="ident">ProgramPoint</span> <span class="op">=</span> <span class="ident">i5</span>.<span class="ident">into</span>();
         <span class="kw">let</span> <span class="ident">pp2</span>: <span class="ident">ProgramPoint</span> <span class="op">=</span> <span class="ident">b3</span>.<span class="ident">into</span>();

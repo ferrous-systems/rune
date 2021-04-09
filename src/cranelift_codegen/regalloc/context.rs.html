@@ -260,23 +260,23 @@
 <span class="doccomment">//! the register allocator algorithm. This doesn&#39;t preserve any data between functions, but it</span>
 <span class="doccomment">//! avoids allocating data structures independently for each function begin compiled.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">dominator_tree</span>::<span class="ident">DominatorTree</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">flowgraph</span>::<span class="ident">ControlFlowGraph</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">Function</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">TargetIsa</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">branch_splitting</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">coalescing</span>::<span class="ident">Coalescing</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">coloring</span>::<span class="ident">Coloring</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">live_value_tracker</span>::<span class="ident">LiveValueTracker</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">liveness</span>::<span class="ident">Liveness</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">reload</span>::<span class="ident">Reload</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">safepoint</span>::<span class="ident">emit_stack_maps</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">spilling</span>::<span class="ident">Spilling</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">virtregs</span>::<span class="ident">VirtRegs</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">result</span>::<span class="ident">CodegenResult</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">timing</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">topo_order</span>::<span class="ident">TopoOrder</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">verifier</span>::{
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::dominator_tree::DominatorTree</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::flowgraph::ControlFlowGraph</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::Function</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::TargetIsa</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::branch_splitting</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::coalescing::Coalescing</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::coloring::Coloring</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::live_value_tracker::LiveValueTracker</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::liveness::Liveness</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::reload::Reload</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::safepoint::emit_stack_maps</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::spilling::Spilling</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::virtregs::VirtRegs</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::result::CodegenResult</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::timing</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::topo_order::TopoOrder</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::verifier</span>::{
     <span class="ident">verify_context</span>, <span class="ident">verify_cssa</span>, <span class="ident">verify_liveness</span>, <span class="ident">verify_locations</span>, <span class="ident">VerifierErrors</span>,
 };
 
@@ -299,14 +299,14 @@
     <span class="doccomment">/// allocations.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">liveness</span>: <span class="ident">Liveness</span>::<span class="ident">new</span>(),
-            <span class="ident">virtregs</span>: <span class="ident">VirtRegs</span>::<span class="ident">new</span>(),
-            <span class="ident">coalescing</span>: <span class="ident">Coalescing</span>::<span class="ident">new</span>(),
-            <span class="ident">topo</span>: <span class="ident">TopoOrder</span>::<span class="ident">new</span>(),
-            <span class="ident">tracker</span>: <span class="ident">LiveValueTracker</span>::<span class="ident">new</span>(),
-            <span class="ident">spilling</span>: <span class="ident">Spilling</span>::<span class="ident">new</span>(),
-            <span class="ident">reload</span>: <span class="ident">Reload</span>::<span class="ident">new</span>(),
-            <span class="ident">coloring</span>: <span class="ident">Coloring</span>::<span class="ident">new</span>(),
+            <span class="ident">liveness</span>: <span class="ident">Liveness::new</span>(),
+            <span class="ident">virtregs</span>: <span class="ident">VirtRegs::new</span>(),
+            <span class="ident">coalescing</span>: <span class="ident">Coalescing::new</span>(),
+            <span class="ident">topo</span>: <span class="ident">TopoOrder::new</span>(),
+            <span class="ident">tracker</span>: <span class="ident">LiveValueTracker::new</span>(),
+            <span class="ident">spilling</span>: <span class="ident">Spilling::new</span>(),
+            <span class="ident">reload</span>: <span class="ident">Reload::new</span>(),
+            <span class="ident">coloring</span>: <span class="ident">Coloring::new</span>(),
         }
     }
 
@@ -338,10 +338,10 @@
         <span class="ident">cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ControlFlowGraph</span>,
         <span class="ident">domtree</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">DominatorTree</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CodegenResult</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">_tt</span> <span class="op">=</span> <span class="ident">timing</span>::<span class="ident">regalloc</span>();
+        <span class="kw">let</span> <span class="ident">_tt</span> <span class="op">=</span> <span class="ident">timing::regalloc</span>();
         <span class="macro">debug_assert!</span>(<span class="ident">domtree</span>.<span class="ident">is_valid</span>());
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">errors</span> <span class="op">=</span> <span class="ident">VerifierErrors</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">errors</span> <span class="op">=</span> <span class="ident">VerifierErrors::default</span>();
 
         <span class="comment">// `Liveness` and `Coloring` are self-clearing.</span>
         <span class="self">self</span>.<span class="ident">virtregs</span>.<span class="ident">clear</span>();
@@ -351,7 +351,7 @@
         <span class="self">self</span>.<span class="ident">tracker</span>.<span class="ident">clear</span>();
 
         <span class="comment">// Pass: Split branches, add space where to add copy &amp; regmove instructions.</span>
-        <span class="ident">branch_splitting</span>::<span class="ident">run</span>(<span class="ident">isa</span>, <span class="ident">func</span>, <span class="ident">cfg</span>, <span class="ident">domtree</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">topo</span>);
+        <span class="ident">branch_splitting::run</span>(<span class="ident">isa</span>, <span class="ident">func</span>, <span class="ident">cfg</span>, <span class="ident">domtree</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">topo</span>);
 
         <span class="comment">// Pass: Liveness analysis.</span>
         <span class="self">self</span>.<span class="ident">liveness</span>.<span class="ident">compute</span>(<span class="ident">isa</span>, <span class="ident">func</span>, <span class="ident">cfg</span>);

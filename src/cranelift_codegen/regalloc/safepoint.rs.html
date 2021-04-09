@@ -67,14 +67,14 @@
 <span id="64">64</span>
 <span id="65">65</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">FuncCursor</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">dominator_tree</span>::<span class="ident">DominatorTree</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">inst_predicates</span>::<span class="ident">is_safepoint</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">Function</span>, <span class="ident">InstBuilder</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">TargetIsa</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">live_value_tracker</span>::<span class="ident">LiveValueTracker</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">liveness</span>::<span class="ident">Liveness</span>;
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">FuncCursor</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::dominator_tree::DominatorTree</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::inst_predicates::is_safepoint</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">Function</span>, <span class="ident">InstBuilder</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::TargetIsa</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::live_value_tracker::LiveValueTracker</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::liveness::Liveness</span>;
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 
 <span class="kw">fn</span> <span class="ident">insert_and_encode_safepoint</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span>(
     <span class="ident">pos</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">FuncCursor</span><span class="op">&lt;</span><span class="lifetime">&#39;f</span><span class="op">&gt;</span>,
@@ -115,7 +115,7 @@
     <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">block</span>) <span class="op">=</span> <span class="ident">curr</span> {
         <span class="ident">tracker</span>.<span class="ident">block_top</span>(<span class="ident">block</span>, <span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">dfg</span>, <span class="ident">liveness</span>, <span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">layout</span>, <span class="ident">domtree</span>);
         <span class="ident">tracker</span>.<span class="ident">drop_dead_params</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor</span>::<span class="ident">new</span>(<span class="ident">func</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor::new</span>(<span class="ident">func</span>);
 
         <span class="comment">// From the top of the block, step through the instructions.</span>
         <span class="ident">pos</span>.<span class="ident">goto_top</span>(<span class="ident">block</span>);

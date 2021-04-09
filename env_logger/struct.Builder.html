@@ -4,14 +4,14 @@
 to provide the logging directives and also set the default log level filter.</p>
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">env_logger</span>::<span class="ident">Builder</span>;
-<span class="kw">use</span> <span class="ident">log</span>::<span class="ident">LevelFilter</span>;
+<span class="kw">use</span> <span class="ident">env_logger::Builder</span>;
+<span class="kw">use</span> <span class="ident">log::LevelFilter</span>;
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">from_default_env</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder::from_default_env</span>();
 
 <span class="ident">builder</span>
     .<span class="ident">format</span>(<span class="op">|</span><span class="ident">buf</span>, <span class="ident">record</span><span class="op">|</span> <span class="macro">writeln!</span>(<span class="ident">buf</span>, <span class="string">&quot;{} - {}&quot;</span>, <span class="ident">record</span>.<span class="ident">level</span>(), <span class="ident">record</span>.<span class="ident">args</span>()))
-    .<span class="ident">filter</span>(<span class="prelude-val">None</span>, <span class="ident">LevelFilter</span>::<span class="ident">Info</span>)
+    .<span class="ident">filter</span>(<span class="prelude-val">None</span>, <span class="ident">LevelFilter::Info</span>)
     .<span class="ident">init</span>();
 
 <span class="macro">error!</span>(<span class="string">&quot;error message&quot;</span>);
@@ -24,14 +24,14 @@ or use <a href="#method.from_env"><code>from_env</code></a> or <a href="#method.
 <p>Create a new builder and configure filters and style:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">log</span>::<span class="ident">LevelFilter</span>;
+<span class="kw">use</span> <span class="ident">log::LevelFilter</span>;
 <span class="kw">use</span> <span class="ident">env_logger</span>::{<span class="ident">Builder</span>, <span class="ident">WriteStyle</span>};
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder::new</span>();
 
 <span class="ident">builder</span>
-    .<span class="ident">filter</span>(<span class="prelude-val">None</span>, <span class="ident">LevelFilter</span>::<span class="ident">Info</span>)
-    .<span class="ident">write_style</span>(<span class="ident">WriteStyle</span>::<span class="ident">Always</span>)
+    .<span class="ident">filter</span>(<span class="prelude-val">None</span>, <span class="ident">LevelFilter::Info</span>)
+    .<span class="ident">write_style</span>(<span class="ident">WriteStyle::Always</span>)
     .<span class="ident">init</span>();</pre></div>
 </div><h4 id="method.from_env" class="method"><code>pub fn <a href="#method.from_env" class="fnname">from_env</a>&lt;'a, E&gt;(env: E) -&gt; Self <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;E: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html" title="trait core::convert::Into">Into</a>&lt;<a class="struct" href="../env_logger/struct.Env.html" title="struct env_logger::Env">Env</a>&lt;'a&gt;&gt;,&nbsp;</span></code><a class="srclink" href="../src/env_logger/lib.rs.html#437-444" title="goto source code">[src]</a></h4><div class="docblock"><p>Initializes the log builder from the environment.</p>
 <p>The variables used to read configuration from can be tweaked before
@@ -41,9 +41,9 @@ passing in.</p>
 called <code>MY_LOG</code>:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">env_logger</span>::<span class="ident">Builder</span>;
+<span class="kw">use</span> <span class="ident">env_logger::Builder</span>;
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">from_env</span>(<span class="string">&quot;MY_LOG&quot;</span>);
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder::from_env</span>(<span class="string">&quot;MY_LOG&quot;</span>);
 <span class="ident">builder</span>.<span class="ident">init</span>();</pre></div>
 <p>Initialise a logger using the <code>MY_LOG</code> variable for filtering and
 <code>MY_LOG_STYLE</code> for whether or not to write styles:</p>
@@ -51,9 +51,9 @@ called <code>MY_LOG</code>:</p>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">env_logger</span>::{<span class="ident">Builder</span>, <span class="ident">Env</span>};
 
-<span class="kw">let</span> <span class="ident">env</span> <span class="op">=</span> <span class="ident">Env</span>::<span class="ident">new</span>().<span class="ident">filter</span>(<span class="string">&quot;MY_LOG&quot;</span>).<span class="ident">write_style</span>(<span class="string">&quot;MY_LOG_STYLE&quot;</span>);
+<span class="kw">let</span> <span class="ident">env</span> <span class="op">=</span> <span class="ident">Env::new</span>().<span class="ident">filter</span>(<span class="string">&quot;MY_LOG&quot;</span>).<span class="ident">write_style</span>(<span class="string">&quot;MY_LOG_STYLE&quot;</span>);
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">from_env</span>(<span class="ident">env</span>);
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder::from_env</span>(<span class="ident">env</span>);
 <span class="ident">builder</span>.<span class="ident">init</span>();</pre></div>
 </div><h4 id="method.parse_env" class="method"><code>pub fn <a href="#method.parse_env" class="fnname">parse_env</a>&lt;'a, E&gt;(&amp;mut self, env: E) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>Self <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;E: <a class="trait" href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html" title="trait core::convert::Into">Into</a>&lt;<a class="struct" href="../env_logger/struct.Env.html" title="struct env_logger::Env">Env</a>&lt;'a&gt;&gt;,&nbsp;</span></code><a class="srclink" href="../src/env_logger/lib.rs.html#482-497" title="goto source code">[src]</a></h4><div class="docblock"><p>Applies the configuration from the environment.</p>
 <p>This function allows a builder to be configured with default parameters,
@@ -63,12 +63,12 @@ to be then overridden by the environment.</p>
 filter from an environment variable called <code>MY_LOG</code>:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">log</span>::<span class="ident">LevelFilter</span>;
-<span class="kw">use</span> <span class="ident">env_logger</span>::<span class="ident">Builder</span>;
+<span class="kw">use</span> <span class="ident">log::LevelFilter</span>;
+<span class="kw">use</span> <span class="ident">env_logger::Builder</span>;
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder::new</span>();
 
-<span class="ident">builder</span>.<span class="ident">filter_level</span>(<span class="ident">LevelFilter</span>::<span class="ident">Off</span>);
+<span class="ident">builder</span>.<span class="ident">filter_level</span>(<span class="ident">LevelFilter::Off</span>);
 <span class="ident">builder</span>.<span class="ident">parse_env</span>(<span class="string">&quot;MY_LOG&quot;</span>);
 <span class="ident">builder</span>.<span class="ident">init</span>();</pre></div>
 <p>Initialise a logger with filter level <code>Off</code>, then use the <code>MY_LOG</code>
@@ -76,13 +76,13 @@ variable to override filtering and <code>MY_LOG_STYLE</code> to override  whethe
 or not to write styles:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">log</span>::<span class="ident">LevelFilter</span>;
+<span class="kw">use</span> <span class="ident">log::LevelFilter</span>;
 <span class="kw">use</span> <span class="ident">env_logger</span>::{<span class="ident">Builder</span>, <span class="ident">Env</span>};
 
-<span class="kw">let</span> <span class="ident">env</span> <span class="op">=</span> <span class="ident">Env</span>::<span class="ident">new</span>().<span class="ident">filter</span>(<span class="string">&quot;MY_LOG&quot;</span>).<span class="ident">write_style</span>(<span class="string">&quot;MY_LOG_STYLE&quot;</span>);
+<span class="kw">let</span> <span class="ident">env</span> <span class="op">=</span> <span class="ident">Env::new</span>().<span class="ident">filter</span>(<span class="string">&quot;MY_LOG&quot;</span>).<span class="ident">write_style</span>(<span class="string">&quot;MY_LOG_STYLE&quot;</span>);
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>();
-<span class="ident">builder</span>.<span class="ident">filter_level</span>(<span class="ident">LevelFilter</span>::<span class="ident">Off</span>);
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder::new</span>();
+<span class="ident">builder</span>.<span class="ident">filter_level</span>(<span class="ident">LevelFilter::Off</span>);
 <span class="ident">builder</span>.<span class="ident">parse_env</span>(<span class="ident">env</span>);
 <span class="ident">builder</span>.<span class="ident">init</span>();</pre></div>
 </div><h4 id="method.from_default_env" class="method"><code>pub fn <a href="#method.from_default_env" class="fnname">from_default_env</a>() -&gt; Self</code><a class="srclink" href="../src/env_logger/lib.rs.html#517-519" title="goto source code">[src]</a></h4><div class="docblock"><p>Initializes the log builder from the environment using default variable names.</p>
@@ -93,9 +93,9 @@ having to use the <code>Env</code> type explicitly. The builder will use the
 <p>Initialise a logger using the default environment variables:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">env_logger</span>::<span class="ident">Builder</span>;
+<span class="kw">use</span> <span class="ident">env_logger::Builder</span>;
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">from_default_env</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder::from_default_env</span>();
 <span class="ident">builder</span>.<span class="ident">init</span>();</pre></div>
 </div><h4 id="method.parse_default_env" class="method"><code>pub fn <a href="#method.parse_default_env" class="fnname">parse_default_env</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>Self</code><a class="srclink" href="../src/env_logger/lib.rs.html#543-545" title="goto source code">[src]</a></h4><div class="docblock"><p>Applies the configuration from the environment using default variable names.</p>
 <p>This method is a convenient way to call <code>parse_env(Env::default())</code> without
@@ -106,11 +106,11 @@ having to use the <code>Env</code> type explicitly. The builder will use the
 default environment variables:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">log</span>::<span class="ident">LevelFilter</span>;
-<span class="kw">use</span> <span class="ident">env_logger</span>::<span class="ident">Builder</span>;
+<span class="kw">use</span> <span class="ident">log::LevelFilter</span>;
+<span class="kw">use</span> <span class="ident">env_logger::Builder</span>;
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>();
-<span class="ident">builder</span>.<span class="ident">filter_level</span>(<span class="ident">LevelFilter</span>::<span class="ident">Off</span>);
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder::new</span>();
+<span class="ident">builder</span>.<span class="ident">filter_level</span>(<span class="ident">LevelFilter::Off</span>);
 <span class="ident">builder</span>.<span class="ident">parse_default_env</span>();
 <span class="ident">builder</span>.<span class="ident">init</span>();</pre></div>
 </div><h4 id="method.format" class="method"><code>pub fn <a href="#method.format" class="fnname">format</a>&lt;F:&nbsp;'static&gt;(&amp;mut self, format: F) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>Self <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;F: <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(&amp;mut <a class="struct" href="../env_logger/fmt/struct.Formatter.html" title="struct env_logger::fmt::Formatter">Formatter</a>, &amp;<a class="struct" href="../log/struct.Record.html" title="struct log::Record">Record</a>&lt;'_&gt;) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/std/io/error/type.Result.html" title="type std::io::error::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>&gt; + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html" title="trait core::marker::Sync">Sync</a> + <a class="trait" href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html" title="trait core::marker::Send">Send</a>,&nbsp;</span></code><a class="srclink" href="../src/env_logger/lib.rs.html#573-579" title="goto source code">[src]</a></h4><div class="docblock"><p>Sets the format function for formatting the log output.</p>
@@ -124,10 +124,10 @@ to format and output without intermediate heap allocations. The default
 <p>Use a custom format to write only the log message:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Write</span>;
-<span class="kw">use</span> <span class="ident">env_logger</span>::<span class="ident">Builder</span>;
+<span class="kw">use</span> <span class="ident">std::io::Write</span>;
+<span class="kw">use</span> <span class="ident">env_logger::Builder</span>;
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder::new</span>();
 
 <span class="ident">builder</span>.<span class="ident">format</span>(<span class="op">|</span><span class="ident">buf</span>, <span class="ident">record</span><span class="op">|</span> <span class="macro">writeln!</span>(<span class="ident">buf</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">record</span>.<span class="ident">args</span>()));</pre></div>
 </div><h4 id="method.default_format" class="method"><code>pub fn <a href="#method.default_format" class="fnname">default_format</a>(&amp;mut self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>Self</code><a class="srclink" href="../src/env_logger/lib.rs.html#584-587" title="goto source code">[src]</a></h4><div class="docblock"><p>Use the default format.</p>
@@ -147,23 +147,23 @@ A value of <code>None</code> disables any kind of indentation.</p>
 <p>Only include messages for info and above for logs in <code>path::to::module</code>:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">env_logger</span>::<span class="ident">Builder</span>;
-<span class="kw">use</span> <span class="ident">log</span>::<span class="ident">LevelFilter</span>;
+<span class="kw">use</span> <span class="ident">env_logger::Builder</span>;
+<span class="kw">use</span> <span class="ident">log::LevelFilter</span>;
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder::new</span>();
 
-<span class="ident">builder</span>.<span class="ident">filter_module</span>(<span class="string">&quot;path::to::module&quot;</span>, <span class="ident">LevelFilter</span>::<span class="ident">Info</span>);</pre></div>
+<span class="ident">builder</span>.<span class="ident">filter_module</span>(<span class="string">&quot;path::to::module&quot;</span>, <span class="ident">LevelFilter::Info</span>);</pre></div>
 </div><h4 id="method.filter_level" class="method"><code>pub fn <a href="#method.filter_level" class="fnname">filter_level</a>(&amp;mut self, level: <a class="enum" href="../log/enum.LevelFilter.html" title="enum log::LevelFilter">LevelFilter</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>Self</code><a class="srclink" href="../src/env_logger/lib.rs.html#673-676" title="goto source code">[src]</a></h4><div class="docblock"><p>Adds a directive to the filter for all modules.</p>
 <h1 id="examples-8" class="section-header"><a href="#examples-8">Examples</a></h1>
 <p>Only include messages for info and above for logs in <code>path::to::module</code>:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">env_logger</span>::<span class="ident">Builder</span>;
-<span class="kw">use</span> <span class="ident">log</span>::<span class="ident">LevelFilter</span>;
+<span class="kw">use</span> <span class="ident">env_logger::Builder</span>;
+<span class="kw">use</span> <span class="ident">log::LevelFilter</span>;
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder::new</span>();
 
-<span class="ident">builder</span>.<span class="ident">filter_level</span>(<span class="ident">LevelFilter</span>::<span class="ident">Info</span>);</pre></div>
+<span class="ident">builder</span>.<span class="ident">filter_level</span>(<span class="ident">LevelFilter::Info</span>);</pre></div>
 </div><h4 id="method.filter" class="method"><code>pub fn <a href="#method.filter" class="fnname">filter</a>(&amp;mut self, module: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, level: <a class="enum" href="../log/enum.LevelFilter.html" title="enum log::LevelFilter">LevelFilter</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>Self</code><a class="srclink" href="../src/env_logger/lib.rs.html#695-698" title="goto source code">[src]</a></h4><div class="docblock"><p>Adds filters to the logger.</p>
 <p>The given module (if any) will log at most the specified level provided.
 If no module is provided then the filter will apply to all log messages.</p>
@@ -171,12 +171,12 @@ If no module is provided then the filter will apply to all log messages.</p>
 <p>Only include messages for info and above for logs in <code>path::to::module</code>:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">env_logger</span>::<span class="ident">Builder</span>;
-<span class="kw">use</span> <span class="ident">log</span>::<span class="ident">LevelFilter</span>;
+<span class="kw">use</span> <span class="ident">env_logger::Builder</span>;
+<span class="kw">use</span> <span class="ident">log::LevelFilter</span>;
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder::new</span>();
 
-<span class="ident">builder</span>.<span class="ident">filter</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;path::to::module&quot;</span>), <span class="ident">LevelFilter</span>::<span class="ident">Info</span>);</pre></div>
+<span class="ident">builder</span>.<span class="ident">filter</span>(<span class="prelude-val">Some</span>(<span class="string">&quot;path::to::module&quot;</span>), <span class="ident">LevelFilter::Info</span>);</pre></div>
 </div><h4 id="method.parse_filters" class="method"><code>pub fn <a href="#method.parse_filters" class="fnname">parse_filters</a>(&amp;mut self, filters: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>Self</code><a class="srclink" href="../src/env_logger/lib.rs.html#704-707" title="goto source code">[src]</a></h4><div class="docblock"><p>Parses the directives string in the same form as the <code>RUST_LOG</code>
 environment variable.</p>
 <p>See the module documentation for more details.</p>
@@ -188,9 +188,9 @@ environment variable.</p>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">env_logger</span>::{<span class="ident">Builder</span>, <span class="ident">Target</span>};
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder::new</span>();
 
-<span class="ident">builder</span>.<span class="ident">target</span>(<span class="ident">Target</span>::<span class="ident">Stdout</span>);</pre></div>
+<span class="ident">builder</span>.<span class="ident">target</span>(<span class="ident">Target::Stdout</span>);</pre></div>
 </div><h4 id="method.write_style" class="method"><code>pub fn <a href="#method.write_style" class="fnname">write_style</a>(&amp;mut self, write_style: <a class="enum" href="../env_logger/fmt/enum.WriteStyle.html" title="enum env_logger::fmt::WriteStyle">WriteStyle</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>Self</code><a class="srclink" href="../src/env_logger/lib.rs.html#745-748" title="goto source code">[src]</a></h4><div class="docblock"><p>Sets whether or not styles will be written.</p>
 <p>This can be useful in environments that don’t support control characters
 for setting colors.</p>
@@ -200,9 +200,9 @@ for setting colors.</p>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">env_logger</span>::{<span class="ident">Builder</span>, <span class="ident">WriteStyle</span>};
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder</span>::<span class="ident">new</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">builder</span> <span class="op">=</span> <span class="ident">Builder::new</span>();
 
-<span class="ident">builder</span>.<span class="ident">write_style</span>(<span class="ident">WriteStyle</span>::<span class="ident">Never</span>);</pre></div>
+<span class="ident">builder</span>.<span class="ident">write_style</span>(<span class="ident">WriteStyle::Never</span>);</pre></div>
 </div><h4 id="method.parse_write_style" class="method"><code>pub fn <a href="#method.parse_write_style" class="fnname">parse_write_style</a>(&amp;mut self, write_style: &amp;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.reference.html">&amp;mut </a>Self</code><a class="srclink" href="../src/env_logger/lib.rs.html#754-757" title="goto source code">[src]</a></h4><div class="docblock"><p>Parses whether or not to write styles in the same form as the <code>RUST_LOG_STYLE</code>
 environment variable.</p>
 <p>See the module documentation for more details.</p>

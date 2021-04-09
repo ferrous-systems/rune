@@ -357,12 +357,12 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The *Abstract Syntax Tree* for a Runefile.</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>::{<span class="self">self</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>};
+<span class="kw">use</span> <span class="ident">std::fmt</span>::{<span class="self">self</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>};
 
-<span class="kw">use</span> <span class="ident">codespan</span>::<span class="ident">Span</span>;
+<span class="kw">use</span> <span class="ident">codespan::Span</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>, <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>, <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Runefile</span> {
     <span class="kw">pub</span> <span class="ident">instructions</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Instruction</span><span class="op">&gt;</span>,
     <span class="kw">pub</span> <span class="ident">span</span>: <span class="ident">Span</span>,
@@ -371,7 +371,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>,
-    <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>),
+    <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>),
     <span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;kebab-case&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)
 )]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Instruction</span> {
@@ -386,46 +386,46 @@
 <span class="kw">impl</span> <span class="ident">Instruction</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">span</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Span</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Instruction</span>::<span class="ident">From</span>(<span class="ident">f</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">span</span>,
-            <span class="ident">Instruction</span>::<span class="ident">Model</span>(<span class="ident">m</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">m</span>.<span class="ident">span</span>,
-            <span class="ident">Instruction</span>::<span class="ident">Capability</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span>.<span class="ident">span</span>,
-            <span class="ident">Instruction</span>::<span class="ident">Run</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">span</span>,
-            <span class="ident">Instruction</span>::<span class="ident">ProcBlock</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">p</span>.<span class="ident">span</span>,
-            <span class="ident">Instruction</span>::<span class="ident">Out</span>(<span class="ident">o</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">o</span>.<span class="ident">span</span>,
+            <span class="ident">Instruction::From</span>(<span class="ident">f</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">span</span>,
+            <span class="ident">Instruction::Model</span>(<span class="ident">m</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">m</span>.<span class="ident">span</span>,
+            <span class="ident">Instruction::Capability</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span>.<span class="ident">span</span>,
+            <span class="ident">Instruction::Run</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">r</span>.<span class="ident">span</span>,
+            <span class="ident">Instruction::ProcBlock</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">p</span>.<span class="ident">span</span>,
+            <span class="ident">Instruction::Out</span>(<span class="ident">o</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">o</span>.<span class="ident">span</span>,
         }
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">FromInstruction</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Instruction</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">FromInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">Instruction</span>::<span class="ident">From</span>(<span class="ident">other</span>) }
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">FromInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">Instruction::From</span>(<span class="ident">other</span>) }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ModelInstruction</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Instruction</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">ModelInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">Instruction</span>::<span class="ident">Model</span>(<span class="ident">other</span>) }
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">ModelInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">Instruction::Model</span>(<span class="ident">other</span>) }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">CapabilityInstruction</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Instruction</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">CapabilityInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Instruction</span>::<span class="ident">Capability</span>(<span class="ident">other</span>)
+        <span class="ident">Instruction::Capability</span>(<span class="ident">other</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">RunInstruction</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Instruction</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">RunInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">Instruction</span>::<span class="ident">Run</span>(<span class="ident">other</span>) }
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">RunInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">Instruction::Run</span>(<span class="ident">other</span>) }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ProcBlockInstruction</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Instruction</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">ProcBlockInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Instruction</span>::<span class="ident">ProcBlock</span>(<span class="ident">other</span>)
+        <span class="ident">Instruction::ProcBlock</span>(<span class="ident">other</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">OutInstruction</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Instruction</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">OutInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">Instruction</span>::<span class="ident">Out</span>(<span class="ident">other</span>) }
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">OutInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">Instruction::Out</span>(<span class="ident">other</span>) }
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>, <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>, <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FromInstruction</span> {
     <span class="kw">pub</span> <span class="ident">image</span>: <span class="ident">Path</span>,
     <span class="kw">pub</span> <span class="ident">span</span>: <span class="ident">Span</span>,
@@ -434,7 +434,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>,
-    <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>),
+    <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>),
     <span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;kebab-case&quot;</span>)
 )]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ModelInstruction</span> {
@@ -447,7 +447,7 @@
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>, <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>, <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Ident</span> {
     <span class="kw">pub</span> <span class="ident">value</span>: <span class="ident">String</span>,
     <span class="kw">pub</span> <span class="ident">span</span>: <span class="ident">Span</span>,
@@ -464,14 +464,14 @@
     <span class="doccomment">/// Create an [`Ident`] with a placeholder span.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">dangling</span>(<span class="ident">value</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Ident</span>::<span class="ident">new</span>(<span class="ident">value</span>, <span class="ident">Span</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">0</span>))
+        <span class="ident">Ident::new</span>(<span class="ident">value</span>, <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>))
     }
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>,
-    <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>),
+    <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>),
     <span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;kebab-case&quot;</span>)
 )]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CapabilityInstruction</span> {
@@ -483,7 +483,7 @@
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>, <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>, <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Type</span> {
     <span class="kw">pub</span> <span class="ident">kind</span>: <span class="ident">TypeKind</span>,
     <span class="kw">pub</span> <span class="ident">span</span>: <span class="ident">Span</span>,
@@ -493,15 +493,15 @@
 <span class="kw">impl</span> <span class="ident">Type</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">named_dangling</span>(<span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">Type</span> {
-            <span class="ident">kind</span>: <span class="ident">TypeKind</span>::<span class="ident">Named</span>(<span class="ident">Ident</span>::<span class="ident">dangling</span>(<span class="ident">name</span>)),
-            <span class="ident">span</span>: <span class="ident">Span</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">0</span>),
+            <span class="ident">kind</span>: <span class="ident">TypeKind::Named</span>(<span class="ident">Ident::dangling</span>(<span class="ident">name</span>)),
+            <span class="ident">span</span>: <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>),
         }
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">inferred_dangling</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">Type</span> {
-            <span class="ident">kind</span>: <span class="ident">TypeKind</span>::<span class="ident">Inferred</span>,
-            <span class="ident">span</span>: <span class="ident">Span</span>::<span class="ident">new</span>(<span class="number">0</span>, <span class="number">0</span>),
+            <span class="ident">kind</span>: <span class="ident">TypeKind::Inferred</span>,
+            <span class="ident">span</span>: <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>),
         }
     }
 }
@@ -509,7 +509,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>,
-    <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>),
+    <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>),
     <span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;kebab-case&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>)
 )]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TypeKind</span> {
@@ -524,7 +524,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>,
-    <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>),
+    <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>),
     <span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;kebab-case&quot;</span>)
 )]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RunInstruction</span> {
@@ -535,7 +535,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>,
-    <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>),
+    <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>),
     <span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;kebab-case&quot;</span>)
 )]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ProcBlockInstruction</span> {
@@ -550,7 +550,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>,
-    <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>),
+    <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>),
     <span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;kebab-case&quot;</span>)
 )]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OutInstruction</span> {
@@ -561,7 +561,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>,
-    <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>),
+    <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>),
     <span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;kebab-case&quot;</span>)
 )]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Literal</span> {
@@ -581,7 +581,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>,
-    <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>),
+    <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>),
     <span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;kebab-case&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;type&quot;</span>, <span class="ident">content</span> <span class="op">=</span> <span class="string">&quot;value&quot;</span>)
 )]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">LiteralKind</span> {
@@ -591,23 +591,23 @@
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">LiteralKind</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">i64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">LiteralKind</span>::<span class="ident">Integer</span>(<span class="ident">other</span>) }
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">i64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">LiteralKind::Integer</span>(<span class="ident">other</span>) }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">LiteralKind</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">f64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">LiteralKind</span>::<span class="ident">Float</span>(<span class="ident">other</span>) }
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">f64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">LiteralKind::Float</span>(<span class="ident">other</span>) }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">LiteralKind</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">LiteralKind</span>::<span class="ident">String</span>(<span class="ident">other</span>.<span class="ident">to_string</span>()) }
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">LiteralKind::String</span>(<span class="ident">other</span>.<span class="ident">to_string</span>()) }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">LiteralKind</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">LiteralKind</span>::<span class="ident">String</span>(<span class="ident">other</span>) }
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">LiteralKind::String</span>(<span class="ident">other</span>) }
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>)]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>, <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>))]</span>
+<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>, <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Argument</span> {
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">Ident</span>,
     <span class="kw">pub</span> <span class="ident">value</span>: <span class="ident">ArgumentValue</span>,
@@ -618,7 +618,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">literal</span>(<span class="ident">name</span>: <span class="ident">Ident</span>, <span class="ident">value</span>: <span class="ident">Literal</span>, <span class="ident">span</span>: <span class="ident">Span</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">Argument</span> {
             <span class="ident">name</span>,
-            <span class="ident">value</span>: <span class="ident">ArgumentValue</span>::<span class="ident">Literal</span>(<span class="ident">value</span>),
+            <span class="ident">value</span>: <span class="ident">ArgumentValue::Literal</span>(<span class="ident">value</span>),
             <span class="ident">span</span>,
         }
     }
@@ -626,12 +626,12 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">list</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="ident">name</span>: <span class="ident">Ident</span>, <span class="ident">values</span>: <span class="ident">I</span>, <span class="ident">span</span>: <span class="ident">Span</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">I</span>: <span class="ident">IntoIterator</span>,
-        <span class="ident">I</span>::<span class="ident">Item</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="ident">I::Item</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
     {
         <span class="ident">Argument</span> {
             <span class="ident">name</span>,
-            <span class="ident">value</span>: <span class="ident">ArgumentValue</span>::<span class="ident">List</span>(
-                <span class="ident">values</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="ident">Into</span>::<span class="ident">into</span>).<span class="ident">collect</span>(),
+            <span class="ident">value</span>: <span class="ident">ArgumentValue::List</span>(
+                <span class="ident">values</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="ident">Into::into</span>).<span class="ident">collect</span>(),
             ),
             <span class="ident">span</span>,
         }
@@ -641,7 +641,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>,
-    <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>),
+    <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>),
     <span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;kebab-case&quot;</span>, <span class="ident">untagged</span>)
 )]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ArgumentValue</span> {
@@ -662,7 +662,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Clone</span>)]</span>
 <span class="attribute">#[<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;serde-1&quot;</span>,
-    <span class="ident">derive</span>(<span class="ident">serde</span>::<span class="ident">Serialize</span>, <span class="ident">serde</span>::<span class="ident">Deserialize</span>),
+    <span class="ident">derive</span>(<span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>),
     <span class="ident">serde</span>(<span class="ident">rename_all</span> <span class="op">=</span> <span class="string">&quot;kebab-case&quot;</span>)
 )]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Path</span> {
@@ -689,7 +689,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Path</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="ident">Path</span> {
             <span class="ident">base</span>,
             <span class="ident">sub_path</span>,

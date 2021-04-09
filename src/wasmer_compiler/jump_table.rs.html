@@ -44,10 +44,10 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! [Learn more](https://en.wikipedia.org/wiki/Branch_table).</span>
 
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">CodeOffset</span>;
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::CodeOffset</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;enable-serde&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
-<span class="kw">use</span> <span class="ident">wasmer_types</span>::<span class="ident">entity</span>::{<span class="ident">entity_impl</span>, <span class="ident">SecondaryMap</span>};
+<span class="kw">use</span> <span class="ident">wasmer_types::entity</span>::{<span class="ident">entity_impl</span>, <span class="ident">SecondaryMap</span>};
 
 <span class="doccomment">/// An opaque reference to a [jump table](https://en.wikipedia.org/wiki/Branch_table).</span>
 <span class="doccomment">///</span>
@@ -64,7 +64,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This method is for use by the parser.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_number</span>(<span class="ident">n</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32</span>::<span class="ident">max_value</span>() {
+        <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">u32::max_value</span>() {
             <span class="prelude-val">Some</span>(<span class="self">Self</span>(<span class="ident">n</span>))
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>

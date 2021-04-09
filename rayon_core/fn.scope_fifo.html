@@ -13,10 +13,10 @@ difference in the order of execution. Consider a similar example:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="comment">// point start</span>
-<span class="ident">rayon</span>::<span class="ident">scope_fifo</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
+<span class="ident">rayon::scope_fifo</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
     <span class="ident">s</span>.<span class="ident">spawn_fifo</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> { <span class="comment">// task s.1</span>
         <span class="ident">s</span>.<span class="ident">spawn_fifo</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> { <span class="comment">// task s.1.1</span>
-            <span class="ident">rayon</span>::<span class="ident">scope_fifo</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> {
+            <span class="ident">rayon::scope_fifo</span>(<span class="op">|</span><span class="ident">t</span><span class="op">|</span> {
                 <span class="ident">t</span>.<span class="ident">spawn_fifo</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ()); <span class="comment">// task t.1</span>
                 <span class="ident">t</span>.<span class="ident">spawn_fifo</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> ()); <span class="comment">// task t.2</span>
             });

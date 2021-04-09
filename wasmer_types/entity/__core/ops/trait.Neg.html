@@ -10,7 +10,7 @@
 negate its value.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Neg</span>;
+<span class="kw">use</span> <span class="ident">std::ops::Neg</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>)]</span>
 <span class="kw">enum</span> <span class="ident">Sign</span> {
@@ -22,21 +22,21 @@ negate its value.</p>
 <span class="kw">impl</span> <span class="ident">Neg</span> <span class="kw">for</span> <span class="ident">Sign</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="self">Self</span>;
 
-    <span class="kw">fn</span> <span class="ident">neg</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Output</span> {
+    <span class="kw">fn</span> <span class="ident">neg</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Sign</span>::<span class="ident">Negative</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Sign</span>::<span class="ident">Positive</span>,
-            <span class="ident">Sign</span>::<span class="ident">Zero</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Sign</span>::<span class="ident">Zero</span>,
-            <span class="ident">Sign</span>::<span class="ident">Positive</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Sign</span>::<span class="ident">Negative</span>,
+            <span class="ident">Sign::Negative</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Sign::Positive</span>,
+            <span class="ident">Sign::Zero</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Sign::Zero</span>,
+            <span class="ident">Sign::Positive</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Sign::Negative</span>,
         }
     }
 }
 
 <span class="comment">// A negative positive is a negative.</span>
-<span class="macro">assert_eq!</span>(<span class="op">-</span><span class="ident">Sign</span>::<span class="ident">Positive</span>, <span class="ident">Sign</span>::<span class="ident">Negative</span>);
+<span class="macro">assert_eq!</span>(<span class="op">-</span><span class="ident">Sign::Positive</span>, <span class="ident">Sign::Negative</span>);
 <span class="comment">// A double negative is a positive.</span>
-<span class="macro">assert_eq!</span>(<span class="op">-</span><span class="ident">Sign</span>::<span class="ident">Negative</span>, <span class="ident">Sign</span>::<span class="ident">Positive</span>);
+<span class="macro">assert_eq!</span>(<span class="op">-</span><span class="ident">Sign::Negative</span>, <span class="ident">Sign::Positive</span>);
 <span class="comment">// Zero is its own negation.</span>
-<span class="macro">assert_eq!</span>(<span class="op">-</span><span class="ident">Sign</span>::<span class="ident">Zero</span>, <span class="ident">Sign</span>::<span class="ident">Zero</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="op">-</span><span class="ident">Sign::Zero</span>, <span class="ident">Sign::Zero</span>);</pre></div>
 </div><h2 id="associated-types" class="small-section-header">Associated Types<a href="#associated-types" class="anchor"></a></h2><div class="methods"><h3 id="associatedtype.Output" class="method"><code>type <a href="#associatedtype.Output" class="type">Output</a></code><a class="srclink" href="https://doc.rust-lang.org/nightly/src/core/ops/arith.rs.html#656" title="goto source code">[src]</a></h3><div class="docblock"><p>The resulting type after applying the <code>-</code> operator.</p>
 </div></div><span class="loading-content">Loading content...</span><h2 id="required-methods" class="small-section-header">Required methods<a href="#required-methods" class="anchor"></a></h2><div class="methods"><h3 id="tymethod.neg" class="method"><code><span class="docblock attributes">#[must_use]</span>pub fn <a href="#tymethod.neg" class="fnname">neg</a>(self) -&gt; Self::<a class="type" href="../../../../wasmer_types/entity/__core/ops/trait.Neg.html#associatedtype.Output" title="type wasmer_types::entity::__core::ops::Neg::Output">Output</a></code><a class="srclink" href="https://doc.rust-lang.org/nightly/src/core/ops/arith.rs.html#668" title="goto source code">[src]</a></h3><div class="docblock"><p>Performs the unary <code>-</code> operation.</p>
 <h1 id="example" class="section-header"><a href="#example">Example</a></h1>

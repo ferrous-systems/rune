@@ -14,7 +14,7 @@ which borrows the uninitialized context, and can be used to evaluate and run a
 <span class="kw">use</span> <span class="ident">gimli</span>::{<span class="ident">UninitializedUnwindContext</span>, <span class="ident">UnwindTable</span>};
 
 <span class="comment">// An uninitialized context.</span>
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">UninitializedUnwindContext</span>::<span class="ident">new</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">UninitializedUnwindContext::new</span>();
 
 <span class="comment">// Initialize the context by evaluating the CIE&#39;s initial instruction program,</span>
 <span class="comment">// and generate the unwind table.</span>

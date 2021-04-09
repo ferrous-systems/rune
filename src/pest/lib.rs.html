@@ -177,13 +177,13 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;pretty-print&quot;</span>)]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_json</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">parser</span>::<span class="ident">Parser</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">parser::Parser</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">parser_state</span>::{<span class="ident">state</span>, <span class="ident">Atomicity</span>, <span class="ident">Lookahead</span>, <span class="ident">MatchDir</span>, <span class="ident">ParseResult</span>, <span class="ident">ParserState</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">position</span>::<span class="ident">Position</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">position::Position</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">span</span>::{<span class="ident">Lines</span>, <span class="ident">Span</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">hash</span>::<span class="ident">Hash</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">token</span>::<span class="ident">Token</span>;
+<span class="kw">use</span> <span class="ident">std::fmt::Debug</span>;
+<span class="kw">use</span> <span class="ident">std::hash::Hash</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">token::Token</span>;
 
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">error</span>;
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">iterators</span>;

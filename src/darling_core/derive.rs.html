@@ -59,9 +59,9 @@
 <span class="doccomment">//! Functions to derive `darling`&#39;s traits from well-formed input, without directly depending</span>
 <span class="doccomment">//! on `proc_macro`.</span>
 
-<span class="kw">use</span> <span class="ident">proc_macro2</span>::<span class="ident">TokenStream</span>;
-<span class="kw">use</span> <span class="ident">quote</span>::<span class="ident">ToTokens</span>;
-<span class="kw">use</span> <span class="ident">syn</span>::<span class="ident">DeriveInput</span>;
+<span class="kw">use</span> <span class="ident">proc_macro2::TokenStream</span>;
+<span class="kw">use</span> <span class="ident">quote::ToTokens</span>;
+<span class="kw">use</span> <span class="ident">syn::DeriveInput</span>;
 
 <span class="kw">use</span> <span class="ident">options</span>;
 
@@ -80,35 +80,35 @@
 <span class="doccomment">/// the input cannot produce a valid impl, the returned tokens will contain</span>
 <span class="doccomment">/// compile errors instead.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_meta</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">DeriveInput</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
-    <span class="macro">emit_impl_or_error!</span>(<span class="ident">options</span>::<span class="ident">FromMetaOptions</span>::<span class="ident">new</span>(<span class="ident">input</span>))
+    <span class="macro">emit_impl_or_error!</span>(<span class="ident">options::FromMetaOptions::new</span>(<span class="ident">input</span>))
 }
 
 <span class="doccomment">/// Create tokens for a `darling::FromDeriveInput` impl from a `DeriveInput`. If</span>
 <span class="doccomment">/// the input cannot produce a valid impl, the returned tokens will contain</span>
 <span class="doccomment">/// compile errors instead.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_derive_input</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">DeriveInput</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
-    <span class="macro">emit_impl_or_error!</span>(<span class="ident">options</span>::<span class="ident">FdiOptions</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>))
+    <span class="macro">emit_impl_or_error!</span>(<span class="ident">options::FdiOptions::new</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>))
 }
 
 <span class="doccomment">/// Create tokens for a `darling::FromField` impl from a `DeriveInput`. If</span>
 <span class="doccomment">/// the input cannot produce a valid impl, the returned tokens will contain</span>
 <span class="doccomment">/// compile errors instead.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_field</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">DeriveInput</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
-    <span class="macro">emit_impl_or_error!</span>(<span class="ident">options</span>::<span class="ident">FromFieldOptions</span>::<span class="ident">new</span>(<span class="ident">input</span>))
+    <span class="macro">emit_impl_or_error!</span>(<span class="ident">options::FromFieldOptions::new</span>(<span class="ident">input</span>))
 }
 
 <span class="doccomment">/// Create tokens for a `darling::FromTypeParam` impl from a `DeriveInput`. If</span>
 <span class="doccomment">/// the input cannot produce a valid impl, the returned tokens will contain</span>
 <span class="doccomment">/// compile errors instead.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_type_param</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">DeriveInput</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
-    <span class="macro">emit_impl_or_error!</span>(<span class="ident">options</span>::<span class="ident">FromTypeParamOptions</span>::<span class="ident">new</span>(<span class="ident">input</span>))
+    <span class="macro">emit_impl_or_error!</span>(<span class="ident">options::FromTypeParamOptions::new</span>(<span class="ident">input</span>))
 }
 
 <span class="doccomment">/// Create tokens for a `darling::FromVariant` impl from a `DeriveInput`. If</span>
 <span class="doccomment">/// the input cannot produce a valid impl, the returned tokens will contain</span>
 <span class="doccomment">/// compile errors instead.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_variant</span>(<span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">DeriveInput</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
-    <span class="macro">emit_impl_or_error!</span>(<span class="ident">options</span>::<span class="ident">FromVariantOptions</span>::<span class="ident">new</span>(<span class="ident">input</span>))
+    <span class="macro">emit_impl_or_error!</span>(<span class="ident">options::FromVariantOptions::new</span>(<span class="ident">input</span>))
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="darling_core" data-search-js="../../search-index.js"></div>

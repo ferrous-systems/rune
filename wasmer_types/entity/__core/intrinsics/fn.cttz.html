@@ -10,7 +10,7 @@ primitives via the <code>trailing_zeros</code> method. For example,
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">core_intrinsics</span>)]</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">intrinsics</span>::<span class="ident">cttz</span>;
+<span class="kw">use</span> <span class="ident">std::intrinsics::cttz</span>;
 
 <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="number">0b0011_1000_u8</span>;
 <span class="kw">let</span> <span class="ident">num_trailing</span> <span class="op">=</span> <span class="ident">cttz</span>(<span class="ident">x</span>);
@@ -20,7 +20,7 @@ primitives via the <code>trailing_zeros</code> method. For example,
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">core_intrinsics</span>)]</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">intrinsics</span>::<span class="ident">cttz</span>;
+<span class="kw">use</span> <span class="ident">std::intrinsics::cttz</span>;
 
 <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="number">0u16</span>;
 <span class="kw">let</span> <span class="ident">num_trailing</span> <span class="op">=</span> <span class="ident">cttz</span>(<span class="ident">x</span>);

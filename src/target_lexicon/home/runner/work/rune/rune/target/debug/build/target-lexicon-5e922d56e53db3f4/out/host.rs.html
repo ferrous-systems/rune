@@ -76,63 +76,63 @@
 <span id="73">73</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_imports</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Aarch64Architecture</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::Aarch64Architecture</span>::<span class="kw-2">*</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_imports</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ArmArchitecture</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ArmArchitecture</span>::<span class="kw-2">*</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_imports</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">CustomVendor</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::CustomVendor</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_imports</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Mips32Architecture</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::Mips32Architecture</span>::<span class="kw-2">*</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_imports</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Mips64Architecture</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::Mips64Architecture</span>::<span class="kw-2">*</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_imports</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Riscv32Architecture</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::Riscv32Architecture</span>::<span class="kw-2">*</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_imports</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">Riscv64Architecture</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::Riscv64Architecture</span>::<span class="kw-2">*</span>;
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_imports</span>)]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">X86_32Architecture</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::X86_32Architecture</span>::<span class="kw-2">*</span>;
 
 <span class="doccomment">/// The `Triple` of the current host.</span>
 <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">HOST</span>: <span class="ident">Triple</span> <span class="op">=</span> <span class="ident">Triple</span> {
-    <span class="ident">architecture</span>: <span class="ident">Architecture</span>::<span class="ident">X86_64</span>,
-    <span class="ident">vendor</span>: <span class="ident">Vendor</span>::<span class="ident">Unknown</span>,
-    <span class="ident">operating_system</span>: <span class="ident">OperatingSystem</span>::<span class="ident">Linux</span>,
-    <span class="ident">environment</span>: <span class="ident">Environment</span>::<span class="ident">Gnu</span>,
-    <span class="ident">binary_format</span>: <span class="ident">BinaryFormat</span>::<span class="ident">Elf</span>,
+    <span class="ident">architecture</span>: <span class="ident">Architecture::X86_64</span>,
+    <span class="ident">vendor</span>: <span class="ident">Vendor::Unknown</span>,
+    <span class="ident">operating_system</span>: <span class="ident">OperatingSystem::Linux</span>,
+    <span class="ident">environment</span>: <span class="ident">Environment::Gnu</span>,
+    <span class="ident">binary_format</span>: <span class="ident">BinaryFormat::Elf</span>,
 };
 
 <span class="kw">impl</span> <span class="ident">Architecture</span> {
     <span class="doccomment">/// Return the architecture for the current host.</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">host</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Architecture</span>::<span class="ident">X86_64</span>
+        <span class="ident">Architecture::X86_64</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Vendor</span> {
     <span class="doccomment">/// Return the vendor for the current host.</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">host</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Vendor</span>::<span class="ident">Unknown</span>
+        <span class="ident">Vendor::Unknown</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">OperatingSystem</span> {
     <span class="doccomment">/// Return the operating system for the current host.</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">host</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">OperatingSystem</span>::<span class="ident">Linux</span>
+        <span class="ident">OperatingSystem::Linux</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Environment</span> {
     <span class="doccomment">/// Return the environment for the current host.</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">host</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Environment</span>::<span class="ident">Gnu</span>
+        <span class="ident">Environment::Gnu</span>
     }
 }
 
 <span class="kw">impl</span> <span class="ident">BinaryFormat</span> {
     <span class="doccomment">/// Return the binary format for the current host.</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">host</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">BinaryFormat</span>::<span class="ident">Elf</span>
+        <span class="ident">BinaryFormat::Elf</span>
     }
 }
 
@@ -140,11 +140,11 @@
     <span class="doccomment">/// Return the triple for the current host.</span>
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">host</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">architecture</span>: <span class="ident">Architecture</span>::<span class="ident">X86_64</span>,
-            <span class="ident">vendor</span>: <span class="ident">Vendor</span>::<span class="ident">Unknown</span>,
-            <span class="ident">operating_system</span>: <span class="ident">OperatingSystem</span>::<span class="ident">Linux</span>,
-            <span class="ident">environment</span>: <span class="ident">Environment</span>::<span class="ident">Gnu</span>,
-            <span class="ident">binary_format</span>: <span class="ident">BinaryFormat</span>::<span class="ident">Elf</span>,
+            <span class="ident">architecture</span>: <span class="ident">Architecture::X86_64</span>,
+            <span class="ident">vendor</span>: <span class="ident">Vendor::Unknown</span>,
+            <span class="ident">operating_system</span>: <span class="ident">OperatingSystem::Linux</span>,
+            <span class="ident">environment</span>: <span class="ident">Environment::Gnu</span>,
+            <span class="ident">binary_format</span>: <span class="ident">BinaryFormat::Elf</span>,
         }
     }
 }

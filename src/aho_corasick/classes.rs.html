@@ -240,7 +240,7 @@
 <span id="237">237</span>
 <span id="238">238</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
+<span class="kw">use</span> <span class="ident">std::fmt</span>;
 
 <span class="doccomment">/// A representation of byte oriented equivalence classes.</span>
 <span class="doccomment">///</span>
@@ -260,7 +260,7 @@
     <span class="doccomment">/// Creates a new set of equivalence classes where each byte belongs to</span>
     <span class="doccomment">/// its own equivalence class.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">singletons</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ByteClasses</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">classes</span> <span class="op">=</span> <span class="ident">ByteClasses</span>::<span class="ident">empty</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">classes</span> <span class="op">=</span> <span class="ident">ByteClasses::empty</span>();
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">256</span> {
             <span class="ident">classes</span>.<span class="ident">set</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">i</span> <span class="kw">as</span> <span class="ident">u8</span>);
         }
@@ -326,8 +326,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">ByteClasses</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">ByteClasses</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_singleton</span>() {
             <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;ByteClasses({{singletons}})&quot;</span>)
         } <span class="kw">else</span> {
@@ -416,7 +416,7 @@
     <span class="doccomment">/// equivalence class. The last mapping indicates the largest equivalence</span>
     <span class="doccomment">/// class identifier (which is never bigger than 255).</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">build</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ByteClasses</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">classes</span> <span class="op">=</span> <span class="ident">ByteClasses</span>::<span class="ident">empty</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">classes</span> <span class="op">=</span> <span class="ident">ByteClasses::empty</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">class</span> <span class="op">=</span> <span class="number">0u8</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">i</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">loop</span> {
@@ -439,7 +439,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">byte_classes</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">set</span> <span class="op">=</span> <span class="ident">ByteClassBuilder</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">set</span> <span class="op">=</span> <span class="ident">ByteClassBuilder::new</span>();
         <span class="ident">set</span>.<span class="ident">set_range</span>(<span class="string">b&#39;a&#39;</span>, <span class="string">b&#39;z&#39;</span>);
 
         <span class="kw">let</span> <span class="ident">classes</span> <span class="op">=</span> <span class="ident">set</span>.<span class="ident">build</span>();
@@ -454,7 +454,7 @@
         <span class="macro">assert_eq!</span>(<span class="ident">classes</span>.<span class="ident">get</span>(<span class="number">254</span>), <span class="number">2</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">classes</span>.<span class="ident">get</span>(<span class="number">255</span>), <span class="number">2</span>);
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">set</span> <span class="op">=</span> <span class="ident">ByteClassBuilder</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">set</span> <span class="op">=</span> <span class="ident">ByteClassBuilder::new</span>();
         <span class="ident">set</span>.<span class="ident">set_range</span>(<span class="number">0</span>, <span class="number">2</span>);
         <span class="ident">set</span>.<span class="ident">set_range</span>(<span class="number">4</span>, <span class="number">6</span>);
         <span class="kw">let</span> <span class="ident">classes</span> <span class="op">=</span> <span class="ident">set</span>.<span class="ident">build</span>();
@@ -471,7 +471,7 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">full_byte_classes</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">set</span> <span class="op">=</span> <span class="ident">ByteClassBuilder</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">set</span> <span class="op">=</span> <span class="ident">ByteClassBuilder::new</span>();
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">256u16</span> {
             <span class="ident">set</span>.<span class="ident">set_range</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u8</span>, <span class="ident">i</span> <span class="kw">as</span> <span class="ident">u8</span>);
         }

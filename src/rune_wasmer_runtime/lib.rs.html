@@ -228,15 +228,15 @@
 <span id="225">225</span>
 <span id="226">226</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
+<span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">rune_runtime</span>::{<span class="ident">Image</span>, <span class="ident">Signature</span>, <span class="ident">WasmType</span>, <span class="ident">WasmValue</span>};
 <span class="kw">use</span> <span class="ident">wasmer</span>::{
     <span class="ident">Array</span>, <span class="ident">Exports</span>, <span class="ident">Function</span>, <span class="ident">Instance</span>, <span class="ident">LazyInit</span>, <span class="ident">Memory</span>, <span class="ident">Module</span>, <span class="ident">NativeFunc</span>,
     <span class="ident">RuntimeError</span>, <span class="ident">Store</span>, <span class="ident">Val</span>, <span class="ident">WasmPtr</span>,
 };
-<span class="kw">use</span> <span class="ident">wasmer</span>::<span class="ident">ImportObject</span>;
-<span class="kw">use</span> <span class="ident">wasmer_vm</span>::<span class="ident">Trap</span>;
+<span class="kw">use</span> <span class="ident">wasmer::ImportObject</span>;
+<span class="kw">use</span> <span class="ident">wasmer_vm::Trap</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Runtime</span> {
@@ -245,9 +245,9 @@
 
 <span class="kw">impl</span> <span class="ident">Runtime</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load</span>(<span class="ident">wasm</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">image</span>: <span class="kw">impl</span> <span class="ident">Image</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">store</span> <span class="op">=</span> <span class="ident">Store</span>::<span class="ident">default</span>();
-        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">Module</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">store</span>, <span class="ident">wasm</span>)<span class="question-mark">?</span>;
-        <span class="ident">Runtime</span>::<span class="ident">load_from_module</span>(<span class="kw-2">&amp;</span><span class="ident">module</span>, <span class="kw-2">&amp;</span><span class="ident">store</span>, <span class="ident">image</span>)
+        <span class="kw">let</span> <span class="ident">store</span> <span class="op">=</span> <span class="ident">Store::default</span>();
+        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">Module::new</span>(<span class="kw-2">&amp;</span><span class="ident">store</span>, <span class="ident">wasm</span>)<span class="question-mark">?</span>;
+        <span class="ident">Runtime::load_from_module</span>(<span class="kw-2">&amp;</span><span class="ident">module</span>, <span class="kw-2">&amp;</span><span class="ident">store</span>, <span class="ident">image</span>)
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load_from_module</span>(
@@ -255,15 +255,15 @@
         <span class="ident">store</span>: <span class="kw-2">&amp;</span><span class="ident">Store</span>,
         <span class="ident">image</span>: <span class="kw">impl</span> <span class="ident">Image</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="ident">log</span>::<span class="macro">debug!</span>(<span class="string">&quot;Loading image&quot;</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">registrar</span> <span class="op">=</span> <span class="ident">Registrar</span>::<span class="ident">new</span>(<span class="ident">store</span>);
+        <span class="macro">log::debug!</span>(<span class="string">&quot;Loading image&quot;</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">registrar</span> <span class="op">=</span> <span class="ident">Registrar::new</span>(<span class="ident">store</span>);
         <span class="ident">image</span>.<span class="ident">initialize_imports</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">registrar</span>);
         <span class="kw">let</span> <span class="ident">imports</span> <span class="op">=</span> <span class="ident">registrar</span>.<span class="ident">into_import_object</span>();
 
-        <span class="ident">log</span>::<span class="macro">debug!</span>(<span class="string">&quot;Instantiating the WebAssembly module&quot;</span>);
+        <span class="macro">log::debug!</span>(<span class="string">&quot;Instantiating the WebAssembly module&quot;</span>);
 
         <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span>
-            <span class="ident">Instance</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">module</span>, <span class="kw-2">&amp;</span><span class="ident">imports</span>).<span class="ident">context</span>(<span class="string">&quot;Instantiation failed&quot;</span>)<span class="question-mark">?</span>;
+            <span class="ident">Instance::new</span>(<span class="kw-2">&amp;</span><span class="ident">module</span>, <span class="kw-2">&amp;</span><span class="ident">imports</span>).<span class="ident">context</span>(<span class="string">&quot;Instantiation failed&quot;</span>)<span class="question-mark">?</span>;
 
         <span class="comment">// TODO: Rename the _manifest() method to _start() so it gets</span>
         <span class="comment">// automatically invoked while instantiating.</span>
@@ -275,13 +275,13 @@
             .<span class="ident">call</span>()
             .<span class="ident">context</span>(<span class="string">&quot;Unable to call the _manifest function&quot;</span>)<span class="question-mark">?</span>;
 
-        <span class="ident">log</span>::<span class="macro">debug!</span>(<span class="string">&quot;Loaded the Rune&quot;</span>);
+        <span class="macro">log::debug!</span>(<span class="string">&quot;Loaded the Rune&quot;</span>);
 
         <span class="prelude-val">Ok</span>(<span class="ident">Runtime</span> { <span class="ident">instance</span> })
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">call</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="ident">log</span>::<span class="macro">debug!</span>(<span class="string">&quot;Running the rune&quot;</span>);
+        <span class="macro">log::debug!</span>(<span class="string">&quot;Running the rune&quot;</span>);
 
         <span class="kw">let</span> <span class="ident">call_func</span>: <span class="ident">NativeFunc</span><span class="op">&lt;</span>(<span class="ident">i32</span>, <span class="ident">i32</span>, <span class="ident">i32</span>), <span class="ident">i32</span><span class="op">&gt;</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">instance</span>
@@ -313,13 +313,13 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;s</span><span class="op">&gt;</span> <span class="ident">Registrar</span><span class="op">&lt;</span><span class="lifetime">&#39;s</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">store</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;s</span> <span class="ident">Store</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">Registrar</span> {
-            <span class="ident">namespaces</span>: <span class="ident">HashMap</span>::<span class="ident">default</span>(),
+            <span class="ident">namespaces</span>: <span class="ident">HashMap::default</span>(),
             <span class="ident">store</span>,
         }
     }
 
     <span class="kw">fn</span> <span class="ident">into_import_object</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ImportObject</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">ImportObject</span>::<span class="ident">default</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">ImportObject::default</span>();
 
         <span class="kw">for</span> (<span class="ident">name</span>, <span class="ident">namespace</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">namespaces</span> {
             <span class="ident">obj</span>.<span class="ident">register</span>(<span class="ident">name</span>, <span class="ident">namespace</span>);
@@ -329,19 +329,19 @@
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;s</span><span class="op">&gt;</span> <span class="ident">rune_runtime</span>::<span class="ident">Registrar</span> <span class="kw">for</span> <span class="ident">Registrar</span><span class="op">&lt;</span><span class="lifetime">&#39;s</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;s</span><span class="op">&gt;</span> <span class="ident">rune_runtime::Registrar</span> <span class="kw">for</span> <span class="ident">Registrar</span><span class="op">&lt;</span><span class="lifetime">&#39;s</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">register_function</span>(
         <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">namespace</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
         <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">f</span>: <span class="ident">rune_runtime</span>::<span class="ident">Function</span>,
+        <span class="ident">f</span>: <span class="ident">rune_runtime::Function</span>,
     ) {
         <span class="kw">let</span> <span class="ident">ns</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">namespaces</span>.<span class="ident">entry</span>(<span class="ident">namespace</span>.<span class="ident">to_string</span>()).<span class="ident">or_default</span>();
 
-        <span class="kw">let</span> <span class="ident">wrapped_func</span> <span class="op">=</span> <span class="ident">Function</span>::<span class="ident">new_with_env</span>(
+        <span class="kw">let</span> <span class="ident">wrapped_func</span> <span class="op">=</span> <span class="ident">Function::new_with_env</span>(
             <span class="self">self</span>.<span class="ident">store</span>,
             <span class="ident">signature_to_wasmer</span>(<span class="ident">f</span>.<span class="ident">signature</span>()),
-            <span class="ident">CallContext</span>::<span class="ident">default</span>(),
+            <span class="ident">CallContext::default</span>(),
             <span class="kw">move</span> <span class="op">|</span><span class="ident">ctx</span>, <span class="ident">args</span><span class="op">|</span> {
                 <span class="kw">let</span> <span class="ident">converted</span> <span class="op">=</span> <span class="ident">args</span>
                     .<span class="ident">iter</span>()
@@ -353,8 +353,8 @@
                         <span class="prelude-val">Ok</span>(<span class="ident">ret</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="ident">value_to_wasmer</span>).<span class="ident">collect</span>())
                     },
                     <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="kw">let</span> <span class="ident">trap</span> <span class="op">=</span> <span class="ident">Trap</span>::<span class="ident">new_from_user</span>(<span class="ident">e</span>.<span class="ident">into</span>());
-                        <span class="prelude-val">Err</span>(<span class="ident">RuntimeError</span>::<span class="ident">from_trap</span>(<span class="ident">trap</span>))
+                        <span class="kw">let</span> <span class="ident">trap</span> <span class="op">=</span> <span class="ident">Trap::new_from_user</span>(<span class="ident">e</span>.<span class="ident">into</span>());
+                        <span class="prelude-val">Err</span>(<span class="ident">RuntimeError::from_trap</span>(<span class="ident">trap</span>))
                     },
                 }
             },
@@ -363,19 +363,19 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>, <span class="ident">Clone</span>, <span class="ident">wasmer</span>::<span class="ident">WasmerEnv</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>, <span class="ident">Clone</span>, <span class="ident">wasmer::WasmerEnv</span>)]</span>
 <span class="kw">struct</span> <span class="ident">CallContext</span> {
     <span class="attribute">#[<span class="ident">wasmer</span>(<span class="ident">export</span>)]</span>
     <span class="ident">memory</span>: <span class="ident">LazyInit</span><span class="op">&lt;</span><span class="ident">Memory</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">rune_runtime</span>::<span class="ident">CallContext</span> <span class="kw">for</span> <span class="ident">CallContext</span> {
+<span class="kw">impl</span> <span class="ident">rune_runtime::CallContext</span> <span class="kw">for</span> <span class="ident">CallContext</span> {
     <span class="kw">fn</span> <span class="ident">memory</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">address</span>: <span class="ident">u32</span>, <span class="ident">len</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">memory</span> <span class="op">=</span> <span class="self">self</span>
             .<span class="ident">memory</span>
             .<span class="ident">get_ref</span>()
             .<span class="ident">context</span>(<span class="string">&quot;Call context not initialized&quot;</span>)<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">WasmPtr</span>::<span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">Array</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="ident">address</span>)
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">WasmPtr</span>::<span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">Array</span><span class="op">&gt;</span><span class="ident">::new</span>(<span class="ident">address</span>)
             .<span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="ident">memory</span>, <span class="number">0</span>, <span class="ident">len</span>)
             .<span class="ident">context</span>(<span class="string">&quot;Bad pointer&quot;</span>)<span class="question-mark">?</span>;
 
@@ -384,7 +384,7 @@
         <span class="comment">// bugs here. When ownership rules are obeyed it&#39;s also valid to</span>
         <span class="comment">// transmute from a &amp;[Cell&lt;T&gt;] to &amp;[T].</span>
         <span class="kw">unsafe</span> {
-            <span class="prelude-val">Ok</span>(<span class="ident">std</span>::<span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>().<span class="ident">cast</span>(), <span class="ident">data</span>.<span class="ident">len</span>()))
+            <span class="prelude-val">Ok</span>(<span class="ident">std::slice::from_raw_parts</span>(<span class="ident">data</span>.<span class="ident">as_ptr</span>().<span class="ident">cast</span>(), <span class="ident">data</span>.<span class="ident">len</span>()))
         }
     }
 
@@ -400,18 +400,18 @@
 
         <span class="comment">// SAFETY: The caller ensures this memory won&#39;t be aliased. It&#39;s also</span>
         <span class="comment">// valid to transmute from a &amp;[Cell&lt;T&gt;] to &amp;[T].</span>
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">WasmPtr</span>::<span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">Array</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="ident">address</span>)
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">WasmPtr</span>::<span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">Array</span><span class="op">&gt;</span><span class="ident">::new</span>(<span class="ident">address</span>)
             .<span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="ident">memory</span>, <span class="number">0</span>, <span class="ident">len</span>)
             .<span class="ident">context</span>(<span class="string">&quot;Bad pointer&quot;</span>)<span class="question-mark">?</span>;
 
-        <span class="prelude-val">Ok</span>(<span class="ident">std</span>::<span class="ident">slice</span>::<span class="ident">from_raw_parts_mut</span>(
+        <span class="prelude-val">Ok</span>(<span class="ident">std::slice::from_raw_parts_mut</span>(
             <span class="ident">data</span>.<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>(),
             <span class="ident">data</span>.<span class="ident">len</span>(),
         ))
     }
 }
 
-<span class="kw">fn</span> <span class="ident">signature_to_wasmer</span>(<span class="ident">signature</span>: <span class="kw-2">&amp;</span><span class="ident">Signature</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">wasmer</span>::<span class="ident">FunctionType</span> {
+<span class="kw">fn</span> <span class="ident">signature_to_wasmer</span>(<span class="ident">signature</span>: <span class="kw-2">&amp;</span><span class="ident">Signature</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">wasmer::FunctionType</span> {
     <span class="kw">let</span> <span class="ident">params</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">signature</span>
         .<span class="ident">parameters</span>()
         .<span class="ident">iter</span>()
@@ -425,33 +425,33 @@
         .<span class="ident">map</span>(<span class="ident">rune_type_to_wasmer_type</span>)
         .<span class="ident">collect</span>();
 
-    <span class="ident">wasmer</span>::<span class="ident">FunctionType</span>::<span class="ident">new</span>(<span class="ident">params</span>, <span class="ident">returns</span>)
+    <span class="ident">wasmer::FunctionType::new</span>(<span class="ident">params</span>, <span class="ident">returns</span>)
 }
 
-<span class="kw">fn</span> <span class="ident">rune_type_to_wasmer_type</span>(<span class="ident">ty</span>: <span class="ident">WasmType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">wasmer</span>::<span class="ident">Type</span> {
+<span class="kw">fn</span> <span class="ident">rune_type_to_wasmer_type</span>(<span class="ident">ty</span>: <span class="ident">WasmType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">wasmer::Type</span> {
     <span class="kw">match</span> <span class="ident">ty</span> {
-        <span class="ident">WasmType</span>::<span class="ident">F32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wasmer</span>::<span class="ident">Type</span>::<span class="ident">F32</span>,
-        <span class="ident">WasmType</span>::<span class="ident">F64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wasmer</span>::<span class="ident">Type</span>::<span class="ident">F64</span>,
-        <span class="ident">WasmType</span>::<span class="ident">I32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wasmer</span>::<span class="ident">Type</span>::<span class="ident">I32</span>,
-        <span class="ident">WasmType</span>::<span class="ident">I64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wasmer</span>::<span class="ident">Type</span>::<span class="ident">I64</span>,
+        <span class="ident">WasmType::F32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wasmer::Type::F32</span>,
+        <span class="ident">WasmType::F64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wasmer::Type::F64</span>,
+        <span class="ident">WasmType::I32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wasmer::Type::I32</span>,
+        <span class="ident">WasmType::I64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">wasmer::Type::I64</span>,
     }
 }
 
 <span class="kw">fn</span> <span class="ident">wasmer_to_value</span>(<span class="ident">v</span>: <span class="kw-2">&amp;</span><span class="ident">Val</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WasmValue</span>, <span class="ident">RuntimeError</span><span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="ident">v</span> {
-        <span class="ident">Val</span>::<span class="ident">I32</span>(<span class="ident">int</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">WasmValue</span>::<span class="ident">I32</span>(<span class="kw-2">*</span><span class="ident">int</span>)),
-        <span class="ident">Val</span>::<span class="ident">I64</span>(<span class="ident">long</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">WasmValue</span>::<span class="ident">I64</span>(<span class="kw-2">*</span><span class="ident">long</span>)),
-        <span class="ident">Val</span>::<span class="ident">F32</span>(<span class="ident">int</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">WasmValue</span>::<span class="ident">F32</span>(<span class="kw-2">*</span><span class="ident">int</span>)),
-        <span class="ident">Val</span>::<span class="ident">F64</span>(<span class="ident">int</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">WasmValue</span>::<span class="ident">F64</span>(<span class="kw-2">*</span><span class="ident">int</span>)),
-        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">RuntimeError</span>::<span class="ident">new</span>(<span class="string">&quot;Unsupported wasm type&quot;</span>)),
+        <span class="ident">Val::I32</span>(<span class="ident">int</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">WasmValue::I32</span>(<span class="kw-2">*</span><span class="ident">int</span>)),
+        <span class="ident">Val::I64</span>(<span class="ident">long</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">WasmValue::I64</span>(<span class="kw-2">*</span><span class="ident">long</span>)),
+        <span class="ident">Val::F32</span>(<span class="ident">int</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">WasmValue::F32</span>(<span class="kw-2">*</span><span class="ident">int</span>)),
+        <span class="ident">Val::F64</span>(<span class="ident">int</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">WasmValue::F64</span>(<span class="kw-2">*</span><span class="ident">int</span>)),
+        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">RuntimeError::new</span>(<span class="string">&quot;Unsupported wasm type&quot;</span>)),
     }
 }
 <span class="kw">fn</span> <span class="ident">value_to_wasmer</span>(<span class="ident">value</span>: <span class="ident">WasmValue</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Val</span> {
     <span class="kw">match</span> <span class="ident">value</span> {
-        <span class="ident">WasmValue</span>::<span class="ident">F32</span>(<span class="ident">float</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Val</span>::<span class="ident">from</span>(<span class="ident">float</span>),
-        <span class="ident">WasmValue</span>::<span class="ident">F64</span>(<span class="ident">double</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Val</span>::<span class="ident">from</span>(<span class="ident">double</span>),
-        <span class="ident">WasmValue</span>::<span class="ident">I32</span>(<span class="ident">int</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Val</span>::<span class="ident">from</span>(<span class="ident">int</span>),
-        <span class="ident">WasmValue</span>::<span class="ident">I64</span>(<span class="ident">long</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Val</span>::<span class="ident">from</span>(<span class="ident">long</span>),
+        <span class="ident">WasmValue::F32</span>(<span class="ident">float</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Val::from</span>(<span class="ident">float</span>),
+        <span class="ident">WasmValue::F64</span>(<span class="ident">double</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Val::from</span>(<span class="ident">double</span>),
+        <span class="ident">WasmValue::I32</span>(<span class="ident">int</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Val::from</span>(<span class="ident">int</span>),
+        <span class="ident">WasmValue::I64</span>(<span class="ident">long</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Val::from</span>(<span class="ident">long</span>),
     }
 }
 </pre></div>

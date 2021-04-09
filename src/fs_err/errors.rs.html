@@ -206,10 +206,10 @@
 <span id="203">203</span>
 <span id="204">204</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">as</span> <span class="ident">StdError</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::<span class="ident">PathBuf</span>;
+<span class="kw">use</span> <span class="ident">std::error::Error</span> <span class="kw">as</span> <span class="ident">StdError</span>;
+<span class="kw">use</span> <span class="ident">std::fmt</span>;
+<span class="kw">use</span> <span class="ident">std::io</span>;
+<span class="kw">use</span> <span class="ident">std::path::PathBuf</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum</span> <span class="ident">ErrorKind</span> {
@@ -250,22 +250,22 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">Error</span> {
     <span class="ident">kind</span>: <span class="ident">ErrorKind</span>,
-    <span class="ident">source</span>: <span class="ident">io</span>::<span class="ident">Error</span>,
+    <span class="ident">source</span>: <span class="ident">io::Error</span>,
     <span class="ident">path</span>: <span class="ident">PathBuf</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Error</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">source</span>: <span class="ident">io</span>::<span class="ident">Error</span>, <span class="ident">kind</span>: <span class="ident">ErrorKind</span>, <span class="ident">path</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="ident">Error</span> {
-        <span class="self">Self</span>::<span class="ident">_new</span>(<span class="ident">source</span>, <span class="ident">kind</span>, <span class="ident">path</span>.<span class="ident">into</span>())
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">source</span>: <span class="ident">io::Error</span>, <span class="ident">kind</span>: <span class="ident">ErrorKind</span>, <span class="ident">path</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Error</span> {
+        <span class="self">Self</span><span class="ident">::_new</span>(<span class="ident">source</span>, <span class="ident">kind</span>, <span class="ident">path</span>.<span class="ident">into</span>())
     }
 
-    <span class="kw">fn</span> <span class="ident">_new</span>(<span class="ident">source</span>: <span class="ident">io</span>::<span class="ident">Error</span>, <span class="ident">kind</span>: <span class="ident">ErrorKind</span>, <span class="ident">path</span>: <span class="ident">PathBuf</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="ident">Error</span> {
-        <span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(<span class="ident">source</span>.<span class="ident">kind</span>(), <span class="self">Self</span> { <span class="ident">kind</span>, <span class="ident">source</span>, <span class="ident">path</span> })
+    <span class="kw">fn</span> <span class="ident">_new</span>(<span class="ident">source</span>: <span class="ident">io::Error</span>, <span class="ident">kind</span>: <span class="ident">ErrorKind</span>, <span class="ident">path</span>: <span class="ident">PathBuf</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Error</span> {
+        <span class="ident">io::Error::new</span>(<span class="ident">source</span>.<span class="ident">kind</span>(), <span class="self">Self</span> { <span class="ident">kind</span>, <span class="ident">source</span>, <span class="ident">path</span> })
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Error</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">formatter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Error</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">formatter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">use</span> <span class="ident">ErrorKind</span>::<span class="kw-2">*</span>;
 
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">path</span>.<span class="ident">display</span>();
@@ -333,28 +333,28 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">SourceDestError</span> {
     <span class="ident">kind</span>: <span class="ident">SourceDestErrorKind</span>,
-    <span class="ident">source</span>: <span class="ident">io</span>::<span class="ident">Error</span>,
+    <span class="ident">source</span>: <span class="ident">io::Error</span>,
     <span class="ident">from_path</span>: <span class="ident">PathBuf</span>,
     <span class="ident">to_path</span>: <span class="ident">PathBuf</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">SourceDestError</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
-        <span class="ident">source</span>: <span class="ident">io</span>::<span class="ident">Error</span>,
+        <span class="ident">source</span>: <span class="ident">io::Error</span>,
         <span class="ident">kind</span>: <span class="ident">SourceDestErrorKind</span>,
         <span class="ident">from_path</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
         <span class="ident">to_path</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="ident">Error</span> {
-        <span class="self">Self</span>::<span class="ident">_new</span>(<span class="ident">source</span>, <span class="ident">kind</span>, <span class="ident">from_path</span>.<span class="ident">into</span>(), <span class="ident">to_path</span>.<span class="ident">into</span>())
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Error</span> {
+        <span class="self">Self</span><span class="ident">::_new</span>(<span class="ident">source</span>, <span class="ident">kind</span>, <span class="ident">from_path</span>.<span class="ident">into</span>(), <span class="ident">to_path</span>.<span class="ident">into</span>())
     }
 
     <span class="kw">fn</span> <span class="ident">_new</span>(
-        <span class="ident">source</span>: <span class="ident">io</span>::<span class="ident">Error</span>,
+        <span class="ident">source</span>: <span class="ident">io::Error</span>,
         <span class="ident">kind</span>: <span class="ident">SourceDestErrorKind</span>,
         <span class="ident">from_path</span>: <span class="ident">PathBuf</span>,
         <span class="ident">to_path</span>: <span class="ident">PathBuf</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="ident">Error</span> {
-        <span class="ident">io</span>::<span class="ident">Error</span>::<span class="ident">new</span>(
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Error</span> {
+        <span class="ident">io::Error::new</span>(
             <span class="ident">source</span>.<span class="ident">kind</span>(),
             <span class="self">Self</span> {
                 <span class="ident">kind</span>,
@@ -366,35 +366,35 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">SourceDestError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">formatter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">SourceDestError</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">formatter</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="ident">from</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">from_path</span>.<span class="ident">display</span>();
         <span class="kw">let</span> <span class="ident">to</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">to_path</span>.<span class="ident">display</span>();
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">kind</span> {
-            <span class="ident">SourceDestErrorKind</span>::<span class="ident">Copy</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">SourceDestErrorKind::Copy</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">write!</span>(<span class="ident">formatter</span>, <span class="string">&quot;failed to copy file from {} to {}&quot;</span>, <span class="ident">from</span>, <span class="ident">to</span>)
             }
-            <span class="ident">SourceDestErrorKind</span>::<span class="ident">HardLink</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">SourceDestErrorKind::HardLink</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">write!</span>(<span class="ident">formatter</span>, <span class="string">&quot;failed to hardlink file from {} to {}&quot;</span>, <span class="ident">from</span>, <span class="ident">to</span>)
             }
-            <span class="ident">SourceDestErrorKind</span>::<span class="ident">Rename</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">SourceDestErrorKind::Rename</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">write!</span>(<span class="ident">formatter</span>, <span class="string">&quot;failed to rename file from {} to {}&quot;</span>, <span class="ident">from</span>, <span class="ident">to</span>)
             }
-            <span class="ident">SourceDestErrorKind</span>::<span class="ident">SoftLink</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">SourceDestErrorKind::SoftLink</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">write!</span>(<span class="ident">formatter</span>, <span class="string">&quot;failed to softlink file from {} to {}&quot;</span>, <span class="ident">from</span>, <span class="ident">to</span>)
             }
 
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
-            <span class="ident">SourceDestErrorKind</span>::<span class="ident">Symlink</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">SourceDestErrorKind::Symlink</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">write!</span>(<span class="ident">formatter</span>, <span class="string">&quot;failed to symlink file from {} to {}&quot;</span>, <span class="ident">from</span>, <span class="ident">to</span>)
             }
 
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
-            <span class="ident">SourceDestErrorKind</span>::<span class="ident">SymlinkFile</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">SourceDestErrorKind::SymlinkFile</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">write!</span>(<span class="ident">formatter</span>, <span class="string">&quot;failed to symlink file from {} to {}&quot;</span>, <span class="ident">from</span>, <span class="ident">to</span>)
             }
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
-            <span class="ident">SourceDestErrorKind</span>::<span class="ident">SymlinkDir</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">SourceDestErrorKind::SymlinkDir</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">write!</span>(<span class="ident">formatter</span>, <span class="string">&quot;failed to symlink dir from {} to {}&quot;</span>, <span class="ident">from</span>, <span class="ident">to</span>)
             }
         }

@@ -61,18 +61,18 @@
 <span id="58">58</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">CompileError</span>, <span class="ident">WasmError</span>};
-<span class="kw">use</span> <span class="ident">wasmparser</span>::<span class="ident">BinaryReaderError</span>;
+<span class="kw">use</span> <span class="ident">wasmparser::BinaryReaderError</span>;
 
 <span class="doccomment">/// Return an `Err(WasmError::Unsupported(msg))` where `msg` the string built by calling `format!`</span>
 <span class="doccomment">/// on the arguments to this macro.</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">wasm_unsupported</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">WasmError</span>::<span class="ident">Unsupported</span>(<span class="macro">format!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>)) }
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::WasmError::Unsupported</span>(<span class="macro">format!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>)<span class="kw-2">*</span>)) }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">BinaryReaderError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">WasmError</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">original</span>: <span class="ident">BinaryReaderError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">InvalidWebAssembly</span> {
+        <span class="self">Self</span><span class="ident">::InvalidWebAssembly</span> {
             <span class="ident">message</span>: <span class="ident">original</span>.<span class="ident">message</span>().<span class="ident">into</span>(),
             <span class="ident">offset</span>: <span class="ident">original</span>.<span class="ident">offset</span>(),
         }
@@ -83,21 +83,21 @@
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">original</span>: <span class="ident">BinaryReaderError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="comment">// `From` does not seem to be transitive by default, so we convert</span>
         <span class="comment">// BinaryReaderError -&gt; WasmError -&gt; CompileError</span>
-        <span class="self">Self</span>::<span class="ident">from</span>(<span class="ident">WasmError</span>::<span class="ident">from</span>(<span class="ident">original</span>))
+        <span class="self">Self</span><span class="ident">::from</span>(<span class="ident">WasmError::from</span>(<span class="ident">original</span>))
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">wasmparser</span>::<span class="ident">BinaryReader</span>;
+    <span class="kw">use</span> <span class="ident">wasmparser::BinaryReader</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">can_convert_binary_reader_error_to_wasm_error</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">BinaryReader</span>::<span class="ident">new</span>(<span class="string">b&quot;\0\0\0\0&quot;</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">BinaryReader::new</span>(<span class="string">b&quot;\0\0\0\0&quot;</span>);
         <span class="kw">let</span> <span class="ident">binary_reader_error</span> <span class="op">=</span> <span class="ident">reader</span>.<span class="ident">read_bytes</span>(<span class="number">10</span>).<span class="ident">unwrap_err</span>();
-        <span class="kw">match</span> <span class="ident">WasmError</span>::<span class="ident">from</span>(<span class="ident">binary_reader_error</span>) {
-            <span class="ident">WasmError</span>::<span class="ident">InvalidWebAssembly</span> { <span class="ident">message</span>, <span class="ident">offset</span> } <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="kw">match</span> <span class="ident">WasmError::from</span>(<span class="ident">binary_reader_error</span>) {
+            <span class="ident">WasmError::InvalidWebAssembly</span> { <span class="ident">message</span>, <span class="ident">offset</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">assert_eq!</span>(<span class="ident">message</span>, <span class="string">&quot;Unexpected EOF&quot;</span>);
                 <span class="macro">assert_eq!</span>(<span class="ident">offset</span>, <span class="number">0</span>);
             }
@@ -107,10 +107,10 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">can_convert_binary_reader_error_to_compile_error</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">BinaryReader</span>::<span class="ident">new</span>(<span class="string">b&quot;\0\0\0\0&quot;</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reader</span> <span class="op">=</span> <span class="ident">BinaryReader::new</span>(<span class="string">b&quot;\0\0\0\0&quot;</span>);
         <span class="kw">let</span> <span class="ident">binary_reader_error</span> <span class="op">=</span> <span class="ident">reader</span>.<span class="ident">read_bytes</span>(<span class="number">10</span>).<span class="ident">unwrap_err</span>();
-        <span class="kw">match</span> <span class="ident">CompileError</span>::<span class="ident">from</span>(<span class="ident">binary_reader_error</span>) {
-            <span class="ident">CompileError</span>::<span class="ident">Wasm</span>(<span class="ident">WasmError</span>::<span class="ident">InvalidWebAssembly</span> { <span class="ident">message</span>, <span class="ident">offset</span> }) <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="kw">match</span> <span class="ident">CompileError::from</span>(<span class="ident">binary_reader_error</span>) {
+            <span class="ident">CompileError::Wasm</span>(<span class="ident">WasmError::InvalidWebAssembly</span> { <span class="ident">message</span>, <span class="ident">offset</span> }) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">assert_eq!</span>(<span class="ident">message</span>, <span class="string">&quot;Unexpected EOF&quot;</span>);
                 <span class="macro">assert_eq!</span>(<span class="ident">offset</span>, <span class="number">0</span>);
             }

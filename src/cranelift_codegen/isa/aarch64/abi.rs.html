@@ -854,19 +854,19 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Implementation of a standard AArch64 ABI.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">types</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">types</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">SourceLoc</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">aarch64</span>::{<span class="ident">inst</span>::<span class="ident">EmitState</span>, <span class="ident">inst</span>::<span class="kw-2">*</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">machinst</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">settings</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::types</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::types</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::SourceLoc</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::aarch64</span>::{<span class="ident">inst::EmitState</span>, <span class="ident">inst</span>::<span class="kw-2">*</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::machinst</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::settings</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">CodegenError</span>, <span class="ident">CodegenResult</span>};
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">boxed</span>::<span class="ident">Box</span>;
-<span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
+<span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
+<span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 <span class="kw">use</span> <span class="ident">regalloc</span>::{<span class="ident">RealReg</span>, <span class="ident">Reg</span>, <span class="ident">RegClass</span>, <span class="ident">Set</span>, <span class="ident">Writable</span>};
-<span class="kw">use</span> <span class="ident">smallvec</span>::<span class="ident">SmallVec</span>;
+<span class="kw">use</span> <span class="ident">smallvec::SmallVec</span>;
 
 <span class="comment">// We use a generic implementation that factors out AArch64 and x64 ABI commonalities, because</span>
 <span class="comment">// these ABIs are very similar.</span>
@@ -899,7 +899,7 @@
 <span class="comment">// Architecture-arm64.cpp.</span>
 
 <span class="comment">// Indexed by physical register number.</span>
-<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
 <span class="kw">static</span> <span class="ident">BALDRDASH_JIT_CALLEE_SAVED_GPR</span>: <span class="kw-2">&amp;</span>[<span class="ident">bool</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[
     <span class="comment">/* 0 = */</span> <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>,
     <span class="comment">/* 8 = */</span> <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>,
@@ -911,7 +911,7 @@
     <span class="comment">/* 28 = */</span> <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span> <span class="comment">/* x30 = FP */</span>, <span class="bool-val">false</span> <span class="comment">/* x31 = SP */</span>
 ];
 
-<span class="attribute">#[<span class="ident">rustfmt</span>::<span class="ident">skip</span>]</span>
+<span class="attribute">#[<span class="ident">rustfmt::skip</span>]</span>
 <span class="kw">static</span> <span class="ident">BALDRDASH_JIT_CALLEE_SAVED_FPU</span>: <span class="kw-2">&amp;</span>[<span class="ident">bool</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[
     <span class="comment">/* 0 = */</span> <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>,
     <span class="comment">/* 8 = */</span> <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>,
@@ -925,44 +925,44 @@
 <span class="kw">static</span> <span class="ident">STACK_ARG_RET_SIZE_LIMIT</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">128</span> <span class="op">*</span> <span class="number">1024</span> <span class="op">*</span> <span class="number">1024</span>;
 
 <span class="doccomment">/// Try to fill a Baldrdash register, returning it if it was found.</span>
-<span class="kw">fn</span> <span class="ident">try_fill_baldrdash_reg</span>(<span class="ident">call_conv</span>: <span class="ident">isa</span>::<span class="ident">CallConv</span>, <span class="ident">param</span>: <span class="kw-2">&amp;</span><span class="ident">ir</span>::<span class="ident">AbiParam</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ABIArg</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">try_fill_baldrdash_reg</span>(<span class="ident">call_conv</span>: <span class="ident">isa::CallConv</span>, <span class="ident">param</span>: <span class="kw-2">&amp;</span><span class="ident">ir::AbiParam</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ABIArg</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="ident">call_conv</span>.<span class="ident">extends_baldrdash</span>() {
         <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">param</span>.<span class="ident">purpose</span> {
-            <span class="kw-2">&amp;</span><span class="ident">ir</span>::<span class="ident">ArgumentPurpose</span>::<span class="ident">VMContext</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw-2">&amp;</span><span class="ident">ir::ArgumentPurpose::VMContext</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="comment">// This is SpiderMonkey&#39;s `WasmTlsReg`.</span>
-                <span class="prelude-val">Some</span>(<span class="ident">ABIArg</span>::<span class="ident">Reg</span>(
+                <span class="prelude-val">Some</span>(<span class="ident">ABIArg::Reg</span>(
                     <span class="ident">xreg</span>(<span class="ident">BALDRDASH_TLS_REG</span>).<span class="ident">to_real_reg</span>(),
-                    <span class="ident">ir</span>::<span class="ident">types</span>::<span class="ident">I64</span>,
+                    <span class="ident">ir::types::I64</span>,
                     <span class="ident">param</span>.<span class="ident">extension</span>,
                     <span class="ident">param</span>.<span class="ident">purpose</span>,
                 ))
             }
-            <span class="kw-2">&amp;</span><span class="ident">ir</span>::<span class="ident">ArgumentPurpose</span>::<span class="ident">SignatureId</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw-2">&amp;</span><span class="ident">ir::ArgumentPurpose::SignatureId</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="comment">// This is SpiderMonkey&#39;s `WasmTableCallSigReg`.</span>
-                <span class="prelude-val">Some</span>(<span class="ident">ABIArg</span>::<span class="ident">Reg</span>(
+                <span class="prelude-val">Some</span>(<span class="ident">ABIArg::Reg</span>(
                     <span class="ident">xreg</span>(<span class="ident">BALDRDASH_SIG_REG</span>).<span class="ident">to_real_reg</span>(),
-                    <span class="ident">ir</span>::<span class="ident">types</span>::<span class="ident">I64</span>,
+                    <span class="ident">ir::types::I64</span>,
                     <span class="ident">param</span>.<span class="ident">extension</span>,
                     <span class="ident">param</span>.<span class="ident">purpose</span>,
                 ))
             }
-            <span class="kw-2">&amp;</span><span class="ident">ir</span>::<span class="ident">ArgumentPurpose</span>::<span class="ident">CalleeTLS</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw-2">&amp;</span><span class="ident">ir::ArgumentPurpose::CalleeTLS</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="comment">// This is SpiderMonkey&#39;s callee TLS slot in the extended frame of Wasm&#39;s ABI-2020.</span>
-                <span class="macro">assert!</span>(<span class="ident">call_conv</span> <span class="op">=</span><span class="op">=</span> <span class="ident">isa</span>::<span class="ident">CallConv</span>::<span class="ident">Baldrdash2020</span>);
-                <span class="prelude-val">Some</span>(<span class="ident">ABIArg</span>::<span class="ident">Stack</span>(
+                <span class="macro">assert!</span>(<span class="ident">call_conv</span> <span class="op">=</span><span class="op">=</span> <span class="ident">isa::CallConv::Baldrdash2020</span>);
+                <span class="prelude-val">Some</span>(<span class="ident">ABIArg::Stack</span>(
                     <span class="ident">BALDRDASH_CALLEE_TLS_OFFSET</span>,
-                    <span class="ident">ir</span>::<span class="ident">types</span>::<span class="ident">I64</span>,
-                    <span class="ident">ir</span>::<span class="ident">ArgumentExtension</span>::<span class="prelude-val">None</span>,
+                    <span class="ident">ir::types::I64</span>,
+                    <span class="ident">ir::ArgumentExtension::None</span>,
                     <span class="ident">param</span>.<span class="ident">purpose</span>,
                 ))
             }
-            <span class="kw-2">&amp;</span><span class="ident">ir</span>::<span class="ident">ArgumentPurpose</span>::<span class="ident">CallerTLS</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw-2">&amp;</span><span class="ident">ir::ArgumentPurpose::CallerTLS</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="comment">// This is SpiderMonkey&#39;s caller TLS slot in the extended frame of Wasm&#39;s ABI-2020.</span>
-                <span class="macro">assert!</span>(<span class="ident">call_conv</span> <span class="op">=</span><span class="op">=</span> <span class="ident">isa</span>::<span class="ident">CallConv</span>::<span class="ident">Baldrdash2020</span>);
-                <span class="prelude-val">Some</span>(<span class="ident">ABIArg</span>::<span class="ident">Stack</span>(
+                <span class="macro">assert!</span>(<span class="ident">call_conv</span> <span class="op">=</span><span class="op">=</span> <span class="ident">isa::CallConv::Baldrdash2020</span>);
+                <span class="prelude-val">Some</span>(<span class="ident">ABIArg::Stack</span>(
                     <span class="ident">BALDRDASH_CALLER_TLS_OFFSET</span>,
-                    <span class="ident">ir</span>::<span class="ident">types</span>::<span class="ident">I64</span>,
-                    <span class="ident">ir</span>::<span class="ident">ArgumentExtension</span>::<span class="prelude-val">None</span>,
+                    <span class="ident">ir::types::I64</span>,
+                    <span class="ident">ir::ArgumentExtension::None</span>,
                     <span class="ident">param</span>.<span class="ident">purpose</span>,
                 ))
             }
@@ -976,9 +976,9 @@
 <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">AMode</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">StackAMode</span> {
     <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AMode</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">StackAMode</span>::<span class="ident">FPOffset</span>(<span class="ident">off</span>, <span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AMode</span>::<span class="ident">FPOffset</span>(<span class="ident">off</span>, <span class="ident">ty</span>),
-            <span class="ident">StackAMode</span>::<span class="ident">NominalSPOffset</span>(<span class="ident">off</span>, <span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AMode</span>::<span class="ident">NominalSPOffset</span>(<span class="ident">off</span>, <span class="ident">ty</span>),
-            <span class="ident">StackAMode</span>::<span class="ident">SPOffset</span>(<span class="ident">off</span>, <span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AMode</span>::<span class="ident">SPOffset</span>(<span class="ident">off</span>, <span class="ident">ty</span>),
+            <span class="ident">StackAMode::FPOffset</span>(<span class="ident">off</span>, <span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AMode::FPOffset</span>(<span class="ident">off</span>, <span class="ident">ty</span>),
+            <span class="ident">StackAMode::NominalSPOffset</span>(<span class="ident">off</span>, <span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AMode::NominalSPOffset</span>(<span class="ident">off</span>, <span class="ident">ty</span>),
+            <span class="ident">StackAMode::SPOffset</span>(<span class="ident">off</span>, <span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AMode::SPOffset</span>(<span class="ident">off</span>, <span class="ident">ty</span>),
         }
     }
 }
@@ -1007,18 +1007,18 @@
     }
 
     <span class="doccomment">/// Return required stack alignment in bytes.</span>
-    <span class="kw">fn</span> <span class="ident">stack_align</span>(<span class="ident">_call_conv</span>: <span class="ident">isa</span>::<span class="ident">CallConv</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">fn</span> <span class="ident">stack_align</span>(<span class="ident">_call_conv</span>: <span class="ident">isa::CallConv</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
         <span class="number">16</span>
     }
 
     <span class="kw">fn</span> <span class="ident">compute_arg_locs</span>(
-        <span class="ident">call_conv</span>: <span class="ident">isa</span>::<span class="ident">CallConv</span>,
-        <span class="ident">params</span>: <span class="kw-2">&amp;</span>[<span class="ident">ir</span>::<span class="ident">AbiParam</span>],
+        <span class="ident">call_conv</span>: <span class="ident">isa::CallConv</span>,
+        <span class="ident">params</span>: <span class="kw-2">&amp;</span>[<span class="ident">ir::AbiParam</span>],
         <span class="ident">args_or_rets</span>: <span class="ident">ArgsOrRets</span>,
         <span class="ident">add_ret_area_ptr</span>: <span class="ident">bool</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CodegenResult</span><span class="op">&lt;</span>(<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">ABIArg</span><span class="op">&gt;</span>, <span class="ident">i64</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>)<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">is_baldrdash</span> <span class="op">=</span> <span class="ident">call_conv</span>.<span class="ident">extends_baldrdash</span>();
-        <span class="kw">let</span> <span class="ident">has_baldrdash_tls</span> <span class="op">=</span> <span class="ident">call_conv</span> <span class="op">=</span><span class="op">=</span> <span class="ident">isa</span>::<span class="ident">CallConv</span>::<span class="ident">Baldrdash2020</span>;
+        <span class="kw">let</span> <span class="ident">has_baldrdash_tls</span> <span class="op">=</span> <span class="ident">call_conv</span> <span class="op">=</span><span class="op">=</span> <span class="ident">isa::CallConv::Baldrdash2020</span>;
 
         <span class="comment">// See AArch64 ABI (https://c9x.me/compile/bib/abi-arm64.pdf), sections 5.4.</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">next_xreg</span> <span class="op">=</span> <span class="number">0</span>;
@@ -1026,7 +1026,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">next_stack</span>: <span class="ident">u64</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="macro">vec!</span>[];
 
-        <span class="kw">if</span> <span class="ident">args_or_rets</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ArgsOrRets</span>::<span class="ident">Args</span> <span class="op">&amp;&amp;</span> <span class="ident">has_baldrdash_tls</span> {
+        <span class="kw">if</span> <span class="ident">args_or_rets</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ArgsOrRets::Args</span> <span class="op">&amp;&amp;</span> <span class="ident">has_baldrdash_tls</span> {
             <span class="comment">// Baldrdash ABI-2020 always has two stack-arg slots reserved, for the callee and</span>
             <span class="comment">// caller TLS-register values, respectively.</span>
             <span class="ident">next_stack</span> <span class="op">=</span> <span class="number">16</span>;
@@ -1041,28 +1041,28 @@
         <span class="comment">// only one return value may be in a register.</span>
 
         <span class="kw">let</span> (<span class="ident">max_per_class_reg_vals</span>, <span class="kw-2">mut</span> <span class="ident">remaining_reg_vals</span>) <span class="op">=</span> <span class="kw">match</span> (<span class="ident">args_or_rets</span>, <span class="ident">is_baldrdash</span>) {
-            (<span class="ident">ArgsOrRets</span>::<span class="ident">Args</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="number">8</span>, <span class="number">16</span>),     <span class="comment">// x0-x7 and v0-v7</span>
-            (<span class="ident">ArgsOrRets</span>::<span class="ident">Rets</span>, <span class="bool-val">false</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="number">8</span>, <span class="number">16</span>), <span class="comment">// x0-x7 and v0-v7</span>
-            (<span class="ident">ArgsOrRets</span>::<span class="ident">Rets</span>, <span class="bool-val">true</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="number">1</span>, <span class="number">1</span>),   <span class="comment">// x0 or v0, but not both</span>
+            (<span class="ident">ArgsOrRets::Args</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="number">8</span>, <span class="number">16</span>),     <span class="comment">// x0-x7 and v0-v7</span>
+            (<span class="ident">ArgsOrRets::Rets</span>, <span class="bool-val">false</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="number">8</span>, <span class="number">16</span>), <span class="comment">// x0-x7 and v0-v7</span>
+            (<span class="ident">ArgsOrRets::Rets</span>, <span class="bool-val">true</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="number">1</span>, <span class="number">1</span>),   <span class="comment">// x0 or v0, but not both</span>
         };
 
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">params</span>.<span class="ident">len</span>() {
             <span class="comment">// Process returns backward, according to the SpiderMonkey ABI (which we</span>
             <span class="comment">// adopt internally if `is_baldrdash` is set).</span>
             <span class="kw">let</span> <span class="ident">param</span> <span class="op">=</span> <span class="kw">match</span> (<span class="ident">args_or_rets</span>, <span class="ident">is_baldrdash</span>) {
-                (<span class="ident">ArgsOrRets</span>::<span class="ident">Args</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">params</span>[<span class="ident">i</span>],
-                (<span class="ident">ArgsOrRets</span>::<span class="ident">Rets</span>, <span class="bool-val">false</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">params</span>[<span class="ident">i</span>],
-                (<span class="ident">ArgsOrRets</span>::<span class="ident">Rets</span>, <span class="bool-val">true</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">params</span>[<span class="ident">params</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span> <span class="op">-</span> <span class="ident">i</span>],
+                (<span class="ident">ArgsOrRets::Args</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">params</span>[<span class="ident">i</span>],
+                (<span class="ident">ArgsOrRets::Rets</span>, <span class="bool-val">false</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">params</span>[<span class="ident">i</span>],
+                (<span class="ident">ArgsOrRets::Rets</span>, <span class="bool-val">true</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">params</span>[<span class="ident">params</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span> <span class="op">-</span> <span class="ident">i</span>],
             };
 
             <span class="comment">// Validate &quot;purpose&quot;.</span>
             <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">param</span>.<span class="ident">purpose</span> {
-                <span class="kw-2">&amp;</span><span class="ident">ir</span>::<span class="ident">ArgumentPurpose</span>::<span class="ident">VMContext</span>
-                <span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">ir</span>::<span class="ident">ArgumentPurpose</span>::<span class="ident">Normal</span>
-                <span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">ir</span>::<span class="ident">ArgumentPurpose</span>::<span class="ident">StackLimit</span>
-                <span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">ir</span>::<span class="ident">ArgumentPurpose</span>::<span class="ident">SignatureId</span>
-                <span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">ir</span>::<span class="ident">ArgumentPurpose</span>::<span class="ident">CallerTLS</span>
-                <span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">ir</span>::<span class="ident">ArgumentPurpose</span>::<span class="ident">CalleeTLS</span> <span class="op">=</span><span class="op">&gt;</span> {}
+                <span class="kw-2">&amp;</span><span class="ident">ir::ArgumentPurpose::VMContext</span>
+                <span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">ir::ArgumentPurpose::Normal</span>
+                <span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">ir::ArgumentPurpose::StackLimit</span>
+                <span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">ir::ArgumentPurpose::SignatureId</span>
+                <span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">ir::ArgumentPurpose::CallerTLS</span>
+                <span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident">ir::ArgumentPurpose::CalleeTLS</span> <span class="op">=</span><span class="op">&gt;</span> {}
                 <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(
                     <span class="string">&quot;Unsupported argument purpose {:?} in signature: {:?}&quot;</span>,
                     <span class="ident">param</span>.<span class="ident">purpose</span>, <span class="ident">params</span>
@@ -1074,24 +1074,24 @@
                 <span class="string">&quot;Invalid type for AArch64: {:?}&quot;</span>,
                 <span class="ident">param</span>.<span class="ident">value_type</span>
             );
-            <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">rc_for_type</span>(<span class="ident">param</span>.<span class="ident">value_type</span>).<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="ident">Inst::rc_for_type</span>(<span class="ident">param</span>.<span class="ident">value_type</span>).<span class="ident">unwrap</span>();
 
             <span class="kw">let</span> <span class="ident">next_reg</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">rc</span> {
-                <span class="ident">RegClass</span>::<span class="ident">I64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">next_xreg</span>,
-                <span class="ident">RegClass</span>::<span class="ident">V128</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">next_vreg</span>,
+                <span class="ident">RegClass::I64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">next_xreg</span>,
+                <span class="ident">RegClass::V128</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">next_vreg</span>,
                 <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Invalid register class: {:?}&quot;</span>, <span class="ident">rc</span>),
             };
 
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">param</span>) <span class="op">=</span> <span class="ident">try_fill_baldrdash_reg</span>(<span class="ident">call_conv</span>, <span class="ident">param</span>) {
-                <span class="macro">assert!</span>(<span class="ident">rc</span> <span class="op">=</span><span class="op">=</span> <span class="ident">RegClass</span>::<span class="ident">I64</span>);
+                <span class="macro">assert!</span>(<span class="ident">rc</span> <span class="op">=</span><span class="op">=</span> <span class="ident">RegClass::I64</span>);
                 <span class="ident">ret</span>.<span class="ident">push</span>(<span class="ident">param</span>);
             } <span class="kw">else</span> <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">next_reg</span> <span class="op">&lt;</span> <span class="ident">max_per_class_reg_vals</span> <span class="op">&amp;&amp;</span> <span class="ident">remaining_reg_vals</span> <span class="op">&gt;</span> <span class="number">0</span> {
                 <span class="kw">let</span> <span class="ident">reg</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">rc</span> {
-                    <span class="ident">RegClass</span>::<span class="ident">I64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">xreg</span>(<span class="kw-2">*</span><span class="ident">next_reg</span>),
-                    <span class="ident">RegClass</span>::<span class="ident">V128</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">vreg</span>(<span class="kw-2">*</span><span class="ident">next_reg</span>),
+                    <span class="ident">RegClass::I64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">xreg</span>(<span class="kw-2">*</span><span class="ident">next_reg</span>),
+                    <span class="ident">RegClass::V128</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">vreg</span>(<span class="kw-2">*</span><span class="ident">next_reg</span>),
                     <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
                 };
-                <span class="ident">ret</span>.<span class="ident">push</span>(<span class="ident">ABIArg</span>::<span class="ident">Reg</span>(
+                <span class="ident">ret</span>.<span class="ident">push</span>(<span class="ident">ABIArg::Reg</span>(
                     <span class="ident">reg</span>.<span class="ident">to_real_reg</span>(),
                     <span class="ident">param</span>.<span class="ident">value_type</span>,
                     <span class="ident">param</span>.<span class="ident">extension</span>,
@@ -1103,11 +1103,11 @@
                 <span class="comment">// Compute size. Every arg takes a minimum slot of 8 bytes. (16-byte</span>
                 <span class="comment">// stack alignment happens separately after all args.)</span>
                 <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> (<span class="ident">ty_bits</span>(<span class="ident">param</span>.<span class="ident">value_type</span>) <span class="op">/</span> <span class="number">8</span>) <span class="kw">as</span> <span class="ident">u64</span>;
-                <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">max</span>(<span class="ident">size</span>, <span class="number">8</span>);
+                <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">std::cmp::max</span>(<span class="ident">size</span>, <span class="number">8</span>);
                 <span class="comment">// Align.</span>
                 <span class="macro">debug_assert!</span>(<span class="ident">size</span>.<span class="ident">is_power_of_two</span>());
                 <span class="ident">next_stack</span> <span class="op">=</span> (<span class="ident">next_stack</span> <span class="op">+</span> <span class="ident">size</span> <span class="op">-</span> <span class="number">1</span>) <span class="op">&amp;</span> <span class="op">!</span>(<span class="ident">size</span> <span class="op">-</span> <span class="number">1</span>);
-                <span class="ident">ret</span>.<span class="ident">push</span>(<span class="ident">ABIArg</span>::<span class="ident">Stack</span>(
+                <span class="ident">ret</span>.<span class="ident">push</span>(<span class="ident">ABIArg::Stack</span>(
                     <span class="ident">next_stack</span> <span class="kw">as</span> <span class="ident">i64</span>,
                     <span class="ident">param</span>.<span class="ident">value_type</span>,
                     <span class="ident">param</span>.<span class="ident">extension</span>,
@@ -1117,25 +1117,25 @@
             }
         }
 
-        <span class="kw">if</span> <span class="ident">args_or_rets</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ArgsOrRets</span>::<span class="ident">Rets</span> <span class="op">&amp;&amp;</span> <span class="ident">is_baldrdash</span> {
+        <span class="kw">if</span> <span class="ident">args_or_rets</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ArgsOrRets::Rets</span> <span class="op">&amp;&amp;</span> <span class="ident">is_baldrdash</span> {
             <span class="ident">ret</span>.<span class="ident">reverse</span>();
         }
 
         <span class="kw">let</span> <span class="ident">extra_arg</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">add_ret_area_ptr</span> {
-            <span class="macro">debug_assert!</span>(<span class="ident">args_or_rets</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ArgsOrRets</span>::<span class="ident">Args</span>);
+            <span class="macro">debug_assert!</span>(<span class="ident">args_or_rets</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ArgsOrRets::Args</span>);
             <span class="kw">if</span> <span class="ident">next_xreg</span> <span class="op">&lt;</span> <span class="ident">max_per_class_reg_vals</span> <span class="op">&amp;&amp;</span> <span class="ident">remaining_reg_vals</span> <span class="op">&gt;</span> <span class="number">0</span> {
-                <span class="ident">ret</span>.<span class="ident">push</span>(<span class="ident">ABIArg</span>::<span class="ident">Reg</span>(
+                <span class="ident">ret</span>.<span class="ident">push</span>(<span class="ident">ABIArg::Reg</span>(
                     <span class="ident">xreg</span>(<span class="ident">next_xreg</span>).<span class="ident">to_real_reg</span>(),
                     <span class="ident">I64</span>,
-                    <span class="ident">ir</span>::<span class="ident">ArgumentExtension</span>::<span class="prelude-val">None</span>,
-                    <span class="ident">ir</span>::<span class="ident">ArgumentPurpose</span>::<span class="ident">Normal</span>,
+                    <span class="ident">ir::ArgumentExtension::None</span>,
+                    <span class="ident">ir::ArgumentPurpose::Normal</span>,
                 ));
             } <span class="kw">else</span> {
-                <span class="ident">ret</span>.<span class="ident">push</span>(<span class="ident">ABIArg</span>::<span class="ident">Stack</span>(
+                <span class="ident">ret</span>.<span class="ident">push</span>(<span class="ident">ABIArg::Stack</span>(
                     <span class="ident">next_stack</span> <span class="kw">as</span> <span class="ident">i64</span>,
                     <span class="ident">I64</span>,
-                    <span class="ident">ir</span>::<span class="ident">ArgumentExtension</span>::<span class="prelude-val">None</span>,
-                    <span class="ident">ir</span>::<span class="ident">ArgumentPurpose</span>::<span class="ident">Normal</span>,
+                    <span class="ident">ir::ArgumentExtension::None</span>,
+                    <span class="ident">ir::ArgumentPurpose::Normal</span>,
                 ));
                 <span class="ident">next_stack</span> <span class="op">+</span><span class="op">=</span> <span class="number">8</span>;
             }
@@ -1149,13 +1149,13 @@
         <span class="comment">// To avoid overflow issues, limit the arg/return size to something</span>
         <span class="comment">// reasonable -- here, 128 MB.</span>
         <span class="kw">if</span> <span class="ident">next_stack</span> <span class="op">&gt;</span> <span class="ident">STACK_ARG_RET_SIZE_LIMIT</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CodegenError</span>::<span class="ident">ImplLimitExceeded</span>);
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">CodegenError::ImplLimitExceeded</span>);
         }
 
         <span class="prelude-val">Ok</span>((<span class="ident">ret</span>, <span class="ident">next_stack</span> <span class="kw">as</span> <span class="ident">i64</span>, <span class="ident">extra_arg</span>))
     }
 
-    <span class="kw">fn</span> <span class="ident">fp_to_arg_offset</span>(<span class="ident">call_conv</span>: <span class="ident">isa</span>::<span class="ident">CallConv</span>, <span class="ident">flags</span>: <span class="kw-2">&amp;</span><span class="ident">settings</span>::<span class="ident">Flags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i64</span> {
+    <span class="kw">fn</span> <span class="ident">fp_to_arg_offset</span>(<span class="ident">call_conv</span>: <span class="ident">isa::CallConv</span>, <span class="ident">flags</span>: <span class="kw-2">&amp;</span><span class="ident">settings::Flags</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i64</span> {
         <span class="kw">if</span> <span class="ident">call_conv</span>.<span class="ident">extends_baldrdash</span>() {
             <span class="kw">let</span> <span class="ident">num_words</span> <span class="op">=</span> <span class="ident">flags</span>.<span class="ident">baldrdash_prologue_words</span>() <span class="kw">as</span> <span class="ident">i64</span>;
             <span class="macro">debug_assert!</span>(<span class="ident">num_words</span> <span class="op">&gt;</span> <span class="number">0</span>, <span class="string">&quot;baldrdash must set baldrdash_prologue_words&quot;</span>);
@@ -1167,15 +1167,15 @@
     }
 
     <span class="kw">fn</span> <span class="ident">gen_load_stack</span>(<span class="ident">mem</span>: <span class="ident">StackAMode</span>, <span class="ident">into_reg</span>: <span class="ident">Writable</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span>, <span class="ident">ty</span>: <span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Inst</span> {
-        <span class="ident">Inst</span>::<span class="ident">gen_load</span>(<span class="ident">into_reg</span>, <span class="ident">mem</span>.<span class="ident">into</span>(), <span class="ident">ty</span>)
+        <span class="ident">Inst::gen_load</span>(<span class="ident">into_reg</span>, <span class="ident">mem</span>.<span class="ident">into</span>(), <span class="ident">ty</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">gen_store_stack</span>(<span class="ident">mem</span>: <span class="ident">StackAMode</span>, <span class="ident">from_reg</span>: <span class="ident">Reg</span>, <span class="ident">ty</span>: <span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Inst</span> {
-        <span class="ident">Inst</span>::<span class="ident">gen_store</span>(<span class="ident">mem</span>.<span class="ident">into</span>(), <span class="ident">from_reg</span>, <span class="ident">ty</span>)
+        <span class="ident">Inst::gen_store</span>(<span class="ident">mem</span>.<span class="ident">into</span>(), <span class="ident">from_reg</span>, <span class="ident">ty</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">gen_move</span>(<span class="ident">to_reg</span>: <span class="ident">Writable</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span>, <span class="ident">from_reg</span>: <span class="ident">Reg</span>, <span class="ident">ty</span>: <span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Inst</span> {
-        <span class="ident">Inst</span>::<span class="ident">gen_move</span>(<span class="ident">to_reg</span>, <span class="ident">from_reg</span>, <span class="ident">ty</span>)
+        <span class="ident">Inst::gen_move</span>(<span class="ident">to_reg</span>, <span class="ident">from_reg</span>, <span class="ident">ty</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">gen_extend</span>(
@@ -1186,7 +1186,7 @@
         <span class="ident">to_bits</span>: <span class="ident">u8</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Inst</span> {
         <span class="macro">assert!</span>(<span class="ident">from_bits</span> <span class="op">&lt;</span> <span class="ident">to_bits</span>);
-        <span class="ident">Inst</span>::<span class="ident">Extend</span> {
+        <span class="ident">Inst::Extend</span> {
             <span class="ident">rd</span>: <span class="ident">to_reg</span>,
             <span class="ident">rn</span>: <span class="ident">from_reg</span>,
             <span class="ident">signed</span>,
@@ -1196,15 +1196,15 @@
     }
 
     <span class="kw">fn</span> <span class="ident">gen_ret</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Inst</span> {
-        <span class="ident">Inst</span>::<span class="ident">Ret</span>
+        <span class="ident">Inst::Ret</span>
     }
 
     <span class="kw">fn</span> <span class="ident">gen_add_imm</span>(<span class="ident">into_reg</span>: <span class="ident">Writable</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span>, <span class="ident">from_reg</span>: <span class="ident">Reg</span>, <span class="ident">imm</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SmallVec</span><span class="op">&lt;</span>[<span class="ident">Inst</span>; <span class="number">4</span>]<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">imm</span> <span class="op">=</span> <span class="ident">imm</span> <span class="kw">as</span> <span class="ident">u64</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insts</span> <span class="op">=</span> <span class="ident">SmallVec</span>::<span class="ident">new</span>();
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">imm12</span>) <span class="op">=</span> <span class="ident">Imm12</span>::<span class="ident">maybe_from_u64</span>(<span class="ident">imm</span>) {
-            <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst</span>::<span class="ident">AluRRImm12</span> {
-                <span class="ident">alu_op</span>: <span class="ident">ALUOp</span>::<span class="ident">Add64</span>,
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insts</span> <span class="op">=</span> <span class="ident">SmallVec::new</span>();
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">imm12</span>) <span class="op">=</span> <span class="ident">Imm12::maybe_from_u64</span>(<span class="ident">imm</span>) {
+            <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst::AluRRImm12</span> {
+                <span class="ident">alu_op</span>: <span class="ident">ALUOp::Add64</span>,
                 <span class="ident">rd</span>: <span class="ident">into_reg</span>,
                 <span class="ident">rn</span>: <span class="ident">from_reg</span>,
                 <span class="ident">imm12</span>,
@@ -1212,43 +1212,43 @@
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="ident">scratch2</span> <span class="op">=</span> <span class="ident">writable_tmp2_reg</span>();
             <span class="macro">assert_ne!</span>(<span class="ident">scratch2</span>.<span class="ident">to_reg</span>(), <span class="ident">from_reg</span>);
-            <span class="ident">insts</span>.<span class="ident">extend</span>(<span class="ident">Inst</span>::<span class="ident">load_constant</span>(<span class="ident">scratch2</span>, <span class="ident">imm</span>.<span class="ident">into</span>()));
-            <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst</span>::<span class="ident">AluRRRExtend</span> {
-                <span class="ident">alu_op</span>: <span class="ident">ALUOp</span>::<span class="ident">Add64</span>,
+            <span class="ident">insts</span>.<span class="ident">extend</span>(<span class="ident">Inst::load_constant</span>(<span class="ident">scratch2</span>, <span class="ident">imm</span>.<span class="ident">into</span>()));
+            <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst::AluRRRExtend</span> {
+                <span class="ident">alu_op</span>: <span class="ident">ALUOp::Add64</span>,
                 <span class="ident">rd</span>: <span class="ident">into_reg</span>,
                 <span class="ident">rn</span>: <span class="ident">from_reg</span>,
                 <span class="ident">rm</span>: <span class="ident">scratch2</span>.<span class="ident">to_reg</span>(),
-                <span class="ident">extendop</span>: <span class="ident">ExtendOp</span>::<span class="ident">UXTX</span>,
+                <span class="ident">extendop</span>: <span class="ident">ExtendOp::UXTX</span>,
             });
         }
         <span class="ident">insts</span>
     }
 
     <span class="kw">fn</span> <span class="ident">gen_stack_lower_bound_trap</span>(<span class="ident">limit_reg</span>: <span class="ident">Reg</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SmallVec</span><span class="op">&lt;</span>[<span class="ident">Inst</span>; <span class="number">2</span>]<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insts</span> <span class="op">=</span> <span class="ident">SmallVec</span>::<span class="ident">new</span>();
-        <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst</span>::<span class="ident">AluRRRExtend</span> {
-            <span class="ident">alu_op</span>: <span class="ident">ALUOp</span>::<span class="ident">SubS64</span>,
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insts</span> <span class="op">=</span> <span class="ident">SmallVec::new</span>();
+        <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst::AluRRRExtend</span> {
+            <span class="ident">alu_op</span>: <span class="ident">ALUOp::SubS64</span>,
             <span class="ident">rd</span>: <span class="ident">writable_zero_reg</span>(),
             <span class="ident">rn</span>: <span class="ident">stack_reg</span>(),
             <span class="ident">rm</span>: <span class="ident">limit_reg</span>,
-            <span class="ident">extendop</span>: <span class="ident">ExtendOp</span>::<span class="ident">UXTX</span>,
+            <span class="ident">extendop</span>: <span class="ident">ExtendOp::UXTX</span>,
         });
-        <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst</span>::<span class="ident">TrapIf</span> {
-            <span class="ident">trap_info</span>: (<span class="ident">ir</span>::<span class="ident">SourceLoc</span>::<span class="ident">default</span>(), <span class="ident">ir</span>::<span class="ident">TrapCode</span>::<span class="ident">StackOverflow</span>),
+        <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst::TrapIf</span> {
+            <span class="ident">trap_info</span>: (<span class="ident">ir::SourceLoc::default</span>(), <span class="ident">ir::TrapCode::StackOverflow</span>),
             <span class="comment">// Here `Lo` == &quot;less than&quot; when interpreting the two</span>
             <span class="comment">// operands as unsigned integers.</span>
-            <span class="ident">kind</span>: <span class="ident">CondBrKind</span>::<span class="ident">Cond</span>(<span class="ident">Cond</span>::<span class="ident">Lo</span>),
+            <span class="ident">kind</span>: <span class="ident">CondBrKind::Cond</span>(<span class="ident">Cond::Lo</span>),
         });
         <span class="ident">insts</span>
     }
 
     <span class="kw">fn</span> <span class="ident">gen_epilogue_placeholder</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Inst</span> {
-        <span class="ident">Inst</span>::<span class="ident">EpiloguePlaceholder</span>
+        <span class="ident">Inst::EpiloguePlaceholder</span>
     }
 
     <span class="kw">fn</span> <span class="ident">gen_get_stack_addr</span>(<span class="ident">mem</span>: <span class="ident">StackAMode</span>, <span class="ident">into_reg</span>: <span class="ident">Writable</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span>, <span class="ident">_ty</span>: <span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Inst</span> {
         <span class="kw">let</span> <span class="ident">mem</span> <span class="op">=</span> <span class="ident">mem</span>.<span class="ident">into</span>();
-        <span class="ident">Inst</span>::<span class="ident">LoadAddr</span> { <span class="ident">rd</span>: <span class="ident">into_reg</span>, <span class="ident">mem</span> }
+        <span class="ident">Inst::LoadAddr</span> { <span class="ident">rd</span>: <span class="ident">into_reg</span>, <span class="ident">mem</span> }
     }
 
     <span class="kw">fn</span> <span class="ident">get_stacklimit_reg</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Reg</span> {
@@ -1256,18 +1256,18 @@
     }
 
     <span class="kw">fn</span> <span class="ident">gen_load_base_offset</span>(<span class="ident">into_reg</span>: <span class="ident">Writable</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span>, <span class="ident">base</span>: <span class="ident">Reg</span>, <span class="ident">offset</span>: <span class="ident">i32</span>, <span class="ident">ty</span>: <span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Inst</span> {
-        <span class="kw">let</span> <span class="ident">mem</span> <span class="op">=</span> <span class="ident">AMode</span>::<span class="ident">RegOffset</span>(<span class="ident">base</span>, <span class="ident">offset</span> <span class="kw">as</span> <span class="ident">i64</span>, <span class="ident">ty</span>);
-        <span class="ident">Inst</span>::<span class="ident">gen_load</span>(<span class="ident">into_reg</span>, <span class="ident">mem</span>, <span class="ident">ty</span>)
+        <span class="kw">let</span> <span class="ident">mem</span> <span class="op">=</span> <span class="ident">AMode::RegOffset</span>(<span class="ident">base</span>, <span class="ident">offset</span> <span class="kw">as</span> <span class="ident">i64</span>, <span class="ident">ty</span>);
+        <span class="ident">Inst::gen_load</span>(<span class="ident">into_reg</span>, <span class="ident">mem</span>, <span class="ident">ty</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">gen_store_base_offset</span>(<span class="ident">base</span>: <span class="ident">Reg</span>, <span class="ident">offset</span>: <span class="ident">i32</span>, <span class="ident">from_reg</span>: <span class="ident">Reg</span>, <span class="ident">ty</span>: <span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Inst</span> {
-        <span class="kw">let</span> <span class="ident">mem</span> <span class="op">=</span> <span class="ident">AMode</span>::<span class="ident">RegOffset</span>(<span class="ident">base</span>, <span class="ident">offset</span> <span class="kw">as</span> <span class="ident">i64</span>, <span class="ident">ty</span>);
-        <span class="ident">Inst</span>::<span class="ident">gen_store</span>(<span class="ident">mem</span>, <span class="ident">from_reg</span>, <span class="ident">ty</span>)
+        <span class="kw">let</span> <span class="ident">mem</span> <span class="op">=</span> <span class="ident">AMode::RegOffset</span>(<span class="ident">base</span>, <span class="ident">offset</span> <span class="kw">as</span> <span class="ident">i64</span>, <span class="ident">ty</span>);
+        <span class="ident">Inst::gen_store</span>(<span class="ident">mem</span>, <span class="ident">from_reg</span>, <span class="ident">ty</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">gen_sp_reg_adjust</span>(<span class="ident">amount</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SmallVec</span><span class="op">&lt;</span>[<span class="ident">Inst</span>; <span class="number">2</span>]<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="ident">amount</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="kw">return</span> <span class="ident">SmallVec</span>::<span class="ident">new</span>();
+            <span class="kw">return</span> <span class="ident">SmallVec::new</span>();
         }
 
         <span class="kw">let</span> (<span class="ident">amount</span>, <span class="ident">is_sub</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">amount</span> <span class="op">&gt;</span> <span class="number">0</span> {
@@ -1276,11 +1276,11 @@
             (<span class="op">-</span><span class="ident">amount</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="bool-val">true</span>)
         };
 
-        <span class="kw">let</span> <span class="ident">alu_op</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">is_sub</span> { <span class="ident">ALUOp</span>::<span class="ident">Sub64</span> } <span class="kw">else</span> { <span class="ident">ALUOp</span>::<span class="ident">Add64</span> };
+        <span class="kw">let</span> <span class="ident">alu_op</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">is_sub</span> { <span class="ident">ALUOp::Sub64</span> } <span class="kw">else</span> { <span class="ident">ALUOp::Add64</span> };
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">SmallVec</span>::<span class="ident">new</span>();
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">imm12</span>) <span class="op">=</span> <span class="ident">Imm12</span>::<span class="ident">maybe_from_u64</span>(<span class="ident">amount</span>) {
-            <span class="kw">let</span> <span class="ident">adj_inst</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">AluRRImm12</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">SmallVec::new</span>();
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">imm12</span>) <span class="op">=</span> <span class="ident">Imm12::maybe_from_u64</span>(<span class="ident">amount</span>) {
+            <span class="kw">let</span> <span class="ident">adj_inst</span> <span class="op">=</span> <span class="ident">Inst::AluRRImm12</span> {
                 <span class="ident">alu_op</span>,
                 <span class="ident">rd</span>: <span class="ident">writable_stack_reg</span>(),
                 <span class="ident">rn</span>: <span class="ident">stack_reg</span>(),
@@ -1289,13 +1289,13 @@
             <span class="ident">ret</span>.<span class="ident">push</span>(<span class="ident">adj_inst</span>);
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="ident">tmp</span> <span class="op">=</span> <span class="ident">writable_spilltmp_reg</span>();
-            <span class="kw">let</span> <span class="ident">const_inst</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">load_constant</span>(<span class="ident">tmp</span>, <span class="ident">amount</span>);
-            <span class="kw">let</span> <span class="ident">adj_inst</span> <span class="op">=</span> <span class="ident">Inst</span>::<span class="ident">AluRRRExtend</span> {
+            <span class="kw">let</span> <span class="ident">const_inst</span> <span class="op">=</span> <span class="ident">Inst::load_constant</span>(<span class="ident">tmp</span>, <span class="ident">amount</span>);
+            <span class="kw">let</span> <span class="ident">adj_inst</span> <span class="op">=</span> <span class="ident">Inst::AluRRRExtend</span> {
                 <span class="ident">alu_op</span>,
                 <span class="ident">rd</span>: <span class="ident">writable_stack_reg</span>(),
                 <span class="ident">rn</span>: <span class="ident">stack_reg</span>(),
                 <span class="ident">rm</span>: <span class="ident">tmp</span>.<span class="ident">to_reg</span>(),
-                <span class="ident">extendop</span>: <span class="ident">ExtendOp</span>::<span class="ident">UXTX</span>,
+                <span class="ident">extendop</span>: <span class="ident">ExtendOp::UXTX</span>,
             };
             <span class="ident">ret</span>.<span class="ident">extend</span>(<span class="ident">const_inst</span>);
             <span class="ident">ret</span>.<span class="ident">push</span>(<span class="ident">adj_inst</span>);
@@ -1304,26 +1304,26 @@
     }
 
     <span class="kw">fn</span> <span class="ident">gen_nominal_sp_adj</span>(<span class="ident">offset</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Inst</span> {
-        <span class="ident">Inst</span>::<span class="ident">VirtualSPOffsetAdj</span> {
+        <span class="ident">Inst::VirtualSPOffsetAdj</span> {
             <span class="ident">offset</span>: <span class="ident">offset</span> <span class="kw">as</span> <span class="ident">i64</span>,
         }
     }
 
     <span class="kw">fn</span> <span class="ident">gen_prologue_frame_setup</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SmallVec</span><span class="op">&lt;</span>[<span class="ident">Inst</span>; <span class="number">2</span>]<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insts</span> <span class="op">=</span> <span class="ident">SmallVec</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insts</span> <span class="op">=</span> <span class="ident">SmallVec::new</span>();
         <span class="comment">// stp fp (x29), lr (x30), [sp, #-16]!</span>
-        <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst</span>::<span class="ident">StoreP64</span> {
+        <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst::StoreP64</span> {
             <span class="ident">rt</span>: <span class="ident">fp_reg</span>(),
             <span class="ident">rt2</span>: <span class="ident">link_reg</span>(),
-            <span class="ident">mem</span>: <span class="ident">PairAMode</span>::<span class="ident">PreIndexed</span>(
+            <span class="ident">mem</span>: <span class="ident">PairAMode::PreIndexed</span>(
                 <span class="ident">writable_stack_reg</span>(),
-                <span class="ident">SImm7Scaled</span>::<span class="ident">maybe_from_i64</span>(<span class="op">-</span><span class="number">16</span>, <span class="ident">types</span>::<span class="ident">I64</span>).<span class="ident">unwrap</span>(),
+                <span class="ident">SImm7Scaled::maybe_from_i64</span>(<span class="op">-</span><span class="number">16</span>, <span class="ident">types::I64</span>).<span class="ident">unwrap</span>(),
             ),
         });
         <span class="comment">// mov fp (x29), sp. This uses the ADDI rd, rs, 0 form of `MOV` because</span>
         <span class="comment">// the usual encoding (`ORR`) does not work with SP.</span>
-        <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst</span>::<span class="ident">AluRRImm12</span> {
-            <span class="ident">alu_op</span>: <span class="ident">ALUOp</span>::<span class="ident">Add64</span>,
+        <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst::AluRRImm12</span> {
+            <span class="ident">alu_op</span>: <span class="ident">ALUOp::Add64</span>,
             <span class="ident">rd</span>: <span class="ident">writable_fp_reg</span>(),
             <span class="ident">rn</span>: <span class="ident">stack_reg</span>(),
             <span class="ident">imm12</span>: <span class="ident">Imm12</span> {
@@ -1335,12 +1335,12 @@
     }
 
     <span class="kw">fn</span> <span class="ident">gen_epilogue_frame_restore</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SmallVec</span><span class="op">&lt;</span>[<span class="ident">Inst</span>; <span class="number">2</span>]<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insts</span> <span class="op">=</span> <span class="ident">SmallVec</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insts</span> <span class="op">=</span> <span class="ident">SmallVec::new</span>();
 
         <span class="comment">// MOV (alias of ORR) interprets x31 as XZR, so use an ADD here.</span>
         <span class="comment">// MOV to SP is an alias of ADD.</span>
-        <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst</span>::<span class="ident">AluRRImm12</span> {
-            <span class="ident">alu_op</span>: <span class="ident">ALUOp</span>::<span class="ident">Add64</span>,
+        <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst::AluRRImm12</span> {
+            <span class="ident">alu_op</span>: <span class="ident">ALUOp::Add64</span>,
             <span class="ident">rd</span>: <span class="ident">writable_stack_reg</span>(),
             <span class="ident">rn</span>: <span class="ident">fp_reg</span>(),
             <span class="ident">imm12</span>: <span class="ident">Imm12</span> {
@@ -1348,12 +1348,12 @@
                 <span class="ident">shift12</span>: <span class="bool-val">false</span>,
             },
         });
-        <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst</span>::<span class="ident">LoadP64</span> {
+        <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst::LoadP64</span> {
             <span class="ident">rt</span>: <span class="ident">writable_fp_reg</span>(),
             <span class="ident">rt2</span>: <span class="ident">writable_link_reg</span>(),
-            <span class="ident">mem</span>: <span class="ident">PairAMode</span>::<span class="ident">PostIndexed</span>(
+            <span class="ident">mem</span>: <span class="ident">PairAMode::PostIndexed</span>(
                 <span class="ident">writable_stack_reg</span>(),
-                <span class="ident">SImm7Scaled</span>::<span class="ident">maybe_from_i64</span>(<span class="number">16</span>, <span class="ident">types</span>::<span class="ident">I64</span>).<span class="ident">unwrap</span>(),
+                <span class="ident">SImm7Scaled::maybe_from_i64</span>(<span class="number">16</span>, <span class="ident">types::I64</span>).<span class="ident">unwrap</span>(),
             ),
         });
 
@@ -1363,18 +1363,18 @@
     <span class="comment">// Returns stack bytes used as well as instructions. Does not adjust</span>
     <span class="comment">// nominal SP offset; abi_impl generic code will do that.</span>
     <span class="kw">fn</span> <span class="ident">gen_clobber_save</span>(
-        <span class="ident">call_conv</span>: <span class="ident">isa</span>::<span class="ident">CallConv</span>,
-        <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">settings</span>::<span class="ident">Flags</span>,
+        <span class="ident">call_conv</span>: <span class="ident">isa::CallConv</span>,
+        <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="ident">settings::Flags</span>,
         <span class="ident">clobbers</span>: <span class="kw-2">&amp;</span><span class="ident">Set</span><span class="op">&lt;</span><span class="ident">Writable</span><span class="op">&lt;</span><span class="ident">RealReg</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">fixed_frame_storage_size</span>: <span class="ident">u32</span>,
         <span class="ident">_outgoing_args_size</span>: <span class="ident">u32</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">u64</span>, <span class="ident">SmallVec</span><span class="op">&lt;</span>[<span class="ident">Inst</span>; <span class="number">16</span>]<span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insts</span> <span class="op">=</span> <span class="ident">SmallVec</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insts</span> <span class="op">=</span> <span class="ident">SmallVec::new</span>();
         <span class="kw">let</span> (<span class="ident">clobbered_int</span>, <span class="ident">clobbered_vec</span>) <span class="op">=</span> <span class="ident">get_regs_saved_in_prologue</span>(<span class="ident">call_conv</span>, <span class="ident">clobbers</span>);
 
         <span class="kw">let</span> (<span class="ident">int_save_bytes</span>, <span class="ident">vec_save_bytes</span>) <span class="op">=</span> <span class="ident">saved_reg_stack_size</span>(<span class="kw-2">&amp;</span><span class="ident">clobbered_int</span>, <span class="kw-2">&amp;</span><span class="ident">clobbered_vec</span>);
         <span class="kw">let</span> <span class="ident">total_save_bytes</span> <span class="op">=</span> (<span class="ident">vec_save_bytes</span> <span class="op">+</span> <span class="ident">int_save_bytes</span>) <span class="kw">as</span> <span class="ident">i32</span>;
-        <span class="ident">insts</span>.<span class="ident">extend</span>(<span class="self">Self</span>::<span class="ident">gen_sp_reg_adjust</span>(
+        <span class="ident">insts</span>.<span class="ident">extend</span>(<span class="self">Self</span><span class="ident">::gen_sp_reg_adjust</span>(
             <span class="op">-</span>(<span class="ident">total_save_bytes</span> <span class="op">+</span> <span class="ident">fixed_frame_storage_size</span> <span class="kw">as</span> <span class="ident">i32</span>),
         ));
 
@@ -1386,27 +1386,27 @@
                 (<span class="ident">reg_pair</span>[<span class="number">0</span>].<span class="ident">to_reg</span>().<span class="ident">to_reg</span>(), <span class="ident">zero_reg</span>())
             };
 
-            <span class="macro">debug_assert!</span>(<span class="ident">r1</span>.<span class="ident">get_class</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">RegClass</span>::<span class="ident">I64</span>);
-            <span class="macro">debug_assert!</span>(<span class="ident">r2</span>.<span class="ident">get_class</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">RegClass</span>::<span class="ident">I64</span>);
+            <span class="macro">debug_assert!</span>(<span class="ident">r1</span>.<span class="ident">get_class</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">RegClass::I64</span>);
+            <span class="macro">debug_assert!</span>(<span class="ident">r2</span>.<span class="ident">get_class</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">RegClass::I64</span>);
 
             <span class="comment">// stp r1, r2, [sp, #(i * #16)]</span>
-            <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst</span>::<span class="ident">StoreP64</span> {
+            <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst::StoreP64</span> {
                 <span class="ident">rt</span>: <span class="ident">r1</span>,
                 <span class="ident">rt2</span>: <span class="ident">r2</span>,
-                <span class="ident">mem</span>: <span class="ident">PairAMode</span>::<span class="ident">SignedOffset</span>(
+                <span class="ident">mem</span>: <span class="ident">PairAMode::SignedOffset</span>(
                     <span class="ident">stack_reg</span>(),
-                    <span class="ident">SImm7Scaled</span>::<span class="ident">maybe_from_i64</span>((<span class="ident">i</span> <span class="op">*</span> <span class="number">16</span>) <span class="kw">as</span> <span class="ident">i64</span>, <span class="ident">types</span>::<span class="ident">I64</span>).<span class="ident">unwrap</span>(),
+                    <span class="ident">SImm7Scaled::maybe_from_i64</span>((<span class="ident">i</span> <span class="op">*</span> <span class="number">16</span>) <span class="kw">as</span> <span class="ident">i64</span>, <span class="ident">types::I64</span>).<span class="ident">unwrap</span>(),
                 ),
             });
         }
 
         <span class="kw">let</span> <span class="ident">vec_offset</span> <span class="op">=</span> <span class="ident">int_save_bytes</span>;
         <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">reg</span>) <span class="kw">in</span> <span class="ident">clobbered_vec</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
-            <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst</span>::<span class="ident">FpuStore128</span> {
+            <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst::FpuStore128</span> {
                 <span class="ident">rd</span>: <span class="ident">reg</span>.<span class="ident">to_reg</span>().<span class="ident">to_reg</span>(),
-                <span class="ident">mem</span>: <span class="ident">AMode</span>::<span class="ident">Unscaled</span>(
+                <span class="ident">mem</span>: <span class="ident">AMode::Unscaled</span>(
                     <span class="ident">stack_reg</span>(),
-                    <span class="ident">SImm9</span>::<span class="ident">maybe_from_i64</span>((<span class="ident">vec_offset</span> <span class="op">+</span> (<span class="ident">i</span> <span class="op">*</span> <span class="number">16</span>)) <span class="kw">as</span> <span class="ident">i64</span>).<span class="ident">unwrap</span>(),
+                    <span class="ident">SImm9::maybe_from_i64</span>((<span class="ident">vec_offset</span> <span class="op">+</span> (<span class="ident">i</span> <span class="op">*</span> <span class="number">16</span>)) <span class="kw">as</span> <span class="ident">i64</span>).<span class="ident">unwrap</span>(),
                 ),
                 <span class="ident">srcloc</span>: <span class="prelude-val">None</span>,
             });
@@ -1416,13 +1416,13 @@
     }
 
     <span class="kw">fn</span> <span class="ident">gen_clobber_restore</span>(
-        <span class="ident">call_conv</span>: <span class="ident">isa</span>::<span class="ident">CallConv</span>,
-        <span class="ident">flags</span>: <span class="kw-2">&amp;</span><span class="ident">settings</span>::<span class="ident">Flags</span>,
+        <span class="ident">call_conv</span>: <span class="ident">isa::CallConv</span>,
+        <span class="ident">flags</span>: <span class="kw-2">&amp;</span><span class="ident">settings::Flags</span>,
         <span class="ident">clobbers</span>: <span class="kw-2">&amp;</span><span class="ident">Set</span><span class="op">&lt;</span><span class="ident">Writable</span><span class="op">&lt;</span><span class="ident">RealReg</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">_fixed_frame_storage_size</span>: <span class="ident">u32</span>,
         <span class="ident">_outgoing_args_size</span>: <span class="ident">u32</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SmallVec</span><span class="op">&lt;</span>[<span class="ident">Inst</span>; <span class="number">16</span>]<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insts</span> <span class="op">=</span> <span class="ident">SmallVec</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insts</span> <span class="op">=</span> <span class="ident">SmallVec::new</span>();
         <span class="kw">let</span> (<span class="ident">clobbered_int</span>, <span class="ident">clobbered_vec</span>) <span class="op">=</span> <span class="ident">get_regs_saved_in_prologue</span>(<span class="ident">call_conv</span>, <span class="ident">clobbers</span>);
 
         <span class="kw">let</span> (<span class="ident">int_save_bytes</span>, <span class="ident">vec_save_bytes</span>) <span class="op">=</span> <span class="ident">saved_reg_stack_size</span>(<span class="kw-2">&amp;</span><span class="ident">clobbered_int</span>, <span class="kw-2">&amp;</span><span class="ident">clobbered_vec</span>);
@@ -1436,26 +1436,26 @@
                 (<span class="ident">reg_pair</span>[<span class="number">0</span>].<span class="ident">map</span>(<span class="op">|</span><span class="ident">r</span><span class="op">|</span> <span class="ident">r</span>.<span class="ident">to_reg</span>()), <span class="ident">writable_zero_reg</span>())
             };
 
-            <span class="macro">debug_assert!</span>(<span class="ident">r1</span>.<span class="ident">to_reg</span>().<span class="ident">get_class</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">RegClass</span>::<span class="ident">I64</span>);
-            <span class="macro">debug_assert!</span>(<span class="ident">r2</span>.<span class="ident">to_reg</span>().<span class="ident">get_class</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">RegClass</span>::<span class="ident">I64</span>);
+            <span class="macro">debug_assert!</span>(<span class="ident">r1</span>.<span class="ident">to_reg</span>().<span class="ident">get_class</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">RegClass::I64</span>);
+            <span class="macro">debug_assert!</span>(<span class="ident">r2</span>.<span class="ident">to_reg</span>().<span class="ident">get_class</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">RegClass::I64</span>);
 
             <span class="comment">// ldp r1, r2, [sp, #(i * 16)]</span>
-            <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst</span>::<span class="ident">LoadP64</span> {
+            <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst::LoadP64</span> {
                 <span class="ident">rt</span>: <span class="ident">r1</span>,
                 <span class="ident">rt2</span>: <span class="ident">r2</span>,
-                <span class="ident">mem</span>: <span class="ident">PairAMode</span>::<span class="ident">SignedOffset</span>(
+                <span class="ident">mem</span>: <span class="ident">PairAMode::SignedOffset</span>(
                     <span class="ident">stack_reg</span>(),
-                    <span class="ident">SImm7Scaled</span>::<span class="ident">maybe_from_i64</span>((<span class="ident">i</span> <span class="op">*</span> <span class="number">16</span>) <span class="kw">as</span> <span class="ident">i64</span>, <span class="ident">types</span>::<span class="ident">I64</span>).<span class="ident">unwrap</span>(),
+                    <span class="ident">SImm7Scaled::maybe_from_i64</span>((<span class="ident">i</span> <span class="op">*</span> <span class="number">16</span>) <span class="kw">as</span> <span class="ident">i64</span>, <span class="ident">types::I64</span>).<span class="ident">unwrap</span>(),
                 ),
             });
         }
 
         <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">reg</span>) <span class="kw">in</span> <span class="ident">clobbered_vec</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
-            <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst</span>::<span class="ident">FpuLoad128</span> {
-                <span class="ident">rd</span>: <span class="ident">Writable</span>::<span class="ident">from_reg</span>(<span class="ident">reg</span>.<span class="ident">to_reg</span>().<span class="ident">to_reg</span>()),
-                <span class="ident">mem</span>: <span class="ident">AMode</span>::<span class="ident">Unscaled</span>(
+            <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst::FpuLoad128</span> {
+                <span class="ident">rd</span>: <span class="ident">Writable::from_reg</span>(<span class="ident">reg</span>.<span class="ident">to_reg</span>().<span class="ident">to_reg</span>()),
+                <span class="ident">mem</span>: <span class="ident">AMode::Unscaled</span>(
                     <span class="ident">stack_reg</span>(),
-                    <span class="ident">SImm9</span>::<span class="ident">maybe_from_i64</span>(((<span class="ident">i</span> <span class="op">*</span> <span class="number">16</span>) <span class="op">+</span> <span class="ident">int_save_bytes</span>) <span class="kw">as</span> <span class="ident">i64</span>).<span class="ident">unwrap</span>(),
+                    <span class="ident">SImm9::maybe_from_i64</span>(((<span class="ident">i</span> <span class="op">*</span> <span class="number">16</span>) <span class="op">+</span> <span class="ident">int_save_bytes</span>) <span class="kw">as</span> <span class="ident">i64</span>).<span class="ident">unwrap</span>(),
                 ),
                 <span class="ident">srcloc</span>: <span class="prelude-val">None</span>,
             });
@@ -1466,17 +1466,17 @@
         <span class="comment">// can skip restoring the stack pointer value with this `add`.</span>
         <span class="kw">if</span> <span class="ident">call_conv</span>.<span class="ident">extends_baldrdash</span>() {
             <span class="kw">let</span> <span class="ident">total_save_bytes</span> <span class="op">=</span> (<span class="ident">int_save_bytes</span> <span class="op">+</span> <span class="ident">vec_save_bytes</span>) <span class="kw">as</span> <span class="ident">i32</span>;
-            <span class="ident">insts</span>.<span class="ident">extend</span>(<span class="self">Self</span>::<span class="ident">gen_sp_reg_adjust</span>(<span class="ident">total_save_bytes</span>));
+            <span class="ident">insts</span>.<span class="ident">extend</span>(<span class="self">Self</span><span class="ident">::gen_sp_reg_adjust</span>(<span class="ident">total_save_bytes</span>));
         }
 
         <span class="comment">// If this is Baldrdash-2020, restore the callee (i.e., our) TLS</span>
         <span class="comment">// register. We may have allocated it for something else and clobbered</span>
         <span class="comment">// it, but the ABI expects us to leave the TLS register unchanged.</span>
-        <span class="kw">if</span> <span class="ident">call_conv</span> <span class="op">=</span><span class="op">=</span> <span class="ident">isa</span>::<span class="ident">CallConv</span>::<span class="ident">Baldrdash2020</span> {
-            <span class="kw">let</span> <span class="ident">off</span> <span class="op">=</span> <span class="ident">BALDRDASH_CALLEE_TLS_OFFSET</span> <span class="op">+</span> <span class="self">Self</span>::<span class="ident">fp_to_arg_offset</span>(<span class="ident">call_conv</span>, <span class="ident">flags</span>);
-            <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst</span>::<span class="ident">gen_load</span>(
+        <span class="kw">if</span> <span class="ident">call_conv</span> <span class="op">=</span><span class="op">=</span> <span class="ident">isa::CallConv::Baldrdash2020</span> {
+            <span class="kw">let</span> <span class="ident">off</span> <span class="op">=</span> <span class="ident">BALDRDASH_CALLEE_TLS_OFFSET</span> <span class="op">+</span> <span class="self">Self</span><span class="ident">::fp_to_arg_offset</span>(<span class="ident">call_conv</span>, <span class="ident">flags</span>);
+            <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst::gen_load</span>(
                 <span class="ident">writable_xreg</span>(<span class="ident">BALDRDASH_TLS_REG</span>),
-                <span class="ident">AMode</span>::<span class="ident">UnsignedOffset</span>(<span class="ident">fp_reg</span>(), <span class="ident">UImm12Scaled</span>::<span class="ident">maybe_from_i64</span>(<span class="ident">off</span>, <span class="ident">I64</span>).<span class="ident">unwrap</span>()),
+                <span class="ident">AMode::UnsignedOffset</span>(<span class="ident">fp_reg</span>(), <span class="ident">UImm12Scaled::maybe_from_i64</span>(<span class="ident">off</span>, <span class="ident">I64</span>).<span class="ident">unwrap</span>()),
                 <span class="ident">I64</span>,
             ));
         }
@@ -1489,17 +1489,17 @@
         <span class="ident">uses</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span>,
         <span class="ident">defs</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Writable</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="ident">loc</span>: <span class="ident">SourceLoc</span>,
-        <span class="ident">opcode</span>: <span class="ident">ir</span>::<span class="ident">Opcode</span>,
+        <span class="ident">opcode</span>: <span class="ident">ir::Opcode</span>,
         <span class="ident">tmp</span>: <span class="ident">Writable</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span>,
-        <span class="ident">callee_conv</span>: <span class="ident">isa</span>::<span class="ident">CallConv</span>,
-        <span class="ident">caller_conv</span>: <span class="ident">isa</span>::<span class="ident">CallConv</span>,
+        <span class="ident">callee_conv</span>: <span class="ident">isa::CallConv</span>,
+        <span class="ident">caller_conv</span>: <span class="ident">isa::CallConv</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SmallVec</span><span class="op">&lt;</span>[(<span class="ident">InstIsSafepoint</span>, <span class="ident">Inst</span>); <span class="number">2</span>]<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insts</span> <span class="op">=</span> <span class="ident">SmallVec</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insts</span> <span class="op">=</span> <span class="ident">SmallVec::new</span>();
         <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">dest</span> {
-            <span class="kw-2">&amp;</span><span class="ident">CallDest</span>::<span class="ident">ExtName</span>(<span class="kw-2">ref</span> <span class="ident">name</span>, <span class="ident">RelocDistance</span>::<span class="ident">Near</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">insts</span>.<span class="ident">push</span>((
-                <span class="ident">InstIsSafepoint</span>::<span class="ident">Yes</span>,
-                <span class="ident">Inst</span>::<span class="ident">Call</span> {
-                    <span class="ident">info</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">CallInfo</span> {
+            <span class="kw-2">&amp;</span><span class="ident">CallDest::ExtName</span>(<span class="kw-2">ref</span> <span class="ident">name</span>, <span class="ident">RelocDistance::Near</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">insts</span>.<span class="ident">push</span>((
+                <span class="ident">InstIsSafepoint::Yes</span>,
+                <span class="ident">Inst::Call</span> {
+                    <span class="ident">info</span>: <span class="ident">Box::new</span>(<span class="ident">CallInfo</span> {
                         <span class="ident">dest</span>: <span class="ident">name</span>.<span class="ident">clone</span>(),
                         <span class="ident">uses</span>,
                         <span class="ident">defs</span>,
@@ -1510,20 +1510,20 @@
                     }),
                 },
             )),
-            <span class="kw-2">&amp;</span><span class="ident">CallDest</span>::<span class="ident">ExtName</span>(<span class="kw-2">ref</span> <span class="ident">name</span>, <span class="ident">RelocDistance</span>::<span class="ident">Far</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw-2">&amp;</span><span class="ident">CallDest::ExtName</span>(<span class="kw-2">ref</span> <span class="ident">name</span>, <span class="ident">RelocDistance::Far</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">insts</span>.<span class="ident">push</span>((
-                    <span class="ident">InstIsSafepoint</span>::<span class="ident">No</span>,
-                    <span class="ident">Inst</span>::<span class="ident">LoadExtName</span> {
+                    <span class="ident">InstIsSafepoint::No</span>,
+                    <span class="ident">Inst::LoadExtName</span> {
                         <span class="ident">rd</span>: <span class="ident">tmp</span>,
-                        <span class="ident">name</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">name</span>.<span class="ident">clone</span>()),
+                        <span class="ident">name</span>: <span class="ident">Box::new</span>(<span class="ident">name</span>.<span class="ident">clone</span>()),
                         <span class="ident">offset</span>: <span class="number">0</span>,
                         <span class="ident">srcloc</span>: <span class="ident">loc</span>,
                     },
                 ));
                 <span class="ident">insts</span>.<span class="ident">push</span>((
-                    <span class="ident">InstIsSafepoint</span>::<span class="ident">Yes</span>,
-                    <span class="ident">Inst</span>::<span class="ident">CallInd</span> {
-                        <span class="ident">info</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">CallIndInfo</span> {
+                    <span class="ident">InstIsSafepoint::Yes</span>,
+                    <span class="ident">Inst::CallInd</span> {
+                        <span class="ident">info</span>: <span class="ident">Box::new</span>(<span class="ident">CallIndInfo</span> {
                             <span class="ident">rn</span>: <span class="ident">tmp</span>.<span class="ident">to_reg</span>(),
                             <span class="ident">uses</span>,
                             <span class="ident">defs</span>,
@@ -1535,10 +1535,10 @@
                     },
                 ));
             }
-            <span class="kw-2">&amp;</span><span class="ident">CallDest</span>::<span class="ident">Reg</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">insts</span>.<span class="ident">push</span>((
-                <span class="ident">InstIsSafepoint</span>::<span class="ident">Yes</span>,
-                <span class="ident">Inst</span>::<span class="ident">CallInd</span> {
-                    <span class="ident">info</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">CallIndInfo</span> {
+            <span class="kw-2">&amp;</span><span class="ident">CallDest::Reg</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">insts</span>.<span class="ident">push</span>((
+                <span class="ident">InstIsSafepoint::Yes</span>,
+                <span class="ident">Inst::CallInd</span> {
+                    <span class="ident">info</span>: <span class="ident">Box::new</span>(<span class="ident">CallIndInfo</span> {
                         <span class="ident">rn</span>: <span class="kw-2">*</span><span class="ident">reg</span>,
                         <span class="ident">uses</span>,
                         <span class="ident">defs</span>,
@@ -1557,9 +1557,9 @@
     <span class="kw">fn</span> <span class="ident">get_number_of_spillslots_for_value</span>(<span class="ident">rc</span>: <span class="ident">RegClass</span>, <span class="ident">ty</span>: <span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
         <span class="comment">// We allocate in terms of 8-byte slots.</span>
         <span class="kw">match</span> (<span class="ident">rc</span>, <span class="ident">ty</span>) {
-            (<span class="ident">RegClass</span>::<span class="ident">I64</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">1</span>,
-            (<span class="ident">RegClass</span>::<span class="ident">V128</span>, <span class="ident">F32</span>) <span class="op">|</span> (<span class="ident">RegClass</span>::<span class="ident">V128</span>, <span class="ident">F64</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">1</span>,
-            (<span class="ident">RegClass</span>::<span class="ident">V128</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">2</span>,
+            (<span class="ident">RegClass::I64</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">1</span>,
+            (<span class="ident">RegClass::V128</span>, <span class="ident">F32</span>) <span class="op">|</span> (<span class="ident">RegClass::V128</span>, <span class="ident">F64</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">1</span>,
+            (<span class="ident">RegClass::V128</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">2</span>,
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unexpected register class!&quot;</span>),
         }
     }
@@ -1574,8 +1574,8 @@
         <span class="ident">s</span>.<span class="ident">nominal_sp_to_fp</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">get_regs_clobbered_by_call</span>(<span class="ident">call_conv_of_callee</span>: <span class="ident">isa</span>::<span class="ident">CallConv</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Writable</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">caller_saved</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+    <span class="kw">fn</span> <span class="ident">get_regs_clobbered_by_call</span>(<span class="ident">call_conv_of_callee</span>: <span class="ident">isa::CallConv</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Writable</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">caller_saved</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">29</span> {
             <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">writable_xreg</span>(<span class="ident">i</span>);
             <span class="kw">if</span> <span class="ident">is_reg_clobbered_by_call</span>(<span class="ident">call_conv_of_callee</span>, <span class="ident">x</span>.<span class="ident">to_reg</span>().<span class="ident">to_real_reg</span>()) {
@@ -1603,14 +1603,14 @@
 
 <span class="doccomment">/// Is the given register saved in the prologue if clobbered, i.e., is it a</span>
 <span class="doccomment">/// callee-save?</span>
-<span class="kw">fn</span> <span class="ident">is_reg_saved_in_prologue</span>(<span class="ident">call_conv</span>: <span class="ident">isa</span>::<span class="ident">CallConv</span>, <span class="ident">r</span>: <span class="ident">RealReg</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">fn</span> <span class="ident">is_reg_saved_in_prologue</span>(<span class="ident">call_conv</span>: <span class="ident">isa::CallConv</span>, <span class="ident">r</span>: <span class="ident">RealReg</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
     <span class="kw">if</span> <span class="ident">call_conv</span>.<span class="ident">extends_baldrdash</span>() {
         <span class="kw">match</span> <span class="ident">r</span>.<span class="ident">get_class</span>() {
-            <span class="ident">RegClass</span>::<span class="ident">I64</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">RegClass::I64</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">enc</span> <span class="op">=</span> <span class="ident">r</span>.<span class="ident">get_hw_encoding</span>();
                 <span class="kw">return</span> <span class="ident">BALDRDASH_JIT_CALLEE_SAVED_GPR</span>[<span class="ident">enc</span>];
             }
-            <span class="ident">RegClass</span>::<span class="ident">V128</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">RegClass::V128</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">enc</span> <span class="op">=</span> <span class="ident">r</span>.<span class="ident">get_hw_encoding</span>();
                 <span class="kw">return</span> <span class="ident">BALDRDASH_JIT_CALLEE_SAVED_FPU</span>[<span class="ident">enc</span>];
             }
@@ -1619,11 +1619,11 @@
     }
 
     <span class="kw">match</span> <span class="ident">r</span>.<span class="ident">get_class</span>() {
-        <span class="ident">RegClass</span>::<span class="ident">I64</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">RegClass::I64</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="comment">// x19 - x28 inclusive are callee-saves.</span>
             <span class="ident">r</span>.<span class="ident">get_hw_encoding</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="number">19</span> <span class="op">&amp;&amp;</span> <span class="ident">r</span>.<span class="ident">get_hw_encoding</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="number">28</span>
         }
-        <span class="ident">RegClass</span>::<span class="ident">V128</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">RegClass::V128</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="comment">// v8 - v15 inclusive are callee-saves.</span>
             <span class="ident">r</span>.<span class="ident">get_hw_encoding</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="number">8</span> <span class="op">&amp;&amp;</span> <span class="ident">r</span>.<span class="ident">get_hw_encoding</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="number">15</span>
         }
@@ -1635,7 +1635,7 @@
 <span class="doccomment">/// prologue and restored in the epilogue, given the set of all registers</span>
 <span class="doccomment">/// written by the function&#39;s body.</span>
 <span class="kw">fn</span> <span class="ident">get_regs_saved_in_prologue</span>(
-    <span class="ident">call_conv</span>: <span class="ident">isa</span>::<span class="ident">CallConv</span>,
+    <span class="ident">call_conv</span>: <span class="ident">isa::CallConv</span>,
     <span class="ident">regs</span>: <span class="kw-2">&amp;</span><span class="ident">Set</span><span class="op">&lt;</span><span class="ident">Writable</span><span class="op">&lt;</span><span class="ident">RealReg</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Writable</span><span class="op">&lt;</span><span class="ident">RealReg</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Writable</span><span class="op">&lt;</span><span class="ident">RealReg</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">int_saves</span> <span class="op">=</span> <span class="macro">vec!</span>[];
@@ -1643,8 +1643,8 @@
     <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">reg</span> <span class="kw">in</span> <span class="ident">regs</span>.<span class="ident">iter</span>() {
         <span class="kw">if</span> <span class="ident">is_reg_saved_in_prologue</span>(<span class="ident">call_conv</span>, <span class="ident">reg</span>.<span class="ident">to_reg</span>()) {
             <span class="kw">match</span> <span class="ident">reg</span>.<span class="ident">to_reg</span>().<span class="ident">get_class</span>() {
-                <span class="ident">RegClass</span>::<span class="ident">I64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">int_saves</span>.<span class="ident">push</span>(<span class="ident">reg</span>),
-                <span class="ident">RegClass</span>::<span class="ident">V128</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">vec_saves</span>.<span class="ident">push</span>(<span class="ident">reg</span>),
+                <span class="ident">RegClass::I64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">int_saves</span>.<span class="ident">push</span>(<span class="ident">reg</span>),
+                <span class="ident">RegClass::V128</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">vec_saves</span>.<span class="ident">push</span>(<span class="ident">reg</span>),
                 <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unexpected RegClass&quot;</span>),
             }
         }
@@ -1656,17 +1656,17 @@
     (<span class="ident">int_saves</span>, <span class="ident">vec_saves</span>)
 }
 
-<span class="kw">fn</span> <span class="ident">is_reg_clobbered_by_call</span>(<span class="ident">call_conv_of_callee</span>: <span class="ident">isa</span>::<span class="ident">CallConv</span>, <span class="ident">r</span>: <span class="ident">RealReg</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">fn</span> <span class="ident">is_reg_clobbered_by_call</span>(<span class="ident">call_conv_of_callee</span>: <span class="ident">isa::CallConv</span>, <span class="ident">r</span>: <span class="ident">RealReg</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
     <span class="kw">if</span> <span class="ident">call_conv_of_callee</span>.<span class="ident">extends_baldrdash</span>() {
         <span class="kw">match</span> <span class="ident">r</span>.<span class="ident">get_class</span>() {
-            <span class="ident">RegClass</span>::<span class="ident">I64</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">RegClass::I64</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">enc</span> <span class="op">=</span> <span class="ident">r</span>.<span class="ident">get_hw_encoding</span>();
                 <span class="kw">if</span> <span class="op">!</span><span class="ident">BALDRDASH_JIT_CALLEE_SAVED_GPR</span>[<span class="ident">enc</span>] {
                     <span class="kw">return</span> <span class="bool-val">true</span>;
                 }
                 <span class="comment">// Otherwise, fall through to preserve native&#39;s ABI caller-saved.</span>
             }
-            <span class="ident">RegClass</span>::<span class="ident">V128</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">RegClass::V128</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">enc</span> <span class="op">=</span> <span class="ident">r</span>.<span class="ident">get_hw_encoding</span>();
                 <span class="kw">if</span> <span class="op">!</span><span class="ident">BALDRDASH_JIT_CALLEE_SAVED_FPU</span>[<span class="ident">enc</span>] {
                     <span class="kw">return</span> <span class="bool-val">true</span>;
@@ -1678,11 +1678,11 @@
     }
 
     <span class="kw">match</span> <span class="ident">r</span>.<span class="ident">get_class</span>() {
-        <span class="ident">RegClass</span>::<span class="ident">I64</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">RegClass::I64</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="comment">// x0 - x17 inclusive are caller-saves.</span>
             <span class="ident">r</span>.<span class="ident">get_hw_encoding</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="number">17</span>
         }
-        <span class="ident">RegClass</span>::<span class="ident">V128</span> <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="ident">RegClass::V128</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="comment">// v0 - v7 inclusive and v16 - v31 inclusive are caller-saves. The</span>
             <span class="comment">// upper 64 bits of v8 - v15 inclusive are also caller-saves.</span>
             <span class="comment">// However, because we cannot currently represent partial registers</span>

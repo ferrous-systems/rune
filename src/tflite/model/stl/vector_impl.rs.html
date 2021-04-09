@@ -1050,14 +1050,14 @@
 <span id="1047">1047</span>
 <span id="1048">1048</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>, <span class="ident">Index</span>, <span class="ident">IndexMut</span>};
+<span class="kw">use</span> <span class="ident">std::ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>, <span class="ident">Index</span>, <span class="ident">IndexMut</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">mem</span>, <span class="ident">slice</span>};
 
-<span class="kw">use</span> <span class="ident">libc</span>::<span class="ident">size_t</span>;
+<span class="kw">use</span> <span class="ident">libc::size_t</span>;
 
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">memory</span>::<span class="ident">UniquePtr</span>;
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">vector</span>::{<span class="ident">VectorErase</span>, <span class="ident">VectorExtract</span>, <span class="ident">VectorInsert</span>, <span class="ident">VectorOfUniquePtr</span>, <span class="ident">VectorSlice</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">stl</span>::<span class="ident">bindings</span>::<span class="ident">root</span>::<span class="ident">rust</span>::<span class="ident">dummy_vector</span>;
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::memory::UniquePtr</span>;
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::vector</span>::{<span class="ident">VectorErase</span>, <span class="ident">VectorExtract</span>, <span class="ident">VectorInsert</span>, <span class="ident">VectorOfUniquePtr</span>, <span class="ident">VectorSlice</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::model::stl::bindings::root::rust::dummy_vector</span>;
 
 <span class="macro">cpp!</span> {{
     #<span class="ident">include</span> <span class="op">&lt;</span><span class="ident">vector</span><span class="op">&gt;</span>
@@ -1069,11 +1069,11 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VectorOfU8</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;uint8_t&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std</span>::<span class="ident">vector</span><span class="op">&lt;</span><span class="ident">uint8_t</span><span class="op">&gt;</span>;
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std::vector</span><span class="op">&lt;</span><span class="ident">uint8_t</span><span class="op">&gt;</span>;
             })
         }
         <span class="ident">this</span>
@@ -1094,11 +1094,11 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">VectorOfU8</span> {
     <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cloned</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cloned</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">cloned_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">cloned</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::vector&lt;uint8_t&gt;*&quot;</span>, <span class="ident">cloned_ref</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;uint8_t&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">cloned_ref</span>) <span class="ident">std</span>::<span class="ident">vector</span><span class="op">&lt;</span><span class="ident">uint8_t</span><span class="op">&gt;</span>(<span class="kw-2">*</span><span class="self">self</span>);
+                <span class="ident">new</span> (<span class="ident">cloned_ref</span>) <span class="ident">std::vector</span><span class="op">&lt;</span><span class="ident">uint8_t</span><span class="op">&gt;</span>(<span class="kw-2">*</span><span class="self">self</span>);
             });
         }
         <span class="ident">cloned</span>
@@ -1117,7 +1117,7 @@
 <span class="kw">impl</span> <span class="ident">VectorSlice</span> <span class="kw">for</span> <span class="ident">VectorOfU8</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">u8</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::vector&lt;uint8_t&gt;*&quot;</span>]
                   <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span> <span class="kw">as</span> <span class="string">&quot;const uint8_t*&quot;</span> {
@@ -1126,7 +1126,7 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;uint8_t&gt;*&quot;</span>]
                   <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span> <span class="kw">as</span> <span class="string">&quot;uint8_t*&quot;</span> {
@@ -1159,7 +1159,7 @@
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">impl</span> <span class="ident">VectorInsert</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VectorOfU8</span> {
-    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span>::<span class="ident">Item</span>) {
+    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span><span class="ident">::Item</span>) {
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;uint8_t&gt;*&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;uint8_t*&quot;</span>] {
@@ -1173,7 +1173,7 @@
 <span class="kw">impl</span> <span class="ident">VectorExtract</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VectorOfU8</span> {
     <span class="kw">fn</span> <span class="ident">extract</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
         <span class="macro">assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">size</span>());
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">u8</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;uint8_t&gt;*&quot;</span>, <span class="ident">index</span> <span class="kw">as</span> <span class="string">&quot;size_t&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;uint8_t*&quot;</span>] {
@@ -1192,11 +1192,11 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VectorOfI32</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;int32_t&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std</span>::<span class="ident">vector</span><span class="op">&lt;</span><span class="ident">int32_t</span><span class="op">&gt;</span>;
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std::vector</span><span class="op">&lt;</span><span class="ident">int32_t</span><span class="op">&gt;</span>;
             })
         }
         <span class="ident">this</span>
@@ -1217,11 +1217,11 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">VectorOfI32</span> {
     <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cloned</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cloned</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">cloned_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">cloned</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::vector&lt;int32_t&gt;*&quot;</span>, <span class="ident">cloned_ref</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;int32_t&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">cloned_ref</span>) <span class="ident">std</span>::<span class="ident">vector</span><span class="op">&lt;</span><span class="ident">int32_t</span><span class="op">&gt;</span>(<span class="kw-2">*</span><span class="self">self</span>);
+                <span class="ident">new</span> (<span class="ident">cloned_ref</span>) <span class="ident">std::vector</span><span class="op">&lt;</span><span class="ident">int32_t</span><span class="op">&gt;</span>(<span class="kw-2">*</span><span class="self">self</span>);
             });
         }
         <span class="ident">cloned</span>
@@ -1240,7 +1240,7 @@
 <span class="kw">impl</span> <span class="ident">VectorSlice</span> <span class="kw">for</span> <span class="ident">VectorOfI32</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">i32</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::vector&lt;int32_t&gt;*&quot;</span>]
                   <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i32</span> <span class="kw">as</span> <span class="string">&quot;const int32_t*&quot;</span> {
@@ -1249,7 +1249,7 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;int32_t&gt;*&quot;</span>]
                   <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i32</span> <span class="kw">as</span> <span class="string">&quot;int32_t*&quot;</span> {
@@ -1282,7 +1282,7 @@
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">impl</span> <span class="ident">VectorInsert</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VectorOfI32</span> {
-    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span>::<span class="ident">Item</span>) {
+    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span><span class="ident">::Item</span>) {
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;int32_t&gt;*&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;int32_t*&quot;</span>] {
@@ -1296,7 +1296,7 @@
 <span class="kw">impl</span> <span class="ident">VectorExtract</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VectorOfI32</span> {
     <span class="kw">fn</span> <span class="ident">extract</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
         <span class="macro">assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">size</span>());
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">i32</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;int32_t&gt;*&quot;</span>, <span class="ident">index</span> <span class="kw">as</span> <span class="string">&quot;size_t&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;int32_t*&quot;</span>] {
@@ -1315,11 +1315,11 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VectorOfI64</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;int64_t&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std</span>::<span class="ident">vector</span><span class="op">&lt;</span><span class="ident">int64_t</span><span class="op">&gt;</span>;
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std::vector</span><span class="op">&lt;</span><span class="ident">int64_t</span><span class="op">&gt;</span>;
             })
         }
         <span class="ident">this</span>
@@ -1340,11 +1340,11 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">VectorOfI64</span> {
     <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cloned</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cloned</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">cloned_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">cloned</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::vector&lt;int64_t&gt;*&quot;</span>, <span class="ident">cloned_ref</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;int64_t&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">cloned_ref</span>) <span class="ident">std</span>::<span class="ident">vector</span><span class="op">&lt;</span><span class="ident">int64_t</span><span class="op">&gt;</span>(<span class="kw-2">*</span><span class="self">self</span>);
+                <span class="ident">new</span> (<span class="ident">cloned_ref</span>) <span class="ident">std::vector</span><span class="op">&lt;</span><span class="ident">int64_t</span><span class="op">&gt;</span>(<span class="kw-2">*</span><span class="self">self</span>);
             });
         }
         <span class="ident">cloned</span>
@@ -1363,7 +1363,7 @@
 <span class="kw">impl</span> <span class="ident">VectorSlice</span> <span class="kw">for</span> <span class="ident">VectorOfI64</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">i64</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::vector&lt;int64_t&gt;*&quot;</span>]
                   <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">i64</span> <span class="kw">as</span> <span class="string">&quot;const int64_t*&quot;</span> {
@@ -1372,7 +1372,7 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;int64_t&gt;*&quot;</span>]
                   <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">i64</span> <span class="kw">as</span> <span class="string">&quot;int64_t*&quot;</span> {
@@ -1405,7 +1405,7 @@
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">impl</span> <span class="ident">VectorInsert</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VectorOfI64</span> {
-    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span>::<span class="ident">Item</span>) {
+    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span><span class="ident">::Item</span>) {
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;int64_t&gt;*&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;int64_t*&quot;</span>] {
@@ -1419,7 +1419,7 @@
 <span class="kw">impl</span> <span class="ident">VectorExtract</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VectorOfI64</span> {
     <span class="kw">fn</span> <span class="ident">extract</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i64</span> {
         <span class="macro">assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">size</span>());
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;int64_t&gt;*&quot;</span>, <span class="ident">index</span> <span class="kw">as</span> <span class="string">&quot;size_t&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;int64_t*&quot;</span>] {
@@ -1438,11 +1438,11 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VectorOfF32</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;float&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std</span>::<span class="ident">vector</span><span class="op">&lt;</span><span class="ident">float</span><span class="op">&gt;</span>;
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std::vector</span><span class="op">&lt;</span><span class="ident">float</span><span class="op">&gt;</span>;
             })
         }
         <span class="ident">this</span>
@@ -1463,11 +1463,11 @@
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">impl</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">VectorOfF32</span> {
     <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cloned</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cloned</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">cloned_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">cloned</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::vector&lt;float&gt;*&quot;</span>, <span class="ident">cloned_ref</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;float&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">cloned_ref</span>) <span class="ident">std</span>::<span class="ident">vector</span><span class="op">&lt;</span><span class="ident">float</span><span class="op">&gt;</span>(<span class="kw-2">*</span><span class="self">self</span>);
+                <span class="ident">new</span> (<span class="ident">cloned_ref</span>) <span class="ident">std::vector</span><span class="op">&lt;</span><span class="ident">float</span><span class="op">&gt;</span>(<span class="kw-2">*</span><span class="self">self</span>);
             });
         }
         <span class="ident">cloned</span>
@@ -1486,7 +1486,7 @@
 <span class="kw">impl</span> <span class="ident">VectorSlice</span> <span class="kw">for</span> <span class="ident">VectorOfF32</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">f32</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::vector&lt;float&gt;*&quot;</span>]
                   <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">f32</span> <span class="kw">as</span> <span class="string">&quot;const float*&quot;</span> {
@@ -1495,7 +1495,7 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;float&gt;*&quot;</span>]
                   <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">f32</span> <span class="kw">as</span> <span class="string">&quot;float*&quot;</span> {
@@ -1528,7 +1528,7 @@
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
 <span class="kw">impl</span> <span class="ident">VectorInsert</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VectorOfF32</span> {
-    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span>::<span class="ident">Item</span>) {
+    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span><span class="ident">::Item</span>) {
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;float&gt;*&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;float*&quot;</span>] {
@@ -1542,7 +1542,7 @@
 <span class="kw">impl</span> <span class="ident">VectorExtract</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VectorOfF32</span> {
     <span class="kw">fn</span> <span class="ident">extract</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">f32</span> {
         <span class="macro">assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">size</span>());
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">f32</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">f32</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;float&gt;*&quot;</span>, <span class="ident">index</span> <span class="kw">as</span> <span class="string">&quot;size_t&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;float*&quot;</span>] {
@@ -1556,13 +1556,13 @@
 <span class="macro">add_impl!</span>(<span class="ident">VectorOfF32</span>);
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;OperatorCodeT&gt;&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std</span>::<span class="ident">vector</span><span class="op">&lt;</span><span class="ident">std</span>::<span class="ident">unique_ptr</span><span class="op">&lt;</span><span class="ident">OperatorCodeT</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std::vector</span><span class="op">&lt;</span><span class="ident">std::unique_ptr</span><span class="op">&lt;</span><span class="ident">OperatorCodeT</span><span class="op">&gt;</span><span class="op">&gt;</span>;
             })
         }
         <span class="ident">this</span>
@@ -1570,22 +1570,22 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorSlice</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span>;
+<span class="kw">impl</span> <span class="ident">VectorSlice</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::vector&lt;std::unique_ptr&lt;OperatorCodeT&gt;&gt;*&quot;</span>]
-                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;OperatorCodeT&gt;*&quot;</span> {
+                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;OperatorCodeT&gt;*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">data</span>();
             })
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;OperatorCodeT&gt;&gt;*&quot;</span>]
-                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;OperatorCodeT&gt;*&quot;</span> {
+                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;OperatorCodeT&gt;*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">data</span>();
             })
         }
@@ -1601,7 +1601,7 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorErase</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">VectorErase</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">erase_range</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">size</span>: <span class="ident">usize</span>) {
         <span class="kw">let</span> <span class="ident">begin</span> <span class="op">=</span> <span class="ident">offset</span> <span class="kw">as</span> <span class="ident">size_t</span>;
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">offset</span> <span class="op">+</span> <span class="ident">size</span> <span class="kw">as</span> <span class="ident">size_t</span>;
@@ -1614,27 +1614,27 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorInsert</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span>
+<span class="kw">impl</span> <span class="ident">VectorInsert</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span>
 {
-    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span>::<span class="ident">Item</span>) {
+    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span><span class="ident">::Item</span>) {
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;OperatorCodeT&gt;&gt;*&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;OperatorCodeT&gt;*&quot;</span>] {
                 <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">push_back</span>(<span class="ident">std</span>::<span class="kw">move</span>(<span class="kw-2">*</span><span class="ident">vref</span>));
             })
         }
-        <span class="ident">mem</span>::<span class="ident">forget</span>(<span class="ident">v</span>);
+        <span class="ident">mem::forget</span>(<span class="ident">v</span>);
     }
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorExtract</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span>
+<span class="kw">impl</span> <span class="ident">VectorExtract</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span>
 {
-    <span class="kw">fn</span> <span class="ident">extract</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">extract</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span> {
         <span class="macro">assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">size</span>());
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;OperatorCodeT&gt;&gt;*&quot;</span>, <span class="ident">index</span> <span class="kw">as</span> <span class="string">&quot;size_t&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;OperatorCodeT&gt;*&quot;</span>] {
@@ -1645,16 +1645,16 @@
     }
 }
 
-<span class="macro">add_impl!</span>(<span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span>);
+<span class="macro">add_impl!</span>(<span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span>);
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;TensorT&gt;&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std</span>::<span class="ident">vector</span><span class="op">&lt;</span><span class="ident">std</span>::<span class="ident">unique_ptr</span><span class="op">&lt;</span><span class="ident">TensorT</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std::vector</span><span class="op">&lt;</span><span class="ident">std::unique_ptr</span><span class="op">&lt;</span><span class="ident">TensorT</span><span class="op">&gt;</span><span class="op">&gt;</span>;
             })
         }
         <span class="ident">this</span>
@@ -1662,22 +1662,22 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorSlice</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span>;
+<span class="kw">impl</span> <span class="ident">VectorSlice</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::vector&lt;std::unique_ptr&lt;TensorT&gt;&gt;*&quot;</span>]
-                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;TensorT&gt;*&quot;</span> {
+                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;TensorT&gt;*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">data</span>();
             })
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;TensorT&gt;&gt;*&quot;</span>]
-                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;TensorT&gt;*&quot;</span> {
+                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;TensorT&gt;*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">data</span>();
             })
         }
@@ -1693,7 +1693,7 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorErase</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">VectorErase</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">erase_range</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">size</span>: <span class="ident">usize</span>) {
         <span class="kw">let</span> <span class="ident">begin</span> <span class="op">=</span> <span class="ident">offset</span> <span class="kw">as</span> <span class="ident">size_t</span>;
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">offset</span> <span class="op">+</span> <span class="ident">size</span> <span class="kw">as</span> <span class="ident">size_t</span>;
@@ -1706,23 +1706,23 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorInsert</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span>::<span class="ident">Item</span>) {
+<span class="kw">impl</span> <span class="ident">VectorInsert</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span><span class="ident">::Item</span>) {
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;TensorT&gt;&gt;*&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;TensorT&gt;*&quot;</span>] {
                 <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">push_back</span>(<span class="ident">std</span>::<span class="kw">move</span>(<span class="kw-2">*</span><span class="ident">vref</span>));
             })
         }
-        <span class="ident">mem</span>::<span class="ident">forget</span>(<span class="ident">v</span>);
+        <span class="ident">mem::forget</span>(<span class="ident">v</span>);
     }
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorExtract</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">extract</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">VectorExtract</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">extract</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span> {
         <span class="macro">assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">size</span>());
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;TensorT&gt;&gt;*&quot;</span>, <span class="ident">index</span> <span class="kw">as</span> <span class="string">&quot;size_t&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;TensorT&gt;*&quot;</span>] {
@@ -1733,16 +1733,16 @@
     }
 }
 
-<span class="macro">add_impl!</span>(<span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span>);
+<span class="macro">add_impl!</span>(<span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span>);
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;OperatorT&gt;&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std</span>::<span class="ident">vector</span><span class="op">&lt;</span><span class="ident">std</span>::<span class="ident">unique_ptr</span><span class="op">&lt;</span><span class="ident">OperatorT</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std::vector</span><span class="op">&lt;</span><span class="ident">std::unique_ptr</span><span class="op">&lt;</span><span class="ident">OperatorT</span><span class="op">&gt;</span><span class="op">&gt;</span>;
             })
         }
         <span class="ident">this</span>
@@ -1750,22 +1750,22 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorSlice</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span>;
+<span class="kw">impl</span> <span class="ident">VectorSlice</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::vector&lt;std::unique_ptr&lt;OperatorT&gt;&gt;*&quot;</span>]
-                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;OperatorT&gt;*&quot;</span> {
+                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;OperatorT&gt;*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">data</span>();
             })
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;OperatorT&gt;&gt;*&quot;</span>]
-                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;OperatorT&gt;*&quot;</span> {
+                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;OperatorT&gt;*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">data</span>();
             })
         }
@@ -1781,7 +1781,7 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorErase</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">VectorErase</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">erase_range</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">size</span>: <span class="ident">usize</span>) {
         <span class="kw">let</span> <span class="ident">begin</span> <span class="op">=</span> <span class="ident">offset</span> <span class="kw">as</span> <span class="ident">size_t</span>;
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">offset</span> <span class="op">+</span> <span class="ident">size</span> <span class="kw">as</span> <span class="ident">size_t</span>;
@@ -1794,27 +1794,27 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorInsert</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span>
+<span class="kw">impl</span> <span class="ident">VectorInsert</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span>
 {
-    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span>::<span class="ident">Item</span>) {
+    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span><span class="ident">::Item</span>) {
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;OperatorT&gt;&gt;*&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;OperatorT&gt;*&quot;</span>] {
                 <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">push_back</span>(<span class="ident">std</span>::<span class="kw">move</span>(<span class="kw-2">*</span><span class="ident">vref</span>));
             })
         }
-        <span class="ident">mem</span>::<span class="ident">forget</span>(<span class="ident">v</span>);
+        <span class="ident">mem::forget</span>(<span class="ident">v</span>);
     }
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorExtract</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span>
+<span class="kw">impl</span> <span class="ident">VectorExtract</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span>
 {
-    <span class="kw">fn</span> <span class="ident">extract</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">extract</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span> {
         <span class="macro">assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">size</span>());
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;OperatorT&gt;&gt;*&quot;</span>, <span class="ident">index</span> <span class="kw">as</span> <span class="string">&quot;size_t&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;OperatorT&gt;*&quot;</span>] {
@@ -1825,16 +1825,16 @@
     }
 }
 
-<span class="macro">add_impl!</span>(<span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span>);
+<span class="macro">add_impl!</span>(<span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span>);
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;SubGraphT&gt;&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std</span>::<span class="ident">vector</span><span class="op">&lt;</span><span class="ident">std</span>::<span class="ident">unique_ptr</span><span class="op">&lt;</span><span class="ident">SubGraphT</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std::vector</span><span class="op">&lt;</span><span class="ident">std::unique_ptr</span><span class="op">&lt;</span><span class="ident">SubGraphT</span><span class="op">&gt;</span><span class="op">&gt;</span>;
             })
         }
         <span class="ident">this</span>
@@ -1842,22 +1842,22 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorSlice</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span>;
+<span class="kw">impl</span> <span class="ident">VectorSlice</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::vector&lt;std::unique_ptr&lt;SubGraphT&gt;&gt;*&quot;</span>]
-                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;SubGraphT&gt;*&quot;</span> {
+                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;SubGraphT&gt;*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">data</span>();
             })
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;SubGraphT&gt;&gt;*&quot;</span>]
-                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;SubGraphT&gt;*&quot;</span> {
+                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;SubGraphT&gt;*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">data</span>();
             })
         }
@@ -1873,7 +1873,7 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorErase</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">VectorErase</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">erase_range</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">size</span>: <span class="ident">usize</span>) {
         <span class="kw">let</span> <span class="ident">begin</span> <span class="op">=</span> <span class="ident">offset</span> <span class="kw">as</span> <span class="ident">size_t</span>;
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">offset</span> <span class="op">+</span> <span class="ident">size</span> <span class="kw">as</span> <span class="ident">size_t</span>;
@@ -1886,27 +1886,27 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorInsert</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span>
+<span class="kw">impl</span> <span class="ident">VectorInsert</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span>
 {
-    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span>::<span class="ident">Item</span>) {
+    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span><span class="ident">::Item</span>) {
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;SubGraphT&gt;&gt;*&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;SubGraphT&gt;*&quot;</span>] {
                 <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">push_back</span>(<span class="ident">std</span>::<span class="kw">move</span>(<span class="kw-2">*</span><span class="ident">vref</span>));
             })
         }
-        <span class="ident">mem</span>::<span class="ident">forget</span>(<span class="ident">v</span>);
+        <span class="ident">mem::forget</span>(<span class="ident">v</span>);
     }
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorExtract</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span>
+<span class="kw">impl</span> <span class="ident">VectorExtract</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span>
 {
-    <span class="kw">fn</span> <span class="ident">extract</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">extract</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span> {
         <span class="macro">assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">size</span>());
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;SubGraphT&gt;&gt;*&quot;</span>, <span class="ident">index</span> <span class="kw">as</span> <span class="string">&quot;size_t&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;SubGraphT&gt;*&quot;</span>] {
@@ -1917,16 +1917,16 @@
     }
 }
 
-<span class="macro">add_impl!</span>(<span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span>);
+<span class="macro">add_impl!</span>(<span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span>);
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;BufferT&gt;&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std</span>::<span class="ident">vector</span><span class="op">&lt;</span><span class="ident">std</span>::<span class="ident">unique_ptr</span><span class="op">&lt;</span><span class="ident">BufferT</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std::vector</span><span class="op">&lt;</span><span class="ident">std::unique_ptr</span><span class="op">&lt;</span><span class="ident">BufferT</span><span class="op">&gt;</span><span class="op">&gt;</span>;
             })
         }
         <span class="ident">this</span>
@@ -1934,22 +1934,22 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorSlice</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span>;
+<span class="kw">impl</span> <span class="ident">VectorSlice</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::vector&lt;std::unique_ptr&lt;BufferT&gt;&gt;*&quot;</span>]
-                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;BufferT&gt;*&quot;</span> {
+                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;BufferT&gt;*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">data</span>();
             })
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;BufferT&gt;&gt;*&quot;</span>]
-                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;BufferT&gt;*&quot;</span> {
+                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;BufferT&gt;*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">data</span>();
             })
         }
@@ -1965,7 +1965,7 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorErase</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">VectorErase</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">erase_range</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">size</span>: <span class="ident">usize</span>) {
         <span class="kw">let</span> <span class="ident">begin</span> <span class="op">=</span> <span class="ident">offset</span> <span class="kw">as</span> <span class="ident">size_t</span>;
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">offset</span> <span class="op">+</span> <span class="ident">size</span> <span class="kw">as</span> <span class="ident">size_t</span>;
@@ -1978,23 +1978,23 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorInsert</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span>::<span class="ident">Item</span>) {
+<span class="kw">impl</span> <span class="ident">VectorInsert</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span><span class="ident">::Item</span>) {
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;BufferT&gt;&gt;*&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;BufferT&gt;*&quot;</span>] {
                 <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">push_back</span>(<span class="ident">std</span>::<span class="kw">move</span>(<span class="kw-2">*</span><span class="ident">vref</span>));
             })
         }
-        <span class="ident">mem</span>::<span class="ident">forget</span>(<span class="ident">v</span>);
+        <span class="ident">mem::forget</span>(<span class="ident">v</span>);
     }
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorExtract</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">extract</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">VectorExtract</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">extract</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span> {
         <span class="macro">assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">size</span>());
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;BufferT&gt;&gt;*&quot;</span>, <span class="ident">index</span> <span class="kw">as</span> <span class="string">&quot;size_t&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;BufferT&gt;*&quot;</span>] {
@@ -2005,16 +2005,16 @@
     }
 }
 
-<span class="macro">add_impl!</span>(<span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span>);
+<span class="macro">add_impl!</span>(<span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span>);
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;MetadataT&gt;&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std</span>::<span class="ident">vector</span><span class="op">&lt;</span><span class="ident">std</span>::<span class="ident">unique_ptr</span><span class="op">&lt;</span><span class="ident">MetadataT</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="kw">const</span> <span class="ident">std::vector</span><span class="op">&lt;</span><span class="ident">std::unique_ptr</span><span class="op">&lt;</span><span class="ident">MetadataT</span><span class="op">&gt;</span><span class="op">&gt;</span>;
             })
         }
         <span class="ident">this</span>
@@ -2022,22 +2022,22 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorSlice</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span>;
+<span class="kw">impl</span> <span class="ident">VectorSlice</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::vector&lt;std::unique_ptr&lt;MetadataT&gt;&gt;*&quot;</span>]
-                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;MetadataT&gt;*&quot;</span> {
+                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;MetadataT&gt;*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">data</span>();
             })
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+    <span class="kw">fn</span> <span class="ident">get_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Item</span> {
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;MetadataT&gt;&gt;*&quot;</span>]
-                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;MetadataT&gt;*&quot;</span> {
+                  <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;MetadataT&gt;*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">data</span>();
             })
         }
@@ -2053,7 +2053,7 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorErase</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">VectorErase</span> <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">erase_range</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">offset</span>: <span class="ident">usize</span>, <span class="ident">size</span>: <span class="ident">usize</span>) {
         <span class="kw">let</span> <span class="ident">begin</span> <span class="op">=</span> <span class="ident">offset</span> <span class="kw">as</span> <span class="ident">size_t</span>;
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">offset</span> <span class="op">+</span> <span class="ident">size</span> <span class="kw">as</span> <span class="ident">size_t</span>;
@@ -2066,27 +2066,27 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorInsert</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span>
+<span class="kw">impl</span> <span class="ident">VectorInsert</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span>
 {
-    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span>::<span class="ident">Item</span>) {
+    <span class="kw">fn</span> <span class="ident">push_back</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="self">Self</span><span class="ident">::Item</span>) {
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;MetadataT&gt;&gt;*&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;MetadataT&gt;*&quot;</span>] {
                 <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">push_back</span>(<span class="ident">std</span>::<span class="kw">move</span>(<span class="kw-2">*</span><span class="ident">vref</span>));
             })
         }
-        <span class="ident">mem</span>::<span class="ident">forget</span>(<span class="ident">v</span>);
+        <span class="ident">mem::forget</span>(<span class="ident">v</span>);
     }
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">VectorExtract</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span><span class="op">&gt;</span>
-    <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span>
+<span class="kw">impl</span> <span class="ident">VectorExtract</span><span class="op">&lt;</span><span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span><span class="op">&gt;</span>
+    <span class="kw">for</span> <span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span>
 {
-    <span class="kw">fn</span> <span class="ident">extract</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">extract</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span> {
         <span class="macro">assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">size</span>());
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">vref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::vector&lt;std::unique_ptr&lt;MetadataT&gt;&gt;*&quot;</span>, <span class="ident">index</span> <span class="kw">as</span> <span class="string">&quot;size_t&quot;</span>, <span class="ident">vref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;MetadataT&gt;*&quot;</span>] {
@@ -2097,7 +2097,7 @@
     }
 }
 
-<span class="macro">add_impl!</span>(<span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span>);
+<span class="macro">add_impl!</span>(<span class="ident">VectorOfUniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span>);
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="tflite" data-search-js="../../../../search-index.js"></div>
     <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>

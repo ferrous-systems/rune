@@ -70,48 +70,48 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_linux</span>() {
         <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">OperatingSystem</span>::<span class="ident">host</span>(), <span class="ident">OperatingSystem</span>::<span class="ident">Linux</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">OperatingSystem::host</span>(), <span class="ident">OperatingSystem::Linux</span>);
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_macos</span>() {
         <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">OperatingSystem</span>::<span class="ident">host</span>(), <span class="ident">OperatingSystem</span>::<span class="ident">Darwin</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">OperatingSystem::host</span>(), <span class="ident">OperatingSystem::Darwin</span>);
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_windows</span>() {
         <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">OperatingSystem</span>::<span class="ident">host</span>(), <span class="ident">OperatingSystem</span>::<span class="ident">Windows</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">OperatingSystem::host</span>(), <span class="ident">OperatingSystem::Windows</span>);
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;16&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_ptr16</span>() {
         <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">Architecture</span>::<span class="ident">host</span>().<span class="ident">pointer_width</span>().<span class="ident">unwrap</span>().<span class="ident">bits</span>(), <span class="number">16</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Architecture::host</span>().<span class="ident">pointer_width</span>().<span class="ident">unwrap</span>().<span class="ident">bits</span>(), <span class="number">16</span>);
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;32&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_ptr32</span>() {
         <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">Architecture</span>::<span class="ident">host</span>().<span class="ident">pointer_width</span>().<span class="ident">unwrap</span>().<span class="ident">bits</span>(), <span class="number">32</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Architecture::host</span>().<span class="ident">pointer_width</span>().<span class="ident">unwrap</span>().<span class="ident">bits</span>(), <span class="number">32</span>);
     }
 
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_pointer_width</span> <span class="op">=</span> <span class="string">&quot;64&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_ptr64</span>() {
         <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">Architecture</span>::<span class="ident">host</span>().<span class="ident">pointer_width</span>().<span class="ident">unwrap</span>().<span class="ident">bits</span>(), <span class="number">64</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">Architecture::host</span>().<span class="ident">pointer_width</span>().<span class="ident">unwrap</span>().<span class="ident">bits</span>(), <span class="number">64</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">host_object</span>() {
         <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">HOST</span>, <span class="ident">Triple</span>::<span class="ident">host</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">HOST</span>, <span class="ident">Triple::host</span>());
     }
 }
 </pre></div>

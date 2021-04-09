@@ -101,7 +101,7 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Rearrange the elements in a slice according to a predicate.</span>
 
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>;
+<span class="kw">use</span> <span class="ident">core::mem</span>;
 
 <span class="doccomment">/// Rearrange the elements of the mutable slice `s` such that elements where `p(t)` is true precede</span>
 <span class="doccomment">/// the elements where `p(t)` is false.</span>
@@ -146,20 +146,20 @@
         };
 
         <span class="comment">// Swap the two elements into the right order.</span>
-        <span class="ident">mem</span>::<span class="ident">swap</span>(<span class="ident">head</span>, <span class="ident">tail</span>);
+        <span class="ident">mem::swap</span>(<span class="ident">head</span>, <span class="ident">tail</span>);
         <span class="ident">pos</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">partition_slice</span>;
-    <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::partition_slice</span>;
+    <span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
 
     <span class="kw">fn</span> <span class="ident">check</span>(<span class="ident">x</span>: <span class="kw-2">&amp;</span>[<span class="ident">u32</span>], <span class="ident">want</span>: <span class="kw-2">&amp;</span>[<span class="ident">u32</span>]) {
         <span class="macro">assert_eq!</span>(<span class="ident">x</span>.<span class="ident">len</span>(), <span class="ident">want</span>.<span class="ident">len</span>());
         <span class="kw">let</span> <span class="ident">want_count</span> <span class="op">=</span> <span class="ident">want</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">filter</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">%</span> <span class="number">10</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>).<span class="ident">count</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
         <span class="ident">v</span>.<span class="ident">extend</span>(<span class="ident">x</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>());
         <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="ident">partition_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>[..], <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">%</span> <span class="number">10</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">v</span>, <span class="ident">want</span>);

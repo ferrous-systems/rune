@@ -297,16 +297,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">config</span>::<span class="ident">MangleConfig</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">ir</span>::{<span class="ident">Path</span>, <span class="ident">Type</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">rename</span>::<span class="ident">IdentifierType</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::config::MangleConfig</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::ir</span>::{<span class="ident">Path</span>, <span class="ident">Type</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::rename::IdentifierType</span>;
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mangle_path</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">generic_values</span>: <span class="kw-2">&amp;</span>[<span class="ident">Type</span>], <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">MangleConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Path</span> {
-    <span class="ident">Path</span>::<span class="ident">new</span>(<span class="ident">mangle_name</span>(<span class="ident">path</span>.<span class="ident">name</span>(), <span class="ident">generic_values</span>, <span class="ident">config</span>))
+    <span class="ident">Path::new</span>(<span class="ident">mangle_name</span>(<span class="ident">path</span>.<span class="ident">name</span>(), <span class="ident">generic_values</span>, <span class="ident">config</span>))
 }
 
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mangle_name</span>(<span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">generic_values</span>: <span class="kw-2">&amp;</span>[<span class="ident">Type</span>], <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">MangleConfig</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
-    <span class="ident">Mangler</span>::<span class="ident">new</span>(<span class="ident">name</span>, <span class="ident">generic_values</span>, <span class="comment">/* last = */</span> <span class="bool-val">true</span>, <span class="ident">config</span>).<span class="ident">mangle</span>()
+    <span class="ident">Mangler::new</span>(<span class="ident">name</span>, <span class="ident">generic_values</span>, <span class="comment">/* last = */</span> <span class="bool-val">true</span>, <span class="ident">config</span>).<span class="ident">mangle</span>()
 }
 
 <span class="kw">enum</span> <span class="ident">Separator</span> {
@@ -338,7 +338,7 @@
         <span class="self">Self</span> {
             <span class="ident">input</span>,
             <span class="ident">generic_values</span>,
-            <span class="ident">output</span>: <span class="ident">String</span>::<span class="ident">new</span>(),
+            <span class="ident">output</span>: <span class="ident">String::new</span>(),
             <span class="ident">last</span>,
             <span class="ident">config</span>,
         }
@@ -356,56 +356,56 @@
         } <span class="kw">else</span> {
             <span class="string">&quot;_&quot;</span>
         };
-        <span class="self">self</span>.<span class="ident">output</span>.<span class="ident">extend</span>(<span class="ident">std</span>::<span class="ident">iter</span>::<span class="ident">repeat</span>(<span class="ident">separator</span>).<span class="ident">take</span>(<span class="ident">count</span>));
+        <span class="self">self</span>.<span class="ident">output</span>.<span class="ident">extend</span>(<span class="ident">std::iter::repeat</span>(<span class="ident">separator</span>).<span class="ident">take</span>(<span class="ident">count</span>));
     }
 
     <span class="kw">fn</span> <span class="ident">append_mangled_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>, <span class="ident">last</span>: <span class="ident">bool</span>) {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">ty</span> {
-            <span class="ident">Type</span>::<span class="ident">Path</span>(<span class="kw-2">ref</span> <span class="ident">generic</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Type::Path</span>(<span class="kw-2">ref</span> <span class="ident">generic</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">sub_path</span> <span class="op">=</span>
-                    <span class="ident">Mangler</span>::<span class="ident">new</span>(<span class="ident">generic</span>.<span class="ident">export_name</span>(), <span class="ident">generic</span>.<span class="ident">generics</span>(), <span class="ident">last</span>, <span class="self">self</span>.<span class="ident">config</span>)
+                    <span class="ident">Mangler::new</span>(<span class="ident">generic</span>.<span class="ident">export_name</span>(), <span class="ident">generic</span>.<span class="ident">generics</span>(), <span class="ident">last</span>, <span class="self">self</span>.<span class="ident">config</span>)
                         .<span class="ident">mangle</span>();
 
                 <span class="self">self</span>.<span class="ident">output</span>.<span class="ident">push_str</span>(
                     <span class="kw-2">&amp;</span><span class="self">self</span>
                         .<span class="ident">config</span>
                         .<span class="ident">rename_types</span>
-                        .<span class="ident">apply</span>(<span class="kw-2">&amp;</span><span class="ident">sub_path</span>, <span class="ident">IdentifierType</span>::<span class="ident">Type</span>),
+                        .<span class="ident">apply</span>(<span class="kw-2">&amp;</span><span class="ident">sub_path</span>, <span class="ident">IdentifierType::Type</span>),
                 );
             }
-            <span class="ident">Type</span>::<span class="ident">Primitive</span>(<span class="kw-2">ref</span> <span class="ident">primitive</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Type::Primitive</span>(<span class="kw-2">ref</span> <span class="ident">primitive</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">output</span>.<span class="ident">push_str</span>(
                     <span class="kw-2">&amp;</span><span class="self">self</span>
                         .<span class="ident">config</span>
                         .<span class="ident">rename_types</span>
-                        .<span class="ident">apply</span>(<span class="ident">primitive</span>.<span class="ident">to_repr_rust</span>(), <span class="ident">IdentifierType</span>::<span class="ident">Type</span>),
+                        .<span class="ident">apply</span>(<span class="ident">primitive</span>.<span class="ident">to_repr_rust</span>(), <span class="ident">IdentifierType::Type</span>),
                 );
             }
-            <span class="ident">Type</span>::<span class="ident">Ptr</span> {
+            <span class="ident">Type::Ptr</span> {
                 <span class="kw-2">ref</span> <span class="ident">ty</span>, <span class="ident">is_const</span>, ..
             } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">push</span>(<span class="kw">if</span> <span class="ident">is_const</span> {
-                    <span class="ident">Separator</span>::<span class="ident">BeginConstPtr</span>
+                    <span class="ident">Separator::BeginConstPtr</span>
                 } <span class="kw">else</span> {
-                    <span class="ident">Separator</span>::<span class="ident">BeginMutPtr</span>
+                    <span class="ident">Separator::BeginMutPtr</span>
                 });
                 <span class="self">self</span>.<span class="ident">append_mangled_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">ty</span>, <span class="ident">last</span>);
             }
-            <span class="ident">Type</span>::<span class="ident">FuncPtr</span> {
+            <span class="ident">Type::FuncPtr</span> {
                 <span class="kw-2">ref</span> <span class="ident">ret</span>, <span class="kw-2">ref</span> <span class="ident">args</span>, ..
             } <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">self</span>.<span class="ident">push</span>(<span class="ident">Separator</span>::<span class="ident">BeginFn</span>);
+                <span class="self">self</span>.<span class="ident">push</span>(<span class="ident">Separator::BeginFn</span>);
                 <span class="self">self</span>.<span class="ident">append_mangled_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">ret</span>, <span class="ident">args</span>.<span class="ident">is_empty</span>());
                 <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">arg</span>) <span class="kw">in</span> <span class="ident">args</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
-                    <span class="self">self</span>.<span class="ident">push</span>(<span class="ident">Separator</span>::<span class="ident">BetweenFnArg</span>);
+                    <span class="self">self</span>.<span class="ident">push</span>(<span class="ident">Separator::BetweenFnArg</span>);
                     <span class="kw">let</span> <span class="ident">last</span> <span class="op">=</span> <span class="ident">last</span> <span class="op">&amp;&amp;</span> <span class="ident">i</span> <span class="op">=</span><span class="op">=</span> <span class="ident">args</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>;
                     <span class="self">self</span>.<span class="ident">append_mangled_type</span>(<span class="kw-2">&amp;</span><span class="ident">arg</span>.<span class="number">1</span>, <span class="ident">last</span>);
                 }
                 <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">last</span> {
-                    <span class="self">self</span>.<span class="ident">push</span>(<span class="ident">Separator</span>::<span class="ident">EndFn</span>);
+                    <span class="self">self</span>.<span class="ident">push</span>(<span class="ident">Separator::EndFn</span>);
                 }
             }
-            <span class="ident">Type</span>::<span class="ident">Array</span>(..) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Type::Array</span>(..) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">unimplemented!</span>(
                     <span class="string">&quot;Unable to mangle generic parameter {:?} for &#39;{}&#39;&quot;</span>,
                     <span class="ident">ty</span>,
@@ -422,10 +422,10 @@
             <span class="kw">return</span>;
         }
 
-        <span class="self">self</span>.<span class="ident">push</span>(<span class="ident">Separator</span>::<span class="ident">OpeningAngleBracket</span>);
+        <span class="self">self</span>.<span class="ident">push</span>(<span class="ident">Separator::OpeningAngleBracket</span>);
         <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">ty</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">generic_values</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
             <span class="kw">if</span> <span class="ident">i</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-                <span class="self">self</span>.<span class="ident">push</span>(<span class="ident">Separator</span>::<span class="ident">Comma</span>);
+                <span class="self">self</span>.<span class="ident">push</span>(<span class="ident">Separator::Comma</span>);
             }
             <span class="kw">let</span> <span class="ident">last</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">last</span> <span class="op">&amp;&amp;</span> <span class="ident">i</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">generic_values</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>;
             <span class="self">self</span>.<span class="ident">append_mangled_type</span>(<span class="ident">ty</span>, <span class="ident">last</span>);
@@ -433,22 +433,22 @@
 
         <span class="comment">// Skip writing the trailing &#39;&gt;&#39; mangling when possible</span>
         <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">last</span> {
-            <span class="self">self</span>.<span class="ident">push</span>(<span class="ident">Separator</span>::<span class="ident">ClosingAngleBracket</span>)
+            <span class="self">self</span>.<span class="ident">push</span>(<span class="ident">Separator::ClosingAngleBracket</span>)
         }
     }
 }
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">generics</span>() {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">ir</span>::{<span class="ident">GenericPath</span>, <span class="ident">PrimitiveType</span>};
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">rename</span>::<span class="ident">RenameRule</span>::{<span class="self">self</span>, <span class="ident">PascalCase</span>};
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::ir</span>::{<span class="ident">GenericPath</span>, <span class="ident">PrimitiveType</span>};
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::rename::RenameRule</span>::{<span class="self">self</span>, <span class="ident">PascalCase</span>};
 
     <span class="kw">fn</span> <span class="ident">float</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Type</span> {
-        <span class="ident">Type</span>::<span class="ident">Primitive</span>(<span class="ident">PrimitiveType</span>::<span class="ident">Float</span>)
+        <span class="ident">Type::Primitive</span>(<span class="ident">PrimitiveType::Float</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">c_char</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Type</span> {
-        <span class="ident">Type</span>::<span class="ident">Primitive</span>(<span class="ident">PrimitiveType</span>::<span class="ident">Char</span>)
+        <span class="ident">Type::Primitive</span>(<span class="ident">PrimitiveType::Char</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">path</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Type</span> {
@@ -456,122 +456,122 @@
     }
 
     <span class="kw">fn</span> <span class="ident">generic_path</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">generics</span>: <span class="kw-2">&amp;</span>[<span class="ident">Type</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Type</span> {
-        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">new</span>(<span class="ident">path</span>);
-        <span class="kw">let</span> <span class="ident">generic_path</span> <span class="op">=</span> <span class="ident">GenericPath</span>::<span class="ident">new</span>(<span class="ident">path</span>, <span class="ident">generics</span>.<span class="ident">to_owned</span>());
-        <span class="ident">Type</span>::<span class="ident">Path</span>(<span class="ident">generic_path</span>)
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">path</span>);
+        <span class="kw">let</span> <span class="ident">generic_path</span> <span class="op">=</span> <span class="ident">GenericPath::new</span>(<span class="ident">path</span>, <span class="ident">generics</span>.<span class="ident">to_owned</span>());
+        <span class="ident">Type::Path</span>(<span class="ident">generic_path</span>)
     }
 
     <span class="comment">// Foo&lt;f32&gt; =&gt; Foo_f32</span>
     <span class="macro">assert_eq!</span>(
-        <span class="ident">mangle_path</span>(<span class="kw-2">&amp;</span><span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo&quot;</span>), <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="ident">float</span>()], <span class="kw-2">&amp;</span><span class="ident">MangleConfig</span>::<span class="ident">default</span>()),
-        <span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo_f32&quot;</span>)
+        <span class="ident">mangle_path</span>(<span class="kw-2">&amp;</span><span class="ident">Path::new</span>(<span class="string">&quot;Foo&quot;</span>), <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="ident">float</span>()], <span class="kw-2">&amp;</span><span class="ident">MangleConfig::default</span>()),
+        <span class="ident">Path::new</span>(<span class="string">&quot;Foo_f32&quot;</span>)
     );
 
     <span class="comment">// Foo&lt;Bar&lt;f32&gt;&gt; =&gt; Foo_Bar_f32</span>
     <span class="macro">assert_eq!</span>(
         <span class="ident">mangle_path</span>(
-            <span class="kw-2">&amp;</span><span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo&quot;</span>),
+            <span class="kw-2">&amp;</span><span class="ident">Path::new</span>(<span class="string">&quot;Foo&quot;</span>),
             <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="ident">generic_path</span>(<span class="string">&quot;Bar&quot;</span>, <span class="kw-2">&amp;</span>[<span class="ident">float</span>()])],
-            <span class="kw-2">&amp;</span><span class="ident">MangleConfig</span>::<span class="ident">default</span>(),
+            <span class="kw-2">&amp;</span><span class="ident">MangleConfig::default</span>(),
         ),
-        <span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo_Bar_f32&quot;</span>)
+        <span class="ident">Path::new</span>(<span class="string">&quot;Foo_Bar_f32&quot;</span>)
     );
 
     <span class="comment">// Foo&lt;Bar&gt; =&gt; Foo_Bar</span>
     <span class="macro">assert_eq!</span>(
-        <span class="ident">mangle_path</span>(<span class="kw-2">&amp;</span><span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo&quot;</span>), <span class="kw-2">&amp;</span>[<span class="ident">path</span>(<span class="string">&quot;Bar&quot;</span>)], <span class="kw-2">&amp;</span><span class="ident">MangleConfig</span>::<span class="ident">default</span>()),
-        <span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo_Bar&quot;</span>)
+        <span class="ident">mangle_path</span>(<span class="kw-2">&amp;</span><span class="ident">Path::new</span>(<span class="string">&quot;Foo&quot;</span>), <span class="kw-2">&amp;</span>[<span class="ident">path</span>(<span class="string">&quot;Bar&quot;</span>)], <span class="kw-2">&amp;</span><span class="ident">MangleConfig::default</span>()),
+        <span class="ident">Path::new</span>(<span class="string">&quot;Foo_Bar&quot;</span>)
     );
 
     <span class="comment">// Foo&lt;Bar&gt; =&gt; FooBar</span>
     <span class="macro">assert_eq!</span>(
         <span class="ident">mangle_path</span>(
-            <span class="kw-2">&amp;</span><span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo&quot;</span>),
+            <span class="kw-2">&amp;</span><span class="ident">Path::new</span>(<span class="string">&quot;Foo&quot;</span>),
             <span class="kw-2">&amp;</span>[<span class="ident">path</span>(<span class="string">&quot;Bar&quot;</span>)],
             <span class="kw-2">&amp;</span><span class="ident">MangleConfig</span> {
                 <span class="ident">remove_underscores</span>: <span class="bool-val">true</span>,
-                <span class="ident">rename_types</span>: <span class="ident">RenameRule</span>::<span class="prelude-val">None</span>,
+                <span class="ident">rename_types</span>: <span class="ident">RenameRule::None</span>,
             }
         ),
-        <span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;FooBar&quot;</span>)
+        <span class="ident">Path::new</span>(<span class="string">&quot;FooBar&quot;</span>)
     );
 
     <span class="comment">// Foo&lt;Bar&lt;f32&gt;&gt; =&gt; FooBarF32</span>
     <span class="macro">assert_eq!</span>(
         <span class="ident">mangle_path</span>(
-            <span class="kw-2">&amp;</span><span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo&quot;</span>),
+            <span class="kw-2">&amp;</span><span class="ident">Path::new</span>(<span class="string">&quot;Foo&quot;</span>),
             <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="ident">generic_path</span>(<span class="string">&quot;Bar&quot;</span>, <span class="kw-2">&amp;</span>[<span class="ident">float</span>()])],
             <span class="kw-2">&amp;</span><span class="ident">MangleConfig</span> {
                 <span class="ident">remove_underscores</span>: <span class="bool-val">true</span>,
                 <span class="ident">rename_types</span>: <span class="ident">PascalCase</span>,
             },
         ),
-        <span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;FooBarF32&quot;</span>)
+        <span class="ident">Path::new</span>(<span class="string">&quot;FooBarF32&quot;</span>)
     );
 
     <span class="comment">// Foo&lt;Bar&lt;c_char&gt;&gt; =&gt; FooBarCChar</span>
     <span class="macro">assert_eq!</span>(
         <span class="ident">mangle_path</span>(
-            <span class="kw-2">&amp;</span><span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo&quot;</span>),
+            <span class="kw-2">&amp;</span><span class="ident">Path::new</span>(<span class="string">&quot;Foo&quot;</span>),
             <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="ident">generic_path</span>(<span class="string">&quot;Bar&quot;</span>, <span class="kw-2">&amp;</span>[<span class="ident">c_char</span>()])],
             <span class="kw-2">&amp;</span><span class="ident">MangleConfig</span> {
                 <span class="ident">remove_underscores</span>: <span class="bool-val">true</span>,
                 <span class="ident">rename_types</span>: <span class="ident">PascalCase</span>,
             },
         ),
-        <span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;FooBarCChar&quot;</span>)
+        <span class="ident">Path::new</span>(<span class="string">&quot;FooBarCChar&quot;</span>)
     );
 
     <span class="comment">// Foo&lt;Bar&lt;T&gt;&gt; =&gt; Foo_Bar_T</span>
     <span class="macro">assert_eq!</span>(
         <span class="ident">mangle_path</span>(
-            <span class="kw-2">&amp;</span><span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo&quot;</span>),
+            <span class="kw-2">&amp;</span><span class="ident">Path::new</span>(<span class="string">&quot;Foo&quot;</span>),
             <span class="kw-2">&amp;</span>[<span class="ident">generic_path</span>(<span class="string">&quot;Bar&quot;</span>, <span class="kw-2">&amp;</span>[<span class="ident">path</span>(<span class="string">&quot;T&quot;</span>)])],
-            <span class="kw-2">&amp;</span><span class="ident">MangleConfig</span>::<span class="ident">default</span>(),
+            <span class="kw-2">&amp;</span><span class="ident">MangleConfig::default</span>(),
         ),
-        <span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo_Bar_T&quot;</span>)
+        <span class="ident">Path::new</span>(<span class="string">&quot;Foo_Bar_T&quot;</span>)
     );
 
     <span class="comment">// Foo&lt;Bar&lt;T&gt;, E&gt; =&gt; Foo_Bar_T_____E</span>
     <span class="macro">assert_eq!</span>(
         <span class="ident">mangle_path</span>(
-            <span class="kw-2">&amp;</span><span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo&quot;</span>),
+            <span class="kw-2">&amp;</span><span class="ident">Path::new</span>(<span class="string">&quot;Foo&quot;</span>),
             <span class="kw-2">&amp;</span>[<span class="ident">generic_path</span>(<span class="string">&quot;Bar&quot;</span>, <span class="kw-2">&amp;</span>[<span class="ident">path</span>(<span class="string">&quot;T&quot;</span>)]), <span class="ident">path</span>(<span class="string">&quot;E&quot;</span>)],
-            <span class="kw-2">&amp;</span><span class="ident">MangleConfig</span>::<span class="ident">default</span>(),
+            <span class="kw-2">&amp;</span><span class="ident">MangleConfig::default</span>(),
         ),
-        <span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo_Bar_T_____E&quot;</span>)
+        <span class="ident">Path::new</span>(<span class="string">&quot;Foo_Bar_T_____E&quot;</span>)
     );
 
     <span class="comment">// Foo&lt;Bar&lt;T&gt;, Bar&lt;E&gt;&gt; =&gt; Foo_Bar_T_____Bar_E</span>
     <span class="macro">assert_eq!</span>(
         <span class="ident">mangle_path</span>(
-            <span class="kw-2">&amp;</span><span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo&quot;</span>),
+            <span class="kw-2">&amp;</span><span class="ident">Path::new</span>(<span class="string">&quot;Foo&quot;</span>),
             <span class="kw-2">&amp;</span>[
                 <span class="ident">generic_path</span>(<span class="string">&quot;Bar&quot;</span>, <span class="kw-2">&amp;</span>[<span class="ident">path</span>(<span class="string">&quot;T&quot;</span>)]),
                 <span class="ident">generic_path</span>(<span class="string">&quot;Bar&quot;</span>, <span class="kw-2">&amp;</span>[<span class="ident">path</span>(<span class="string">&quot;E&quot;</span>)]),
             ],
-            <span class="kw-2">&amp;</span><span class="ident">MangleConfig</span>::<span class="ident">default</span>(),
+            <span class="kw-2">&amp;</span><span class="ident">MangleConfig::default</span>(),
         ),
-        <span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo_Bar_T_____Bar_E&quot;</span>)
+        <span class="ident">Path::new</span>(<span class="string">&quot;Foo_Bar_T_____Bar_E&quot;</span>)
     );
 
     <span class="comment">// Foo&lt;Bar&lt;T&gt;, E&gt; =&gt; FooBarTE</span>
     <span class="macro">assert_eq!</span>(
         <span class="ident">mangle_path</span>(
-            <span class="kw-2">&amp;</span><span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo&quot;</span>),
+            <span class="kw-2">&amp;</span><span class="ident">Path::new</span>(<span class="string">&quot;Foo&quot;</span>),
             <span class="kw-2">&amp;</span>[<span class="ident">generic_path</span>(<span class="string">&quot;Bar&quot;</span>, <span class="kw-2">&amp;</span>[<span class="ident">path</span>(<span class="string">&quot;T&quot;</span>)]), <span class="ident">path</span>(<span class="string">&quot;E&quot;</span>)],
             <span class="kw-2">&amp;</span><span class="ident">MangleConfig</span> {
                 <span class="ident">remove_underscores</span>: <span class="bool-val">true</span>,
                 <span class="ident">rename_types</span>: <span class="ident">PascalCase</span>,
             },
         ),
-        <span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;FooBarTE&quot;</span>)
+        <span class="ident">Path::new</span>(<span class="string">&quot;FooBarTE&quot;</span>)
     );
 
     <span class="comment">// Foo&lt;Bar&lt;T&gt;, Bar&lt;E&gt;&gt; =&gt; FooBarTBarE</span>
     <span class="macro">assert_eq!</span>(
         <span class="ident">mangle_path</span>(
-            <span class="kw-2">&amp;</span><span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;Foo&quot;</span>),
+            <span class="kw-2">&amp;</span><span class="ident">Path::new</span>(<span class="string">&quot;Foo&quot;</span>),
             <span class="kw-2">&amp;</span>[
                 <span class="ident">generic_path</span>(<span class="string">&quot;Bar&quot;</span>, <span class="kw-2">&amp;</span>[<span class="ident">path</span>(<span class="string">&quot;T&quot;</span>)]),
                 <span class="ident">generic_path</span>(<span class="string">&quot;Bar&quot;</span>, <span class="kw-2">&amp;</span>[<span class="ident">path</span>(<span class="string">&quot;E&quot;</span>)]),
@@ -581,7 +581,7 @@
                 <span class="ident">rename_types</span>: <span class="ident">PascalCase</span>,
             },
         ),
-        <span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;FooBarTBarE&quot;</span>)
+        <span class="ident">Path::new</span>(<span class="string">&quot;FooBarTBarE&quot;</span>)
     );
 }
 </pre></div>

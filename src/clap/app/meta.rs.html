@@ -62,13 +62,13 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span> <span class="ident">AppMeta</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Default</span>::<span class="ident">default</span>()
+        <span class="ident">Default::default</span>()
     }
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_name</span>(<span class="ident">s</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">AppMeta</span> {
             <span class="ident">name</span>: <span class="ident">s</span>,
             <span class="ident">disp_ord</span>: <span class="number">999</span>,
-            ..<span class="ident">Default</span>::<span class="ident">default</span>()
+            ..<span class="ident">Default::default</span>()
         }
     }
 }

@@ -47,8 +47,8 @@
 <span class="doccomment">//! Thus, make sure that Variable&#39;s indexes are allocated contiguously and</span>
 <span class="doccomment">//! starting at `0`.</span>
 
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">u32</span>;
-<span class="kw">use</span> <span class="ident">cranelift_codegen</span>::<span class="ident">entity</span>::<span class="ident">EntityRef</span>;
+<span class="kw">use</span> <span class="ident">core::u32</span>;
+<span class="kw">use</span> <span class="ident">cranelift_codegen::entity::EntityRef</span>;
 
 <span class="doccomment">///! An opaque reference to a variable.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Debug</span>)]</span>
@@ -57,14 +57,14 @@
 <span class="kw">impl</span> <span class="ident">Variable</span> {
     <span class="doccomment">/// Create a new Variable with the given index.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_u32</span>(<span class="ident">index</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="macro">debug_assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> <span class="ident">u32</span>::<span class="ident">MAX</span>);
+        <span class="macro">debug_assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> <span class="ident">u32::MAX</span>);
         <span class="self">Self</span>(<span class="ident">index</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">EntityRef</span> <span class="kw">for</span> <span class="ident">Variable</span> {
     <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">index</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="macro">debug_assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> (<span class="ident">u32</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">usize</span>));
+        <span class="macro">debug_assert!</span>(<span class="ident">index</span> <span class="op">&lt;</span> (<span class="ident">u32::MAX</span> <span class="kw">as</span> <span class="ident">usize</span>));
         <span class="self">Self</span>(<span class="ident">index</span> <span class="kw">as</span> <span class="ident">u32</span>)
     }
 

@@ -15,21 +15,21 @@ mean again?” – and allows including a value.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">control_flow_enum</span>)]</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">ControlFlow</span>;
+<span class="kw">use</span> <span class="ident">std::ops::ControlFlow</span>;
 
 <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> (<span class="number">2</span>..<span class="number">100</span>).<span class="ident">try_for_each</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> {
     <span class="kw">if</span> <span class="number">403</span> <span class="op">%</span> <span class="ident">x</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-        <span class="kw">return</span> <span class="ident">ControlFlow</span>::<span class="ident">Break</span>(<span class="ident">x</span>)
+        <span class="kw">return</span> <span class="ident">ControlFlow::Break</span>(<span class="ident">x</span>)
     }
 
-    <span class="ident">ControlFlow</span>::<span class="ident">Continue</span>(())
+    <span class="ident">ControlFlow::Continue</span>(())
 });
-<span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">ControlFlow</span>::<span class="ident">Break</span>(<span class="number">13</span>));</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">r</span>, <span class="ident">ControlFlow::Break</span>(<span class="number">13</span>));</pre></div>
 <p>A basic tree traversal:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">control_flow_enum</span>)]</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">ControlFlow</span>;
+<span class="kw">use</span> <span class="ident">std::ops::ControlFlow</span>;
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TreeNode</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="ident">value</span>: <span class="ident">T</span>,
@@ -46,7 +46,7 @@ mean again?” – and allows including a value.</p>
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">right</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">right</span> {
             <span class="ident">right</span>.<span class="ident">traverse_inorder</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">f</span>)<span class="question-mark">?</span>;
         }
-        <span class="ident">ControlFlow</span>::<span class="ident">Continue</span>(())
+        <span class="ident">ControlFlow::Continue</span>(())
     }
 }</pre></div>
 </div><h2 id="variants" class="variants small-section-header">
@@ -60,29 +60,29 @@ mean again?” – and allows including a value.</p>
 <h1 id="examples-1" class="section-header"><a href="#examples-1">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">control_flow_enum</span>)]</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">ControlFlow</span>;
+<span class="kw">use</span> <span class="ident">std::ops::ControlFlow</span>;
 
-<span class="macro">assert!</span>(<span class="ident">ControlFlow</span>::<span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">String</span><span class="op">&gt;</span>::<span class="ident">Break</span>(<span class="number">3</span>).<span class="ident">is_break</span>());
-<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">ControlFlow</span>::<span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">i32</span><span class="op">&gt;</span>::<span class="ident">Continue</span>(<span class="number">3</span>).<span class="ident">is_break</span>());</pre></div>
+<span class="macro">assert!</span>(<span class="ident">ControlFlow</span>::<span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">String</span><span class="op">&gt;</span><span class="ident">::Break</span>(<span class="number">3</span>).<span class="ident">is_break</span>());
+<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">ControlFlow</span>::<span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">i32</span><span class="op">&gt;</span><span class="ident">::Continue</span>(<span class="number">3</span>).<span class="ident">is_break</span>());</pre></div>
 </div><h4 id="method.is_continue" class="method"><code>pub fn <a href="#method.is_continue" class="fnname">is_continue</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code><a class="srclink" href="https://doc.rust-lang.org/nightly/src/core/ops/control_flow.rs.html#115" title="goto source code">[src]</a></h4><div class="item-info"><div class="stab unstable"><details><summary><span class="emoji">🔬</span> This is a nightly-only experimental API. (<code>control_flow_enum</code>)</summary><p>new API</p>
 </details></div></div><div class="docblock"><p>Returns <code>true</code> if this is a <code>Continue</code> variant.</p>
 <h1 id="examples-2" class="section-header"><a href="#examples-2">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">control_flow_enum</span>)]</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">ControlFlow</span>;
+<span class="kw">use</span> <span class="ident">std::ops::ControlFlow</span>;
 
-<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">ControlFlow</span>::<span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">String</span><span class="op">&gt;</span>::<span class="ident">Break</span>(<span class="number">3</span>).<span class="ident">is_continue</span>());
-<span class="macro">assert!</span>(<span class="ident">ControlFlow</span>::<span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">i32</span><span class="op">&gt;</span>::<span class="ident">Continue</span>(<span class="number">3</span>).<span class="ident">is_continue</span>());</pre></div>
+<span class="macro">assert!</span>(<span class="op">!</span><span class="ident">ControlFlow</span>::<span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">String</span><span class="op">&gt;</span><span class="ident">::Break</span>(<span class="number">3</span>).<span class="ident">is_continue</span>());
+<span class="macro">assert!</span>(<span class="ident">ControlFlow</span>::<span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">i32</span><span class="op">&gt;</span><span class="ident">::Continue</span>(<span class="number">3</span>).<span class="ident">is_continue</span>());</pre></div>
 </div><h4 id="method.break_value" class="method"><code>pub fn <a href="#method.break_value" class="fnname">break_value</a>(self) -&gt; <a class="enum" href="../../../../wasmer_types/entity/__core/option/enum.Option.html" title="enum wasmer_types::entity::__core::option::Option">Option</a>&lt;B&gt;</code><a class="srclink" href="https://doc.rust-lang.org/nightly/src/core/ops/control_flow.rs.html#133" title="goto source code">[src]</a></h4><div class="item-info"><div class="stab unstable"><details><summary><span class="emoji">🔬</span> This is a nightly-only experimental API. (<code>control_flow_enum</code>)</summary><p>new API</p>
 </details></div></div><div class="docblock"><p>Converts the <code>ControlFlow</code> into an <code>Option</code> which is <code>Some</code> if the
 <code>ControlFlow</code> was <code>Break</code> and <code>None</code> otherwise.</p>
 <h1 id="examples-3" class="section-header"><a href="#examples-3">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">control_flow_enum</span>)]</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">ControlFlow</span>;
+<span class="kw">use</span> <span class="ident">std::ops::ControlFlow</span>;
 
-<span class="macro">assert_eq!</span>(<span class="ident">ControlFlow</span>::<span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">String</span><span class="op">&gt;</span>::<span class="ident">Break</span>(<span class="number">3</span>).<span class="ident">break_value</span>(), <span class="prelude-val">Some</span>(<span class="number">3</span>));
-<span class="macro">assert_eq!</span>(<span class="ident">ControlFlow</span>::<span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">i32</span><span class="op">&gt;</span>::<span class="ident">Continue</span>(<span class="number">3</span>).<span class="ident">break_value</span>(), <span class="prelude-val">None</span>);</pre></div>
+<span class="macro">assert_eq!</span>(<span class="ident">ControlFlow</span>::<span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">String</span><span class="op">&gt;</span><span class="ident">::Break</span>(<span class="number">3</span>).<span class="ident">break_value</span>(), <span class="prelude-val">Some</span>(<span class="number">3</span>));
+<span class="macro">assert_eq!</span>(<span class="ident">ControlFlow</span>::<span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">i32</span><span class="op">&gt;</span><span class="ident">::Continue</span>(<span class="number">3</span>).<span class="ident">break_value</span>(), <span class="prelude-val">None</span>);</pre></div>
 </div><h4 id="method.map_break" class="method"><code>pub fn <a href="#method.map_break" class="fnname">map_break</a>&lt;T, F&gt;(self, f: F) -&gt; <a class="enum" href="../../../../wasmer_types/entity/__core/ops/enum.ControlFlow.html" title="enum wasmer_types::entity::__core::ops::ControlFlow">ControlFlow</a>&lt;T, C&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;F: <a class="trait" href="../../../../wasmer_types/entity/__core/ops/trait.FnOnce.html" title="trait wasmer_types::entity::__core::ops::FnOnce">FnOnce</a>(B) -&gt; T,&nbsp;</span></code><a class="srclink" href="https://doc.rust-lang.org/nightly/src/core/ops/control_flow.rs.html#144-146" title="goto source code">[src]</a></h4><div class="item-info"><div class="stab unstable"><details><summary><span class="emoji">🔬</span> This is a nightly-only experimental API. (<code>control_flow_enum</code>)</summary><p>new API</p>
 </details></div></div><div class="docblock"><p>Maps <code>ControlFlow&lt;B, C&gt;</code> to <code>ControlFlow&lt;T, C&gt;</code> by applying a function
 to the break value in case it exists.</p>
@@ -96,13 +96,13 @@ so this provides a way to avoid typing <code>(())</code>, if you prefer it.</p>
 <h1 id="examples-4" class="section-header"><a href="#examples-4">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">control_flow_enum</span>)]</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">ControlFlow</span>;
+<span class="kw">use</span> <span class="ident">std::ops::ControlFlow</span>;
 
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">partial_sum</span> <span class="op">=</span> <span class="number">0</span>;
 <span class="kw">let</span> <span class="ident">last_used</span> <span class="op">=</span> (<span class="number">1</span>..<span class="number">10</span>).<span class="ident">chain</span>(<span class="number">20</span>..<span class="number">25</span>).<span class="ident">try_for_each</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> {
     <span class="ident">partial_sum</span> <span class="op">+</span><span class="op">=</span> <span class="ident">x</span>;
-    <span class="kw">if</span> <span class="ident">partial_sum</span> <span class="op">&gt;</span> <span class="number">100</span> { <span class="ident">ControlFlow</span>::<span class="ident">Break</span>(<span class="ident">x</span>) }
-    <span class="kw">else</span> { <span class="ident">ControlFlow</span>::<span class="ident">CONTINUE</span> }
+    <span class="kw">if</span> <span class="ident">partial_sum</span> <span class="op">&gt;</span> <span class="number">100</span> { <span class="ident">ControlFlow::Break</span>(<span class="ident">x</span>) }
+    <span class="kw">else</span> { <span class="ident">ControlFlow::CONTINUE</span> }
 });
 <span class="macro">assert_eq!</span>(<span class="ident">last_used</span>.<span class="ident">break_value</span>(), <span class="prelude-val">Some</span>(<span class="number">22</span>));</pre></div>
 </div></div><h3 id="impl-3" class="impl"><code class="in-band">impl&lt;C&gt; <a class="enum" href="../../../../wasmer_types/entity/__core/ops/enum.ControlFlow.html" title="enum wasmer_types::entity::__core::ops::ControlFlow">ControlFlow</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, C&gt;</code><a href="#impl-3" class="anchor"></a><a class="srclink" href="https://doc.rust-lang.org/nightly/src/core/ops/control_flow.rs.html#199-218" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="associatedconstant.BREAK" class="associatedconstant"><code>pub const <a href="#associatedconstant.BREAK" class="constant"><b>BREAK</b></a>: <a class="enum" href="../../../../wasmer_types/entity/__core/ops/enum.ControlFlow.html" title="enum wasmer_types::entity::__core::ops::ControlFlow">ControlFlow</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.unit.html">()</a>, C&gt;</code><a class="srclink" href="https://doc.rust-lang.org/nightly/src/core/ops/control_flow.rs.html#217" title="goto source code">[src]</a></h4><div class="item-info"><div class="stab unstable"><details><summary><span class="emoji">🔬</span> This is a nightly-only experimental API. (<code>control_flow_enum</code>)</summary><p>new API</p>
@@ -111,12 +111,12 @@ so this provides a way to avoid typing <code>(())</code>, if you prefer it.</p>
 <h1 id="examples-5" class="section-header"><a href="#examples-5">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#![<span class="ident">feature</span>(<span class="ident">control_flow_enum</span>)]</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">ControlFlow</span>;
+<span class="kw">use</span> <span class="ident">std::ops::ControlFlow</span>;
 
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">partial_sum</span> <span class="op">=</span> <span class="number">0</span>;
 (<span class="number">1</span>..<span class="number">10</span>).<span class="ident">chain</span>(<span class="number">20</span>..<span class="number">25</span>).<span class="ident">try_for_each</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> {
-    <span class="kw">if</span> <span class="ident">partial_sum</span> <span class="op">&gt;</span> <span class="number">100</span> { <span class="ident">ControlFlow</span>::<span class="ident">BREAK</span> }
-    <span class="kw">else</span> { <span class="ident">partial_sum</span> <span class="op">+</span><span class="op">=</span> <span class="ident">x</span>; <span class="ident">ControlFlow</span>::<span class="ident">CONTINUE</span> }
+    <span class="kw">if</span> <span class="ident">partial_sum</span> <span class="op">&gt;</span> <span class="number">100</span> { <span class="ident">ControlFlow::BREAK</span> }
+    <span class="kw">else</span> { <span class="ident">partial_sum</span> <span class="op">+</span><span class="op">=</span> <span class="ident">x</span>; <span class="ident">ControlFlow::CONTINUE</span> }
 });
 <span class="macro">assert_eq!</span>(<span class="ident">partial_sum</span>, <span class="number">108</span>);</pre></div>
 </div></div><h2 id="trait-implementations" class="small-section-header">Trait Implementations<a href="#trait-implementations" class="anchor"></a></h2><div id="trait-implementations-list"><h3 id="impl-Clone" class="impl"><code class="in-band">impl&lt;B, C&gt; <a class="trait" href="../../../../wasmer_types/entity/__core/clone/trait.Clone.html" title="trait wasmer_types::entity::__core::clone::Clone">Clone</a> for <a class="enum" href="../../../../wasmer_types/entity/__core/ops/enum.ControlFlow.html" title="enum wasmer_types::entity::__core::ops::ControlFlow">ControlFlow</a>&lt;B, C&gt; <span class="where fmt-newline">where<br>&nbsp;&nbsp;&nbsp;&nbsp;C: <a class="trait" href="../../../../wasmer_types/entity/__core/clone/trait.Clone.html" title="trait wasmer_types::entity::__core::clone::Clone">Clone</a>,<br>&nbsp;&nbsp;&nbsp;&nbsp;B: <a class="trait" href="../../../../wasmer_types/entity/__core/clone/trait.Clone.html" title="trait wasmer_types::entity::__core::clone::Clone">Clone</a>,&nbsp;</span></code><a href="#impl-Clone" class="anchor"></a><a class="srclink" href="https://doc.rust-lang.org/nightly/src/core/ops/control_flow.rs.html#52" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.clone" class="method hidden"><code>pub fn <a href="../../../../wasmer_types/entity/__core/clone/trait.Clone.html#tymethod.clone" class="fnname">clone</a>(&amp;self) -&gt; <a class="enum" href="../../../../wasmer_types/entity/__core/ops/enum.ControlFlow.html" title="enum wasmer_types::entity::__core::ops::ControlFlow">ControlFlow</a>&lt;B, C&gt;</code><a class="srclink" href="https://doc.rust-lang.org/nightly/src/core/ops/control_flow.rs.html#52" title="goto source code">[src]</a></h4><div class='docblock hidden'><p>Returns a copy of the value. <a href="../../../../wasmer_types/entity/__core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>

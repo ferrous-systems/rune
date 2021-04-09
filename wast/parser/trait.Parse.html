@@ -28,7 +28,7 @@ tokens which surround the type. For example WebAssembly imports look like:</p>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Parse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Import</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">parser</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">import</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
+        <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::import</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
         <span class="comment">// ...</span>
     }
 }</pre></div>
@@ -46,7 +46,7 @@ before all functions. An example <a href="../../wast/parser/trait.Parse.html" ti
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">wast</span>::{<span class="ident">Import</span>, <span class="ident">Func</span>, <span class="ident">kw</span>};
-<span class="kw">use</span> <span class="ident">wast</span>::<span class="ident">parser</span>::{<span class="ident">Parser</span>, <span class="ident">Parse</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="ident">wast::parser</span>::{<span class="ident">Parser</span>, <span class="ident">Parse</span>, <span class="prelude-ty">Result</span>};
 
 <span class="comment">// Fields of a WebAssembly which only allow imports and functions, and all</span>
 <span class="comment">// imports must come before all the functions</span>
@@ -61,8 +61,8 @@ before all functions. An example <a href="../../wast/parser/trait.Parse.html" ti
         <span class="comment">// about the second) we parse an `ast::ModuleImport` inside of</span>
         <span class="comment">// parentheses. The `parens` function here ensures that what we</span>
         <span class="comment">// parse inside of it is surrounded by `(` and `)`.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">imports</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
-        <span class="kw">while</span> <span class="ident">parser</span>.<span class="ident">peek2</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">import</span><span class="op">&gt;</span>() {
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">imports</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+        <span class="kw">while</span> <span class="ident">parser</span>.<span class="ident">peek2</span>::<span class="op">&lt;</span><span class="ident">kw::import</span><span class="op">&gt;</span>() {
             <span class="kw">let</span> <span class="ident">import</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parens</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">parse</span>())<span class="question-mark">?</span>;
             <span class="ident">imports</span>.<span class="ident">push</span>(<span class="ident">import</span>);
         }
@@ -70,7 +70,7 @@ before all functions. An example <a href="../../wast/parser/trait.Parse.html" ti
         <span class="comment">// Afterwards we assume everything else is a function. Note that</span>
         <span class="comment">// `parse` here is a generic function and type inference figures out</span>
         <span class="comment">// that we&#39;re parsing functions here and imports above.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">functions</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">functions</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
         <span class="kw">while</span> <span class="op">!</span><span class="ident">parser</span>.<span class="ident">is_empty</span>() {
             <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parens</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">parse</span>())<span class="question-mark">?</span>;
             <span class="ident">functions</span>.<span class="ident">push</span>(<span class="ident">func</span>);

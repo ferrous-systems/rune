@@ -43,7 +43,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">reverse_bits</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::reverse_bits</span>;
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_bit_reverse</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">reverse_bits</span>(<span class="number">0b0111_0100</span>, <span class="number">8</span>), <span class="number">0b0010_1110</span>);

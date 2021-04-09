@@ -1256,12 +1256,12 @@
 <span class="comment">//</span>
 <span class="comment">// All variants are fairly heavily tested in src/packed/tests.rs.</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">arch</span>::<span class="ident">x86_64</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>;
+<span class="kw">use</span> <span class="ident">std::arch::x86_64</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">std::mem</span>;
 
-<span class="kw">use</span> <span class="ident">packed</span>::<span class="ident">pattern</span>::{<span class="ident">PatternID</span>, <span class="ident">Patterns</span>};
-<span class="kw">use</span> <span class="ident">packed</span>::<span class="ident">teddy</span>::<span class="ident">compile</span>;
-<span class="kw">use</span> <span class="ident">packed</span>::<span class="ident">vector</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">packed::pattern</span>::{<span class="ident">PatternID</span>, <span class="ident">Patterns</span>};
+<span class="kw">use</span> <span class="ident">packed::teddy::compile</span>;
+<span class="kw">use</span> <span class="ident">packed::vector</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="ident">Match</span>;
 
 <span class="doccomment">/// The Teddy runtime.</span>
@@ -1342,31 +1342,31 @@
         <span class="comment">// to do it again.</span>
         <span class="kw">unsafe</span> {
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">exec</span> {
-                <span class="ident">Exec</span>::<span class="ident">TeddySlim1Mask128</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Exec::TeddySlim1Mask128</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">e</span>.<span class="ident">find_at</span>(<span class="ident">pats</span>, <span class="self">self</span>, <span class="ident">haystack</span>, <span class="ident">at</span>)
                 }
-                <span class="ident">Exec</span>::<span class="ident">TeddySlim1Mask256</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Exec::TeddySlim1Mask256</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">e</span>.<span class="ident">find_at</span>(<span class="ident">pats</span>, <span class="self">self</span>, <span class="ident">haystack</span>, <span class="ident">at</span>)
                 }
-                <span class="ident">Exec</span>::<span class="ident">TeddyFat1Mask256</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Exec::TeddyFat1Mask256</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">e</span>.<span class="ident">find_at</span>(<span class="ident">pats</span>, <span class="self">self</span>, <span class="ident">haystack</span>, <span class="ident">at</span>)
                 }
-                <span class="ident">Exec</span>::<span class="ident">TeddySlim2Mask128</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Exec::TeddySlim2Mask128</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">e</span>.<span class="ident">find_at</span>(<span class="ident">pats</span>, <span class="self">self</span>, <span class="ident">haystack</span>, <span class="ident">at</span>)
                 }
-                <span class="ident">Exec</span>::<span class="ident">TeddySlim2Mask256</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Exec::TeddySlim2Mask256</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">e</span>.<span class="ident">find_at</span>(<span class="ident">pats</span>, <span class="self">self</span>, <span class="ident">haystack</span>, <span class="ident">at</span>)
                 }
-                <span class="ident">Exec</span>::<span class="ident">TeddyFat2Mask256</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Exec::TeddyFat2Mask256</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">e</span>.<span class="ident">find_at</span>(<span class="ident">pats</span>, <span class="self">self</span>, <span class="ident">haystack</span>, <span class="ident">at</span>)
                 }
-                <span class="ident">Exec</span>::<span class="ident">TeddySlim3Mask128</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Exec::TeddySlim3Mask128</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">e</span>.<span class="ident">find_at</span>(<span class="ident">pats</span>, <span class="self">self</span>, <span class="ident">haystack</span>, <span class="ident">at</span>)
                 }
-                <span class="ident">Exec</span>::<span class="ident">TeddySlim3Mask256</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Exec::TeddySlim3Mask256</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">e</span>.<span class="ident">find_at</span>(<span class="ident">pats</span>, <span class="self">self</span>, <span class="ident">haystack</span>, <span class="ident">at</span>)
                 }
-                <span class="ident">Exec</span>::<span class="ident">TeddyFat3Mask256</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Exec::TeddyFat3Mask256</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="ident">e</span>.<span class="ident">find_at</span>(<span class="ident">pats</span>, <span class="self">self</span>, <span class="ident">haystack</span>, <span class="ident">at</span>)
                 }
             }
@@ -1381,15 +1381,15 @@
         <span class="comment">// The Teddy runtime assumes their haystacks have at least these</span>
         <span class="comment">// lengths. Violating this will sacrifice memory safety.</span>
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">exec</span> {
-            <span class="ident">Exec</span>::<span class="ident">TeddySlim1Mask128</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">16</span>,
-            <span class="ident">Exec</span>::<span class="ident">TeddySlim1Mask256</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">32</span>,
-            <span class="ident">Exec</span>::<span class="ident">TeddyFat1Mask256</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">16</span>,
-            <span class="ident">Exec</span>::<span class="ident">TeddySlim2Mask128</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">17</span>,
-            <span class="ident">Exec</span>::<span class="ident">TeddySlim2Mask256</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">33</span>,
-            <span class="ident">Exec</span>::<span class="ident">TeddyFat2Mask256</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">17</span>,
-            <span class="ident">Exec</span>::<span class="ident">TeddySlim3Mask128</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">18</span>,
-            <span class="ident">Exec</span>::<span class="ident">TeddySlim3Mask256</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">34</span>,
-            <span class="ident">Exec</span>::<span class="ident">TeddyFat3Mask256</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">34</span>,
+            <span class="ident">Exec::TeddySlim1Mask128</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">16</span>,
+            <span class="ident">Exec::TeddySlim1Mask256</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">32</span>,
+            <span class="ident">Exec::TeddyFat1Mask256</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">16</span>,
+            <span class="ident">Exec::TeddySlim2Mask128</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">17</span>,
+            <span class="ident">Exec::TeddySlim2Mask256</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">33</span>,
+            <span class="ident">Exec::TeddyFat2Mask256</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">17</span>,
+            <span class="ident">Exec::TeddySlim3Mask128</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">18</span>,
+            <span class="ident">Exec::TeddySlim3Mask256</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">34</span>,
+            <span class="ident">Exec::TeddyFat3Mask256</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="number">34</span>,
         }
     }
 
@@ -1397,8 +1397,8 @@
     <span class="doccomment">/// units of bytes.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">heap_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
         <span class="kw">let</span> <span class="ident">num_patterns</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">max_pattern_id</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">+</span> <span class="number">1</span>;
-        <span class="self">self</span>.<span class="ident">buckets</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PatternID</span><span class="op">&gt;</span><span class="op">&gt;</span>()
-            <span class="op">+</span> <span class="ident">num_patterns</span> <span class="op">*</span> <span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">PatternID</span><span class="op">&gt;</span>()
+        <span class="self">self</span>.<span class="ident">buckets</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PatternID</span><span class="op">&gt;</span><span class="op">&gt;</span>()
+            <span class="op">+</span> <span class="ident">num_patterns</span> <span class="op">*</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">PatternID</span><span class="op">&gt;</span>()
     }
 
     <span class="doccomment">/// Runs the verification routine for Slim 128-bit Teddy.</span>
@@ -1582,7 +1582,7 @@
             <span class="ident">start</span>: <span class="ident">usize</span>,
             <span class="ident">end</span>: <span class="ident">usize</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Match</span> {
-            <span class="ident">Match</span>::<span class="ident">from_span</span>(<span class="ident">pati</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">start</span>, <span class="ident">end</span>)
+            <span class="ident">Match::from_span</span>(<span class="ident">pati</span> <span class="kw">as</span> <span class="ident">usize</span>, <span class="ident">start</span>, <span class="ident">end</span>)
         }
 
         <span class="comment">// N.B. The bounds check for this bucket lookup *should* be elided</span>
@@ -2198,13 +2198,13 @@
 
 <span class="kw">impl</span> <span class="ident">Mask128</span> {
     <span class="doccomment">/// Create a new SIMD mask from the mask produced by the Teddy builder.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">mask</span>: <span class="ident">compile</span>::<span class="ident">Mask</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Mask128</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">mask</span>: <span class="ident">compile::Mask</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Mask128</span> {
         <span class="comment">// SAFETY: This is safe since [u8; 16] has the same representation</span>
         <span class="comment">// as __m128i.</span>
         <span class="kw">unsafe</span> {
             <span class="ident">Mask128</span> {
-                <span class="ident">lo</span>: <span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="ident">mask</span>.<span class="ident">lo128</span>()),
-                <span class="ident">hi</span>: <span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="ident">mask</span>.<span class="ident">hi128</span>()),
+                <span class="ident">lo</span>: <span class="ident">mem::transmute</span>(<span class="ident">mask</span>.<span class="ident">lo128</span>()),
+                <span class="ident">hi</span>: <span class="ident">mem::transmute</span>(<span class="ident">mask</span>.<span class="ident">hi128</span>()),
             }
         }
     }
@@ -2232,13 +2232,13 @@
 
 <span class="kw">impl</span> <span class="ident">Mask256</span> {
     <span class="doccomment">/// Create a new SIMD mask from the mask produced by the Teddy builder.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">mask</span>: <span class="ident">compile</span>::<span class="ident">Mask</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Mask256</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">mask</span>: <span class="ident">compile::Mask</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Mask256</span> {
         <span class="comment">// SAFETY: This is safe since [u8; 32] has the same representation</span>
         <span class="comment">// as __m256i.</span>
         <span class="kw">unsafe</span> {
             <span class="ident">Mask256</span> {
-                <span class="ident">lo</span>: <span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="ident">mask</span>.<span class="ident">lo256</span>()),
-                <span class="ident">hi</span>: <span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="ident">mask</span>.<span class="ident">hi256</span>()),
+                <span class="ident">lo</span>: <span class="ident">mem::transmute</span>(<span class="ident">mask</span>.<span class="ident">lo256</span>()),
+                <span class="ident">hi</span>: <span class="ident">mem::transmute</span>(<span class="ident">mask</span>.<span class="ident">hi256</span>()),
             }
         }
     }

@@ -66,9 +66,9 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Heaps.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">immediates</span>::<span class="ident">Uimm64</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">GlobalValue</span>, <span class="ident">Type</span>};
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::immediates::Uimm64</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">GlobalValue</span>, <span class="ident">Type</span>};
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
 
 <span class="doccomment">/// Information about a heap declaration.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
@@ -107,17 +107,17 @@
     },
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">HeapData</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">HeapData</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="kw">match</span> <span class="self">self</span>.<span class="ident">style</span> {
-            <span class="ident">HeapStyle</span>::<span class="ident">Dynamic</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;dynamic&quot;</span>,
-            <span class="ident">HeapStyle</span>::<span class="ident">Static</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;static&quot;</span>,
+            <span class="ident">HeapStyle::Dynamic</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;dynamic&quot;</span>,
+            <span class="ident">HeapStyle::Static</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;static&quot;</span>,
         })<span class="question-mark">?</span>;
 
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot; {}, min {}&quot;</span>, <span class="self">self</span>.<span class="ident">base</span>, <span class="self">self</span>.<span class="ident">min_size</span>)<span class="question-mark">?</span>;
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">style</span> {
-            <span class="ident">HeapStyle</span>::<span class="ident">Dynamic</span> { <span class="ident">bound_gv</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;, bound {}&quot;</span>, <span class="ident">bound_gv</span>)<span class="question-mark">?</span>,
-            <span class="ident">HeapStyle</span>::<span class="ident">Static</span> { <span class="ident">bound</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;, bound {}&quot;</span>, <span class="ident">bound</span>)<span class="question-mark">?</span>,
+            <span class="ident">HeapStyle::Dynamic</span> { <span class="ident">bound_gv</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;, bound {}&quot;</span>, <span class="ident">bound_gv</span>)<span class="question-mark">?</span>,
+            <span class="ident">HeapStyle::Static</span> { <span class="ident">bound</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;, bound {}&quot;</span>, <span class="ident">bound</span>)<span class="question-mark">?</span>,
         }
         <span class="macro">write!</span>(
             <span class="ident">f</span>,

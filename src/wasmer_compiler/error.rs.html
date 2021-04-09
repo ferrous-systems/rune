@@ -157,9 +157,9 @@
 <span id="154">154</span>
 <span id="155">155</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">lib</span>::<span class="ident">std</span>::<span class="ident">string</span>::<span class="ident">String</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::lib::std::string::String</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">thiserror</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="ident">thiserror::Error</span>;
 
 <span class="comment">// Compilation Errors</span>
 <span class="comment">//</span>
@@ -203,7 +203,7 @@
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">WasmError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">CompileError</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">original</span>: <span class="ident">WasmError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Wasm</span>(<span class="ident">original</span>)
+        <span class="self">Self</span><span class="ident">::Wasm</span>(<span class="ident">original</span>)
     }
 }
 
@@ -271,7 +271,7 @@
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">MiddlewareError</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">WasmError</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">original</span>: <span class="ident">MiddlewareError</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Middleware</span>(<span class="ident">original</span>)
+        <span class="self">Self</span><span class="ident">::Middleware</span>(<span class="ident">original</span>)
     }
 }
 
@@ -294,17 +294,17 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">middleware_error_can_be_created</span>() {
-        <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">from</span>(<span class="string">&quot;Something went wrong&quot;</span>);
-        <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">MiddlewareError</span>::<span class="ident">new</span>(<span class="string">&quot;manipulator3000&quot;</span>, <span class="ident">msg</span>);
+        <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="ident">String::from</span>(<span class="string">&quot;Something went wrong&quot;</span>);
+        <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">MiddlewareError::new</span>(<span class="string">&quot;manipulator3000&quot;</span>, <span class="ident">msg</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">error</span>.<span class="ident">name</span>, <span class="string">&quot;manipulator3000&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">error</span>.<span class="ident">message</span>, <span class="string">&quot;Something went wrong&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">middleware_error_be_converted_to_wasm_error</span>() {
-        <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">WasmError</span>::<span class="ident">from</span>(<span class="ident">MiddlewareError</span>::<span class="ident">new</span>(<span class="string">&quot;manipulator3000&quot;</span>, <span class="string">&quot;foo&quot;</span>));
+        <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">WasmError::from</span>(<span class="ident">MiddlewareError::new</span>(<span class="string">&quot;manipulator3000&quot;</span>, <span class="string">&quot;foo&quot;</span>));
         <span class="kw">match</span> <span class="ident">error</span> {
-            <span class="ident">WasmError</span>::<span class="ident">Middleware</span>(<span class="ident">MiddlewareError</span> { <span class="ident">name</span>, <span class="ident">message</span> }) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">WasmError::Middleware</span>(<span class="ident">MiddlewareError</span> { <span class="ident">name</span>, <span class="ident">message</span> }) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">assert_eq!</span>(<span class="ident">name</span>, <span class="string">&quot;manipulator3000&quot;</span>);
                 <span class="macro">assert_eq!</span>(<span class="ident">message</span>, <span class="string">&quot;foo&quot;</span>);
             }

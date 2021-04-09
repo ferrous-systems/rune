@@ -214,15 +214,15 @@
 
     <span class="doccomment">/// Function that does the conversion from cp437.</span>
     <span class="doccomment">/// Gennerally allocations will be avoided if all data falls into the ASCII range.</span>
-    <span class="kw">fn</span> <span class="ident">from_cp437</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+    <span class="kw">fn</span> <span class="ident">from_cp437</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Target</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">FromCp437</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>] {
-    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> ::<span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">::std::borrow::Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">from_cp437</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">from_cp437</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">c</span> <span class="op">&lt;</span> <span class="number">0x80</span>) {
-            ::<span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">from_utf8</span>(<span class="self">self</span>).<span class="ident">unwrap</span>().<span class="ident">into</span>()
+            <span class="ident">::std::str::from_utf8</span>(<span class="self">self</span>).<span class="ident">unwrap</span>().<span class="ident">into</span>()
         } <span class="kw">else</span> {
             <span class="self">self</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="ident">to_char</span>(<span class="kw-2">*</span><span class="ident">c</span>)).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>().<span class="ident">into</span>()
         }
@@ -232,9 +232,9 @@
 <span class="kw">impl</span> <span class="ident">FromCp437</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">String</span>;
 
-    <span class="kw">fn</span> <span class="ident">from_cp437</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">from_cp437</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">iter</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">c</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">c</span> <span class="op">&lt;</span> <span class="number">0x80</span>) {
-            <span class="ident">String</span>::<span class="ident">from_utf8</span>(<span class="self">self</span>).<span class="ident">unwrap</span>()
+            <span class="ident">String::from_utf8</span>(<span class="self">self</span>).<span class="ident">unwrap</span>()
         } <span class="kw">else</span> {
             <span class="self">self</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="ident">to_char</span>).<span class="ident">collect</span>()
         }
@@ -373,7 +373,7 @@
         <span class="number">0xfe</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">0x25a0</span>,
         <span class="number">0xff</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">0x00a0</span>,
     };
-    ::<span class="ident">std</span>::<span class="ident">char</span>::<span class="ident">from_u32</span>(<span class="ident">output</span>).<span class="ident">unwrap</span>()
+    <span class="ident">::std::char::from_u32</span>(<span class="ident">output</span>).<span class="ident">unwrap</span>()
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
@@ -381,30 +381,30 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">to_char_valid</span>() {
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0x00_u32</span>..<span class="number">0x100</span> {
-            <span class="kw">super</span>::<span class="ident">to_char</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u8</span>);
+            <span class="kw">super</span><span class="ident">::to_char</span>(<span class="ident">i</span> <span class="kw">as</span> <span class="ident">u8</span>);
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">ascii</span>() {
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0x00</span>..<span class="number">0x80</span> {
-            <span class="macro">assert_eq!</span>(<span class="kw">super</span>::<span class="ident">to_char</span>(<span class="ident">i</span>), <span class="ident">i</span> <span class="kw">as</span> <span class="ident">char</span>);
+            <span class="macro">assert_eq!</span>(<span class="kw">super</span><span class="ident">::to_char</span>(<span class="ident">i</span>), <span class="ident">i</span> <span class="kw">as</span> <span class="ident">char</span>);
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">example_slice</span>() {
-        <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">FromCp437</span>;
+        <span class="kw">use</span> <span class="kw">super</span><span class="ident">::FromCp437</span>;
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="string">b&quot;Cura\x87ao&quot;</span>;
-        <span class="macro">assert!</span>(::<span class="ident">std</span>::<span class="ident">str</span>::<span class="ident">from_utf8</span>(<span class="ident">data</span>).<span class="ident">is_err</span>());
+        <span class="macro">assert!</span>(<span class="ident">::std::str::from_utf8</span>(<span class="ident">data</span>).<span class="ident">is_err</span>());
         <span class="macro">assert_eq!</span>(<span class="ident">data</span>.<span class="ident">from_cp437</span>(), <span class="string">&quot;Curaçao&quot;</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">example_vec</span>() {
-        <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">FromCp437</span>;
+        <span class="kw">use</span> <span class="kw">super</span><span class="ident">::FromCp437</span>;
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0xCC</span>, <span class="number">0xCD</span>, <span class="number">0xCD</span>, <span class="number">0xB9</span>];
-        <span class="macro">assert!</span>(<span class="ident">String</span>::<span class="ident">from_utf8</span>(<span class="ident">data</span>.<span class="ident">clone</span>()).<span class="ident">is_err</span>());
+        <span class="macro">assert!</span>(<span class="ident">String::from_utf8</span>(<span class="ident">data</span>.<span class="ident">clone</span>()).<span class="ident">is_err</span>());
         <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">from_cp437</span>(), <span class="string">&quot;╠══╣&quot;</span>);
     }
 }

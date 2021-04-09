@@ -20,7 +20,7 @@ support spawns of functions that compute a value.)</p>
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value_a</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value_b</span> <span class="op">=</span> <span class="prelude-val">None</span>;
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value_c</span> <span class="op">=</span> <span class="prelude-val">None</span>;
-<span class="ident">rayon</span>::<span class="ident">scope</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
+<span class="ident">rayon::scope</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> {
     <span class="ident">s</span>.<span class="ident">spawn</span>(<span class="op">|</span><span class="ident">s1</span><span class="op">|</span> {
           <span class="comment">// ^ this is the same scope as `s`; this handle `s1`</span>
           <span class="comment">//   is intended for use by the spawned task,</span>

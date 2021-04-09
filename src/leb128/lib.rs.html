@@ -616,7 +616,7 @@
 <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">low_bits_of_u64</span>(<span class="ident">val</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
-    <span class="kw">let</span> <span class="ident">byte</span> <span class="op">=</span> <span class="ident">val</span> <span class="op">&amp;</span> (<span class="ident">std</span>::<span class="ident">u8</span>::<span class="ident">MAX</span> <span class="kw">as</span> <span class="ident">u64</span>);
+    <span class="kw">let</span> <span class="ident">byte</span> <span class="op">=</span> <span class="ident">val</span> <span class="op">&amp;</span> (<span class="ident">std::u8::MAX</span> <span class="kw">as</span> <span class="ident">u64</span>);
     <span class="ident">low_bits_of_byte</span>(<span class="ident">byte</span> <span class="kw">as</span> <span class="ident">u8</span>)
 }
 
@@ -624,47 +624,47 @@
 <span class="doccomment">/// encoded.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">read</span> {
     <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">low_bits_of_byte</span>, <span class="ident">CONTINUATION_BIT</span>, <span class="ident">SIGN_BIT</span>};
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
+    <span class="kw">use</span> <span class="ident">std::fmt</span>;
+    <span class="kw">use</span> <span class="ident">std::io</span>;
 
     <span class="doccomment">/// An enumeration of the possible errors that can occur when reading a</span>
     <span class="doccomment">/// number encoded with LEB128.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Error</span> {
         <span class="doccomment">/// There was an underlying IO error.</span>
-        <span class="ident">IoError</span>(<span class="ident">io</span>::<span class="ident">Error</span>),
+        <span class="ident">IoError</span>(<span class="ident">io::Error</span>),
         <span class="doccomment">/// The number being read is larger than can be represented.</span>
         <span class="ident">Overflow</span>,
     }
 
-    <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
-        <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">io</span>::<span class="ident">Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-            <span class="ident">Error</span>::<span class="ident">IoError</span>(<span class="ident">e</span>)
+    <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">io::Error</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Error</span> {
+        <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">e</span>: <span class="ident">io::Error</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="ident">Error::IoError</span>(<span class="ident">e</span>)
         }
     }
 
-    <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Error</span> {
-        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Error</span> {
+        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
             <span class="macro">write!</span>(
                 <span class="ident">f</span>,
                 <span class="string">&quot;leb128::read::Error: {}&quot;</span>,
-                ::<span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span>::<span class="ident">description</span>(<span class="self">self</span>)
+                <span class="ident">::std::error::Error::description</span>(<span class="self">self</span>)
             )
         }
     }
 
-    <span class="kw">impl</span> ::<span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span> <span class="kw">for</span> <span class="ident">Error</span> {
+    <span class="kw">impl</span> <span class="ident">::std::error::Error</span> <span class="kw">for</span> <span class="ident">Error</span> {
         <span class="kw">fn</span> <span class="ident">description</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">str</span> {
             <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-                <span class="ident">Error</span>::<span class="ident">IoError</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">e</span>.<span class="ident">description</span>(),
-                <span class="ident">Error</span>::<span class="ident">Overflow</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;The number being read is larger than can be represented&quot;</span>,
+                <span class="ident">Error::IoError</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">e</span>.<span class="ident">description</span>(),
+                <span class="ident">Error::Overflow</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;The number being read is larger than can be represented&quot;</span>,
             }
         }
 
-        <span class="kw">fn</span> <span class="ident">cause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>::<span class="ident">std</span>::<span class="ident">error</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">fn</span> <span class="ident">cause</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">::std::error::Error</span><span class="op">&gt;</span> {
             <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-                <span class="ident">Error</span>::<span class="ident">IoError</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">e</span>),
-                <span class="ident">Error</span>::<span class="ident">Overflow</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+                <span class="ident">Error::IoError</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">e</span>),
+                <span class="ident">Error::Overflow</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
             }
         }
     }
@@ -673,7 +673,7 @@
     <span class="doccomment">/// return it or an error if reading failed.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unsigned</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">r</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u64</span>, <span class="ident">Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">R</span>: <span class="ident">io</span>::<span class="ident">Read</span>,
+        <span class="ident">R</span>: <span class="ident">io::Read</span>,
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shift</span> <span class="op">=</span> <span class="number">0</span>;
@@ -683,7 +683,7 @@
             <span class="macro">try!</span>(<span class="ident">r</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>));
 
             <span class="kw">if</span> <span class="ident">shift</span> <span class="op">=</span><span class="op">=</span> <span class="number">63</span> <span class="op">&amp;&amp;</span> <span class="ident">buf</span>[<span class="number">0</span>] <span class="op">!</span><span class="op">=</span> <span class="number">0x00</span> <span class="op">&amp;&amp;</span> <span class="ident">buf</span>[<span class="number">0</span>] <span class="op">!</span><span class="op">=</span> <span class="number">0x01</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Overflow</span>);
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::Overflow</span>);
             }
 
             <span class="kw">let</span> <span class="ident">low_bits</span> <span class="op">=</span> <span class="ident">low_bits_of_byte</span>(<span class="ident">buf</span>[<span class="number">0</span>]) <span class="kw">as</span> <span class="ident">u64</span>;
@@ -701,7 +701,7 @@
     <span class="doccomment">/// return it or an error if reading failed.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">signed</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>(<span class="ident">r</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">i64</span>, <span class="ident">Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">R</span>: <span class="ident">io</span>::<span class="ident">Read</span>,
+        <span class="ident">R</span>: <span class="ident">io::Read</span>,
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">shift</span> <span class="op">=</span> <span class="number">0</span>;
@@ -714,7 +714,7 @@
 
             <span class="ident">byte</span> <span class="op">=</span> <span class="ident">buf</span>[<span class="number">0</span>];
             <span class="kw">if</span> <span class="ident">shift</span> <span class="op">=</span><span class="op">=</span> <span class="number">63</span> <span class="op">&amp;&amp;</span> <span class="ident">byte</span> <span class="op">!</span><span class="op">=</span> <span class="number">0x00</span> <span class="op">&amp;&amp;</span> <span class="ident">byte</span> <span class="op">!</span><span class="op">=</span> <span class="number">0x7f</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Overflow</span>);
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::Overflow</span>);
             }
 
             <span class="kw">let</span> <span class="ident">low_bits</span> <span class="op">=</span> <span class="ident">low_bits_of_byte</span>(<span class="ident">byte</span>) <span class="kw">as</span> <span class="ident">i64</span>;
@@ -738,14 +738,14 @@
 <span class="doccomment">/// A module for writing integers encoded as LEB128.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">write</span> {
     <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">low_bits_of_u64</span>, <span class="ident">CONTINUATION_BIT</span>};
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
+    <span class="kw">use</span> <span class="ident">std::io</span>;
 
     <span class="doccomment">/// Write the given unsigned number using the LEB128 encoding to the given</span>
     <span class="doccomment">/// `std::io::Write`able. Returns the number of bytes written to `w`, or an</span>
     <span class="doccomment">/// error if writing failed.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unsigned</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">W</span>, <span class="kw-2">mut</span> <span class="ident">val</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unsigned</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">W</span>, <span class="kw-2">mut</span> <span class="ident">val</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">io::Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">W</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">io</span>::<span class="ident">Write</span>,
+        <span class="ident">W</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">io::Write</span>,
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes_written</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">loop</span> {
@@ -769,9 +769,9 @@
     <span class="doccomment">/// Write the given signed number using the LEB128 encoding to the given</span>
     <span class="doccomment">/// `std::io::Write`able. Returns the number of bytes written to `w`, or an</span>
     <span class="doccomment">/// error if writing failed.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">signed</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">W</span>, <span class="kw-2">mut</span> <span class="ident">val</span>: <span class="ident">i64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">signed</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span>(<span class="ident">w</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">W</span>, <span class="kw-2">mut</span> <span class="ident">val</span>: <span class="ident">i64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">io::Error</span><span class="op">&gt;</span>
     <span class="kw">where</span>
-        <span class="ident">W</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">io</span>::<span class="ident">Write</span>,
+        <span class="ident">W</span>: <span class="question-mark">?</span><span class="ident">Sized</span> <span class="op">+</span> <span class="ident">io::Write</span>,
     {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes_written</span> <span class="op">=</span> <span class="number">0</span>;
         <span class="kw">loop</span> {
@@ -803,7 +803,7 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="kw">use</span> <span class="ident">std</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
+    <span class="kw">use</span> <span class="ident">std::io</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_low_bits_of_byte</span>() {
@@ -831,42 +831,42 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="macro">assert_eq!</span>(
             <span class="number">2</span>,
-            <span class="ident">read</span>::<span class="ident">unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
+            <span class="ident">read::unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
         );
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">127u8</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="macro">assert_eq!</span>(
             <span class="number">127</span>,
-            <span class="ident">read</span>::<span class="ident">unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
+            <span class="ident">read::unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
         );
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="ident">CONTINUATION_BIT</span>, <span class="number">1</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="macro">assert_eq!</span>(
             <span class="number">128</span>,
-            <span class="ident">read</span>::<span class="ident">unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
+            <span class="ident">read::unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
         );
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">1u8</span> <span class="op">|</span> <span class="ident">CONTINUATION_BIT</span>, <span class="number">1</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="macro">assert_eq!</span>(
             <span class="number">129</span>,
-            <span class="ident">read</span>::<span class="ident">unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
+            <span class="ident">read::unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
         );
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">2u8</span> <span class="op">|</span> <span class="ident">CONTINUATION_BIT</span>, <span class="number">1</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="macro">assert_eq!</span>(
             <span class="number">130</span>,
-            <span class="ident">read</span>::<span class="ident">unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
+            <span class="ident">read::unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
         );
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">57u8</span> <span class="op">|</span> <span class="ident">CONTINUATION_BIT</span>, <span class="number">100</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="macro">assert_eq!</span>(
             <span class="number">12857</span>,
-            <span class="ident">read</span>::<span class="ident">unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
+            <span class="ident">read::unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
         );
     }
 
@@ -875,52 +875,52 @@
     <span class="kw">fn</span> <span class="ident">test_read_signed</span>() {
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">2u8</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
-        <span class="macro">assert_eq!</span>(<span class="number">2</span>, <span class="ident">read</span>::<span class="ident">signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>));
+        <span class="macro">assert_eq!</span>(<span class="number">2</span>, <span class="ident">read::signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>));
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0x7eu8</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
-        <span class="macro">assert_eq!</span>(<span class="op">-</span><span class="number">2</span>, <span class="ident">read</span>::<span class="ident">signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>));
+        <span class="macro">assert_eq!</span>(<span class="op">-</span><span class="number">2</span>, <span class="ident">read::signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>));
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">127u8</span> <span class="op">|</span> <span class="ident">CONTINUATION_BIT</span>, <span class="number">0</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="macro">assert_eq!</span>(
             <span class="number">127</span>,
-            <span class="ident">read</span>::<span class="ident">signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
+            <span class="ident">read::signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
         );
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">1u8</span> <span class="op">|</span> <span class="ident">CONTINUATION_BIT</span>, <span class="number">0x7f</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="macro">assert_eq!</span>(
             <span class="op">-</span><span class="number">127</span>,
-            <span class="ident">read</span>::<span class="ident">signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
+            <span class="ident">read::signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
         );
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="ident">CONTINUATION_BIT</span>, <span class="number">1</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="macro">assert_eq!</span>(
             <span class="number">128</span>,
-            <span class="ident">read</span>::<span class="ident">signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
+            <span class="ident">read::signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
         );
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="ident">CONTINUATION_BIT</span>, <span class="number">0x7f</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="macro">assert_eq!</span>(
             <span class="op">-</span><span class="number">128</span>,
-            <span class="ident">read</span>::<span class="ident">signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
+            <span class="ident">read::signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
         );
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">1u8</span> <span class="op">|</span> <span class="ident">CONTINUATION_BIT</span>, <span class="number">1</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="macro">assert_eq!</span>(
             <span class="number">129</span>,
-            <span class="ident">read</span>::<span class="ident">signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
+            <span class="ident">read::signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
         );
 
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0x7fu8</span> <span class="op">|</span> <span class="ident">CONTINUATION_BIT</span>, <span class="number">0x7e</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="macro">assert_eq!</span>(
             <span class="op">-</span><span class="number">129</span>,
-            <span class="ident">read</span>::<span class="ident">signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
+            <span class="ident">read::signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
         );
     }
 
@@ -940,7 +940,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="macro">assert_eq!</span>(
             <span class="op">-</span><span class="number">0x4000000000000000</span>,
-            <span class="ident">read</span>::<span class="ident">signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
+            <span class="ident">read::signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read number&quot;</span>)
         );
     }
 
@@ -948,8 +948,8 @@
     <span class="kw">fn</span> <span class="ident">test_read_unsigned_not_enough_data</span>() {
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="ident">CONTINUATION_BIT</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
-        <span class="kw">match</span> <span class="ident">read</span>::<span class="ident">unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>) {
-            <span class="prelude-val">Err</span>(<span class="ident">read</span>::<span class="ident">Error</span>::<span class="ident">IoError</span>(<span class="ident">e</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq!</span>(<span class="ident">e</span>.<span class="ident">kind</span>(), <span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">UnexpectedEof</span>),
+        <span class="kw">match</span> <span class="ident">read::unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>) {
+            <span class="prelude-val">Err</span>(<span class="ident">read::Error::IoError</span>(<span class="ident">e</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq!</span>(<span class="ident">e</span>.<span class="ident">kind</span>(), <span class="ident">io::ErrorKind::UnexpectedEof</span>),
             <span class="ident">otherwise</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unexpected: {:?}&quot;</span>, <span class="ident">otherwise</span>),
         }
     }
@@ -958,8 +958,8 @@
     <span class="kw">fn</span> <span class="ident">test_read_signed_not_enough_data</span>() {
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="ident">CONTINUATION_BIT</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
-        <span class="kw">match</span> <span class="ident">read</span>::<span class="ident">signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>) {
-            <span class="prelude-val">Err</span>(<span class="ident">read</span>::<span class="ident">Error</span>::<span class="ident">IoError</span>(<span class="ident">e</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq!</span>(<span class="ident">e</span>.<span class="ident">kind</span>(), <span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">UnexpectedEof</span>),
+        <span class="kw">match</span> <span class="ident">read::signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>) {
+            <span class="prelude-val">Err</span>(<span class="ident">read::Error::IoError</span>(<span class="ident">e</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq!</span>(<span class="ident">e</span>.<span class="ident">kind</span>(), <span class="ident">io::ErrorKind::UnexpectedEof</span>),
             <span class="ident">otherwise</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unexpected: {:?}&quot;</span>, <span class="ident">otherwise</span>),
         }
     }
@@ -968,8 +968,8 @@
     <span class="kw">fn</span> <span class="ident">test_write_unsigned_not_enough_space</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">1</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>[..];
-        <span class="kw">match</span> <span class="ident">write</span>::<span class="ident">unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writable</span>, <span class="number">128</span>) {
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq!</span>(<span class="ident">e</span>.<span class="ident">kind</span>(), <span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">WriteZero</span>),
+        <span class="kw">match</span> <span class="ident">write::unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writable</span>, <span class="number">128</span>) {
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq!</span>(<span class="ident">e</span>.<span class="ident">kind</span>(), <span class="ident">io::ErrorKind::WriteZero</span>),
             <span class="ident">otherwise</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unexpected: {:?}&quot;</span>, <span class="ident">otherwise</span>),
         }
     }
@@ -978,8 +978,8 @@
     <span class="kw">fn</span> <span class="ident">test_write_signed_not_enough_space</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0</span>; <span class="number">1</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>[..];
-        <span class="kw">match</span> <span class="ident">write</span>::<span class="ident">signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writable</span>, <span class="number">128</span>) {
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq!</span>(<span class="ident">e</span>.<span class="ident">kind</span>(), <span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">WriteZero</span>),
+        <span class="kw">match</span> <span class="ident">write::signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writable</span>, <span class="number">128</span>) {
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq!</span>(<span class="ident">e</span>.<span class="ident">kind</span>(), <span class="ident">io::ErrorKind::WriteZero</span>),
             <span class="ident">otherwise</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Unexpected: {:?}&quot;</span>, <span class="ident">otherwise</span>),
         }
     }
@@ -991,17 +991,17 @@
 
             {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>[..];
-                <span class="ident">write</span>::<span class="ident">signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writable</span>, <span class="ident">i</span>).<span class="ident">expect</span>(<span class="string">&quot;Should write signed number&quot;</span>);
+                <span class="ident">write::signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writable</span>, <span class="ident">i</span>).<span class="ident">expect</span>(<span class="string">&quot;Should write signed number&quot;</span>);
             }
 
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">read</span>::<span class="ident">signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should be able to read it back again&quot;</span>);
+            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">read::signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should be able to read it back again&quot;</span>);
             <span class="macro">assert_eq!</span>(<span class="ident">i</span>, <span class="ident">result</span>);
         }
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="op">-</span><span class="number">513</span>..<span class="number">513</span> {
             <span class="ident">inner</span>(<span class="ident">i</span>);
         }
-        <span class="ident">inner</span>(<span class="ident">std</span>::<span class="ident">i64</span>::<span class="ident">MIN</span>);
+        <span class="ident">inner</span>(<span class="ident">std::i64::MIN</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1011,12 +1011,12 @@
 
             {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf</span>[..];
-                <span class="ident">write</span>::<span class="ident">unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writable</span>, <span class="ident">i</span>).<span class="ident">expect</span>(<span class="string">&quot;Should write signed number&quot;</span>);
+                <span class="ident">write::unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writable</span>, <span class="ident">i</span>).<span class="ident">expect</span>(<span class="string">&quot;Should write signed number&quot;</span>);
             }
 
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
             <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span>
-                <span class="ident">read</span>::<span class="ident">unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should be able to read it back again&quot;</span>);
+                <span class="ident">read::unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should be able to read it back again&quot;</span>);
             <span class="macro">assert_eq!</span>(<span class="ident">i</span>, <span class="ident">result</span>);
         }
     }
@@ -1057,7 +1057,7 @@
             <span class="number">1</span>,
         ];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
-        <span class="macro">assert!</span>(<span class="ident">read</span>::<span class="ident">unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">is_err</span>());
+        <span class="macro">assert!</span>(<span class="ident">read::unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">is_err</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1096,7 +1096,7 @@
             <span class="number">1</span>,
         ];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
-        <span class="macro">assert!</span>(<span class="ident">read</span>::<span class="ident">signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">is_err</span>());
+        <span class="macro">assert!</span>(<span class="ident">read::signed</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">is_err</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -1105,11 +1105,11 @@
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">readable</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">buf</span>[..];
         <span class="macro">assert_eq!</span>(
-            <span class="ident">read</span>::<span class="ident">unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read first number&quot;</span>),
+            <span class="ident">read::unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read first number&quot;</span>),
             <span class="number">130u64</span>
         );
         <span class="macro">assert_eq!</span>(
-            <span class="ident">read</span>::<span class="ident">unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read first number&quot;</span>),
+            <span class="ident">read::unsigned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">readable</span>).<span class="ident">expect</span>(<span class="string">&quot;Should read first number&quot;</span>),
             <span class="number">1u64</span>
         );
     }

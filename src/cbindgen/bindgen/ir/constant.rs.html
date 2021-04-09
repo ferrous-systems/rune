@@ -609,22 +609,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">borrow</span>::<span class="ident">Cow</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Write</span>;
+<span class="kw">use</span> <span class="ident">std::borrow::Cow</span>;
+<span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
+<span class="kw">use</span> <span class="ident">std::io::Write</span>;
 
 <span class="kw">use</span> <span class="ident">syn</span>::{<span class="self">self</span>, <span class="ident">UnOp</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">config</span>::{<span class="ident">Config</span>, <span class="ident">Language</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">declarationtyperesolver</span>::<span class="ident">DeclarationTypeResolver</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">dependencies</span>::<span class="ident">Dependencies</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">ir</span>::{
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::config</span>::{<span class="ident">Config</span>, <span class="ident">Language</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::declarationtyperesolver::DeclarationTypeResolver</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::dependencies::Dependencies</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::ir</span>::{
     <span class="ident">AnnotationSet</span>, <span class="ident">Cfg</span>, <span class="ident">ConditionWrite</span>, <span class="ident">Documentation</span>, <span class="ident">GenericParams</span>, <span class="ident">Item</span>, <span class="ident">ItemContainer</span>, <span class="ident">Path</span>,
     <span class="ident">Struct</span>, <span class="ident">ToCondition</span>, <span class="ident">Type</span>,
 };
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">library</span>::<span class="ident">Library</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">writer</span>::{<span class="ident">Source</span>, <span class="ident">SourceWriter</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">Bindings</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::library::Library</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::writer</span>::{<span class="ident">Source</span>, <span class="ident">SourceWriter</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::Bindings</span>;
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Literal</span> {
@@ -653,10 +653,10 @@
 <span class="kw">impl</span> <span class="ident">Literal</span> {
     <span class="kw">fn</span> <span class="ident">replace_self_with</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">self_ty</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Literal</span>::<span class="ident">PostfixUnaryOp</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">value</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Literal::PostfixUnaryOp</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">value</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">value</span>.<span class="ident">replace_self_with</span>(<span class="ident">self_ty</span>);
             }
-            <span class="ident">Literal</span>::<span class="ident">BinOp</span> {
+            <span class="ident">Literal::BinOp</span> {
                 <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">left</span>,
                 <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">right</span>,
                 ..
@@ -664,7 +664,7 @@
                 <span class="ident">left</span>.<span class="ident">replace_self_with</span>(<span class="ident">self_ty</span>);
                 <span class="ident">right</span>.<span class="ident">replace_self_with</span>(<span class="ident">self_ty</span>);
             }
-            <span class="ident">Literal</span>::<span class="ident">Struct</span> {
+            <span class="ident">Literal::Struct</span> {
                 <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">path</span>,
                 <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">export_name</span>,
                 <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">fields</span>,
@@ -676,44 +676,44 @@
                     <span class="ident">expr</span>.<span class="ident">replace_self_with</span>(<span class="ident">self_ty</span>);
                 }
             }
-            <span class="ident">Literal</span>::<span class="ident">Cast</span> {
+            <span class="ident">Literal::Cast</span> {
                 <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">ty</span>,
                 <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">value</span>,
             } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">ty</span>.<span class="ident">replace_self_with</span>(<span class="ident">self_ty</span>);
                 <span class="ident">value</span>.<span class="ident">replace_self_with</span>(<span class="ident">self_ty</span>);
             }
-            <span class="ident">Literal</span>::<span class="ident">Expr</span>(..) <span class="op">|</span> <span class="ident">Literal</span>::<span class="ident">Path</span>(..) <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="ident">Literal::Expr</span>(..) <span class="op">|</span> <span class="ident">Literal::Path</span>(..) <span class="op">=</span><span class="op">&gt;</span> {}
         }
     }
 
     <span class="kw">fn</span> <span class="ident">is_valid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bindings</span>: <span class="kw-2">&amp;</span><span class="ident">Bindings</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">Literal</span>::<span class="ident">Expr</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="ident">Literal</span>::<span class="ident">Path</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="ident">Literal</span>::<span class="ident">PostfixUnaryOp</span> { <span class="kw-2">ref</span> <span class="ident">value</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">value</span>.<span class="ident">is_valid</span>(<span class="ident">bindings</span>),
-            <span class="ident">Literal</span>::<span class="ident">BinOp</span> {
+            <span class="ident">Literal::Expr</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+            <span class="ident">Literal::Path</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+            <span class="ident">Literal::PostfixUnaryOp</span> { <span class="kw-2">ref</span> <span class="ident">value</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">value</span>.<span class="ident">is_valid</span>(<span class="ident">bindings</span>),
+            <span class="ident">Literal::BinOp</span> {
                 <span class="kw-2">ref</span> <span class="ident">left</span>,
                 <span class="kw-2">ref</span> <span class="ident">right</span>,
                 ..
             } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">left</span>.<span class="ident">is_valid</span>(<span class="ident">bindings</span>) <span class="op">&amp;&amp;</span> <span class="ident">right</span>.<span class="ident">is_valid</span>(<span class="ident">bindings</span>),
-            <span class="ident">Literal</span>::<span class="ident">Struct</span> { <span class="kw-2">ref</span> <span class="ident">path</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bindings</span>.<span class="ident">struct_exists</span>(<span class="ident">path</span>),
-            <span class="ident">Literal</span>::<span class="ident">Cast</span> { <span class="kw-2">ref</span> <span class="ident">value</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">value</span>.<span class="ident">is_valid</span>(<span class="ident">bindings</span>),
+            <span class="ident">Literal::Struct</span> { <span class="kw-2">ref</span> <span class="ident">path</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">bindings</span>.<span class="ident">struct_exists</span>(<span class="ident">path</span>),
+            <span class="ident">Literal::Cast</span> { <span class="kw-2">ref</span> <span class="ident">value</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">value</span>.<span class="ident">is_valid</span>(<span class="ident">bindings</span>),
         }
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">uses_only_primitive_types</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Literal</span>::<span class="ident">Expr</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="ident">Literal</span>::<span class="ident">Path</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="ident">Literal</span>::<span class="ident">PostfixUnaryOp</span> { <span class="kw-2">ref</span> <span class="ident">value</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">value</span>.<span class="ident">uses_only_primitive_types</span>(),
-            <span class="ident">Literal</span>::<span class="ident">BinOp</span> {
+            <span class="ident">Literal::Expr</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+            <span class="ident">Literal::Path</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+            <span class="ident">Literal::PostfixUnaryOp</span> { <span class="kw-2">ref</span> <span class="ident">value</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">value</span>.<span class="ident">uses_only_primitive_types</span>(),
+            <span class="ident">Literal::BinOp</span> {
                 <span class="kw-2">ref</span> <span class="ident">left</span>,
                 <span class="kw-2">ref</span> <span class="ident">right</span>,
                 ..
             } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">left</span>.<span class="ident">uses_only_primitive_types</span>() <span class="op">&amp;</span> <span class="ident">right</span>.<span class="ident">uses_only_primitive_types</span>(),
-            <span class="ident">Literal</span>::<span class="ident">Struct</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
-            <span class="ident">Literal</span>::<span class="ident">Cast</span> { <span class="kw-2">ref</span> <span class="ident">value</span>, <span class="kw-2">ref</span> <span class="ident">ty</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Literal::Struct</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+            <span class="ident">Literal::Cast</span> { <span class="kw-2">ref</span> <span class="ident">value</span>, <span class="kw-2">ref</span> <span class="ident">ty</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">value</span>.<span class="ident">uses_only_primitive_types</span>() <span class="op">&amp;&amp;</span> <span class="ident">ty</span>.<span class="ident">is_primitive_or_ptr_primitive</span>()
             }
         }
@@ -723,7 +723,7 @@
 <span class="kw">impl</span> <span class="ident">Literal</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rename_for_config</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>) {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Literal</span>::<span class="ident">Struct</span> {
+            <span class="ident">Literal::Struct</span> {
                 <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">export_name</span>,
                 <span class="ident">fields</span>,
                 ..
@@ -733,13 +733,13 @@
                     <span class="ident">lit</span>.<span class="ident">rename_for_config</span>(<span class="ident">config</span>);
                 }
             }
-            <span class="ident">Literal</span>::<span class="ident">Path</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Literal::Path</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">config</span>.<span class="ident">export</span>.<span class="ident">rename</span>(<span class="ident">name</span>);
             }
-            <span class="ident">Literal</span>::<span class="ident">PostfixUnaryOp</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">value</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Literal::PostfixUnaryOp</span> { <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">value</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">value</span>.<span class="ident">rename_for_config</span>(<span class="ident">config</span>);
             }
-            <span class="ident">Literal</span>::<span class="ident">BinOp</span> {
+            <span class="ident">Literal::BinOp</span> {
                 <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">left</span>,
                 <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">right</span>,
                 ..
@@ -747,144 +747,144 @@
                 <span class="ident">left</span>.<span class="ident">rename_for_config</span>(<span class="ident">config</span>);
                 <span class="ident">right</span>.<span class="ident">rename_for_config</span>(<span class="ident">config</span>);
             }
-            <span class="ident">Literal</span>::<span class="ident">Expr</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {}
-            <span class="ident">Literal</span>::<span class="ident">Cast</span> {
+            <span class="ident">Literal::Expr</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="ident">Literal::Cast</span> {
                 <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">ty</span>,
                 <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">value</span>,
             } <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">ty</span>.<span class="ident">rename_for_config</span>(<span class="ident">config</span>, <span class="kw-2">&amp;</span><span class="ident">GenericParams</span>::<span class="ident">default</span>());
+                <span class="ident">ty</span>.<span class="ident">rename_for_config</span>(<span class="ident">config</span>, <span class="kw-2">&amp;</span><span class="ident">GenericParams::default</span>());
                 <span class="ident">value</span>.<span class="ident">rename_for_config</span>(<span class="ident">config</span>);
             }
         }
     }
 
     <span class="comment">// Translate from full blown `syn::Expr` into a simpler `Literal` type</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load</span>(<span class="ident">expr</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Literal</span>, <span class="ident">String</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load</span>(<span class="ident">expr</span>: <span class="kw-2">&amp;</span><span class="ident">syn::Expr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Literal</span>, <span class="ident">String</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">expr</span> {
             <span class="comment">// Match binary expressions of the form `a * b`</span>
-            <span class="ident">syn</span>::<span class="ident">Expr</span>::<span class="ident">Binary</span>(<span class="kw-2">ref</span> <span class="ident">bin_expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">l</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">bin_expr</span>.<span class="ident">left</span>)<span class="question-mark">?</span>;
-                <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">bin_expr</span>.<span class="ident">right</span>)<span class="question-mark">?</span>;
+            <span class="ident">syn::Expr::Binary</span>(<span class="kw-2">ref</span> <span class="ident">bin_expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> <span class="ident">l</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::load</span>(<span class="kw-2">&amp;</span><span class="ident">bin_expr</span>.<span class="ident">left</span>)<span class="question-mark">?</span>;
+                <span class="kw">let</span> <span class="ident">r</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::load</span>(<span class="kw-2">&amp;</span><span class="ident">bin_expr</span>.<span class="ident">right</span>)<span class="question-mark">?</span>;
                 <span class="kw">let</span> <span class="ident">op</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">bin_expr</span>.<span class="ident">op</span> {
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">Add</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;+&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">Sub</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;-&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">Mul</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;*&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">Div</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;/&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">Rem</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;%&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">And</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&amp;&amp;&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">Or</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;||&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">BitXor</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;^&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">BitAnd</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&amp;&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">BitOr</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;|&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">Shl</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&lt;&lt;&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">Shr</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&gt;&gt;&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">Eq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;==&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">Lt</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&lt;&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">Le</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&lt;=&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">Ne</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;!=&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">Ge</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&gt;=&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">Gt</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&gt;&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">AddEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;+=&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">SubEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;-=&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">MulEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;*=&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">DivEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;/=&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">RemEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;%=&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">BitXorEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;^=&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">BitAndEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&amp;=&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">BitOrEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;|=&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">ShlEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&gt;&gt;=&quot;</span>,
-                    <span class="ident">syn</span>::<span class="ident">BinOp</span>::<span class="ident">ShrEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&lt;&lt;=&quot;</span>,
+                    <span class="ident">syn::BinOp::Add</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;+&quot;</span>,
+                    <span class="ident">syn::BinOp::Sub</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;-&quot;</span>,
+                    <span class="ident">syn::BinOp::Mul</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;*&quot;</span>,
+                    <span class="ident">syn::BinOp::Div</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;/&quot;</span>,
+                    <span class="ident">syn::BinOp::Rem</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;%&quot;</span>,
+                    <span class="ident">syn::BinOp::And</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&amp;&amp;&quot;</span>,
+                    <span class="ident">syn::BinOp::Or</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;||&quot;</span>,
+                    <span class="ident">syn::BinOp::BitXor</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;^&quot;</span>,
+                    <span class="ident">syn::BinOp::BitAnd</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&amp;&quot;</span>,
+                    <span class="ident">syn::BinOp::BitOr</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;|&quot;</span>,
+                    <span class="ident">syn::BinOp::Shl</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&lt;&lt;&quot;</span>,
+                    <span class="ident">syn::BinOp::Shr</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&gt;&gt;&quot;</span>,
+                    <span class="ident">syn::BinOp::Eq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;==&quot;</span>,
+                    <span class="ident">syn::BinOp::Lt</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&lt;&quot;</span>,
+                    <span class="ident">syn::BinOp::Le</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&lt;=&quot;</span>,
+                    <span class="ident">syn::BinOp::Ne</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;!=&quot;</span>,
+                    <span class="ident">syn::BinOp::Ge</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&gt;=&quot;</span>,
+                    <span class="ident">syn::BinOp::Gt</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&gt;&quot;</span>,
+                    <span class="ident">syn::BinOp::AddEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;+=&quot;</span>,
+                    <span class="ident">syn::BinOp::SubEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;-=&quot;</span>,
+                    <span class="ident">syn::BinOp::MulEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;*=&quot;</span>,
+                    <span class="ident">syn::BinOp::DivEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;/=&quot;</span>,
+                    <span class="ident">syn::BinOp::RemEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;%=&quot;</span>,
+                    <span class="ident">syn::BinOp::BitXorEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;^=&quot;</span>,
+                    <span class="ident">syn::BinOp::BitAndEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&amp;=&quot;</span>,
+                    <span class="ident">syn::BinOp::BitOrEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;|=&quot;</span>,
+                    <span class="ident">syn::BinOp::ShlEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&gt;&gt;=&quot;</span>,
+                    <span class="ident">syn::BinOp::ShrEq</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;&lt;&lt;=&quot;</span>,
                 };
-                <span class="prelude-val">Ok</span>(<span class="ident">Literal</span>::<span class="ident">BinOp</span> {
-                    <span class="ident">left</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">l</span>),
+                <span class="prelude-val">Ok</span>(<span class="ident">Literal::BinOp</span> {
+                    <span class="ident">left</span>: <span class="ident">Box::new</span>(<span class="ident">l</span>),
                     <span class="ident">op</span>,
-                    <span class="ident">right</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">r</span>),
+                    <span class="ident">right</span>: <span class="ident">Box::new</span>(<span class="ident">r</span>),
                 })
             }
 
             <span class="comment">// Match literals like true, &#39;a&#39;, 32 etc</span>
-            <span class="ident">syn</span>::<span class="ident">Expr</span>::<span class="ident">Lit</span>(<span class="ident">syn</span>::<span class="ident">ExprLit</span> { <span class="kw-2">ref</span> <span class="ident">lit</span>, .. }) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">syn::Expr::Lit</span>(<span class="ident">syn::ExprLit</span> { <span class="kw-2">ref</span> <span class="ident">lit</span>, .. }) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">match</span> <span class="ident">lit</span> {
-                    <span class="ident">syn</span>::<span class="ident">Lit</span>::<span class="ident">Byte</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Literal</span>::<span class="ident">Expr</span>(<span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">value</span>.<span class="ident">value</span>()))),
-                    <span class="ident">syn</span>::<span class="ident">Lit</span>::<span class="ident">Char</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Literal</span>::<span class="ident">Expr</span>(<span class="kw">match</span> <span class="ident">value</span>.<span class="ident">value</span>() <span class="kw">as</span> <span class="ident">u32</span> {
+                    <span class="ident">syn::Lit::Byte</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Literal::Expr</span>(<span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">value</span>.<span class="ident">value</span>()))),
+                    <span class="ident">syn::Lit::Char</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Literal::Expr</span>(<span class="kw">match</span> <span class="ident">value</span>.<span class="ident">value</span>() <span class="kw">as</span> <span class="ident">u32</span> {
                         <span class="number">0</span>..<span class="op">=</span><span class="number">255</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;&#39;{}&#39;&quot;</span>, <span class="ident">value</span>.<span class="ident">value</span>().<span class="ident">escape_default</span>()),
                         <span class="ident">other_code</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">r&quot;U&#39;\U{:08X}&#39;&quot;</span>, <span class="ident">other_code</span>),
                     })),
-                    <span class="ident">syn</span>::<span class="ident">Lit</span>::<span class="ident">Int</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">syn::Lit::Int</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="kw">if</span> <span class="ident">value</span>.<span class="ident">base10_parse</span>::<span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>().<span class="ident">is_err</span>() {
-                            <span class="prelude-val">Ok</span>(<span class="ident">Literal</span>::<span class="ident">Expr</span>(<span class="macro">format!</span>(<span class="string">&quot;{}ULL&quot;</span>, <span class="ident">value</span>.<span class="ident">base10_digits</span>())))
+                            <span class="prelude-val">Ok</span>(<span class="ident">Literal::Expr</span>(<span class="macro">format!</span>(<span class="string">&quot;{}ULL&quot;</span>, <span class="ident">value</span>.<span class="ident">base10_digits</span>())))
                         } <span class="kw">else</span> {
-                            <span class="prelude-val">Ok</span>(<span class="ident">Literal</span>::<span class="ident">Expr</span>(<span class="ident">value</span>.<span class="ident">base10_digits</span>().<span class="ident">to_string</span>()))
+                            <span class="prelude-val">Ok</span>(<span class="ident">Literal::Expr</span>(<span class="ident">value</span>.<span class="ident">base10_digits</span>().<span class="ident">to_string</span>()))
                         }
                     }
-                    <span class="ident">syn</span>::<span class="ident">Lit</span>::<span class="ident">Float</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                        <span class="prelude-val">Ok</span>(<span class="ident">Literal</span>::<span class="ident">Expr</span>(<span class="ident">value</span>.<span class="ident">base10_digits</span>().<span class="ident">to_string</span>()))
+                    <span class="ident">syn::Lit::Float</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="prelude-val">Ok</span>(<span class="ident">Literal::Expr</span>(<span class="ident">value</span>.<span class="ident">base10_digits</span>().<span class="ident">to_string</span>()))
                     }
-                    <span class="ident">syn</span>::<span class="ident">Lit</span>::<span class="ident">Bool</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Literal</span>::<span class="ident">Expr</span>(<span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">value</span>.<span class="ident">value</span>))),
+                    <span class="ident">syn::Lit::Bool</span>(<span class="kw-2">ref</span> <span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Literal::Expr</span>(<span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">value</span>.<span class="ident">value</span>))),
                     <span class="comment">// TODO: Add support for byte string and Verbatim</span>
                     <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="macro">format!</span>(<span class="string">&quot;Unsupported literal expression. {:?}&quot;</span>, <span class="kw-2">*</span><span class="ident">lit</span>)),
                 }
             }
 
-            <span class="ident">syn</span>::<span class="ident">Expr</span>::<span class="ident">Struct</span>(<span class="ident">syn</span>::<span class="ident">ExprStruct</span> {
+            <span class="ident">syn::Expr::Struct</span>(<span class="ident">syn::ExprStruct</span> {
                 <span class="kw-2">ref</span> <span class="ident">path</span>,
                 <span class="kw-2">ref</span> <span class="ident">fields</span>,
                 ..
             }) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">struct_name</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">segments</span>[<span class="number">0</span>].<span class="ident">ident</span>.<span class="ident">to_string</span>();
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">field_map</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Literal</span><span class="op">&gt;</span>::<span class="ident">default</span>();
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">field_map</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Literal</span><span class="op">&gt;</span><span class="ident">::default</span>();
                 <span class="kw">for</span> <span class="ident">field</span> <span class="kw">in</span> <span class="ident">fields</span> {
                     <span class="kw">let</span> <span class="ident">ident</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">field</span>.<span class="ident">member</span> {
-                        <span class="ident">syn</span>::<span class="ident">Member</span>::<span class="ident">Named</span>(<span class="kw-2">ref</span> <span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">name</span>.<span class="ident">to_string</span>(),
-                        <span class="ident">syn</span>::<span class="ident">Member</span>::<span class="ident">Unnamed</span>(<span class="kw-2">ref</span> <span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;_{}&quot;</span>, <span class="ident">index</span>.<span class="ident">index</span>),
+                        <span class="ident">syn::Member::Named</span>(<span class="kw-2">ref</span> <span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">name</span>.<span class="ident">to_string</span>(),
+                        <span class="ident">syn::Member::Unnamed</span>(<span class="kw-2">ref</span> <span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;_{}&quot;</span>, <span class="ident">index</span>.<span class="ident">index</span>),
                     };
                     <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">ident</span>.<span class="ident">to_string</span>();
-                    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">Literal</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">expr</span>)<span class="question-mark">?</span>;
+                    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">Literal::load</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">expr</span>)<span class="question-mark">?</span>;
                     <span class="ident">field_map</span>.<span class="ident">insert</span>(<span class="ident">key</span>, <span class="ident">value</span>);
                 }
-                <span class="prelude-val">Ok</span>(<span class="ident">Literal</span>::<span class="ident">Struct</span> {
-                    <span class="ident">path</span>: <span class="ident">Path</span>::<span class="ident">new</span>(<span class="ident">struct_name</span>.<span class="ident">clone</span>()),
+                <span class="prelude-val">Ok</span>(<span class="ident">Literal::Struct</span> {
+                    <span class="ident">path</span>: <span class="ident">Path::new</span>(<span class="ident">struct_name</span>.<span class="ident">clone</span>()),
                     <span class="ident">export_name</span>: <span class="ident">struct_name</span>,
                     <span class="ident">fields</span>: <span class="ident">field_map</span>,
                 })
             }
 
-            <span class="ident">syn</span>::<span class="ident">Expr</span>::<span class="ident">Unary</span>(<span class="ident">syn</span>::<span class="ident">ExprUnary</span> {
+            <span class="ident">syn::Expr::Unary</span>(<span class="ident">syn::ExprUnary</span> {
                 <span class="kw-2">ref</span> <span class="ident">op</span>, <span class="kw-2">ref</span> <span class="ident">expr</span>, ..
             }) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">op</span> {
-                <span class="ident">UnOp</span>::<span class="ident">Neg</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                    <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">load</span>(<span class="ident">expr</span>)<span class="question-mark">?</span>;
-                    <span class="prelude-val">Ok</span>(<span class="ident">Literal</span>::<span class="ident">PostfixUnaryOp</span> {
+                <span class="ident">UnOp::Neg</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::load</span>(<span class="ident">expr</span>)<span class="question-mark">?</span>;
+                    <span class="prelude-val">Ok</span>(<span class="ident">Literal::PostfixUnaryOp</span> {
                         <span class="ident">op</span>: <span class="string">&quot;-&quot;</span>,
-                        <span class="ident">value</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">val</span>),
+                        <span class="ident">value</span>: <span class="ident">Box::new</span>(<span class="ident">val</span>),
                     })
                 }
                 <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="macro">format!</span>(<span class="string">&quot;Unsupported Unary expression. {:?}&quot;</span>, <span class="kw-2">*</span><span class="ident">op</span>)),
             },
 
             <span class="comment">// Match identifiers, like `5 &lt;&lt; SHIFT`</span>
-            <span class="ident">syn</span>::<span class="ident">Expr</span>::<span class="ident">Path</span>(<span class="ident">syn</span>::<span class="ident">ExprPath</span> {
-                <span class="ident">path</span>: <span class="ident">syn</span>::<span class="ident">Path</span> { <span class="kw-2">ref</span> <span class="ident">segments</span>, .. },
+            <span class="ident">syn::Expr::Path</span>(<span class="ident">syn::ExprPath</span> {
+                <span class="ident">path</span>: <span class="ident">syn::Path</span> { <span class="kw-2">ref</span> <span class="ident">segments</span>, .. },
                 ..
             }) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="comment">// Handle only the simplest identifiers and error for anything else.</span>
                 <span class="kw">if</span> <span class="ident">segments</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
-                    <span class="prelude-val">Ok</span>(<span class="ident">Literal</span>::<span class="ident">Path</span>(<span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">segments</span>.<span class="ident">last</span>().<span class="ident">unwrap</span>().<span class="ident">ident</span>)))
+                    <span class="prelude-val">Ok</span>(<span class="ident">Literal::Path</span>(<span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">segments</span>.<span class="ident">last</span>().<span class="ident">unwrap</span>().<span class="ident">ident</span>)))
                 } <span class="kw">else</span> {
                     <span class="prelude-val">Err</span>(<span class="macro">format!</span>(<span class="string">&quot;Unsupported path expression. {:?}&quot;</span>, <span class="kw-2">*</span><span class="ident">segments</span>))
                 }
             }
 
-            <span class="ident">syn</span>::<span class="ident">Expr</span>::<span class="ident">Paren</span>(<span class="ident">syn</span>::<span class="ident">ExprParen</span> { <span class="kw-2">ref</span> <span class="ident">expr</span>, .. }) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">load</span>(<span class="ident">expr</span>),
+            <span class="ident">syn::Expr::Paren</span>(<span class="ident">syn::ExprParen</span> { <span class="kw-2">ref</span> <span class="ident">expr</span>, .. }) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::load</span>(<span class="ident">expr</span>),
 
-            <span class="ident">syn</span>::<span class="ident">Expr</span>::<span class="ident">Cast</span>(<span class="ident">syn</span>::<span class="ident">ExprCast</span> {
+            <span class="ident">syn::Expr::Cast</span>(<span class="ident">syn::ExprCast</span> {
                 <span class="kw-2">ref</span> <span class="ident">expr</span>, <span class="kw-2">ref</span> <span class="ident">ty</span>, ..
             }) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">load</span>(<span class="ident">expr</span>)<span class="question-mark">?</span>;
-                <span class="kw">match</span> <span class="ident">Type</span>::<span class="ident">load</span>(<span class="ident">ty</span>)<span class="question-mark">?</span> {
-                    <span class="prelude-val">Some</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Literal</span>::<span class="ident">Cast</span> {
+                <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::load</span>(<span class="ident">expr</span>)<span class="question-mark">?</span>;
+                <span class="kw">match</span> <span class="ident">Type::load</span>(<span class="ident">ty</span>)<span class="question-mark">?</span> {
+                    <span class="prelude-val">Some</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">Literal::Cast</span> {
                         <span class="ident">ty</span>,
-                        <span class="ident">value</span>: <span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">val</span>),
+                        <span class="ident">value</span>: <span class="ident">Box::new</span>(<span class="ident">val</span>),
                     }),
                     <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Cannot cast to zero sized type.&quot;</span>.<span class="ident">to_owned</span>()),
                 }
@@ -896,17 +896,17 @@
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">write</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Write</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>, <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">SourceWriter</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>) {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">Literal</span>::<span class="ident">Expr</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> (<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">v</span>, <span class="ident">config</span>.<span class="ident">language</span>) {
-                (<span class="string">&quot;true&quot;</span>, <span class="ident">Language</span>::<span class="ident">Cython</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;True&quot;</span>),
-                (<span class="string">&quot;false&quot;</span>, <span class="ident">Language</span>::<span class="ident">Cython</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;False&quot;</span>),
+            <span class="ident">Literal::Expr</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> (<span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">v</span>, <span class="ident">config</span>.<span class="ident">language</span>) {
+                (<span class="string">&quot;true&quot;</span>, <span class="ident">Language::Cython</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;True&quot;</span>),
+                (<span class="string">&quot;false&quot;</span>, <span class="ident">Language::Cython</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;False&quot;</span>),
                 (<span class="ident">v</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">v</span>),
             },
-            <span class="ident">Literal</span>::<span class="ident">Path</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">v</span>),
-            <span class="ident">Literal</span>::<span class="ident">PostfixUnaryOp</span> { <span class="ident">op</span>, <span class="kw-2">ref</span> <span class="ident">value</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Literal::Path</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">v</span>),
+            <span class="ident">Literal::PostfixUnaryOp</span> { <span class="ident">op</span>, <span class="kw-2">ref</span> <span class="ident">value</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">op</span>);
                 <span class="ident">value</span>.<span class="ident">write</span>(<span class="ident">config</span>, <span class="ident">out</span>);
             }
-            <span class="ident">Literal</span>::<span class="ident">BinOp</span> {
+            <span class="ident">Literal::BinOp</span> {
                 <span class="kw-2">ref</span> <span class="ident">left</span>,
                 <span class="ident">op</span>,
                 <span class="kw-2">ref</span> <span class="ident">right</span>,
@@ -917,29 +917,29 @@
                 <span class="ident">right</span>.<span class="ident">write</span>(<span class="ident">config</span>, <span class="ident">out</span>);
                 <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;)&quot;</span>);
             }
-            <span class="ident">Literal</span>::<span class="ident">Cast</span> { <span class="kw-2">ref</span> <span class="ident">ty</span>, <span class="kw-2">ref</span> <span class="ident">value</span> } <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">out</span>.<span class="ident">write</span>(<span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span> {
+            <span class="ident">Literal::Cast</span> { <span class="kw-2">ref</span> <span class="ident">ty</span>, <span class="kw-2">ref</span> <span class="ident">value</span> } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">out</span>.<span class="ident">write</span>(<span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language::Cython</span> {
                     <span class="string">&quot;&lt;&quot;</span>
                 } <span class="kw">else</span> {
                     <span class="string">&quot;(&quot;</span>
                 });
                 <span class="ident">ty</span>.<span class="ident">write</span>(<span class="ident">config</span>, <span class="ident">out</span>);
-                <span class="ident">out</span>.<span class="ident">write</span>(<span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span> {
+                <span class="ident">out</span>.<span class="ident">write</span>(<span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language::Cython</span> {
                     <span class="string">&quot;&gt;&quot;</span>
                 } <span class="kw">else</span> {
                     <span class="string">&quot;)&quot;</span>
                 });
                 <span class="ident">value</span>.<span class="ident">write</span>(<span class="ident">config</span>, <span class="ident">out</span>);
             }
-            <span class="ident">Literal</span>::<span class="ident">Struct</span> {
+            <span class="ident">Literal::Struct</span> {
                 <span class="ident">export_name</span>,
                 <span class="ident">fields</span>,
                 <span class="ident">path</span>,
             } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">match</span> <span class="ident">config</span>.<span class="ident">language</span> {
-                    <span class="ident">Language</span>::<span class="ident">C</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;({})&quot;</span>, <span class="ident">export_name</span>),
-                    <span class="ident">Language</span>::<span class="ident">Cxx</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">export_name</span>),
-                    <span class="ident">Language</span>::<span class="ident">Cython</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;&lt;{}&gt;&quot;</span>, <span class="ident">export_name</span>),
+                    <span class="ident">Language::C</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;({})&quot;</span>, <span class="ident">export_name</span>),
+                    <span class="ident">Language::Cxx</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">export_name</span>),
+                    <span class="ident">Language::Cython</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;&lt;{}&gt;&quot;</span>, <span class="ident">export_name</span>),
                 }
 
                 <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;{{ &quot;</span>);
@@ -954,9 +954,9 @@
                             <span class="ident">is_first_field</span> <span class="op">=</span> <span class="bool-val">false</span>;
                         }
                         <span class="kw">match</span> <span class="ident">config</span>.<span class="ident">language</span> {
-                            <span class="ident">Language</span>::<span class="ident">Cxx</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;/* .{} = */ &quot;</span>, <span class="ident">ordered_key</span>),
-                            <span class="ident">Language</span>::<span class="ident">C</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;.{} = &quot;</span>, <span class="ident">ordered_key</span>),
-                            <span class="ident">Language</span>::<span class="ident">Cython</span> <span class="op">=</span><span class="op">&gt;</span> {}
+                            <span class="ident">Language::Cxx</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;/* .{} = */ &quot;</span>, <span class="ident">ordered_key</span>),
+                            <span class="ident">Language::C</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;.{} = &quot;</span>, <span class="ident">ordered_key</span>),
+                            <span class="ident">Language::Cython</span> <span class="op">=</span><span class="op">&gt;</span> {}
                         }
                         <span class="ident">lit</span>.<span class="ident">write</span>(<span class="ident">config</span>, <span class="ident">out</span>);
                     }
@@ -983,12 +983,12 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load</span>(
         <span class="ident">path</span>: <span class="ident">Path</span>,
         <span class="ident">mod_cfg</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Cfg</span><span class="op">&gt;</span>,
-        <span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Type</span>,
-        <span class="ident">expr</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">Expr</span>,
-        <span class="ident">attrs</span>: <span class="kw-2">&amp;</span>[<span class="ident">syn</span>::<span class="ident">Attribute</span>],
+        <span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">syn::Type</span>,
+        <span class="ident">expr</span>: <span class="kw-2">&amp;</span><span class="ident">syn::Expr</span>,
+        <span class="ident">attrs</span>: <span class="kw-2">&amp;</span>[<span class="ident">syn::Attribute</span>],
         <span class="ident">associated_to</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Path</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Constant</span>, <span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="ident">Type</span>::<span class="ident">load</span>(<span class="ident">ty</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="ident">Type::load</span>(<span class="ident">ty</span>)<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ty</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">ty</span> {
             <span class="prelude-val">Some</span>(<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ty</span>,
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
@@ -996,20 +996,20 @@
             }
         };
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lit</span> <span class="op">=</span> <span class="ident">Literal</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">expr</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lit</span> <span class="op">=</span> <span class="ident">Literal::load</span>(<span class="kw-2">&amp;</span><span class="ident">expr</span>)<span class="question-mark">?</span>;
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">associated_to</span>) <span class="op">=</span> <span class="ident">associated_to</span> {
             <span class="ident">ty</span>.<span class="ident">replace_self_with</span>(<span class="ident">associated_to</span>);
             <span class="ident">lit</span>.<span class="ident">replace_self_with</span>(<span class="ident">associated_to</span>);
         }
 
-        <span class="prelude-val">Ok</span>(<span class="ident">Constant</span>::<span class="ident">new</span>(
+        <span class="prelude-val">Ok</span>(<span class="ident">Constant::new</span>(
             <span class="ident">path</span>,
             <span class="ident">ty</span>,
             <span class="ident">lit</span>,
-            <span class="ident">Cfg</span>::<span class="ident">append</span>(<span class="ident">mod_cfg</span>, <span class="ident">Cfg</span>::<span class="ident">load</span>(<span class="ident">attrs</span>)),
-            <span class="ident">AnnotationSet</span>::<span class="ident">load</span>(<span class="ident">attrs</span>)<span class="question-mark">?</span>,
-            <span class="ident">Documentation</span>::<span class="ident">load</span>(<span class="ident">attrs</span>),
+            <span class="ident">Cfg::append</span>(<span class="ident">mod_cfg</span>, <span class="ident">Cfg::load</span>(<span class="ident">attrs</span>)),
+            <span class="ident">AnnotationSet::load</span>(<span class="ident">attrs</span>)<span class="question-mark">?</span>,
+            <span class="ident">Documentation::load</span>(<span class="ident">attrs</span>),
             <span class="ident">associated_to</span>,
         ))
     }
@@ -1067,7 +1067,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">container</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ItemContainer</span> {
-        <span class="ident">ItemContainer</span>::<span class="ident">Constant</span>(<span class="self">self</span>.<span class="ident">clone</span>())
+        <span class="ident">ItemContainer::Constant</span>(<span class="self">self</span>.<span class="ident">clone</span>())
     }
 
     <span class="kw">fn</span> <span class="ident">rename_for_config</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">config</span>: <span class="kw-2">&amp;</span><span class="ident">Config</span>) {
@@ -1075,7 +1075,7 @@
             <span class="ident">config</span>.<span class="ident">export</span>.<span class="ident">rename</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">export_name</span>);
         }
         <span class="self">self</span>.<span class="ident">value</span>.<span class="ident">rename_for_config</span>(<span class="ident">config</span>);
-        <span class="self">self</span>.<span class="ident">ty</span>.<span class="ident">rename_for_config</span>(<span class="ident">config</span>, <span class="kw-2">&amp;</span><span class="ident">GenericParams</span>::<span class="ident">default</span>()); <span class="comment">// FIXME: should probably propagate something here</span>
+        <span class="self">self</span>.<span class="ident">ty</span>.<span class="ident">rename_for_config</span>(<span class="ident">config</span>, <span class="kw-2">&amp;</span><span class="ident">GenericParams::default</span>()); <span class="comment">// FIXME: should probably propagate something here</span>
     }
 
     <span class="kw">fn</span> <span class="ident">resolve_declaration_types</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">resolver</span>: <span class="kw-2">&amp;</span><span class="ident">DeclarationTypeResolver</span>) {
@@ -1091,12 +1091,12 @@
         <span class="ident">associated_to_struct</span>: <span class="kw-2">&amp;</span><span class="ident">Struct</span>,
     ) {
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.<span class="ident">associated_to</span>.<span class="ident">is_some</span>());
-        <span class="macro">debug_assert!</span>(<span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cxx</span>);
+        <span class="macro">debug_assert!</span>(<span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language::Cxx</span>);
         <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">associated_to_struct</span>.<span class="ident">is_transparent</span>);
         <span class="macro">debug_assert!</span>(<span class="ident">config</span>.<span class="ident">structure</span>.<span class="ident">associated_constants_in_body</span>);
         <span class="macro">debug_assert!</span>(<span class="ident">config</span>.<span class="ident">constant</span>.<span class="ident">allow_static_const</span>);
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Type</span>::<span class="ident">Ptr</span> { <span class="ident">is_const</span>: <span class="bool-val">true</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">ty</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Type::Ptr</span> { <span class="ident">is_const</span>: <span class="bool-val">true</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">ty</span> {
             <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;static &quot;</span>);
         } <span class="kw">else</span> {
             <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;static const &quot;</span>);
@@ -1124,7 +1124,7 @@
         <span class="kw">let</span> <span class="ident">associated_to_transparent</span> <span class="op">=</span> <span class="ident">associated_to_struct</span>.<span class="ident">map_or</span>(<span class="bool-val">false</span>, <span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">is_transparent</span>);
 
         <span class="kw">let</span> <span class="ident">in_body</span> <span class="op">=</span> <span class="ident">associated_to_struct</span>.<span class="ident">is_some</span>()
-            <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cxx</span>
+            <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language::Cxx</span>
             <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">structure</span>.<span class="ident">associated_constants_in_body</span>
             <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">constant</span>.<span class="ident">allow_static_const</span>
             <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">associated_to_transparent</span>;
@@ -1133,28 +1133,28 @@
         <span class="ident">condition</span>.<span class="ident">write_before</span>(<span class="ident">config</span>, <span class="ident">out</span>);
 
         <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">in_body</span> {
-            <span class="ident">Cow</span>::<span class="ident">Owned</span>(<span class="macro">format!</span>(
+            <span class="ident">Cow::Owned</span>(<span class="macro">format!</span>(
                 <span class="string">&quot;{}::{}&quot;</span>,
                 <span class="ident">associated_to_struct</span>.<span class="ident">unwrap</span>().<span class="ident">export_name</span>(),
                 <span class="self">self</span>.<span class="ident">export_name</span>(),
             ))
         } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">associated_to</span>.<span class="ident">is_none</span>() {
-            <span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="self">self</span>.<span class="ident">export_name</span>())
+            <span class="ident">Cow::Borrowed</span>(<span class="self">self</span>.<span class="ident">export_name</span>())
         } <span class="kw">else</span> {
             <span class="kw">let</span> <span class="ident">associated_name</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">associated_to_struct</span> {
-                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Cow</span>::<span class="ident">Borrowed</span>(<span class="ident">s</span>.<span class="ident">export_name</span>()),
+                <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Cow::Borrowed</span>(<span class="ident">s</span>.<span class="ident">export_name</span>()),
                 <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">name</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">associated_to</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">name</span>().<span class="ident">to_owned</span>();
                     <span class="ident">config</span>.<span class="ident">export</span>.<span class="ident">rename</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">name</span>);
-                    <span class="ident">Cow</span>::<span class="ident">Owned</span>(<span class="ident">name</span>)
+                    <span class="ident">Cow::Owned</span>(<span class="ident">name</span>)
                 }
             };
 
-            <span class="ident">Cow</span>::<span class="ident">Owned</span>(<span class="macro">format!</span>(<span class="string">&quot;{}_{}&quot;</span>, <span class="ident">associated_name</span>, <span class="self">self</span>.<span class="ident">export_name</span>()))
+            <span class="ident">Cow::Owned</span>(<span class="macro">format!</span>(<span class="string">&quot;{}_{}&quot;</span>, <span class="ident">associated_name</span>, <span class="self">self</span>.<span class="ident">export_name</span>()))
         };
 
         <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">value</span> {
-            <span class="ident">Literal</span>::<span class="ident">Struct</span> {
+            <span class="ident">Literal::Struct</span> {
                 <span class="kw-2">ref</span> <span class="ident">fields</span>,
                 <span class="kw-2">ref</span> <span class="ident">path</span>,
                 ..
@@ -1164,14 +1164,14 @@
 
         <span class="self">self</span>.<span class="ident">documentation</span>.<span class="ident">write</span>(<span class="ident">config</span>, <span class="ident">out</span>);
 
-        <span class="kw">let</span> <span class="ident">allow_constexpr</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Type</span>::<span class="ident">Primitive</span>(..) <span class="op">=</span> <span class="self">self</span>.<span class="ident">ty</span> {
+        <span class="kw">let</span> <span class="ident">allow_constexpr</span> <span class="op">=</span> <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Type::Primitive</span>(..) <span class="op">=</span> <span class="self">self</span>.<span class="ident">ty</span> {
             <span class="ident">config</span>.<span class="ident">constant</span>.<span class="ident">allow_constexpr</span>
         } <span class="kw">else</span> {
             <span class="bool-val">false</span>
         };
 
         <span class="kw">match</span> <span class="ident">config</span>.<span class="ident">language</span> {
-            <span class="ident">Language</span>::<span class="ident">Cxx</span> <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">constant</span>.<span class="ident">allow_static_const</span> <span class="op">|</span><span class="op">|</span> <span class="ident">allow_constexpr</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Language::Cxx</span> <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">constant</span>.<span class="ident">allow_static_const</span> <span class="op">|</span><span class="op">|</span> <span class="ident">allow_constexpr</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">if</span> <span class="ident">allow_constexpr</span> {
                     <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;constexpr &quot;</span>)
                 }
@@ -1180,7 +1180,7 @@
                     <span class="ident">out</span>.<span class="ident">write</span>(<span class="kw">if</span> <span class="ident">in_body</span> { <span class="string">&quot;inline &quot;</span> } <span class="kw">else</span> { <span class="string">&quot;static &quot;</span> });
                 }
 
-                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Type</span>::<span class="ident">Ptr</span> { <span class="ident">is_const</span>: <span class="bool-val">true</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">ty</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Type::Ptr</span> { <span class="ident">is_const</span>: <span class="bool-val">true</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="ident">ty</span> {
                     <span class="comment">// Nothing.</span>
                 } <span class="kw">else</span> {
                     <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;const &quot;</span>);
@@ -1191,11 +1191,11 @@
                 <span class="ident">value</span>.<span class="ident">write</span>(<span class="ident">config</span>, <span class="ident">out</span>);
                 <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;;&quot;</span>);
             }
-            <span class="ident">Language</span>::<span class="ident">Cxx</span> <span class="op">|</span> <span class="ident">Language</span>::<span class="ident">C</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Language::Cxx</span> <span class="op">|</span> <span class="ident">Language::C</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot;#define {} &quot;</span>, <span class="ident">name</span>);
                 <span class="ident">value</span>.<span class="ident">write</span>(<span class="ident">config</span>, <span class="ident">out</span>);
             }
-            <span class="ident">Language</span>::<span class="ident">Cython</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Language::Cython</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;const &quot;</span>);
                 <span class="self">self</span>.<span class="ident">ty</span>.<span class="ident">write</span>(<span class="ident">config</span>, <span class="ident">out</span>);
                 <span class="comment">// For extern Cython declarations the initializer is ignored,</span>

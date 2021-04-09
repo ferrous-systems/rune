@@ -112,14 +112,14 @@
 
 <span class="doccomment">//! Translation skeleton that traverses the whole WebAssembly module and call helper functions</span>
 <span class="doccomment">//! to deal with each part of it.</span>
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">environ</span>::<span class="ident">ModuleEnvironment</span>;
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">sections</span>::{
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::environ::ModuleEnvironment</span>;
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::sections</span>::{
     <span class="ident">parse_data_section</span>, <span class="ident">parse_element_section</span>, <span class="ident">parse_export_section</span>, <span class="ident">parse_function_section</span>,
     <span class="ident">parse_global_section</span>, <span class="ident">parse_import_section</span>, <span class="ident">parse_memory_section</span>, <span class="ident">parse_name_section</span>,
     <span class="ident">parse_start_section</span>, <span class="ident">parse_table_section</span>, <span class="ident">parse_type_section</span>,
 };
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">state</span>::<span class="ident">ModuleTranslationState</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">WasmResult</span>;
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::state::ModuleTranslationState</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::WasmResult</span>;
 <span class="kw">use</span> <span class="ident">wasmparser</span>::{<span class="ident">NameSectionReader</span>, <span class="ident">Parser</span>, <span class="ident">Payload</span>};
 
 <span class="doccomment">/// Translate a sequence of bytes forming a valid Wasm binary into a</span>
@@ -128,50 +128,50 @@
     <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;data</span> [<span class="ident">u8</span>],
     <span class="ident">environ</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ModuleEnvironment</span><span class="op">&lt;</span><span class="lifetime">&#39;data</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WasmResult</span><span class="op">&lt;</span><span class="ident">ModuleTranslationState</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">module_translation_state</span> <span class="op">=</span> <span class="ident">ModuleTranslationState</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">module_translation_state</span> <span class="op">=</span> <span class="ident">ModuleTranslationState::new</span>();
 
-    <span class="kw">for</span> <span class="ident">payload</span> <span class="kw">in</span> <span class="ident">Parser</span>::<span class="ident">new</span>(<span class="number">0</span>).<span class="ident">parse_all</span>(<span class="ident">data</span>) {
+    <span class="kw">for</span> <span class="ident">payload</span> <span class="kw">in</span> <span class="ident">Parser::new</span>(<span class="number">0</span>).<span class="ident">parse_all</span>(<span class="ident">data</span>) {
         <span class="kw">match</span> <span class="ident">payload</span><span class="question-mark">?</span> {
-            <span class="ident">Payload</span>::<span class="ident">Version</span> { .. } <span class="op">|</span> <span class="ident">Payload</span>::<span class="ident">End</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="ident">Payload::Version</span> { .. } <span class="op">|</span> <span class="ident">Payload::End</span> <span class="op">=</span><span class="op">&gt;</span> {}
 
-            <span class="ident">Payload</span>::<span class="ident">TypeSection</span>(<span class="ident">types</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Payload::TypeSection</span>(<span class="ident">types</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">parse_type_section</span>(<span class="ident">types</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">module_translation_state</span>, <span class="ident">environ</span>)<span class="question-mark">?</span>;
             }
 
-            <span class="ident">Payload</span>::<span class="ident">ImportSection</span>(<span class="ident">imports</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Payload::ImportSection</span>(<span class="ident">imports</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">parse_import_section</span>(<span class="ident">imports</span>, <span class="ident">environ</span>)<span class="question-mark">?</span>;
             }
 
-            <span class="ident">Payload</span>::<span class="ident">FunctionSection</span>(<span class="ident">functions</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Payload::FunctionSection</span>(<span class="ident">functions</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">parse_function_section</span>(<span class="ident">functions</span>, <span class="ident">environ</span>)<span class="question-mark">?</span>;
             }
 
-            <span class="ident">Payload</span>::<span class="ident">TableSection</span>(<span class="ident">tables</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Payload::TableSection</span>(<span class="ident">tables</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">parse_table_section</span>(<span class="ident">tables</span>, <span class="ident">environ</span>)<span class="question-mark">?</span>;
             }
 
-            <span class="ident">Payload</span>::<span class="ident">MemorySection</span>(<span class="ident">memories</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Payload::MemorySection</span>(<span class="ident">memories</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">parse_memory_section</span>(<span class="ident">memories</span>, <span class="ident">environ</span>)<span class="question-mark">?</span>;
             }
 
-            <span class="ident">Payload</span>::<span class="ident">GlobalSection</span>(<span class="ident">globals</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Payload::GlobalSection</span>(<span class="ident">globals</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">parse_global_section</span>(<span class="ident">globals</span>, <span class="ident">environ</span>)<span class="question-mark">?</span>;
             }
 
-            <span class="ident">Payload</span>::<span class="ident">ExportSection</span>(<span class="ident">exports</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Payload::ExportSection</span>(<span class="ident">exports</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">parse_export_section</span>(<span class="ident">exports</span>, <span class="ident">environ</span>)<span class="question-mark">?</span>;
             }
 
-            <span class="ident">Payload</span>::<span class="ident">StartSection</span> { <span class="ident">func</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Payload::StartSection</span> { <span class="ident">func</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">parse_start_section</span>(<span class="ident">func</span>, <span class="ident">environ</span>)<span class="question-mark">?</span>;
             }
 
-            <span class="ident">Payload</span>::<span class="ident">ElementSection</span>(<span class="ident">elements</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Payload::ElementSection</span>(<span class="ident">elements</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">parse_element_section</span>(<span class="ident">elements</span>, <span class="ident">environ</span>)<span class="question-mark">?</span>;
             }
 
-            <span class="ident">Payload</span>::<span class="ident">CodeSectionStart</span> { .. } <span class="op">=</span><span class="op">&gt;</span> {}
-            <span class="ident">Payload</span>::<span class="ident">CodeSectionEntry</span>(<span class="ident">code</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Payload::CodeSectionStart</span> { .. } <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="ident">Payload::CodeSectionEntry</span>(<span class="ident">code</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">code</span> <span class="op">=</span> <span class="ident">code</span>.<span class="ident">get_binary_reader</span>();
                 <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">code</span>.<span class="ident">bytes_remaining</span>();
                 <span class="kw">let</span> <span class="ident">offset</span> <span class="op">=</span> <span class="ident">code</span>.<span class="ident">original_position</span>();
@@ -182,31 +182,31 @@
                 )<span class="question-mark">?</span>;
             }
 
-            <span class="ident">Payload</span>::<span class="ident">DataSection</span>(<span class="ident">data</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Payload::DataSection</span>(<span class="ident">data</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">parse_data_section</span>(<span class="ident">data</span>, <span class="ident">environ</span>)<span class="question-mark">?</span>;
             }
 
-            <span class="ident">Payload</span>::<span class="ident">DataCountSection</span> { <span class="ident">count</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Payload::DataCountSection</span> { <span class="ident">count</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">environ</span>.<span class="ident">reserve_passive_data</span>(<span class="ident">count</span>)<span class="question-mark">?</span>;
             }
 
-            <span class="ident">Payload</span>::<span class="ident">ModuleSection</span>(<span class="kw">_</span>)
-            <span class="op">|</span> <span class="ident">Payload</span>::<span class="ident">InstanceSection</span>(<span class="kw">_</span>)
-            <span class="op">|</span> <span class="ident">Payload</span>::<span class="ident">AliasSection</span>(<span class="kw">_</span>)
-            <span class="op">|</span> <span class="ident">Payload</span>::<span class="ident">ModuleCodeSectionStart</span> { .. }
-            <span class="op">|</span> <span class="ident">Payload</span>::<span class="ident">ModuleCodeSectionEntry</span> { .. } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Payload::ModuleSection</span>(<span class="kw">_</span>)
+            <span class="op">|</span> <span class="ident">Payload::InstanceSection</span>(<span class="kw">_</span>)
+            <span class="op">|</span> <span class="ident">Payload::AliasSection</span>(<span class="kw">_</span>)
+            <span class="op">|</span> <span class="ident">Payload::ModuleCodeSectionStart</span> { .. }
+            <span class="op">|</span> <span class="ident">Payload::ModuleCodeSectionEntry</span> { .. } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">unimplemented!</span>(<span class="string">&quot;module linking not implemented yet&quot;</span>)
             }
 
-            <span class="ident">Payload</span>::<span class="ident">CustomSection</span> {
+            <span class="ident">Payload::CustomSection</span> {
                 <span class="ident">name</span>: <span class="string">&quot;name&quot;</span>,
                 <span class="ident">data</span>,
                 <span class="ident">data_offset</span>,
-            } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">parse_name_section</span>(<span class="ident">NameSectionReader</span>::<span class="ident">new</span>(<span class="ident">data</span>, <span class="ident">data_offset</span>)<span class="question-mark">?</span>, <span class="ident">environ</span>)<span class="question-mark">?</span>,
+            } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">parse_name_section</span>(<span class="ident">NameSectionReader::new</span>(<span class="ident">data</span>, <span class="ident">data_offset</span>)<span class="question-mark">?</span>, <span class="ident">environ</span>)<span class="question-mark">?</span>,
 
-            <span class="ident">Payload</span>::<span class="ident">CustomSection</span> { <span class="ident">name</span>, <span class="ident">data</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">environ</span>.<span class="ident">custom_section</span>(<span class="ident">name</span>, <span class="ident">data</span>)<span class="question-mark">?</span>,
+            <span class="ident">Payload::CustomSection</span> { <span class="ident">name</span>, <span class="ident">data</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">environ</span>.<span class="ident">custom_section</span>(<span class="ident">name</span>, <span class="ident">data</span>)<span class="question-mark">?</span>,
 
-            <span class="ident">Payload</span>::<span class="ident">UnknownSection</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="ident">Payload::UnknownSection</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
         }
     }
 

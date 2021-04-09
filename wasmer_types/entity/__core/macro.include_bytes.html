@@ -24,7 +24,7 @@ contents:</p>
 <span class="kw">fn</span> <span class="ident">main</span>() {
     <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="macro">include_bytes!</span>(<span class="string">&quot;spanish.in&quot;</span>);
     <span class="macro">assert_eq!</span>(<span class="ident">bytes</span>, <span class="string">b&quot;adi\xc3\xb3s\n&quot;</span>);
-    <span class="macro">print!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">String</span>::<span class="ident">from_utf8_lossy</span>(<span class="ident">bytes</span>));
+    <span class="macro">print!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">String::from_utf8_lossy</span>(<span class="ident">bytes</span>));
 }</pre></div>
 <p>Compiling ‘main.rs’ and running the resulting binary will print “adiós”.</p>
 </div></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="wasmer_types" data-search-js="../../../search-index.js"></div>

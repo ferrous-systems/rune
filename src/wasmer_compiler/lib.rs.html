@@ -123,18 +123,18 @@
 <span class="attribute">#![<span class="ident">warn</span>(<span class="ident">unused_import_braces</span>)]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>, <span class="ident">deny</span>(<span class="ident">unstable_features</span>))]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>), <span class="ident">no_std</span>)]</span>
-<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>, <span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">new_without_default</span>))]</span>
+<span class="attribute">#![<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>, <span class="ident">allow</span>(<span class="ident">clippy::new_without_default</span>))]</span>
 <span class="attribute">#![<span class="ident">cfg_attr</span>(
     <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;cargo-clippy&quot;</span>,
     <span class="ident">warn</span>(
-        <span class="ident">clippy</span>::<span class="ident">float_arithmetic</span>,
-        <span class="ident">clippy</span>::<span class="ident">mut_mut</span>,
-        <span class="ident">clippy</span>::<span class="ident">nonminimal_bool</span>,
-        <span class="ident">clippy</span>::<span class="ident">option_map_unwrap_or</span>,
-        <span class="ident">clippy</span>::<span class="ident">option_map_unwrap_or_else</span>,
-        <span class="ident">clippy</span>::<span class="ident">print_stdout</span>,
-        <span class="ident">clippy</span>::<span class="ident">unicode_not_nfc</span>,
-        <span class="ident">clippy</span>::<span class="ident">use_self</span>
+        <span class="ident">clippy::float_arithmetic</span>,
+        <span class="ident">clippy::mut_mut</span>,
+        <span class="ident">clippy::nonminimal_bool</span>,
+        <span class="ident">clippy::option_map_unwrap_or</span>,
+        <span class="ident">clippy::option_map_unwrap_or_else</span>,
+        <span class="ident">clippy::print_stdout</span>,
+        <span class="ident">clippy::unicode_not_nfc</span>,
+        <span class="ident">clippy::use_self</span>
     )
 )]</span>
 
@@ -153,7 +153,7 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;core&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">std</span> {
         <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">alloc</span>::{<span class="ident">borrow</span>, <span class="ident">boxed</span>, <span class="ident">str</span>, <span class="ident">string</span>, <span class="ident">sync</span>, <span class="ident">vec</span>};
-        <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
+        <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">core::fmt</span>;
         <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">hashbrown</span> <span class="kw">as</span> <span class="ident">collections</span>;
     }
 
@@ -180,35 +180,35 @@
 <span class="kw">mod</span> <span class="ident">section</span>;
 <span class="kw">mod</span> <span class="ident">sourceloc</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">address_map</span>::{<span class="ident">FunctionAddressMap</span>, <span class="ident">InstructionAddressMap</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::address_map</span>::{<span class="ident">FunctionAddressMap</span>, <span class="ident">InstructionAddressMap</span>};
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;translator&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">compiler</span>::{<span class="ident">Compiler</span>, <span class="ident">CompilerConfig</span>, <span class="ident">Symbol</span>, <span class="ident">SymbolRegistry</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::{
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::compiler</span>::{<span class="ident">Compiler</span>, <span class="ident">CompilerConfig</span>, <span class="ident">Symbol</span>, <span class="ident">SymbolRegistry</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error</span>::{
     <span class="ident">CompileError</span>, <span class="ident">MiddlewareError</span>, <span class="ident">ParseCpuFeatureError</span>, <span class="ident">WasmError</span>, <span class="ident">WasmResult</span>,
 };
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">function</span>::{
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::function</span>::{
     <span class="ident">Compilation</span>, <span class="ident">CompiledFunction</span>, <span class="ident">CompiledFunctionFrameInfo</span>, <span class="ident">CustomSections</span>, <span class="ident">Dwarf</span>, <span class="ident">FunctionBody</span>,
     <span class="ident">Functions</span>,
 };
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">jump_table</span>::{<span class="ident">JumpTable</span>, <span class="ident">JumpTableOffsets</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">module</span>::<span class="ident">CompileModuleInfo</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">relocation</span>::{<span class="ident">Relocation</span>, <span class="ident">RelocationKind</span>, <span class="ident">RelocationTarget</span>, <span class="ident">Relocations</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">section</span>::{<span class="ident">CustomSection</span>, <span class="ident">CustomSectionProtection</span>, <span class="ident">SectionBody</span>, <span class="ident">SectionIndex</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sourceloc</span>::<span class="ident">SourceLoc</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">target</span>::{
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::jump_table</span>::{<span class="ident">JumpTable</span>, <span class="ident">JumpTableOffsets</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::module::CompileModuleInfo</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::relocation</span>::{<span class="ident">Relocation</span>, <span class="ident">RelocationKind</span>, <span class="ident">RelocationTarget</span>, <span class="ident">Relocations</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::section</span>::{<span class="ident">CustomSection</span>, <span class="ident">CustomSectionProtection</span>, <span class="ident">SectionBody</span>, <span class="ident">SectionIndex</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::sourceloc::SourceLoc</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::target</span>::{
     <span class="ident">Architecture</span>, <span class="ident">BinaryFormat</span>, <span class="ident">CallingConvention</span>, <span class="ident">CpuFeature</span>, <span class="ident">Endianness</span>, <span class="ident">OperatingSystem</span>,
     <span class="ident">PointerWidth</span>, <span class="ident">Target</span>, <span class="ident">Triple</span>,
 };
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;translator&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">translator</span>::{
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::translator</span>::{
     <span class="ident">translate_module</span>, <span class="ident">wptype_to_type</span>, <span class="ident">FunctionBodyData</span>, <span class="ident">FunctionMiddleware</span>, <span class="ident">MiddlewareBinaryReader</span>,
     <span class="ident">MiddlewareReaderState</span>, <span class="ident">ModuleEnvironment</span>, <span class="ident">ModuleInfoTranslation</span>, <span class="ident">ModuleMiddleware</span>,
     <span class="ident">ModuleMiddlewareChain</span>, <span class="ident">ModuleTranslationState</span>,
 };
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">trap</span>::<span class="ident">TrapInformation</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">unwind</span>::<span class="ident">CompiledFunctionUnwindInfo</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::trap::TrapInformation</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::unwind::CompiledFunctionUnwindInfo</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">wasmer_types</span>::<span class="ident">Features</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">wasmer_types::Features</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;translator&quot;</span>)]</span>
 <span class="doccomment">/// wasmparser is exported as a module to slim compiler dependencies</span>

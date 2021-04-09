@@ -32,12 +32,12 @@ details.</p>
 <p>This code creates a Rayon task that increments a global counter.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">atomic</span>::{<span class="ident">AtomicUsize</span>, <span class="ident">Ordering</span>, <span class="ident">ATOMIC_USIZE_INIT</span>};
+<span class="kw">use</span> <span class="ident">std::sync::atomic</span>::{<span class="ident">AtomicUsize</span>, <span class="ident">Ordering</span>, <span class="ident">ATOMIC_USIZE_INIT</span>};
 
 <span class="kw">static</span> <span class="ident">GLOBAL_COUNTER</span>: <span class="ident">AtomicUsize</span> <span class="op">=</span> <span class="ident">ATOMIC_USIZE_INIT</span>;
 
-<span class="ident">rayon</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-    <span class="ident">GLOBAL_COUNTER</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">Ordering</span>::<span class="ident">SeqCst</span>);
+<span class="ident">rayon::spawn</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+    <span class="ident">GLOBAL_COUNTER</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">Ordering::SeqCst</span>);
 });</pre></div>
 </div></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="rayon" data-search-js="../search-index.js"></div>
     <script src="../main.js"></script></body></html>

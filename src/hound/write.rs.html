@@ -849,64 +849,64 @@
 <span class="comment">// See the License for the specific language governing permissions and</span>
 <span class="comment">// limitations under the License.</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fs</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::{<span class="ident">Seek</span>, <span class="ident">Write</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>;
+<span class="kw">use</span> <span class="ident">std::fs</span>;
+<span class="kw">use</span> <span class="ident">std::io</span>;
+<span class="kw">use</span> <span class="ident">std::mem</span>;
+<span class="kw">use</span> <span class="ident">std::io</span>::{<span class="ident">Seek</span>, <span class="ident">Write</span>};
+<span class="kw">use</span> <span class="ident">std::path</span>;
 <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">Error</span>, <span class="prelude-ty">Result</span>, <span class="ident">Sample</span>, <span class="ident">SampleFormat</span>, <span class="ident">WavSpec</span>};
-<span class="kw">use</span> ::<span class="ident">read</span>;
-<span class="kw">use</span> ::<span class="ident">read</span>::<span class="ident">WavSpecEx</span>;
+<span class="kw">use</span> <span class="ident">::read</span>;
+<span class="kw">use</span> <span class="ident">::read::WavSpecEx</span>;
 
 <span class="doccomment">/// Extends the functionality of `io::Write` with additional methods.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The methods may be used on any type that implements `io::Write`.</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">WriteExt</span>: <span class="ident">io</span>::<span class="ident">Write</span> {
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">WriteExt</span>: <span class="ident">io::Write</span> {
     <span class="doccomment">/// Writes an unsigned 8-bit integer.</span>
-    <span class="kw">fn</span> <span class="ident">write_u8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">write_u8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 
     <span class="doccomment">/// Writes a signed 16-bit integer in little endian format.</span>
-    <span class="kw">fn</span> <span class="ident">write_le_i16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">write_le_i16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 
     <span class="doccomment">/// Writes an unsigned 16-bit integer in little endian format.</span>
-    <span class="kw">fn</span> <span class="ident">write_le_u16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">write_le_u16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 
     <span class="doccomment">/// Writes a signed 24-bit integer in little endian format.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The most significant byte of the `i32` is ignored.</span>
-    <span class="kw">fn</span> <span class="ident">write_le_i24</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">write_le_i24</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 
     <span class="doccomment">/// Writes an unsigned 24-bit integer in little endian format.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The most significant byte of the `u32` is ignored.</span>
-    <span class="kw">fn</span> <span class="ident">write_le_u24</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">write_le_u24</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 
     <span class="doccomment">/// Writes a signed 32-bit integer in little endian format.</span>
-    <span class="kw">fn</span> <span class="ident">write_le_i32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">write_le_i32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 
     <span class="doccomment">/// Writes an unsigned 32-bit integer in little endian format.</span>
-    <span class="kw">fn</span> <span class="ident">write_le_u32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">write_le_u32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 
     <span class="doccomment">/// Writes an IEEE float in little endian format.</span>
-    <span class="kw">fn</span> <span class="ident">write_le_f32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">write_le_f32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span>;
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span> <span class="ident">WriteExt</span> <span class="kw">for</span> <span class="ident">W</span>
-    <span class="kw">where</span> <span class="ident">W</span>: <span class="ident">io</span>::<span class="ident">Write</span>
+    <span class="kw">where</span> <span class="ident">W</span>: <span class="ident">io::Write</span>
 {
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">write_u8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_u8</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="ident">x</span>];
         <span class="self">self</span>.<span class="ident">write_all</span>(<span class="kw-2">&amp;</span><span class="ident">buf</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">write_le_i16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_le_i16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">write_le_u16</span>(<span class="ident">x</span> <span class="kw">as</span> <span class="ident">u16</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">write_le_u16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_le_u16</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">2</span>];
         <span class="ident">buf</span>[<span class="number">0</span>] <span class="op">=</span> (<span class="ident">x</span> <span class="op">&amp;</span> <span class="number">0xff</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="ident">buf</span>[<span class="number">1</span>] <span class="op">=</span> (<span class="ident">x</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">8</span>) <span class="kw">as</span> <span class="ident">u8</span>;
@@ -914,12 +914,12 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">write_le_i24</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_le_i24</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">write_le_u24</span>(<span class="ident">x</span> <span class="kw">as</span> <span class="ident">u32</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">write_le_u24</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_le_u24</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">3</span>];
         <span class="ident">buf</span>[<span class="number">0</span>] <span class="op">=</span> ((<span class="ident">x</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">00</span>) <span class="op">&amp;</span> <span class="number">0xff</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="ident">buf</span>[<span class="number">1</span>] <span class="op">=</span> ((<span class="ident">x</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">08</span>) <span class="op">&amp;</span> <span class="number">0xff</span>) <span class="kw">as</span> <span class="ident">u8</span>;
@@ -928,12 +928,12 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">write_le_i32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_le_i32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">write_le_u32</span>(<span class="ident">x</span> <span class="kw">as</span> <span class="ident">u32</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">write_le_u32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_le_u32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">4</span>];
         <span class="ident">buf</span>[<span class="number">0</span>] <span class="op">=</span> ((<span class="ident">x</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">00</span>) <span class="op">&amp;</span> <span class="number">0xff</span>) <span class="kw">as</span> <span class="ident">u8</span>;
         <span class="ident">buf</span>[<span class="number">1</span>] <span class="op">=</span> ((<span class="ident">x</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">08</span>) <span class="op">&amp;</span> <span class="number">0xff</span>) <span class="kw">as</span> <span class="ident">u8</span>;
@@ -943,8 +943,8 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">write_le_f32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">u</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="ident">x</span>) };
+    <span class="kw">fn</span> <span class="ident">write_le_f32</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">x</span>: <span class="ident">f32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">u</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::transmute</span>(<span class="ident">x</span>) };
         <span class="self">self</span>.<span class="ident">write_le_u32</span>(<span class="ident">u</span>)
     }
 }
@@ -973,7 +973,7 @@
 <span class="doccomment">/// be finalized upon drop. However, finalization may fail, and without calling</span>
 <span class="doccomment">/// `finalize`, such a failure cannot be observed.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WavWriter</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span>
-    <span class="kw">where</span> <span class="ident">W</span>: <span class="ident">io</span>::<span class="ident">Write</span> <span class="op">+</span> <span class="ident">io</span>::<span class="ident">Seek</span>
+    <span class="kw">where</span> <span class="ident">W</span>: <span class="ident">io::Write</span> <span class="op">+</span> <span class="ident">io::Seek</span>
 {
     <span class="doccomment">/// Specifies properties of the audio data.</span>
     <span class="ident">spec</span>: <span class="ident">WavSpec</span>,
@@ -1010,7 +1010,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span> <span class="ident">WavWriter</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span>
-    <span class="kw">where</span> <span class="ident">W</span>: <span class="ident">io</span>::<span class="ident">Write</span> <span class="op">+</span> <span class="ident">io</span>::<span class="ident">Seek</span>
+    <span class="kw">where</span> <span class="ident">W</span>: <span class="ident">io::Write</span> <span class="op">+</span> <span class="ident">io::Seek</span>
 {
     <span class="doccomment">/// Creates a writer that writes the WAVE format to the underlying writer.</span>
     <span class="doccomment">///</span>
@@ -1027,9 +1027,9 @@
         <span class="comment">// bits per sample, the newer WAVEFORMATEXTENSIBLE is required. See also</span>
         <span class="comment">// https://msdn.microsoft.com/en-us/library/ms713497.aspx.</span>
         <span class="kw">let</span> <span class="ident">fmt_kind</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">spec</span>.<span class="ident">channels</span> <span class="op">&gt;</span> <span class="number">2</span> <span class="op">|</span><span class="op">|</span> <span class="ident">spec</span>.<span class="ident">bits_per_sample</span> <span class="op">&gt;</span> <span class="number">16</span> {
-            <span class="ident">FmtKind</span>::<span class="ident">WaveFormatExtensible</span>
+            <span class="ident">FmtKind::WaveFormatExtensible</span>
         } <span class="kw">else</span> {
-            <span class="ident">FmtKind</span>::<span class="ident">PcmWaveFormat</span>
+            <span class="ident">FmtKind::PcmWaveFormat</span>
         };
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writer</span> <span class="op">=</span> <span class="ident">WavWriter</span> {
@@ -1037,11 +1037,11 @@
             <span class="ident">bytes_per_sample</span>: (<span class="ident">spec</span>.<span class="ident">bits_per_sample</span> <span class="op">+</span> <span class="number">7</span>) <span class="op">/</span> <span class="number">8</span>,
             <span class="ident">writer</span>: <span class="ident">writer</span>,
             <span class="ident">data_bytes_written</span>: <span class="number">0</span>,
-            <span class="ident">sample_writer_buffer</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
+            <span class="ident">sample_writer_buffer</span>: <span class="ident">Vec::new</span>(),
             <span class="ident">finalized</span>: <span class="bool-val">false</span>,
             <span class="ident">data_len_offset</span>: <span class="kw">match</span> <span class="ident">fmt_kind</span> {
-                <span class="ident">FmtKind</span>::<span class="ident">WaveFormatExtensible</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">64</span>,
-                <span class="ident">FmtKind</span>::<span class="ident">PcmWaveFormat</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">40</span>,
+                <span class="ident">FmtKind::WaveFormatExtensible</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">64</span>,
+                <span class="ident">FmtKind::PcmWaveFormat</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">40</span>,
             },
         };
 
@@ -1057,7 +1057,7 @@
         };
 
         <span class="kw">if</span> <span class="op">!</span><span class="ident">supported</span> {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Unsupported</span>)
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::Unsupported</span>)
         }
 
         <span class="comment">// Write headers, up to the point where data should be written.</span>
@@ -1067,12 +1067,12 @@
     }
 
     <span class="doccomment">/// Writes the RIFF WAVE header, fmt chunk, and data chunk header.</span>
-    <span class="kw">fn</span> <span class="ident">write_headers</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">fmt_kind</span>: <span class="ident">FmtKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_headers</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">fmt_kind</span>: <span class="ident">FmtKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="comment">// Write to an in-memory buffer before writing to the underlying writer.</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">header</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">68</span>];
 
         {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">Cursor</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">header</span>[..]);
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">io::Cursor::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">header</span>[..]);
 
             <span class="comment">// Write the headers for the RIFF WAVE format.</span>
             <span class="macro">try!</span>(<span class="ident">buffer</span>.<span class="ident">write_all</span>(<span class="string">&quot;RIFF&quot;</span>.<span class="ident">as_bytes</span>()));
@@ -1084,10 +1084,10 @@
             <span class="macro">try!</span>(<span class="ident">buffer</span>.<span class="ident">write_all</span>(<span class="string">&quot;fmt &quot;</span>.<span class="ident">as_bytes</span>()));
 
             <span class="kw">match</span> <span class="ident">fmt_kind</span> {
-                <span class="ident">FmtKind</span>::<span class="ident">PcmWaveFormat</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">FmtKind::PcmWaveFormat</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">write_pcmwaveformat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buffer</span>));
                 }
-                <span class="ident">FmtKind</span>::<span class="ident">WaveFormatExtensible</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">FmtKind::WaveFormatExtensible</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">write_waveformatextensible</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buffer</span>));
                 }
             }
@@ -1109,7 +1109,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// The `WAVEFORMAT` struct is a subset of both `WAVEFORMATEX` and</span>
     <span class="doccomment">/// `WAVEFORMATEXTENSIBLE`. This does not write the `wFormatTag` member.</span>
-    <span class="kw">fn</span> <span class="ident">write_waveformat</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">io</span>::<span class="ident">Cursor</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_waveformat</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">io::Cursor</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">spec</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">spec</span>;
         <span class="comment">// The field nChannels.</span>
         <span class="macro">try!</span>(<span class="ident">buffer</span>.<span class="ident">write_le_u16</span>(<span class="ident">spec</span>.<span class="ident">channels</span>));
@@ -1130,7 +1130,7 @@
     }
 
     <span class="doccomment">/// Writes the content of the fmt chunk as PCMWAVEFORMAT struct.</span>
-    <span class="kw">fn</span> <span class="ident">write_pcmwaveformat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">io</span>::<span class="ident">Cursor</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_pcmwaveformat</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">io::Cursor</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="comment">// Write the size of the WAVE header chunk.</span>
         <span class="macro">try!</span>(<span class="ident">buffer</span>.<span class="ident">write_le_u32</span>(<span class="number">16</span>));
 
@@ -1141,11 +1141,11 @@
         <span class="comment">// The field wFormatTag</span>
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">spec</span>.<span class="ident">sample_format</span> {
             <span class="comment">// WAVE_FORMAT_PCM</span>
-            <span class="ident">SampleFormat</span>::<span class="ident">Int</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">SampleFormat::Int</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">try!</span>(<span class="ident">buffer</span>.<span class="ident">write_le_u16</span>(<span class="number">1</span>));
             },
             <span class="comment">// WAVE_FORMAT_IEEE_FLOAT</span>
-            <span class="ident">SampleFormat</span>::<span class="ident">Float</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">SampleFormat::Float</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">if</span> <span class="self">self</span>.<span class="ident">spec</span>.<span class="ident">bits_per_sample</span> <span class="op">=</span><span class="op">=</span> <span class="number">32</span> {
                     <span class="macro">try!</span>(<span class="ident">buffer</span>.<span class="ident">write_le_u16</span>(<span class="number">3</span>));
                 } <span class="kw">else</span> {
@@ -1169,7 +1169,7 @@
     }
 
     <span class="doccomment">/// Writes the contents of the fmt chunk as WAVEFORMATEXTENSIBLE struct.</span>
-    <span class="kw">fn</span> <span class="ident">write_waveformatextensible</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">io</span>::<span class="ident">Cursor</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_waveformatextensible</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">io::Cursor</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="comment">// Write the size of the WAVE header chunk.</span>
         <span class="macro">try!</span>(<span class="ident">buffer</span>.<span class="ident">write_le_u32</span>(<span class="number">40</span>));
 
@@ -1198,11 +1198,11 @@
         <span class="comment">// The field SubFormat.</span>
         <span class="kw">let</span> <span class="ident">subformat_guid</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">spec</span>.<span class="ident">sample_format</span> {
             <span class="comment">// PCM audio with integer samples.</span>
-            <span class="ident">SampleFormat</span>::<span class="ident">Int</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">super</span>::<span class="ident">KSDATAFORMAT_SUBTYPE_PCM</span>,
+            <span class="ident">SampleFormat::Int</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">super</span><span class="ident">::KSDATAFORMAT_SUBTYPE_PCM</span>,
             <span class="comment">// PCM audio with 32-bit IEEE float samples.</span>
-            <span class="ident">SampleFormat</span>::<span class="ident">Float</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">SampleFormat::Float</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">if</span> <span class="self">self</span>.<span class="ident">spec</span>.<span class="ident">bits_per_sample</span> <span class="op">=</span><span class="op">=</span> <span class="number">32</span> {
-                    <span class="kw">super</span>::<span class="ident">KSDATAFORMAT_SUBTYPE_IEEE_FLOAT</span>
+                    <span class="kw">super</span><span class="ident">::KSDATAFORMAT_SUBTYPE_IEEE_FLOAT</span>
                 } <span class="kw">else</span> {
                     <span class="macro">panic!</span>(<span class="string">&quot;Invalid number of bits per sample. \
                            When writing SampleFormat::Float, \
@@ -1245,7 +1245,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_i16_writer</span><span class="op">&lt;</span><span class="lifetime">&#39;s</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;s</span> <span class="kw-2">mut</span> <span class="self">self</span>,
                               <span class="ident">num_samples</span>: <span class="ident">u32</span>)
                               <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SampleWriter16</span><span class="op">&lt;</span><span class="lifetime">&#39;s</span>, <span class="ident">W</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">spec</span>.<span class="ident">sample_format</span> <span class="op">!</span><span class="op">=</span> <span class="ident">SampleFormat</span>::<span class="ident">Int</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">spec</span>.<span class="ident">sample_format</span> <span class="op">!</span><span class="op">=</span> <span class="ident">SampleFormat::Int</span> {
             <span class="macro">panic!</span>(<span class="string">&quot;When calling get_i16_writer, the sample format must be int.&quot;</span>);
         }
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">spec</span>.<span class="ident">bits_per_sample</span> <span class="op">!</span><span class="op">=</span> <span class="number">16</span> {
@@ -1258,7 +1258,7 @@
             <span class="comment">// We need a bigger buffer. There is no point in growing the old</span>
             <span class="comment">// one, as we are going to overwrite the samples anyway, so just</span>
             <span class="comment">// allocate a new one.</span>
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_buffer</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">with_capacity</span>(<span class="ident">num_bytes</span>);
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_buffer</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">num_bytes</span>);
 
             <span class="comment">// The potentially garbage memory here will not be exposed: the</span>
             <span class="comment">// buffer is only exposed when flushing, but `flush()` asserts that</span>
@@ -1282,9 +1282,9 @@
         <span class="kw">let</span> <span class="ident">header_size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">data_len_offset</span> <span class="op">+</span> <span class="number">4</span> <span class="op">-</span> <span class="number">8</span>;
         <span class="kw">let</span> <span class="ident">file_size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">data_bytes_written</span> <span class="op">+</span> <span class="ident">header_size</span>;
 
-        <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">writer</span>.<span class="ident">seek</span>(<span class="ident">io</span>::<span class="ident">SeekFrom</span>::<span class="ident">Start</span>(<span class="number">4</span>)));
+        <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">writer</span>.<span class="ident">seek</span>(<span class="ident">io::SeekFrom::Start</span>(<span class="number">4</span>)));
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">writer</span>.<span class="ident">write_le_u32</span>(<span class="ident">file_size</span>));
-        <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">writer</span>.<span class="ident">seek</span>(<span class="ident">io</span>::<span class="ident">SeekFrom</span>::<span class="ident">Start</span>(<span class="self">self</span>.<span class="ident">data_len_offset</span> <span class="kw">as</span> <span class="ident">u64</span>)));
+        <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">writer</span>.<span class="ident">seek</span>(<span class="ident">io::SeekFrom::Start</span>(<span class="self">self</span>.<span class="ident">data_len_offset</span> <span class="kw">as</span> <span class="ident">u64</span>)));
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">writer</span>.<span class="ident">write_le_u32</span>(<span class="self">self</span>.<span class="ident">data_bytes_written</span>));
 
         <span class="comment">// Signal error if the last sample was not finished, but do so after</span>
@@ -1292,7 +1292,7 @@
         <span class="comment">// the file is now ill-formed.</span>
         <span class="kw">if</span> (<span class="self">self</span>.<span class="ident">data_bytes_written</span> <span class="op">/</span> <span class="self">self</span>.<span class="ident">bytes_per_sample</span> <span class="kw">as</span> <span class="ident">u32</span>)
             <span class="op">%</span> <span class="self">self</span>.<span class="ident">spec</span>.<span class="ident">channels</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">UnfinishedSample</span>)
+            <span class="prelude-val">Err</span>(<span class="ident">Error::UnfinishedSample</span>)
         } <span class="kw">else</span> {
             <span class="prelude-val">Ok</span>(())
         }
@@ -1316,10 +1316,10 @@
     <span class="doccomment">/// It is not necessary to call `finalize()` directly after `flush()`, if no</span>
     <span class="doccomment">/// samples have been written after flushing.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">current_pos</span> <span class="op">=</span> <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">writer</span>.<span class="ident">seek</span>(<span class="ident">io</span>::<span class="ident">SeekFrom</span>::<span class="ident">Current</span>(<span class="number">0</span>)));
+        <span class="kw">let</span> <span class="ident">current_pos</span> <span class="op">=</span> <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">writer</span>.<span class="ident">seek</span>(<span class="ident">io::SeekFrom::Current</span>(<span class="number">0</span>)));
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">update_header</span>());
         <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">writer</span>.<span class="ident">flush</span>());
-        <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">writer</span>.<span class="ident">seek</span>(<span class="ident">io</span>::<span class="ident">SeekFrom</span>::<span class="ident">Start</span>(<span class="ident">current_pos</span>)));
+        <span class="macro">try!</span>(<span class="self">self</span>.<span class="ident">writer</span>.<span class="ident">seek</span>(<span class="ident">io::SeekFrom::Start</span>(<span class="ident">current_pos</span>)));
         <span class="prelude-val">Ok</span>(())
     }
 
@@ -1368,7 +1368,7 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">WavWriter</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span>
-    <span class="kw">where</span> <span class="ident">W</span>: <span class="ident">io</span>::<span class="ident">Write</span> <span class="op">+</span> <span class="ident">io</span>::<span class="ident">Seek</span>
+    <span class="kw">where</span> <span class="ident">W</span>: <span class="ident">io::Write</span> <span class="op">+</span> <span class="ident">io::Seek</span>
 {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="comment">// If the file was not explicitly finalized (to update the headers), do</span>
@@ -1383,15 +1383,15 @@
 <span class="doccomment">/// Reads the relevant parts of the header required to support append.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Returns (spec_ex, data_len, data_len_offset).</span>
-<span class="kw">fn</span> <span class="ident">read_append</span><span class="op">&lt;</span><span class="ident">W</span>: <span class="ident">io</span>::<span class="ident">Read</span> <span class="op">+</span> <span class="ident">io</span>::<span class="ident">Seek</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="ident">reader</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">W</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">WavSpecEx</span>, <span class="ident">u32</span>, <span class="ident">u32</span>)<span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">read_append</span><span class="op">&lt;</span><span class="ident">W</span>: <span class="ident">io::Read</span> <span class="op">+</span> <span class="ident">io::Seek</span><span class="op">&gt;</span>(<span class="kw-2">mut</span> <span class="ident">reader</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">W</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">WavSpecEx</span>, <span class="ident">u32</span>, <span class="ident">u32</span>)<span class="op">&gt;</span> {
     <span class="kw">let</span> (<span class="ident">spec_ex</span>, <span class="ident">data_len</span>) <span class="op">=</span> {
-        <span class="macro">try!</span>(<span class="ident">read</span>::<span class="ident">read_wave_header</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">reader</span>));
-        <span class="macro">try!</span>(<span class="ident">read</span>::<span class="ident">read_until_data</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">reader</span>))
+        <span class="macro">try!</span>(<span class="ident">read::read_wave_header</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">reader</span>));
+        <span class="macro">try!</span>(<span class="ident">read::read_until_data</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">reader</span>))
     };
 
     <span class="comment">// Record the position of the data chunk length, so we can overwrite it</span>
     <span class="comment">// later.</span>
-    <span class="kw">let</span> <span class="ident">data_len_offset</span> <span class="op">=</span> <span class="macro">try!</span>(<span class="ident">reader</span>.<span class="ident">seek</span>(<span class="ident">io</span>::<span class="ident">SeekFrom</span>::<span class="ident">Current</span>(<span class="number">0</span>))) <span class="kw">as</span> <span class="ident">u32</span> <span class="op">-</span> <span class="number">4</span>;
+    <span class="kw">let</span> <span class="ident">data_len_offset</span> <span class="op">=</span> <span class="macro">try!</span>(<span class="ident">reader</span>.<span class="ident">seek</span>(<span class="ident">io::SeekFrom::Current</span>(<span class="number">0</span>))) <span class="kw">as</span> <span class="ident">u32</span> <span class="op">-</span> <span class="number">4</span>;
 
     <span class="kw">let</span> <span class="ident">spec</span> <span class="op">=</span> <span class="ident">spec_ex</span>.<span class="ident">spec</span>;
     <span class="kw">let</span> <span class="ident">num_samples</span> <span class="op">=</span> <span class="ident">data_len</span> <span class="op">/</span> <span class="ident">spec_ex</span>.<span class="ident">bytes_per_sample</span> <span class="kw">as</span> <span class="ident">u32</span>;
@@ -1400,7 +1400,7 @@
     <span class="comment">// bytes we write will be off.</span>
     <span class="kw">if</span> <span class="ident">num_samples</span> <span class="op">*</span> <span class="ident">spec_ex</span>.<span class="ident">bytes_per_sample</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">!</span><span class="op">=</span> <span class="ident">data_len</span> {
         <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="string">&quot;data chunk length is not a multiple of sample size&quot;</span>;
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">FormatError</span>(<span class="ident">msg</span>));
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::FormatError</span>(<span class="ident">msg</span>));
     }
 
     <span class="comment">// Hound cannot read or write other bit depths than those, so rather</span>
@@ -1414,31 +1414,31 @@
     };
 
     <span class="kw">if</span> <span class="op">!</span><span class="ident">supported</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">Unsupported</span>);
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::Unsupported</span>);
     }
 
     <span class="comment">// The number of samples must be a multiple of the number of channels,</span>
     <span class="comment">// otherwise the last inter-channel sample would not have data for all</span>
     <span class="comment">// channels.</span>
     <span class="kw">if</span> <span class="ident">num_samples</span> <span class="op">%</span> <span class="ident">spec_ex</span>.<span class="ident">spec</span>.<span class="ident">channels</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">FormatError</span>(<span class="string">&quot;invalid data chunk length&quot;</span>));
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::FormatError</span>(<span class="string">&quot;invalid data chunk length&quot;</span>));
     }
 
     <span class="prelude-val">Ok</span>((<span class="ident">spec_ex</span>, <span class="ident">data_len</span>, <span class="ident">data_len_offset</span>))
 }
 
-<span class="kw">impl</span> <span class="ident">WavWriter</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="ident">BufWriter</span><span class="op">&lt;</span><span class="ident">fs</span>::<span class="ident">File</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">WavWriter</span><span class="op">&lt;</span><span class="ident">io::BufWriter</span><span class="op">&lt;</span><span class="ident">fs::File</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Creates a writer that writes the WAVE format to a file.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This is a convenience constructor that creates the file, wraps it in a</span>
     <span class="doccomment">/// `BufWriter`, and then constructs a `WavWriter` from it. The file will</span>
     <span class="doccomment">/// be overwritten if it exists.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">path</span>::<span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">filename</span>: <span class="ident">P</span>,
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">path::Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">filename</span>: <span class="ident">P</span>,
                                         <span class="ident">spec</span>: <span class="ident">WavSpec</span>)
-                                        <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WavWriter</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="ident">BufWriter</span><span class="op">&lt;</span><span class="ident">fs</span>::<span class="ident">File</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="macro">try!</span>(<span class="ident">fs</span>::<span class="ident">File</span>::<span class="ident">create</span>(<span class="ident">filename</span>));
-        <span class="kw">let</span> <span class="ident">buf_writer</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">BufWriter</span>::<span class="ident">new</span>(<span class="ident">file</span>);
-        <span class="ident">WavWriter</span>::<span class="ident">new</span>(<span class="ident">buf_writer</span>, <span class="ident">spec</span>)
+                                        <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WavWriter</span><span class="op">&lt;</span><span class="ident">io::BufWriter</span><span class="op">&lt;</span><span class="ident">fs::File</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">file</span> <span class="op">=</span> <span class="macro">try!</span>(<span class="ident">fs::File::create</span>(<span class="ident">filename</span>));
+        <span class="kw">let</span> <span class="ident">buf_writer</span> <span class="op">=</span> <span class="ident">io::BufWriter::new</span>(<span class="ident">file</span>);
+        <span class="ident">WavWriter::new</span>(<span class="ident">buf_writer</span>, <span class="ident">spec</span>)
     }
 
     <span class="doccomment">/// Creates a writer that appends samples to an existing file.</span>
@@ -1448,27 +1448,27 @@
     <span class="doccomment">/// appending `WavWriter` that writes to the file using a `BufWriter`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See `WavWriter::new_append()` for more details about append behavior.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">append</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">path</span>::<span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">filename</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WavWriter</span><span class="op">&lt;</span><span class="ident">io</span>::<span class="ident">BufWriter</span><span class="op">&lt;</span><span class="ident">fs</span>::<span class="ident">File</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">append</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">path::Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">filename</span>: <span class="ident">P</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WavWriter</span><span class="op">&lt;</span><span class="ident">io::BufWriter</span><span class="op">&lt;</span><span class="ident">fs::File</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="comment">// Open the file in append mode, start reading from the start.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file</span> <span class="op">=</span> <span class="macro">try!</span>(<span class="ident">fs</span>::<span class="ident">OpenOptions</span>::<span class="ident">new</span>().<span class="ident">read</span>(<span class="bool-val">true</span>).<span class="ident">write</span>(<span class="bool-val">true</span>).<span class="ident">open</span>(<span class="ident">filename</span>));
-        <span class="macro">try!</span>(<span class="ident">file</span>.<span class="ident">seek</span>(<span class="ident">io</span>::<span class="ident">SeekFrom</span>::<span class="ident">Start</span>(<span class="number">0</span>)));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file</span> <span class="op">=</span> <span class="macro">try!</span>(<span class="ident">fs::OpenOptions::new</span>().<span class="ident">read</span>(<span class="bool-val">true</span>).<span class="ident">write</span>(<span class="bool-val">true</span>).<span class="ident">open</span>(<span class="ident">filename</span>));
+        <span class="macro">try!</span>(<span class="ident">file</span>.<span class="ident">seek</span>(<span class="ident">io::SeekFrom::Start</span>(<span class="number">0</span>)));
 
         <span class="comment">// Read the header using a buffered reader.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf_reader</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">BufReader</span>::<span class="ident">new</span>(<span class="ident">file</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf_reader</span> <span class="op">=</span> <span class="ident">io::BufReader::new</span>(<span class="ident">file</span>);
         <span class="kw">let</span> (<span class="ident">spec_ex</span>, <span class="ident">data_len</span>, <span class="ident">data_len_offset</span>) <span class="op">=</span> <span class="macro">try!</span>(<span class="ident">read_append</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buf_reader</span>));
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">buf_reader</span>.<span class="ident">into_inner</span>();
 
         <span class="comment">// Seek to the data position, and from now on, write using a buffered</span>
         <span class="comment">// writer.</span>
-        <span class="macro">try!</span>(<span class="ident">file</span>.<span class="ident">seek</span>(<span class="ident">io</span>::<span class="ident">SeekFrom</span>::<span class="ident">Current</span>(<span class="ident">data_len</span> <span class="kw">as</span> <span class="ident">i64</span>)));
-        <span class="kw">let</span> <span class="ident">buf_writer</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">BufWriter</span>::<span class="ident">new</span>(<span class="ident">file</span>);
+        <span class="macro">try!</span>(<span class="ident">file</span>.<span class="ident">seek</span>(<span class="ident">io::SeekFrom::Current</span>(<span class="ident">data_len</span> <span class="kw">as</span> <span class="ident">i64</span>)));
+        <span class="kw">let</span> <span class="ident">buf_writer</span> <span class="op">=</span> <span class="ident">io::BufWriter::new</span>(<span class="ident">file</span>);
 
         <span class="kw">let</span> <span class="ident">writer</span> <span class="op">=</span> <span class="ident">WavWriter</span> {
             <span class="ident">spec</span>: <span class="ident">spec_ex</span>.<span class="ident">spec</span>,
             <span class="ident">bytes_per_sample</span>: <span class="ident">spec_ex</span>.<span class="ident">bytes_per_sample</span>,
             <span class="ident">writer</span>: <span class="ident">buf_writer</span>,
             <span class="ident">data_bytes_written</span>: <span class="ident">data_len</span>,
-            <span class="ident">sample_writer_buffer</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
+            <span class="ident">sample_writer_buffer</span>: <span class="ident">Vec::new</span>(),
             <span class="ident">finalized</span>: <span class="bool-val">false</span>,
             <span class="ident">data_len_offset</span>: <span class="ident">data_len_offset</span>,
         };
@@ -1477,7 +1477,7 @@
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span> <span class="ident">WavWriter</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">W</span>: <span class="ident">io</span>::<span class="ident">Read</span> <span class="op">+</span> <span class="ident">io</span>::<span class="ident">Write</span> <span class="op">+</span> <span class="ident">io</span>::<span class="ident">Seek</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span> <span class="ident">WavWriter</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">W</span>: <span class="ident">io::Read</span> <span class="op">+</span> <span class="ident">io::Write</span> <span class="op">+</span> <span class="ident">io::Seek</span> {
     <span class="doccomment">/// Creates a writer that appends samples to an existing file stream.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This first reads the existing header to obtain the spec, then seeks to</span>
@@ -1492,13 +1492,13 @@
     <span class="doccomment">/// formats that Hound can write, the fact chunk is redundant.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_append</span>(<span class="kw-2">mut</span> <span class="ident">writer</span>: <span class="ident">W</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">WavWriter</span><span class="op">&lt;</span><span class="ident">W</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">spec_ex</span>, <span class="ident">data_len</span>, <span class="ident">data_len_offset</span>) <span class="op">=</span> <span class="macro">try!</span>(<span class="ident">read_append</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writer</span>));
-        <span class="macro">try!</span>(<span class="ident">writer</span>.<span class="ident">seek</span>(<span class="ident">io</span>::<span class="ident">SeekFrom</span>::<span class="ident">Current</span>(<span class="ident">data_len</span> <span class="kw">as</span> <span class="ident">i64</span>)));
+        <span class="macro">try!</span>(<span class="ident">writer</span>.<span class="ident">seek</span>(<span class="ident">io::SeekFrom::Current</span>(<span class="ident">data_len</span> <span class="kw">as</span> <span class="ident">i64</span>)));
         <span class="kw">let</span> <span class="ident">writer</span> <span class="op">=</span> <span class="ident">WavWriter</span> {
             <span class="ident">spec</span>: <span class="ident">spec_ex</span>.<span class="ident">spec</span>,
             <span class="ident">bytes_per_sample</span>: <span class="ident">spec_ex</span>.<span class="ident">bytes_per_sample</span>,
             <span class="ident">writer</span>: <span class="ident">writer</span>,
             <span class="ident">data_bytes_written</span>: <span class="ident">data_len</span>,
-            <span class="ident">sample_writer_buffer</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
+            <span class="ident">sample_writer_buffer</span>: <span class="ident">Vec::new</span>(),
             <span class="ident">finalized</span>: <span class="bool-val">false</span>,
             <span class="ident">data_len_offset</span>: <span class="ident">data_len_offset</span>,
         };
@@ -1524,7 +1524,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// A `SampleWriter16` can be obtained by calling [`WavWriter::get_i16_writer`](</span>
 <span class="doccomment">/// struct.WavWriter.html#method.get_i16_writer).</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SampleWriter16</span><span class="op">&lt;</span><span class="lifetime">&#39;parent</span>, <span class="ident">W</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">W</span>: <span class="ident">io</span>::<span class="ident">Write</span> <span class="op">+</span> <span class="ident">io</span>::<span class="ident">Seek</span> <span class="op">+</span> <span class="lifetime">&#39;parent</span> {
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SampleWriter16</span><span class="op">&lt;</span><span class="lifetime">&#39;parent</span>, <span class="ident">W</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">W</span>: <span class="ident">io::Write</span> <span class="op">+</span> <span class="ident">io::Seek</span> <span class="op">+</span> <span class="lifetime">&#39;parent</span> {
     <span class="doccomment">/// The writer borrowed from the wrapped WavWriter.</span>
     <span class="ident">writer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;parent</span> <span class="kw-2">mut</span> <span class="ident">W</span>,
 
@@ -1538,7 +1538,7 @@
     <span class="ident">index</span>: <span class="ident">u32</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;parent</span>, <span class="ident">W</span>: <span class="ident">io</span>::<span class="ident">Write</span> <span class="op">+</span> <span class="ident">io</span>::<span class="ident">Seek</span><span class="op">&gt;</span> <span class="ident">SampleWriter16</span><span class="op">&lt;</span><span class="lifetime">&#39;parent</span>, <span class="ident">W</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;parent</span>, <span class="ident">W</span>: <span class="ident">io::Write</span> <span class="op">+</span> <span class="ident">io::Seek</span><span class="op">&gt;</span> <span class="ident">SampleWriter16</span><span class="op">&lt;</span><span class="lifetime">&#39;parent</span>, <span class="ident">W</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Writes a single sample for one channel.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// WAVE interleaves channel data, so the channel that this writes the</span>
@@ -1570,8 +1570,8 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">write_u16_le_unchecked</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">value</span>: <span class="ident">u16</span>) {
         <span class="comment">// x86_64 is little endian, so we do not need to shuffle bytes around;</span>
         <span class="comment">// we can just store the 16-bit integer in the buffer directly.</span>
-        <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>;
-        <span class="kw">let</span> <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u16</span> <span class="op">=</span> <span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">get_unchecked_mut</span>(<span class="self">self</span>.<span class="ident">index</span> <span class="kw">as</span> <span class="ident">usize</span>));
+        <span class="kw">use</span> <span class="ident">std::mem</span>;
+        <span class="kw">let</span> <span class="ident">ptr</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u16</span> <span class="op">=</span> <span class="ident">mem::transmute</span>(<span class="self">self</span>.<span class="ident">buffer</span>.<span class="ident">get_unchecked_mut</span>(<span class="self">self</span>.<span class="ident">index</span> <span class="kw">as</span> <span class="ident">usize</span>));
         <span class="kw-2">*</span><span class="ident">ptr</span> <span class="op">=</span> <span class="ident">value</span>;
     }
 
@@ -1616,40 +1616,40 @@
 <span class="kw">fn</span> <span class="ident">short_write_should_signal_error</span>() {
     <span class="kw">use</span> <span class="ident">SampleFormat</span>;
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">Cursor</span>::<span class="ident">new</span>(<span class="ident">Vec</span>::<span class="ident">new</span>());
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">io::Cursor::new</span>(<span class="ident">Vec::new</span>());
 
     <span class="kw">let</span> <span class="ident">write_spec</span> <span class="op">=</span> <span class="ident">WavSpec</span> {
         <span class="ident">channels</span>: <span class="number">17</span>,
         <span class="ident">sample_rate</span>: <span class="number">48000</span>,
         <span class="ident">bits_per_sample</span>: <span class="number">8</span>,
-        <span class="ident">sample_format</span>: <span class="ident">SampleFormat</span>::<span class="ident">Int</span>,
+        <span class="ident">sample_format</span>: <span class="ident">SampleFormat::Int</span>,
     };
 
     <span class="comment">// Deliberately write one sample less than 17 * 5.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writer</span> <span class="op">=</span> <span class="ident">WavWriter</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buffer</span>, <span class="ident">write_spec</span>).<span class="ident">unwrap</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writer</span> <span class="op">=</span> <span class="ident">WavWriter::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buffer</span>, <span class="ident">write_spec</span>).<span class="ident">unwrap</span>();
     <span class="kw">for</span> <span class="ident">s</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">17</span> <span class="op">*</span> <span class="number">5</span> <span class="op">-</span> <span class="number">1</span> {
         <span class="ident">writer</span>.<span class="ident">write_sample</span>(<span class="ident">s</span> <span class="kw">as</span> <span class="ident">i16</span>).<span class="ident">unwrap</span>();
     }
     <span class="kw">let</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">writer</span>.<span class="ident">finalize</span>().<span class="ident">err</span>().<span class="ident">unwrap</span>();
 
     <span class="kw">match</span> <span class="ident">error</span> {
-        <span class="ident">Error</span>::<span class="ident">UnfinishedSample</span> <span class="op">=</span><span class="op">&gt;</span> {}
+        <span class="ident">Error::UnfinishedSample</span> <span class="op">=</span><span class="op">&gt;</span> {}
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;UnfinishedSample error should have been returned.&quot;</span>),
     }
 }
 
 <span class="attribute">#[<span class="ident">test</span>]</span>
 <span class="kw">fn</span> <span class="ident">wide_write_should_signal_error</span>() {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">Cursor</span>::<span class="ident">new</span>(<span class="ident">Vec</span>::<span class="ident">new</span>());
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">io::Cursor::new</span>(<span class="ident">Vec::new</span>());
 
     <span class="kw">let</span> <span class="ident">spec8</span> <span class="op">=</span> <span class="ident">WavSpec</span> {
         <span class="ident">channels</span>: <span class="number">1</span>,
         <span class="ident">sample_rate</span>: <span class="number">44100</span>,
         <span class="ident">bits_per_sample</span>: <span class="number">8</span>,
-        <span class="ident">sample_format</span>: <span class="ident">SampleFormat</span>::<span class="ident">Int</span>,
+        <span class="ident">sample_format</span>: <span class="ident">SampleFormat::Int</span>,
     };
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writer</span> <span class="op">=</span> <span class="ident">WavWriter</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buffer</span>, <span class="ident">spec8</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writer</span> <span class="op">=</span> <span class="ident">WavWriter::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buffer</span>, <span class="ident">spec8</span>).<span class="ident">unwrap</span>();
         <span class="macro">assert!</span>(<span class="ident">writer</span>.<span class="ident">write_sample</span>(<span class="number">127_i8</span>).<span class="ident">is_ok</span>());
         <span class="macro">assert!</span>(<span class="ident">writer</span>.<span class="ident">write_sample</span>(<span class="number">127_i16</span>).<span class="ident">is_ok</span>());
         <span class="macro">assert!</span>(<span class="ident">writer</span>.<span class="ident">write_sample</span>(<span class="number">127_i32</span>).<span class="ident">is_ok</span>());
@@ -1659,7 +1659,7 @@
 
     <span class="kw">let</span> <span class="ident">spec16</span> <span class="op">=</span> <span class="ident">WavSpec</span> { <span class="ident">bits_per_sample</span>: <span class="number">16</span>, ..<span class="ident">spec8</span> };
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writer</span> <span class="op">=</span> <span class="ident">WavWriter</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buffer</span>, <span class="ident">spec16</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writer</span> <span class="op">=</span> <span class="ident">WavWriter::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buffer</span>, <span class="ident">spec16</span>).<span class="ident">unwrap</span>();
         <span class="macro">assert!</span>(<span class="ident">writer</span>.<span class="ident">write_sample</span>(<span class="number">32767_i16</span>).<span class="ident">is_ok</span>());
         <span class="macro">assert!</span>(<span class="ident">writer</span>.<span class="ident">write_sample</span>(<span class="number">32767_i32</span>).<span class="ident">is_ok</span>());
         <span class="macro">assert!</span>(<span class="ident">writer</span>.<span class="ident">write_sample</span>(<span class="number">32768_i32</span>).<span class="ident">is_err</span>());
@@ -1667,7 +1667,7 @@
 
     <span class="kw">let</span> <span class="ident">spec24</span> <span class="op">=</span> <span class="ident">WavSpec</span> { <span class="ident">bits_per_sample</span>: <span class="number">24</span>, ..<span class="ident">spec8</span> };
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writer</span> <span class="op">=</span> <span class="ident">WavWriter</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buffer</span>, <span class="ident">spec24</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writer</span> <span class="op">=</span> <span class="ident">WavWriter::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">buffer</span>, <span class="ident">spec24</span>).<span class="ident">unwrap</span>();
         <span class="macro">assert!</span>(<span class="ident">writer</span>.<span class="ident">write_sample</span>(<span class="number">8_388_607_i32</span>).<span class="ident">is_ok</span>());
         <span class="macro">assert!</span>(<span class="ident">writer</span>.<span class="ident">write_sample</span>(<span class="number">8_388_608_i32</span>).<span class="ident">is_err</span>());
     }

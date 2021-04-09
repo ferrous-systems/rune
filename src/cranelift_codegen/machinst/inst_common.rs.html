@@ -63,7 +63,7 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! A place to park MachInst::Inst fragments which are common across multiple architectures.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="self">self</span>, <span class="ident">Inst</span> <span class="kw">as</span> <span class="ident">IRInst</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="self">self</span>, <span class="ident">Inst</span> <span class="kw">as</span> <span class="ident">IRInst</span>};
 
 <span class="comment">//============================================================================</span>
 <span class="comment">// Instruction input &quot;slots&quot;.</span>
@@ -109,14 +109,14 @@
 
 <span class="kw">impl</span> <span class="ident">AtomicRmwOp</span> {
     <span class="doccomment">/// Converts an `ir::AtomicRmwOp` to the corresponding `inst_common::AtomicRmwOp`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">ir_op</span>: <span class="ident">ir</span>::<span class="ident">AtomicRmwOp</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">ir_op</span>: <span class="ident">ir::AtomicRmwOp</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">ir_op</span> {
-            <span class="ident">ir</span>::<span class="ident">AtomicRmwOp</span>::<span class="ident">Add</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AtomicRmwOp</span>::<span class="ident">Add</span>,
-            <span class="ident">ir</span>::<span class="ident">AtomicRmwOp</span>::<span class="ident">Sub</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AtomicRmwOp</span>::<span class="ident">Sub</span>,
-            <span class="ident">ir</span>::<span class="ident">AtomicRmwOp</span>::<span class="ident">And</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AtomicRmwOp</span>::<span class="ident">And</span>,
-            <span class="ident">ir</span>::<span class="ident">AtomicRmwOp</span>::<span class="ident">Or</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AtomicRmwOp</span>::<span class="ident">Or</span>,
-            <span class="ident">ir</span>::<span class="ident">AtomicRmwOp</span>::<span class="ident">Xor</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AtomicRmwOp</span>::<span class="ident">Xor</span>,
-            <span class="ident">ir</span>::<span class="ident">AtomicRmwOp</span>::<span class="ident">Xchg</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AtomicRmwOp</span>::<span class="ident">Xchg</span>,
+            <span class="ident">ir::AtomicRmwOp::Add</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AtomicRmwOp::Add</span>,
+            <span class="ident">ir::AtomicRmwOp::Sub</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AtomicRmwOp::Sub</span>,
+            <span class="ident">ir::AtomicRmwOp::And</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AtomicRmwOp::And</span>,
+            <span class="ident">ir::AtomicRmwOp::Or</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AtomicRmwOp::Or</span>,
+            <span class="ident">ir::AtomicRmwOp::Xor</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AtomicRmwOp::Xor</span>,
+            <span class="ident">ir::AtomicRmwOp::Xchg</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">AtomicRmwOp::Xchg</span>,
         }
     }
 }

@@ -398,19 +398,19 @@
 <span id="395">395</span>
 <span id="396">396</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>};
+<span class="kw">use</span> <span class="ident">std::ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">mem</span>};
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">stl</span>::<span class="ident">memory</span>::<span class="ident">UniquePtr</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::model::stl::memory::UniquePtr</span>;
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span>: <span class="self">Self</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span>: <span class="self">Self</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;OperatorCodeT&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="ident">std</span>::<span class="ident">unique_ptr</span><span class="op">&lt;</span><span class="ident">OperatorCodeT</span><span class="op">&gt;</span>(<span class="ident">new</span> <span class="ident">OperatorCodeT</span>);
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="ident">std::unique_ptr</span><span class="op">&lt;</span><span class="ident">OperatorCodeT</span><span class="op">&gt;</span>(<span class="ident">new</span> <span class="ident">OperatorCodeT</span>);
             })
         }
         <span class="ident">this</span>
@@ -418,14 +418,14 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span>;
+<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span>;
 
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;OperatorCodeT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span> <span class="kw">as</span> <span class="string">&quot;const OperatorCodeT*&quot;</span> {
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;OperatorCodeT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span> <span class="kw">as</span> <span class="string">&quot;const OperatorCodeT*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">get</span>();
-            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Target</span>;
 
             <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>()
         }
@@ -433,12 +433,12 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span> {
+<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;OperatorCodeT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span> <span class="kw">as</span> <span class="string">&quot;OperatorCodeT*&quot;</span> {
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;OperatorCodeT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span> <span class="kw">as</span> <span class="string">&quot;OperatorCodeT*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">get</span>();
-            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span>;
 
             <span class="ident">ptr</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>()
         }
@@ -446,20 +446,20 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorCodeT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorCodeT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;({:?})&quot;</span>, <span class="self">self</span>.<span class="ident">deref</span>())
     }
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span>: <span class="self">Self</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span>: <span class="self">Self</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;TensorT&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="ident">std</span>::<span class="ident">unique_ptr</span><span class="op">&lt;</span><span class="ident">TensorT</span><span class="op">&gt;</span>(<span class="ident">new</span> <span class="ident">TensorT</span>);
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="ident">std::unique_ptr</span><span class="op">&lt;</span><span class="ident">TensorT</span><span class="op">&gt;</span>(<span class="ident">new</span> <span class="ident">TensorT</span>);
             })
         }
         <span class="ident">this</span>
@@ -467,14 +467,14 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span>;
+<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::model::TensorT</span>;
 
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;TensorT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span> <span class="kw">as</span> <span class="string">&quot;const TensorT*&quot;</span> {
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;TensorT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">crate</span><span class="ident">::model::TensorT</span> <span class="kw">as</span> <span class="string">&quot;const TensorT*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">get</span>();
-            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Target</span>;
 
             <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>()
         }
@@ -482,12 +482,12 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span> {
+<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;TensorT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span> <span class="kw">as</span> <span class="string">&quot;TensorT*&quot;</span> {
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;TensorT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">crate</span><span class="ident">::model::TensorT</span> <span class="kw">as</span> <span class="string">&quot;TensorT*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">get</span>();
-            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span>;
 
             <span class="ident">ptr</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>()
         }
@@ -495,20 +495,20 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">TensorT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::TensorT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;({:?})&quot;</span>, <span class="self">self</span>.<span class="ident">deref</span>())
     }
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span>: <span class="self">Self</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span>: <span class="self">Self</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;OperatorT&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="ident">std</span>::<span class="ident">unique_ptr</span><span class="op">&lt;</span><span class="ident">OperatorT</span><span class="op">&gt;</span>(<span class="ident">new</span> <span class="ident">OperatorT</span>);
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="ident">std::unique_ptr</span><span class="op">&lt;</span><span class="ident">OperatorT</span><span class="op">&gt;</span>(<span class="ident">new</span> <span class="ident">OperatorT</span>);
             })
         }
         <span class="ident">this</span>
@@ -516,14 +516,14 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span>;
+<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::model::OperatorT</span>;
 
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;OperatorT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span> <span class="kw">as</span> <span class="string">&quot;const OperatorT*&quot;</span> {
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;OperatorT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">crate</span><span class="ident">::model::OperatorT</span> <span class="kw">as</span> <span class="string">&quot;const OperatorT*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">get</span>();
-            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Target</span>;
 
             <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>()
         }
@@ -531,12 +531,12 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span> {
+<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;OperatorT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span> <span class="kw">as</span> <span class="string">&quot;OperatorT*&quot;</span> {
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;OperatorT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">crate</span><span class="ident">::model::OperatorT</span> <span class="kw">as</span> <span class="string">&quot;OperatorT*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">get</span>();
-            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span>;
 
             <span class="ident">ptr</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>()
         }
@@ -544,20 +544,20 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">OperatorT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::OperatorT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;({:?})&quot;</span>, <span class="self">self</span>.<span class="ident">deref</span>())
     }
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span>: <span class="self">Self</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span>: <span class="self">Self</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;SubGraphT&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="ident">std</span>::<span class="ident">unique_ptr</span><span class="op">&lt;</span><span class="ident">SubGraphT</span><span class="op">&gt;</span>(<span class="ident">new</span> <span class="ident">SubGraphT</span>);
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="ident">std::unique_ptr</span><span class="op">&lt;</span><span class="ident">SubGraphT</span><span class="op">&gt;</span>(<span class="ident">new</span> <span class="ident">SubGraphT</span>);
             })
         }
         <span class="ident">this</span>
@@ -565,14 +565,14 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span>;
+<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::model::SubGraphT</span>;
 
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;SubGraphT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span> <span class="kw">as</span> <span class="string">&quot;const SubGraphT*&quot;</span> {
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;SubGraphT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">crate</span><span class="ident">::model::SubGraphT</span> <span class="kw">as</span> <span class="string">&quot;const SubGraphT*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">get</span>();
-            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Target</span>;
 
             <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>()
         }
@@ -580,12 +580,12 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span> {
+<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;SubGraphT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span> <span class="kw">as</span> <span class="string">&quot;SubGraphT*&quot;</span> {
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;SubGraphT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">crate</span><span class="ident">::model::SubGraphT</span> <span class="kw">as</span> <span class="string">&quot;SubGraphT*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">get</span>();
-            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span>;
 
             <span class="ident">ptr</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>()
         }
@@ -593,20 +593,20 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">SubGraphT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::SubGraphT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;({:?})&quot;</span>, <span class="self">self</span>.<span class="ident">deref</span>())
     }
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span>: <span class="self">Self</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span>: <span class="self">Self</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;BufferT&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="ident">std</span>::<span class="ident">unique_ptr</span><span class="op">&lt;</span><span class="ident">BufferT</span><span class="op">&gt;</span>(<span class="ident">new</span> <span class="ident">BufferT</span>);
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="ident">std::unique_ptr</span><span class="op">&lt;</span><span class="ident">BufferT</span><span class="op">&gt;</span>(<span class="ident">new</span> <span class="ident">BufferT</span>);
             })
         }
         <span class="ident">this</span>
@@ -614,14 +614,14 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span>;
+<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::model::BufferT</span>;
 
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;BufferT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span> <span class="kw">as</span> <span class="string">&quot;const BufferT*&quot;</span> {
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;BufferT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">crate</span><span class="ident">::model::BufferT</span> <span class="kw">as</span> <span class="string">&quot;const BufferT*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">get</span>();
-            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Target</span>;
 
             <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>()
         }
@@ -629,12 +629,12 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span> {
+<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;BufferT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span> <span class="kw">as</span> <span class="string">&quot;BufferT*&quot;</span> {
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;BufferT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">crate</span><span class="ident">::model::BufferT</span> <span class="kw">as</span> <span class="string">&quot;BufferT*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">get</span>();
-            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span>;
 
             <span class="ident">ptr</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>()
         }
@@ -642,20 +642,20 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">BufferT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::BufferT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;({:?})&quot;</span>, <span class="self">self</span>.<span class="ident">deref</span>())
     }
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">QuantizationParametersT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::QuantizationParametersT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span>: <span class="self">Self</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span>: <span class="self">Self</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;QuantizationParametersT&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="ident">std</span>::<span class="ident">unique_ptr</span><span class="op">&lt;</span><span class="ident">QuantizationParametersT</span><span class="op">&gt;</span>(<span class="ident">new</span> <span class="ident">QuantizationParametersT</span>);
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="ident">std::unique_ptr</span><span class="op">&lt;</span><span class="ident">QuantizationParametersT</span><span class="op">&gt;</span>(<span class="ident">new</span> <span class="ident">QuantizationParametersT</span>);
             })
         }
         <span class="ident">this</span>
@@ -663,14 +663,14 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">QuantizationParametersT</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">QuantizationParametersT</span>;
+<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::QuantizationParametersT</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::model::QuantizationParametersT</span>;
 
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;QuantizationParametersT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">QuantizationParametersT</span> <span class="kw">as</span> <span class="string">&quot;const QuantizationParametersT*&quot;</span> {
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;QuantizationParametersT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">crate</span><span class="ident">::model::QuantizationParametersT</span> <span class="kw">as</span> <span class="string">&quot;const QuantizationParametersT*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">get</span>();
-            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Target</span>;
 
             <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>()
         }
@@ -678,12 +678,12 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">QuantizationParametersT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span> {
+<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::QuantizationParametersT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;QuantizationParametersT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">QuantizationParametersT</span> <span class="kw">as</span> <span class="string">&quot;QuantizationParametersT*&quot;</span> {
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;QuantizationParametersT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">crate</span><span class="ident">::model::QuantizationParametersT</span> <span class="kw">as</span> <span class="string">&quot;QuantizationParametersT*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">get</span>();
-            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span>;
 
             <span class="ident">ptr</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>()
         }
@@ -691,20 +691,20 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">QuantizationParametersT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::QuantizationParametersT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;({:?})&quot;</span>, <span class="self">self</span>.<span class="ident">deref</span>())
     }
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">ModelT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::ModelT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span>: <span class="self">Self</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span>: <span class="self">Self</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;ModelT&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="ident">std</span>::<span class="ident">unique_ptr</span><span class="op">&lt;</span><span class="ident">ModelT</span><span class="op">&gt;</span>(<span class="ident">new</span> <span class="ident">ModelT</span>);
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="ident">std::unique_ptr</span><span class="op">&lt;</span><span class="ident">ModelT</span><span class="op">&gt;</span>(<span class="ident">new</span> <span class="ident">ModelT</span>);
             })
         }
         <span class="ident">this</span>
@@ -712,14 +712,14 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">ModelT</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">ModelT</span>;
+<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::ModelT</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::model::ModelT</span>;
 
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;ModelT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">ModelT</span> <span class="kw">as</span> <span class="string">&quot;const ModelT*&quot;</span> {
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;ModelT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">crate</span><span class="ident">::model::ModelT</span> <span class="kw">as</span> <span class="string">&quot;const ModelT*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">get</span>();
-            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Target</span>;
 
             <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>()
         }
@@ -727,12 +727,12 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">ModelT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span> {
+<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::ModelT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;ModelT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">ModelT</span> <span class="kw">as</span> <span class="string">&quot;ModelT*&quot;</span> {
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;ModelT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">crate</span><span class="ident">::model::ModelT</span> <span class="kw">as</span> <span class="string">&quot;ModelT*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">get</span>();
-            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span>;
 
             <span class="ident">ptr</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>()
         }
@@ -740,20 +740,20 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">ModelT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::ModelT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;({:?})&quot;</span>, <span class="self">self</span>.<span class="ident">deref</span>())
     }
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span>: <span class="self">Self</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem</span>::<span class="ident">zeroed</span>() };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">this</span>: <span class="self">Self</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">mem::zeroed</span>() };
         <span class="kw">let</span> <span class="ident">this_ref</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">this</span>;
         <span class="kw">unsafe</span> {
             <span class="macro">cpp!</span>([<span class="ident">this_ref</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;MetadataT&gt;*&quot;</span>] {
-                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="ident">std</span>::<span class="ident">unique_ptr</span><span class="op">&lt;</span><span class="ident">MetadataT</span><span class="op">&gt;</span>(<span class="ident">new</span> <span class="ident">MetadataT</span>);
+                <span class="ident">new</span> (<span class="ident">this_ref</span>) <span class="ident">std::unique_ptr</span><span class="op">&lt;</span><span class="ident">MetadataT</span><span class="op">&gt;</span>(<span class="ident">new</span> <span class="ident">MetadataT</span>);
             })
         }
         <span class="ident">this</span>
@@ -761,14 +761,14 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span>;
+<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::model::MetadataT</span>;
 
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Target</span> {
+    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;MetadataT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span> <span class="kw">as</span> <span class="string">&quot;const MetadataT*&quot;</span> {
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;const std::unique_ptr&lt;MetadataT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="kw">crate</span><span class="ident">::model::MetadataT</span> <span class="kw">as</span> <span class="string">&quot;const MetadataT*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">get</span>();
-            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Target</span>;
 
             <span class="ident">ptr</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>()
         }
@@ -776,12 +776,12 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span> {
+<span class="kw">impl</span> <span class="ident">DerefMut</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">deref_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span> {
         <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;MetadataT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span> <span class="kw">as</span> <span class="string">&quot;MetadataT*&quot;</span> {
+            <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="macro">cpp!</span>([<span class="self">self</span> <span class="kw">as</span> <span class="string">&quot;std::unique_ptr&lt;MetadataT&gt;*&quot;</span>] <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">crate</span><span class="ident">::model::MetadataT</span> <span class="kw">as</span> <span class="string">&quot;MetadataT*&quot;</span> {
                 <span class="kw">return</span> <span class="self">self</span><span class="op">-</span><span class="op">&gt;</span><span class="ident">get</span>();
-            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Target</span>;
+            }) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Target</span>;
 
             <span class="ident">ptr</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>()
         }
@@ -789,8 +789,8 @@
 }
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">deprecated</span>)]</span>
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">MetadataT</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::model::MetadataT</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;({:?})&quot;</span>, <span class="self">self</span>.<span class="ident">deref</span>())
     }
 }

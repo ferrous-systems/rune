@@ -985,17 +985,17 @@
 <span class="doccomment">//! This file declares `VMContext` and several related structs which contain</span>
 <span class="doccomment">//! fields that compiled wasm code accesses directly.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">global</span>::<span class="ident">Global</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">instance</span>::<span class="ident">Instance</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">memory</span>::<span class="ident">Memory</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">table</span>::<span class="ident">Table</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">trap</span>::{<span class="ident">Trap</span>, <span class="ident">TrapCode</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">any</span>::<span class="ident">Any</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">TryFrom</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ptr</span>::{<span class="self">self</span>, <span class="ident">NonNull</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">u32</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::global::Global</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::instance::Instance</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::memory::Memory</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::table::Table</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::trap</span>::{<span class="ident">Trap</span>, <span class="ident">TrapCode</span>};
+<span class="kw">use</span> <span class="ident">std::any::Any</span>;
+<span class="kw">use</span> <span class="ident">std::convert::TryFrom</span>;
+<span class="kw">use</span> <span class="ident">std::fmt</span>;
+<span class="kw">use</span> <span class="ident">std::ptr</span>::{<span class="self">self</span>, <span class="ident">NonNull</span>};
+<span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
+<span class="kw">use</span> <span class="ident">std::u32</span>;
 
 <span class="doccomment">/// Union representing the first parameter passed when calling a function.</span>
 <span class="doccomment">///</span>
@@ -1006,7 +1006,7 @@
     <span class="doccomment">/// Wasm functions take a pointer to [`VMContext`].</span>
     <span class="kw">pub</span> <span class="ident">vmctx</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">VMContext</span>,
     <span class="doccomment">/// Host functions can have custom environments.</span>
-    <span class="kw">pub</span> <span class="ident">host_env</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">c_void</span>,
+    <span class="kw">pub</span> <span class="ident">host_env</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std::ffi::c_void</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">VMFunctionEnvironment</span> {
@@ -1016,15 +1016,15 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">VMFunctionEnvironment</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">std::fmt::Debug</span> <span class="kw">for</span> <span class="ident">VMFunctionEnvironment</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">std::fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;VMFunctionEnvironment&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;vmctx_or_hostenv&quot;</span>, <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">host_env</span> })
             .<span class="ident">finish</span>()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">VMFunctionEnvironment</span> {
+<span class="kw">impl</span> <span class="ident">std::cmp::PartialEq</span> <span class="kw">for</span> <span class="ident">VMFunctionEnvironment</span> {
     <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rhs</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">unsafe</span> { <span class="self">self</span>.<span class="ident">host_env</span> <span class="kw">as</span> <span class="ident">usize</span> <span class="op">=</span><span class="op">=</span> <span class="ident">rhs</span>.<span class="ident">host_env</span> <span class="kw">as</span> <span class="ident">usize</span> }
     }
@@ -1043,26 +1043,26 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test_vmfunction_import</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">VMFunctionImport</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::VMFunctionImport</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ModuleInfo</span>, <span class="ident">VMOffsets</span>};
-    <span class="kw">use</span> <span class="ident">memoffset</span>::<span class="ident">offset_of</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>;
+    <span class="kw">use</span> <span class="ident">memoffset::offset_of</span>;
+    <span class="kw">use</span> <span class="ident">std::mem::size_of</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">check_vmfunction_import_offsets</span>() {
-        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets</span>::<span class="ident">new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
+        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo::new</span>();
+        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets::new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
         <span class="macro">assert_eq!</span>(
             <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">VMFunctionImport</span><span class="op">&gt;</span>(),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmfunction_import</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmfunction_import</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMFunctionImport</span>, <span class="ident">body</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmfunction_import_body</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmfunction_import_body</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMFunctionImport</span>, <span class="ident">environment</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmfunction_import_vmctx</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmfunction_import_vmctx</span>())
         );
     }
 }
@@ -1105,26 +1105,26 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test_vmdynamicfunction_import_context</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">VMDynamicFunctionContext</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::VMDynamicFunctionContext</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ModuleInfo</span>, <span class="ident">VMOffsets</span>};
-    <span class="kw">use</span> <span class="ident">memoffset</span>::<span class="ident">offset_of</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>;
+    <span class="kw">use</span> <span class="ident">memoffset::offset_of</span>;
+    <span class="kw">use</span> <span class="ident">std::mem::size_of</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">check_vmdynamicfunction_import_context_offsets</span>() {
-        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets</span>::<span class="ident">new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
+        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo::new</span>();
+        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets::new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
         <span class="macro">assert_eq!</span>(
             <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">VMDynamicFunctionContext</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmdynamicfunction_import_context</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmdynamicfunction_import_context</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMDynamicFunctionContext</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>, <span class="ident">address</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmdynamicfunction_import_context_address</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmdynamicfunction_import_context_address</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMDynamicFunctionContext</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>, <span class="ident">ctx</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmdynamicfunction_import_context_ctx</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmdynamicfunction_import_context_ctx</span>())
         );
     }
 }
@@ -1138,8 +1138,8 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test_vmfunction_body</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">VMFunctionBody</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::VMFunctionBody</span>;
+    <span class="kw">use</span> <span class="ident">std::mem::size_of</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">check_vmfunction_body_offsets</span>() {
@@ -1181,26 +1181,26 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test_vmtable_import</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">VMTableImport</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::VMTableImport</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ModuleInfo</span>, <span class="ident">VMOffsets</span>};
-    <span class="kw">use</span> <span class="ident">memoffset</span>::<span class="ident">offset_of</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>;
+    <span class="kw">use</span> <span class="ident">memoffset::offset_of</span>;
+    <span class="kw">use</span> <span class="ident">std::mem::size_of</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">check_vmtable_import_offsets</span>() {
-        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets</span>::<span class="ident">new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
+        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo::new</span>();
+        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets::new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
         <span class="macro">assert_eq!</span>(
             <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">VMTableImport</span><span class="op">&gt;</span>(),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmtable_import</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmtable_import</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMTableImport</span>, <span class="ident">definition</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmtable_import_definition</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmtable_import_definition</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMTableImport</span>, <span class="ident">from</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmtable_import_from</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmtable_import_from</span>())
         );
     }
 }
@@ -1219,26 +1219,26 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test_vmmemory_import</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">VMMemoryImport</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::VMMemoryImport</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ModuleInfo</span>, <span class="ident">VMOffsets</span>};
-    <span class="kw">use</span> <span class="ident">memoffset</span>::<span class="ident">offset_of</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>;
+    <span class="kw">use</span> <span class="ident">memoffset::offset_of</span>;
+    <span class="kw">use</span> <span class="ident">std::mem::size_of</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">check_vmmemory_import_offsets</span>() {
-        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets</span>::<span class="ident">new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
+        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo::new</span>();
+        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets::new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
         <span class="macro">assert_eq!</span>(
             <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">VMMemoryImport</span><span class="op">&gt;</span>(),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmmemory_import</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmmemory_import</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMMemoryImport</span>, <span class="ident">definition</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmmemory_import_definition</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmmemory_import_definition</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMMemoryImport</span>, <span class="ident">from</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmmemory_import_from</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmmemory_import_from</span>())
         );
     }
 }
@@ -1269,26 +1269,26 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test_vmglobal_import</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">VMGlobalImport</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::VMGlobalImport</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ModuleInfo</span>, <span class="ident">VMOffsets</span>};
-    <span class="kw">use</span> <span class="ident">memoffset</span>::<span class="ident">offset_of</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>;
+    <span class="kw">use</span> <span class="ident">memoffset::offset_of</span>;
+    <span class="kw">use</span> <span class="ident">std::mem::size_of</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">check_vmglobal_import_offsets</span>() {
-        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets</span>::<span class="ident">new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
+        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo::new</span>();
+        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets::new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
         <span class="macro">assert_eq!</span>(
             <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">VMGlobalImport</span><span class="op">&gt;</span>(),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmglobal_import</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmglobal_import</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMGlobalImport</span>, <span class="ident">definition</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmglobal_import_definition</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmglobal_import_definition</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMGlobalImport</span>, <span class="ident">from</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmglobal_import_from</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmglobal_import_from</span>())
         );
     }
 }
@@ -1337,17 +1337,17 @@
                 .<span class="ident">checked_add</span>(<span class="ident">len</span>)
                 .<span class="ident">map_or</span>(<span class="bool-val">true</span>, <span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">current_length</span>)
         {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Trap</span>::<span class="ident">new_from_runtime</span>(<span class="ident">TrapCode</span>::<span class="ident">HeapAccessOutOfBounds</span>));
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Trap::new_from_runtime</span>(<span class="ident">TrapCode::HeapAccessOutOfBounds</span>));
         }
 
-        <span class="kw">let</span> <span class="ident">dst</span> <span class="op">=</span> <span class="ident">usize</span>::<span class="ident">try_from</span>(<span class="ident">dst</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">usize</span>::<span class="ident">try_from</span>(<span class="ident">src</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">dst</span> <span class="op">=</span> <span class="ident">usize::try_from</span>(<span class="ident">dst</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="ident">usize::try_from</span>(<span class="ident">src</span>).<span class="ident">unwrap</span>();
 
         <span class="comment">// Bounds and casts are checked above, by this point we know that</span>
         <span class="comment">// everything is safe.</span>
         <span class="kw">let</span> <span class="ident">dst</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">add</span>(<span class="ident">dst</span>);
         <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">add</span>(<span class="ident">src</span>);
-        <span class="ident">ptr</span>::<span class="ident">copy</span>(<span class="ident">src</span>, <span class="ident">dst</span>, <span class="ident">len</span> <span class="kw">as</span> <span class="ident">usize</span>);
+        <span class="ident">ptr::copy</span>(<span class="ident">src</span>, <span class="ident">dst</span>, <span class="ident">len</span> <span class="kw">as</span> <span class="ident">usize</span>);
 
         <span class="prelude-val">Ok</span>(())
     }
@@ -1367,16 +1367,16 @@
             .<span class="ident">checked_add</span>(<span class="ident">len</span>)
             .<span class="ident">map_or</span>(<span class="bool-val">true</span>, <span class="op">|</span><span class="ident">m</span><span class="op">|</span> <span class="ident">m</span> <span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">current_length</span>)
         {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Trap</span>::<span class="ident">new_from_runtime</span>(<span class="ident">TrapCode</span>::<span class="ident">HeapAccessOutOfBounds</span>));
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Trap::new_from_runtime</span>(<span class="ident">TrapCode::HeapAccessOutOfBounds</span>));
         }
 
-        <span class="kw">let</span> <span class="ident">dst</span> <span class="op">=</span> <span class="ident">isize</span>::<span class="ident">try_from</span>(<span class="ident">dst</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">dst</span> <span class="op">=</span> <span class="ident">isize::try_from</span>(<span class="ident">dst</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="ident">val</span> <span class="kw">as</span> <span class="ident">u8</span>;
 
         <span class="comment">// Bounds and casts are checked above, by this point we know that</span>
         <span class="comment">// everything is safe.</span>
         <span class="kw">let</span> <span class="ident">dst</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">base</span>.<span class="ident">offset</span>(<span class="ident">dst</span>);
-        <span class="ident">ptr</span>::<span class="ident">write_bytes</span>(<span class="ident">dst</span>, <span class="ident">val</span>, <span class="ident">len</span> <span class="kw">as</span> <span class="ident">usize</span>);
+        <span class="ident">ptr::write_bytes</span>(<span class="ident">dst</span>, <span class="ident">val</span>, <span class="ident">len</span> <span class="kw">as</span> <span class="ident">usize</span>);
 
         <span class="prelude-val">Ok</span>(())
     }
@@ -1384,26 +1384,26 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test_vmmemory_definition</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">VMMemoryDefinition</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::VMMemoryDefinition</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ModuleInfo</span>, <span class="ident">VMOffsets</span>};
-    <span class="kw">use</span> <span class="ident">memoffset</span>::<span class="ident">offset_of</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>;
+    <span class="kw">use</span> <span class="ident">memoffset::offset_of</span>;
+    <span class="kw">use</span> <span class="ident">std::mem::size_of</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">check_vmmemory_definition_offsets</span>() {
-        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets</span>::<span class="ident">new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
+        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo::new</span>();
+        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets::new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
         <span class="macro">assert_eq!</span>(
             <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">VMMemoryDefinition</span><span class="op">&gt;</span>(),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmmemory_definition</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmmemory_definition</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMMemoryDefinition</span>, <span class="ident">base</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmmemory_definition_base</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmmemory_definition_base</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMMemoryDefinition</span>, <span class="ident">current_length</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmmemory_definition_current_length</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmmemory_definition_current_length</span>())
         );
         <span class="comment">/* TODO: Assert that the size of `current_length` matches.
         assert_eq!(
@@ -1428,26 +1428,26 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test_vmtable_definition</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">VMTableDefinition</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::VMTableDefinition</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ModuleInfo</span>, <span class="ident">VMOffsets</span>};
-    <span class="kw">use</span> <span class="ident">memoffset</span>::<span class="ident">offset_of</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>;
+    <span class="kw">use</span> <span class="ident">memoffset::offset_of</span>;
+    <span class="kw">use</span> <span class="ident">std::mem::size_of</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">check_vmtable_definition_offsets</span>() {
-        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets</span>::<span class="ident">new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
+        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo::new</span>();
+        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets::new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
         <span class="macro">assert_eq!</span>(
             <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">VMTableDefinition</span><span class="op">&gt;</span>(),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmtable_definition</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmtable_definition</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMTableDefinition</span>, <span class="ident">base</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmtable_definition_base</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmtable_definition_base</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMTableDefinition</span>, <span class="ident">current_elements</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmtable_definition_current_elements</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmtable_definition_current_elements</span>())
         );
     }
 }
@@ -1472,8 +1472,8 @@
     <span class="ident">bytes</span>: [<span class="ident">u8</span>; <span class="number">16</span>],
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">VMGlobalDefinitionStorage</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">VMGlobalDefinitionStorage</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;VMGlobalDefinitionStorage&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;bytes&quot;</span>, <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">bytes</span> })
             .<span class="ident">finish</span>()
@@ -1493,10 +1493,10 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test_vmglobal_definition</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">VMGlobalDefinition</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::VMGlobalDefinition</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ModuleInfo</span>, <span class="ident">VMOffsets</span>};
-    <span class="kw">use</span> <span class="ident">more_asserts</span>::<span class="ident">assert_ge</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::{<span class="ident">align_of</span>, <span class="ident">size_of</span>};
+    <span class="kw">use</span> <span class="ident">more_asserts::assert_ge</span>;
+    <span class="kw">use</span> <span class="ident">std::mem</span>::{<span class="ident">align_of</span>, <span class="ident">size_of</span>};
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">check_vmglobal_definition_alignment</span>() {
@@ -1509,18 +1509,18 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">check_vmglobal_definition_offsets</span>() {
-        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets</span>::<span class="ident">new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
+        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo::new</span>();
+        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets::new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
         <span class="macro">assert_eq!</span>(
             <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw">const</span> <span class="ident">VMGlobalDefinition</span><span class="op">&gt;</span>(),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmglobal_local</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmglobal_local</span>())
         );
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">check_vmglobal_begins_aligned</span>() {
-        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets</span>::<span class="ident">new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
+        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo::new</span>();
+        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets::new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">offsets</span>.<span class="ident">vmctx_globals_begin</span>() <span class="op">%</span> <span class="number">16</span>, <span class="number">0</span>);
     }
 }
@@ -1691,18 +1691,18 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test_vmshared_signature_index</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">VMSharedSignatureIndex</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">module</span>::<span class="ident">ModuleInfo</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">vmoffsets</span>::{<span class="ident">TargetSharedSignatureIndex</span>, <span class="ident">VMOffsets</span>};
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::VMSharedSignatureIndex</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::module::ModuleInfo</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::vmoffsets</span>::{<span class="ident">TargetSharedSignatureIndex</span>, <span class="ident">VMOffsets</span>};
+    <span class="kw">use</span> <span class="ident">std::mem::size_of</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">check_vmshared_signature_index</span>() {
-        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets</span>::<span class="ident">new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
+        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo::new</span>();
+        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets::new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
         <span class="macro">assert_eq!</span>(
             <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">VMSharedSignatureIndex</span><span class="op">&gt;</span>(),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmshared_signature_index</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmshared_signature_index</span>())
         );
     }
 
@@ -1724,7 +1724,7 @@
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VMSharedSignatureIndex</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">new</span>(<span class="ident">u32</span>::<span class="ident">MAX</span>)
+        <span class="self">Self</span><span class="ident">::new</span>(<span class="ident">u32::MAX</span>)
     }
 }
 
@@ -1745,30 +1745,30 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test_vmcaller_checked_anyfunc</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">VMCallerCheckedAnyfunc</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::VMCallerCheckedAnyfunc</span>;
     <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ModuleInfo</span>, <span class="ident">VMOffsets</span>};
-    <span class="kw">use</span> <span class="ident">memoffset</span>::<span class="ident">offset_of</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>;
+    <span class="kw">use</span> <span class="ident">memoffset::offset_of</span>;
+    <span class="kw">use</span> <span class="ident">std::mem::size_of</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">check_vmcaller_checked_anyfunc_offsets</span>() {
-        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo</span>::<span class="ident">new</span>();
-        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets</span>::<span class="ident">new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
+        <span class="kw">let</span> <span class="ident">module</span> <span class="op">=</span> <span class="ident">ModuleInfo::new</span>();
+        <span class="kw">let</span> <span class="ident">offsets</span> <span class="op">=</span> <span class="ident">VMOffsets::new</span>(<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u8</span>, <span class="kw-2">&amp;</span><span class="ident">module</span>);
         <span class="macro">assert_eq!</span>(
             <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">VMCallerCheckedAnyfunc</span><span class="op">&gt;</span>(),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmcaller_checked_anyfunc</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">size_of_vmcaller_checked_anyfunc</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMCallerCheckedAnyfunc</span>, <span class="ident">func_ptr</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmcaller_checked_anyfunc_func_ptr</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmcaller_checked_anyfunc_func_ptr</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMCallerCheckedAnyfunc</span>, <span class="ident">type_index</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmcaller_checked_anyfunc_type_index</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmcaller_checked_anyfunc_type_index</span>())
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">offset_of!</span>(<span class="ident">VMCallerCheckedAnyfunc</span>, <span class="ident">vmctx</span>),
-            <span class="ident">usize</span>::<span class="ident">from</span>(<span class="ident">offsets</span>.<span class="ident">vmcaller_checked_anyfunc_vmctx</span>())
+            <span class="ident">usize::from</span>(<span class="ident">offsets</span>.<span class="ident">vmcaller_checked_anyfunc_vmctx</span>())
         );
     }
 }
@@ -1776,10 +1776,10 @@
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VMCallerCheckedAnyfunc</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">func_ptr</span>: <span class="ident">ptr</span>::<span class="ident">null_mut</span>(),
-            <span class="ident">type_index</span>: <span class="ident">Default</span>::<span class="ident">default</span>(),
+            <span class="ident">func_ptr</span>: <span class="ident">ptr::null_mut</span>(),
+            <span class="ident">type_index</span>: <span class="ident">Default::default</span>(),
             <span class="ident">vmctx</span>: <span class="ident">VMFunctionEnvironment</span> {
-                <span class="ident">vmctx</span>: <span class="ident">ptr</span>::<span class="ident">null_mut</span>(),
+                <span class="ident">vmctx</span>: <span class="ident">ptr::null_mut</span>(),
             },
         }
     }
@@ -1862,50 +1862,50 @@
 <span class="doccomment">/// to use indirect calls. This way, we don&#39;t have to patch the code.</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VMBuiltinFunctionsArray</span> {
-    <span class="ident">ptrs</span>: [<span class="ident">usize</span>; <span class="self">Self</span>::<span class="ident">len</span>()],
+    <span class="ident">ptrs</span>: [<span class="ident">usize</span>; <span class="self">Self</span><span class="ident">::len</span>()],
 }
 
 <span class="kw">impl</span> <span class="ident">VMBuiltinFunctionsArray</span> {
     <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">len</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="ident">VMBuiltinFunctionIndex</span>::<span class="ident">builtin_functions_total_number</span>() <span class="kw">as</span> <span class="ident">usize</span>
+        <span class="ident">VMBuiltinFunctionIndex::builtin_functions_total_number</span>() <span class="kw">as</span> <span class="ident">usize</span>
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">initialized</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">libcalls</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::libcalls</span>::<span class="kw-2">*</span>;
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ptrs</span> <span class="op">=</span> [<span class="number">0</span>; <span class="self">Self</span>::<span class="ident">len</span>()];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ptrs</span> <span class="op">=</span> [<span class="number">0</span>; <span class="self">Self</span><span class="ident">::len</span>()];
 
-        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex</span>::<span class="ident">get_memory32_grow_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
+        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex::get_memory32_grow_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
             <span class="ident">wasmer_memory32_grow</span> <span class="kw">as</span> <span class="ident">usize</span>;
-        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex</span>::<span class="ident">get_imported_memory32_grow_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
+        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex::get_imported_memory32_grow_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
             <span class="ident">wasmer_imported_memory32_grow</span> <span class="kw">as</span> <span class="ident">usize</span>;
 
-        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex</span>::<span class="ident">get_memory32_size_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
+        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex::get_memory32_size_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
             <span class="ident">wasmer_memory32_size</span> <span class="kw">as</span> <span class="ident">usize</span>;
-        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex</span>::<span class="ident">get_imported_memory32_size_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
+        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex::get_imported_memory32_size_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
             <span class="ident">wasmer_imported_memory32_size</span> <span class="kw">as</span> <span class="ident">usize</span>;
 
-        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex</span>::<span class="ident">get_table_copy_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
+        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex::get_table_copy_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
             <span class="ident">wasmer_table_copy</span> <span class="kw">as</span> <span class="ident">usize</span>;
 
-        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex</span>::<span class="ident">get_table_init_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
+        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex::get_table_init_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
             <span class="ident">wasmer_table_init</span> <span class="kw">as</span> <span class="ident">usize</span>;
-        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex</span>::<span class="ident">get_elem_drop_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
+        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex::get_elem_drop_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
             <span class="ident">wasmer_elem_drop</span> <span class="kw">as</span> <span class="ident">usize</span>;
 
-        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex</span>::<span class="ident">get_local_memory_copy_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
+        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex::get_local_memory_copy_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
             <span class="ident">wasmer_local_memory_copy</span> <span class="kw">as</span> <span class="ident">usize</span>;
-        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex</span>::<span class="ident">get_imported_memory_copy_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
+        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex::get_imported_memory_copy_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
             <span class="ident">wasmer_imported_memory_copy</span> <span class="kw">as</span> <span class="ident">usize</span>;
-        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex</span>::<span class="ident">get_memory_fill_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
+        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex::get_memory_fill_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
             <span class="ident">wasmer_memory_fill</span> <span class="kw">as</span> <span class="ident">usize</span>;
-        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex</span>::<span class="ident">get_imported_memory_fill_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
+        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex::get_imported_memory_fill_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
             <span class="ident">wasmer_imported_memory_fill</span> <span class="kw">as</span> <span class="ident">usize</span>;
-        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex</span>::<span class="ident">get_memory_init_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
+        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex::get_memory_init_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
             <span class="ident">wasmer_memory_init</span> <span class="kw">as</span> <span class="ident">usize</span>;
-        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex</span>::<span class="ident">get_data_drop_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
+        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex::get_data_drop_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
             <span class="ident">wasmer_data_drop</span> <span class="kw">as</span> <span class="ident">usize</span>;
-        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex</span>::<span class="ident">get_raise_trap_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
+        <span class="ident">ptrs</span>[<span class="ident">VMBuiltinFunctionIndex::get_raise_trap_index</span>().<span class="ident">index</span>() <span class="kw">as</span> <span class="ident">usize</span>] <span class="op">=</span>
             <span class="ident">wasmer_raise_trap</span> <span class="kw">as</span> <span class="ident">usize</span>;
 
         <span class="macro">debug_assert!</span>(<span class="ident">ptrs</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">all</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>));
@@ -1933,10 +1933,10 @@
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">/// This is unsafe because it doesn&#39;t work on just any `VMContext`, it must</span>
     <span class="doccomment">/// be a `VMContext` allocated as part of an `Instance`.</span>
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">cast_ptr_alignment</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cast_ptr_alignment</span>)]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">instance</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">Instance</span> {
-        <span class="kw-2">&amp;</span><span class="kw-2">*</span>((<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>).<span class="ident">offset</span>(<span class="op">-</span><span class="ident">Instance</span>::<span class="ident">vmctx_offset</span>()) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">Instance</span>)
+        <span class="kw-2">&amp;</span><span class="kw-2">*</span>((<span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>).<span class="ident">offset</span>(<span class="op">-</span><span class="ident">Instance::vmctx_offset</span>()) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">Instance</span>)
     }
 
     <span class="doccomment">/// Return a reference to the host state associated with this `Instance`.</span>

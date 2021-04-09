@@ -63,10 +63,10 @@
 <span id="60">60</span>
 <span id="61">61</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Deref</span>;
+<span class="kw">use</span> <span class="ident">std::marker::PhantomData</span>;
+<span class="kw">use</span> <span class="ident">std::ops::Deref</span>;
 
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">bindings</span>::<span class="ident">root</span>::<span class="ident">rust</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::bindings::root::rust</span>::<span class="kw-2">*</span>;
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UniquePtr</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">unique_ptr_of_void</span>, <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
@@ -115,12 +115,12 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">stl</span>::<span class="ident">vector</span>::<span class="ident">VectorExtract</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">model</span>::<span class="ident">Model</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::model::stl::vector::VectorExtract</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::model::Model</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">unittest_unique_ptr_drop</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">model</span> <span class="op">=</span> <span class="ident">Model</span>::<span class="ident">from_file</span>(<span class="string">&quot;data/MNISTnet_uint8_quant.tflite&quot;</span>).<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">model</span> <span class="op">=</span> <span class="ident">Model::from_file</span>(<span class="string">&quot;data/MNISTnet_uint8_quant.tflite&quot;</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">_subgraph</span> <span class="op">=</span> <span class="ident">model</span>.<span class="ident">subgraphs</span>.<span class="ident">extract</span>(<span class="number">0</span>);
     }
 }

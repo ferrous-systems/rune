@@ -254,28 +254,28 @@
 <span id="251">251</span>
 <span id="252">252</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">OsString</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fs</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::{<span class="self">self</span>, <span class="ident">Read</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">os</span>::<span class="ident">unix</span>::<span class="ident">ffi</span>::<span class="ident">OsStringExt</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">str</span>;
+<span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
+<span class="kw">use</span> <span class="ident">std::ffi::OsString</span>;
+<span class="kw">use</span> <span class="ident">std::fs</span>;
+<span class="kw">use</span> <span class="ident">std::io</span>::{<span class="self">self</span>, <span class="ident">Read</span>};
+<span class="kw">use</span> <span class="ident">std::os::unix::ffi::OsStringExt</span>;
+<span class="kw">use</span> <span class="ident">std::path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
+<span class="kw">use</span> <span class="ident">std::str</span>;
 
 <span class="doccomment">/// Returns all XDG user directories obtained from $(XDG_CONFIG_HOME)/user-dirs.dirs.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">all</span>(<span class="ident">home_dir_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">user_dir_file_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">PathBuf</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">read_all</span>(<span class="ident">user_dir_file_path</span>).<span class="ident">unwrap_or</span>(<span class="ident">Vec</span>::<span class="ident">new</span>());
+    <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">read_all</span>(<span class="ident">user_dir_file_path</span>).<span class="ident">unwrap_or</span>(<span class="ident">Vec::new</span>());
     <span class="ident">parse_user_dirs</span>(<span class="ident">home_dir_path</span>, <span class="prelude-val">None</span>, <span class="kw-2">&amp;</span><span class="ident">bytes</span>)
 }
 
 <span class="doccomment">/// Returns a single XDG user directory obtained from $(XDG_CONFIG_HOME)/user-dirs.dirs.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">single</span>(<span class="ident">home_dir_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">user_dir_file_path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">user_dir_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">PathBuf</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">read_all</span>(<span class="ident">user_dir_file_path</span>).<span class="ident">unwrap_or</span>(<span class="ident">Vec</span>::<span class="ident">new</span>());
+    <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">read_all</span>(<span class="ident">user_dir_file_path</span>).<span class="ident">unwrap_or</span>(<span class="ident">Vec::new</span>());
     <span class="ident">parse_user_dirs</span>(<span class="ident">home_dir_path</span>, <span class="prelude-val">Some</span>(<span class="ident">user_dir_name</span>), <span class="kw-2">&amp;</span><span class="ident">bytes</span>)
 }
 
 <span class="kw">fn</span> <span class="ident">parse_user_dirs</span>(<span class="ident">home_dir</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">user_dir</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">PathBuf</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">user_dirs</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">user_dirs</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
 
     <span class="kw">for</span> <span class="ident">line</span> <span class="kw">in</span> <span class="ident">bytes</span>.<span class="ident">split</span>(<span class="op">|</span><span class="ident">b</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">b</span> <span class="op">=</span><span class="op">=</span> <span class="string">b&#39;\n&#39;</span>) {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">single_dir_found</span> <span class="op">=</span> <span class="bool-val">false</span>;
@@ -286,7 +286,7 @@
 
         <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">trim_blank</span>(<span class="ident">key</span>);
         <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">key</span>.<span class="ident">starts_with</span>(<span class="string">b&quot;XDG_&quot;</span>) <span class="op">&amp;&amp;</span> <span class="ident">key</span>.<span class="ident">ends_with</span>(<span class="string">b&quot;_DIR&quot;</span>) {
-            <span class="kw">match</span> <span class="ident">str</span>::<span class="ident">from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>[<span class="number">4</span>..<span class="ident">key</span>.<span class="ident">len</span>()<span class="op">-</span><span class="number">4</span>]) {
+            <span class="kw">match</span> <span class="ident">str::from_utf8</span>(<span class="kw-2">&amp;</span><span class="ident">key</span>[<span class="number">4</span>..<span class="ident">key</span>.<span class="ident">len</span>()<span class="op">-</span><span class="number">4</span>]) {
                 <span class="prelude-val">Ok</span>(<span class="ident">key</span>) <span class="op">=</span><span class="op">&gt;</span>
                     <span class="kw">if</span> <span class="ident">user_dir</span>.<span class="ident">is_some</span>() <span class="op">&amp;&amp;</span> <span class="ident">option_contains</span>(<span class="ident">user_dir</span>, <span class="ident">key</span>) {
                         <span class="ident">single_dir_found</span> <span class="op">=</span> <span class="bool-val">true</span>;
@@ -325,14 +325,14 @@
             <span class="kw">continue</span>
         };
 
-        <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">OsString</span>::<span class="ident">from_vec</span>(<span class="ident">shell_unescape</span>(<span class="ident">value</span>));
+        <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">OsString::from_vec</span>(<span class="ident">shell_unescape</span>(<span class="ident">value</span>));
 
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">is_relative</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="kw-2">&amp;</span><span class="ident">home_dir</span>);
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">PathBuf::from</span>(<span class="kw-2">&amp;</span><span class="ident">home_dir</span>);
             <span class="ident">path</span>.<span class="ident">push</span>(<span class="ident">value</span>);
             <span class="ident">path</span>
         } <span class="kw">else</span> {
-            <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="ident">value</span>)
+            <span class="ident">PathBuf::from</span>(<span class="ident">value</span>)
         };
 
         <span class="ident">user_dirs</span>.<span class="ident">insert</span>(<span class="ident">key</span>.<span class="ident">to_owned</span>(), <span class="ident">path</span>);
@@ -345,9 +345,9 @@
 }
 
 <span class="doccomment">/// Reads the entire contents of a file into a byte vector.</span>
-<span class="kw">fn</span> <span class="ident">read_all</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">fs</span>::<span class="ident">File</span>::<span class="ident">open</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">with_capacity</span>(<span class="number">1024</span>);
+<span class="kw">fn</span> <span class="ident">read_all</span>(<span class="ident">path</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">file</span> <span class="op">=</span> <span class="ident">fs::File::open</span>(<span class="ident">path</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="number">1024</span>);
     <span class="ident">file</span>.<span class="ident">read_to_end</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">bytes</span>)<span class="question-mark">?</span>;
     <span class="prelude-val">Ok</span>(<span class="ident">bytes</span>)
 }
@@ -377,7 +377,7 @@
     <span class="comment">// so there is no need to check if backslash is actually followed by</span>
     <span class="comment">// $ ` &quot; \ or a &lt;newline&gt;.</span>
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">unescaped</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">with_capacity</span>(<span class="ident">escaped</span>.<span class="ident">len</span>());
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">unescaped</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">escaped</span>.<span class="ident">len</span>());
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">i</span> <span class="op">=</span> <span class="ident">escaped</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>();
 
     <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">b</span>) <span class="op">=</span> <span class="ident">i</span>.<span class="ident">next</span>() {
@@ -402,8 +402,8 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">HashMap</span>;
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
+    <span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
+    <span class="kw">use</span> <span class="ident">std::path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
     <span class="kw">use</span> <span class="kw">super</span>::{<span class="ident">trim_blank</span>, <span class="ident">shell_unescape</span>, <span class="ident">split_once</span>, <span class="ident">parse_user_dirs</span>};
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -428,50 +428,50 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_parse_empty</span>() {
-        <span class="macro">assert_eq!</span>(<span class="ident">HashMap</span>::<span class="ident">new</span>(), <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/root/&quot;</span>), <span class="prelude-val">None</span>, <span class="string">b&quot;&quot;</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">HashMap</span>::<span class="ident">new</span>(), <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/root/&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;MUSIC&quot;</span>), <span class="string">b&quot;&quot;</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">HashMap::new</span>(), <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/root/&quot;</span>), <span class="prelude-val">None</span>, <span class="string">b&quot;&quot;</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">HashMap::new</span>(), <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/root/&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;MUSIC&quot;</span>), <span class="string">b&quot;&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_absolute_path_is_accepted</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dirs</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
-        <span class="ident">dirs</span>.<span class="ident">insert</span>(<span class="string">&quot;MUSIC&quot;</span>.<span class="ident">to_owned</span>(), <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="string">&quot;/media/music&quot;</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dirs</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
+        <span class="ident">dirs</span>.<span class="ident">insert</span>(<span class="string">&quot;MUSIC&quot;</span>.<span class="ident">to_owned</span>(), <span class="ident">PathBuf::from</span>(<span class="string">&quot;/media/music&quot;</span>));
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="string">br#&quot;XDG_MUSIC_DIR=&quot;/media/music&quot;&quot;#</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/home/john&quot;</span>), <span class="prelude-val">None</span>, <span class="ident">bytes</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/home/john&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;MUSIC&quot;</span>), <span class="ident">bytes</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/home/john&quot;</span>), <span class="prelude-val">None</span>, <span class="ident">bytes</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/home/john&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;MUSIC&quot;</span>), <span class="ident">bytes</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_relative_path_is_rejected</span>() {
-        <span class="kw">let</span> <span class="ident">dirs</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="ident">dirs</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="string">br#&quot;XDG_MUSIC_DIR=&quot;music&quot;&quot;#</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/home/john&quot;</span>), <span class="prelude-val">None</span>, <span class="ident">bytes</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/home/john&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;MUSIC&quot;</span>), <span class="ident">bytes</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/home/john&quot;</span>), <span class="prelude-val">None</span>, <span class="ident">bytes</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/home/john&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;MUSIC&quot;</span>), <span class="ident">bytes</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_relative_to_home</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dirs</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
-        <span class="ident">dirs</span>.<span class="ident">insert</span>(<span class="string">&quot;MUSIC&quot;</span>.<span class="ident">to_owned</span>(), <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="string">&quot;/home/john/Music&quot;</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dirs</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
+        <span class="ident">dirs</span>.<span class="ident">insert</span>(<span class="string">&quot;MUSIC&quot;</span>.<span class="ident">to_owned</span>(), <span class="ident">PathBuf::from</span>(<span class="string">&quot;/home/john/Music&quot;</span>));
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="string">br#&quot;XDG_MUSIC_DIR=&quot;$HOME/Music&quot;&quot;#</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/home/john&quot;</span>), <span class="prelude-val">None</span>, <span class="ident">bytes</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/home/john&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;MUSIC&quot;</span>), <span class="ident">bytes</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/home/john&quot;</span>), <span class="prelude-val">None</span>, <span class="ident">bytes</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/home/john&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;MUSIC&quot;</span>), <span class="ident">bytes</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_disabled_directory</span>() {
-        <span class="kw">let</span> <span class="ident">dirs</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="ident">dirs</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="string">br#&quot;XDG_MUSIC_DIR=&quot;$HOME/&quot;&quot;#</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/home/john&quot;</span>), <span class="prelude-val">None</span>, <span class="ident">bytes</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/home/john&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;MUSIC&quot;</span>), <span class="ident">bytes</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/home/john&quot;</span>), <span class="prelude-val">None</span>, <span class="ident">bytes</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/home/john&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;MUSIC&quot;</span>), <span class="ident">bytes</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_parse_user_dirs</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dirs</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
-        <span class="ident">dirs</span>.<span class="ident">insert</span>(<span class="string">&quot;DESKTOP&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="string">&quot;/home/bob/Desktop&quot;</span>));
-        <span class="ident">dirs</span>.<span class="ident">insert</span>(<span class="string">&quot;DOWNLOAD&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="string">&quot;/home/bob/Downloads&quot;</span>));
-        <span class="ident">dirs</span>.<span class="ident">insert</span>(<span class="string">&quot;PICTURES&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="string">&quot;/home/eve/pics&quot;</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dirs</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
+        <span class="ident">dirs</span>.<span class="ident">insert</span>(<span class="string">&quot;DESKTOP&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">PathBuf::from</span>(<span class="string">&quot;/home/bob/Desktop&quot;</span>));
+        <span class="ident">dirs</span>.<span class="ident">insert</span>(<span class="string">&quot;DOWNLOAD&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">PathBuf::from</span>(<span class="string">&quot;/home/bob/Downloads&quot;</span>));
+        <span class="ident">dirs</span>.<span class="ident">insert</span>(<span class="string">&quot;PICTURES&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">PathBuf::from</span>(<span class="string">&quot;/home/eve/pics&quot;</span>));
 
         <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="string">br#&quot;
 # This file is written by xdg-user-dirs-update
@@ -489,21 +489,21 @@ XDG_PICTURES_DIR=&quot;/home/eve/pics&quot;
 XDG_VIDEOS_DIR=&quot;$HOxyzME/Videos&quot;
 &quot;#</span>;
 
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/home/bob&quot;</span>), <span class="prelude-val">None</span>, <span class="ident">bytes</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/home/bob&quot;</span>), <span class="prelude-val">None</span>, <span class="ident">bytes</span>));
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dirs</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
-        <span class="ident">dirs</span>.<span class="ident">insert</span>(<span class="string">&quot;DESKTOP&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="string">&quot;/home/bob/Desktop&quot;</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/home/bob&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;DESKTOP&quot;</span>), <span class="ident">bytes</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dirs</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
+        <span class="ident">dirs</span>.<span class="ident">insert</span>(<span class="string">&quot;DESKTOP&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">PathBuf::from</span>(<span class="string">&quot;/home/bob/Desktop&quot;</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/home/bob&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;DESKTOP&quot;</span>), <span class="ident">bytes</span>));
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dirs</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
-        <span class="ident">dirs</span>.<span class="ident">insert</span>(<span class="string">&quot;PICTURES&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="string">&quot;/home/eve/pics&quot;</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/home/bob&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;PICTURES&quot;</span>), <span class="ident">bytes</span>));
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dirs</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
+        <span class="ident">dirs</span>.<span class="ident">insert</span>(<span class="string">&quot;PICTURES&quot;</span>.<span class="ident">to_string</span>(), <span class="ident">PathBuf::from</span>(<span class="string">&quot;/home/eve/pics&quot;</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/home/bob&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;PICTURES&quot;</span>), <span class="ident">bytes</span>));
 
-        <span class="kw">let</span> <span class="ident">dirs</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/home/bob&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;TEMPLATES&quot;</span>), <span class="ident">bytes</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/home/bob&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;PUBLICSHARE&quot;</span>), <span class="ident">bytes</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/home/bob&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;DOCUMENTS&quot;</span>), <span class="ident">bytes</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path</span>::<span class="ident">new</span>(<span class="string">&quot;/home/bob&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;VIDEOS&quot;</span>), <span class="ident">bytes</span>));
+        <span class="kw">let</span> <span class="ident">dirs</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">PathBuf</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/home/bob&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;TEMPLATES&quot;</span>), <span class="ident">bytes</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/home/bob&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;PUBLICSHARE&quot;</span>), <span class="ident">bytes</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/home/bob&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;DOCUMENTS&quot;</span>), <span class="ident">bytes</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">dirs</span>, <span class="ident">parse_user_dirs</span>(<span class="ident">Path::new</span>(<span class="string">&quot;/home/bob&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;VIDEOS&quot;</span>), <span class="ident">bytes</span>));
     }
 }
 </pre></div>

@@ -16,11 +16,11 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">serial</span>;
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>::<span class="ident">Debug</span>;
+<span class="kw">use</span> <span class="ident">std::fmt::Debug</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">serial</span>::<span class="ident">Serial</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::serial::Serial</span>;
 
-<span class="kw">use</span> <span class="ident">anyhow</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="ident">anyhow::Error</span>;
 
 <span class="doccomment">/// Something a Rune can send output to.</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Output</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Debug</span> <span class="op">+</span> <span class="lifetime">&#39;static</span> {

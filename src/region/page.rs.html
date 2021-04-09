@@ -76,7 +76,7 @@
 <span class="doccomment">//! Page related functions.</span>
 
 <span class="kw">use</span> <span class="ident">os</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Once</span>;
+<span class="kw">use</span> <span class="ident">std::sync::Once</span>;
 
 <span class="doccomment">/// Returns the operating system&#39;s page size.</span>
 <span class="doccomment">///</span>
@@ -84,11 +84,11 @@
 <span class="doccomment">/// frequently without any performance penalty.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">size</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-  <span class="kw">static</span> <span class="ident">INIT</span>: <span class="ident">Once</span> <span class="op">=</span> <span class="ident">Once</span>::<span class="ident">new</span>();
+  <span class="kw">static</span> <span class="ident">INIT</span>: <span class="ident">Once</span> <span class="op">=</span> <span class="ident">Once::new</span>();
   <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">PAGE_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0</span>;
 
   <span class="kw">unsafe</span> {
-    <span class="ident">INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">PAGE_SIZE</span> <span class="op">=</span> <span class="ident">os</span>::<span class="ident">page_size</span>());
+    <span class="ident">INIT</span>.<span class="ident">call_once</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">PAGE_SIZE</span> <span class="op">=</span> <span class="ident">os::page_size</span>());
     <span class="ident">PAGE_SIZE</span>
   }
 }

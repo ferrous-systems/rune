@@ -12,11 +12,11 @@
 <p>A simple example:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>;
+<span class="kw">use</span> <span class="ident">std::mem</span>;
 
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">2</span>];
 
-<span class="kw">let</span> <span class="ident">old_v</span> <span class="op">=</span> <span class="ident">mem</span>::<span class="ident">replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>, <span class="macro">vec!</span>[<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]);
+<span class="kw">let</span> <span class="ident">old_v</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">v</span>, <span class="macro">vec!</span>[<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]);
 <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">2</span>], <span class="ident">old_v</span>);
 <span class="macro">assert_eq!</span>(<span class="macro">vec!</span>[<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>], <span class="ident">v</span>);</pre></div>
 <p><code>replace</code> allows consumption of a struct field by replacing it with another value.
@@ -38,11 +38,11 @@ avoid the move. But <code>replace</code> can be used to disassociate the origina
 <code>self</code>, allowing it to be returned:</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">mem</span>;
+<span class="kw">use</span> <span class="ident">std::mem</span>;
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Buffer</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">replace_index</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">i</span>: <span class="ident">usize</span>, <span class="ident">v</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
-        <span class="ident">mem</span>::<span class="ident">replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">buf</span>[<span class="ident">i</span>], <span class="ident">v</span>)
+        <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">buf</span>[<span class="ident">i</span>], <span class="ident">v</span>)
     }
 }
 

@@ -92,7 +92,7 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 <span class="kw">use</span> <span class="ident">wasmer_compiler</span>::{<span class="ident">CompileModuleInfo</span>, <span class="ident">SectionIndex</span>, <span class="ident">Symbol</span>, <span class="ident">SymbolRegistry</span>};
-<span class="kw">use</span> <span class="ident">wasmer_types</span>::<span class="ident">entity</span>::{<span class="ident">EntityRef</span>, <span class="ident">PrimaryMap</span>};
+<span class="kw">use</span> <span class="ident">wasmer_types::entity</span>::{<span class="ident">EntityRef</span>, <span class="ident">PrimaryMap</span>};
 <span class="kw">use</span> <span class="ident">wasmer_types</span>::{<span class="ident">FunctionIndex</span>, <span class="ident">LocalFunctionIndex</span>, <span class="ident">OwnedDataInitializer</span>, <span class="ident">SignatureIndex</span>};
 
 <span class="doccomment">/// Serializable struct that represents the compiled metadata.</span>
@@ -130,16 +130,16 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">SymbolRegistry</span> <span class="kw">for</span> <span class="ident">ModuleMetadataSymbolRegistry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">symbol_to_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">symbol</span>: <span class="ident">Symbol</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
         <span class="kw">match</span> <span class="ident">symbol</span> {
-            <span class="ident">Symbol</span>::<span class="ident">LocalFunction</span>(<span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Symbol::LocalFunction</span>(<span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">format!</span>(<span class="string">&quot;wasmer_function_{}_{}&quot;</span>, <span class="self">self</span>.<span class="ident">prefix</span>, <span class="ident">index</span>.<span class="ident">index</span>())
             }
-            <span class="ident">Symbol</span>::<span class="ident">Section</span>(<span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;wasmer_section_{}_{}&quot;</span>, <span class="self">self</span>.<span class="ident">prefix</span>, <span class="ident">index</span>.<span class="ident">index</span>()),
-            <span class="ident">Symbol</span>::<span class="ident">FunctionCallTrampoline</span>(<span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(
+            <span class="ident">Symbol::Section</span>(<span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;wasmer_section_{}_{}&quot;</span>, <span class="self">self</span>.<span class="ident">prefix</span>, <span class="ident">index</span>.<span class="ident">index</span>()),
+            <span class="ident">Symbol::FunctionCallTrampoline</span>(<span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(
                 <span class="string">&quot;wasmer_trampoline_function_call_{}_{}&quot;</span>,
                 <span class="self">self</span>.<span class="ident">prefix</span>,
                 <span class="ident">index</span>.<span class="ident">index</span>()
             ),
-            <span class="ident">Symbol</span>::<span class="ident">DynamicFunctionTrampoline</span>(<span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(
+            <span class="ident">Symbol::DynamicFunctionTrampoline</span>(<span class="ident">index</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(
                 <span class="string">&quot;wasmer_trampoline_dynamic_function_{}_{}&quot;</span>,
                 <span class="self">self</span>.<span class="ident">prefix</span>,
                 <span class="ident">index</span>.<span class="ident">index</span>()
@@ -152,19 +152,19 @@
             <span class="ident">index</span>
                 .<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()
                 .<span class="ident">ok</span>()
-                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> <span class="ident">Symbol</span>::<span class="ident">LocalFunction</span>(<span class="ident">LocalFunctionIndex</span>::<span class="ident">from_u32</span>(<span class="ident">index</span>)))
+                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> <span class="ident">Symbol::LocalFunction</span>(<span class="ident">LocalFunctionIndex::from_u32</span>(<span class="ident">index</span>)))
         } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">index</span>) <span class="op">=</span> <span class="ident">name</span>.<span class="ident">strip_prefix</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;wasmer_section_{}_&quot;</span>, <span class="self">self</span>.<span class="ident">prefix</span>)) {
             <span class="ident">index</span>
                 .<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()
                 .<span class="ident">ok</span>()
-                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> <span class="ident">Symbol</span>::<span class="ident">Section</span>(<span class="ident">SectionIndex</span>::<span class="ident">from_u32</span>(<span class="ident">index</span>)))
+                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> <span class="ident">Symbol::Section</span>(<span class="ident">SectionIndex::from_u32</span>(<span class="ident">index</span>)))
         } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">index</span>) <span class="op">=</span>
             <span class="ident">name</span>.<span class="ident">strip_prefix</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;wasmer_trampoline_function_call_{}_&quot;</span>, <span class="self">self</span>.<span class="ident">prefix</span>))
         {
             <span class="ident">index</span>
                 .<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()
                 .<span class="ident">ok</span>()
-                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> <span class="ident">Symbol</span>::<span class="ident">FunctionCallTrampoline</span>(<span class="ident">SignatureIndex</span>::<span class="ident">from_u32</span>(<span class="ident">index</span>)))
+                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> <span class="ident">Symbol::FunctionCallTrampoline</span>(<span class="ident">SignatureIndex::from_u32</span>(<span class="ident">index</span>)))
         } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">index</span>) <span class="op">=</span> <span class="ident">name</span>.<span class="ident">strip_prefix</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(
             <span class="string">&quot;wasmer_trampoline_dynamic_function_{}_&quot;</span>,
             <span class="self">self</span>.<span class="ident">prefix</span>
@@ -172,7 +172,7 @@
             <span class="ident">index</span>
                 .<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>()
                 .<span class="ident">ok</span>()
-                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> <span class="ident">Symbol</span>::<span class="ident">DynamicFunctionTrampoline</span>(<span class="ident">FunctionIndex</span>::<span class="ident">from_u32</span>(<span class="ident">index</span>)))
+                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">index</span><span class="op">|</span> <span class="ident">Symbol::DynamicFunctionTrampoline</span>(<span class="ident">FunctionIndex::from_u32</span>(<span class="ident">index</span>)))
         } <span class="kw">else</span> {
             <span class="prelude-val">None</span>
         }

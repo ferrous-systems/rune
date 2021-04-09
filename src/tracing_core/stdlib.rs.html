@@ -93,7 +93,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">std</span>::<span class="kw-2">*</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>))]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="self">self</span>::<span class="ident">no_std</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="self">self</span><span class="ident">::no_std</span>::<span class="kw-2">*</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>))]</span>
 <span class="kw">mod</span> <span class="ident">no_std</span> {
@@ -111,29 +111,29 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">alloc</span>::{<span class="ident">boxed</span>, <span class="ident">collections</span>, <span class="ident">rc</span>, <span class="ident">string</span>, <span class="ident">vec</span>};
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">borrow</span> {
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">borrow</span>::<span class="kw-2">*</span>;
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">borrow</span>::<span class="kw-2">*</span>;
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">alloc::borrow</span>::<span class="kw-2">*</span>;
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">core::borrow</span>::<span class="kw-2">*</span>;
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">fmt</span> {
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">fmt</span>::<span class="kw-2">*</span>;
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>::<span class="kw-2">*</span>;
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">alloc::fmt</span>::<span class="kw-2">*</span>;
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">core::fmt</span>::<span class="kw-2">*</span>;
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">slice</span> {
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">slice</span>::<span class="kw-2">*</span>;
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">slice</span>::<span class="kw-2">*</span>;
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">alloc::slice</span>::<span class="kw-2">*</span>;
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">core::slice</span>::<span class="kw-2">*</span>;
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">str</span> {
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">str</span>::<span class="kw-2">*</span>;
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">str</span>::<span class="kw-2">*</span>;
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">alloc::str</span>::<span class="kw-2">*</span>;
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">core::str</span>::<span class="kw-2">*</span>;
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">sync</span> {
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">spin</span>::<span class="ident">MutexGuard</span>;
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">sync</span>::<span class="kw-2">*</span>;
-        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">core</span>::<span class="ident">sync</span>::<span class="kw-2">*</span>;
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::spin::MutexGuard</span>;
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">alloc::sync</span>::<span class="kw-2">*</span>;
+        <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use</span> <span class="ident">core::sync</span>::<span class="kw-2">*</span>;
 
         <span class="doccomment">/// This wraps `spin::Mutex` to return a `Result`, so that it can be</span>
         <span class="doccomment">/// used with code written against `std::sync::Mutex`.</span>
@@ -142,13 +142,13 @@
         <span class="doccomment">/// by `lock` will always be `Ok`.</span>
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>)]</span>
         <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-            <span class="ident">inner</span>: <span class="kw">crate</span>::<span class="ident">spin</span>::<span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+            <span class="ident">inner</span>: <span class="kw">crate</span><span class="ident">::spin::Mutex</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
         }
 
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Mutex</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
             <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
                 <span class="self">Self</span> {
-                    <span class="ident">inner</span>: <span class="kw">crate</span>::<span class="ident">spin</span>::<span class="ident">Mutex</span>::<span class="ident">new</span>(<span class="ident">data</span>),
+                    <span class="ident">inner</span>: <span class="kw">crate</span><span class="ident">::spin::Mutex::new</span>(<span class="ident">data</span>),
                 }
             }
 

@@ -13,7 +13,7 @@ has a blanket implementation for all types where a reverse <a href="../../../../
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">Infallible</span>;
 
     <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">value</span>: <span class="ident">U</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">Infallible</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Ok</span>(<span class="ident">U</span>::<span class="ident">into</span>(<span class="ident">value</span>))  <span class="comment">// Never returns `Err`</span>
+        <span class="prelude-val">Ok</span>(<span class="ident">U::into</span>(<span class="ident">value</span>))  <span class="comment">// Never returns `Err`</span>
     }
 }</pre></div>
 <h1 id="future-compatibility" class="section-header"><a href="#future-compatibility">Future compatibility</a></h1>
@@ -31,7 +31,7 @@ Specifically, it is possible implementations for two different function pointer 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">trait</span> <span class="ident">MyTrait</span> {}
 <span class="kw">impl</span> <span class="ident">MyTrait</span> <span class="kw">for</span> <span class="kw">fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {}
-<span class="kw">impl</span> <span class="ident">MyTrait</span> <span class="kw">for</span> <span class="kw">fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">convert</span>::<span class="ident">Infallible</span> {}</pre></div>
+<span class="kw">impl</span> <span class="ident">MyTrait</span> <span class="kw">for</span> <span class="kw">fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::convert::Infallible</span> {}</pre></div>
 <p>With <code>Infallible</code> being an enum, this code is valid.
 However when <code>Infallible</code> becomes an alias for the never type,
 the two <code>impl</code>s will start to overlap

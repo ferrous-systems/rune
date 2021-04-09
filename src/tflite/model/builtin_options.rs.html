@@ -308,11 +308,11 @@
 <span id="305">305</span>
 <span id="306">306</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ptr</span>;
+<span class="kw">use</span> <span class="ident">std::ptr</span>;
 
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">stl</span>::<span class="ident">vector</span>::<span class="ident">VectorOfI32</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindings</span>::<span class="ident">flatbuffers</span>::<span class="ident">NativeTable</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindings</span>::<span class="ident">tflite</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::stl::vector::VectorOfI32</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindings::flatbuffers::NativeTable</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindings::tflite</span>::<span class="kw-2">*</span>;
 
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">C</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
@@ -323,7 +323,7 @@
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">BuiltinOptionsUnion</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">BuiltinOptionsUnion</span> { <span class="ident">typ</span>: <span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_NONE</span>, <span class="ident">value</span>: <span class="ident">ptr</span>::<span class="ident">null_mut</span>() }
+        <span class="ident">BuiltinOptionsUnion</span> { <span class="ident">typ</span>: <span class="ident">BuiltinOptions::BuiltinOptions_NONE</span>, <span class="ident">value</span>: <span class="ident">ptr::null_mut</span>() }
     }
 }
 
@@ -363,139 +363,139 @@
 }
 
 <span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">BuiltinOptionsUnion</span> {
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">cognitive_complexity</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::cognitive_complexity</span>)]</span>
     <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="macro">macro_rules!</span> <span class="ident">compare</span> {
             (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span>:<span class="ident">ty</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">if</span> <span class="self">self</span>.<span class="ident">typ</span> <span class="op">=</span><span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>
                     <span class="op">&amp;&amp;</span> <span class="ident">other</span>.<span class="ident">typ</span> <span class="op">=</span><span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>
-                    <span class="op">&amp;&amp;</span> <span class="ident">AsRef</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span><span class="op">&gt;</span>::<span class="ident">as_ref</span>(<span class="self">self</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">AsRef</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span><span class="op">&gt;</span>::<span class="ident">as_ref</span>(<span class="ident">other</span>)
+                    <span class="op">&amp;&amp;</span> <span class="ident">AsRef</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span><span class="op">&gt;</span><span class="ident">::as_ref</span>(<span class="self">self</span>) <span class="op">=</span><span class="op">=</span> <span class="ident">AsRef</span>::<span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">t</span><span class="op">&gt;</span><span class="ident">::as_ref</span>(<span class="ident">other</span>)
                 {
                     <span class="kw">return</span> <span class="bool-val">true</span>;
                 }
             };
         }
 
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">typ</span> <span class="op">=</span><span class="op">=</span> <span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_NONE</span>
-            <span class="op">&amp;&amp;</span> <span class="ident">other</span>.<span class="ident">typ</span> <span class="op">=</span><span class="op">=</span> <span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_NONE</span>
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">typ</span> <span class="op">=</span><span class="op">=</span> <span class="ident">BuiltinOptions::BuiltinOptions_NONE</span>
+            <span class="op">&amp;&amp;</span> <span class="ident">other</span>.<span class="ident">typ</span> <span class="op">=</span><span class="op">=</span> <span class="ident">BuiltinOptions::BuiltinOptions_NONE</span>
         {
             <span class="kw">return</span> <span class="bool-val">true</span>;
         }
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_Conv2DOptions</span>, <span class="ident">Conv2DOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_DepthwiseConv2DOptions</span>, <span class="ident">DepthwiseConv2DOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_ConcatEmbeddingsOptions</span>, <span class="ident">ConcatEmbeddingsOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_LSHProjectionOptions</span>, <span class="ident">LSHProjectionOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_Pool2DOptions</span>, <span class="ident">Pool2DOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_SVDFOptions</span>, <span class="ident">SVDFOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_RNNOptions</span>, <span class="ident">RNNOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_FullyConnectedOptions</span>, <span class="ident">FullyConnectedOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_SoftmaxOptions</span>, <span class="ident">SoftmaxOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_ConcatenationOptions</span>, <span class="ident">ConcatenationOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_AddOptions</span>, <span class="ident">AddOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_L2NormOptions</span>, <span class="ident">L2NormOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_Conv2DOptions</span>, <span class="ident">Conv2DOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_DepthwiseConv2DOptions</span>, <span class="ident">DepthwiseConv2DOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_ConcatEmbeddingsOptions</span>, <span class="ident">ConcatEmbeddingsOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_LSHProjectionOptions</span>, <span class="ident">LSHProjectionOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_Pool2DOptions</span>, <span class="ident">Pool2DOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_SVDFOptions</span>, <span class="ident">SVDFOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_RNNOptions</span>, <span class="ident">RNNOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_FullyConnectedOptions</span>, <span class="ident">FullyConnectedOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_SoftmaxOptions</span>, <span class="ident">SoftmaxOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_ConcatenationOptions</span>, <span class="ident">ConcatenationOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_AddOptions</span>, <span class="ident">AddOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_L2NormOptions</span>, <span class="ident">L2NormOptionsT</span>);
         <span class="macro">compare!</span>(
-            <span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_LocalResponseNormalizationOptions</span>,
+            <span class="ident">BuiltinOptions::BuiltinOptions_LocalResponseNormalizationOptions</span>,
             <span class="ident">LocalResponseNormalizationOptionsT</span>
         );
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_LSTMOptions</span>, <span class="ident">LSTMOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_ResizeBilinearOptions</span>, <span class="ident">ResizeBilinearOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_CallOptions</span>, <span class="ident">CallOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_ReshapeOptions</span>, <span class="ident">ReshapeOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_SkipGramOptions</span>, <span class="ident">SkipGramOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_SpaceToDepthOptions</span>, <span class="ident">SpaceToDepthOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_LSTMOptions</span>, <span class="ident">LSTMOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_ResizeBilinearOptions</span>, <span class="ident">ResizeBilinearOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_CallOptions</span>, <span class="ident">CallOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_ReshapeOptions</span>, <span class="ident">ReshapeOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_SkipGramOptions</span>, <span class="ident">SkipGramOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_SpaceToDepthOptions</span>, <span class="ident">SpaceToDepthOptionsT</span>);
         <span class="macro">compare!</span>(
-            <span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_EmbeddingLookupSparseOptions</span>,
+            <span class="ident">BuiltinOptions::BuiltinOptions_EmbeddingLookupSparseOptions</span>,
             <span class="ident">EmbeddingLookupSparseOptionsT</span>
         );
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_MulOptions</span>, <span class="ident">MulOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_PadOptions</span>, <span class="ident">PadOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_GatherOptions</span>, <span class="ident">GatherOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_BatchToSpaceNDOptions</span>, <span class="ident">BatchToSpaceNDOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_SpaceToBatchNDOptions</span>, <span class="ident">SpaceToBatchNDOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_TransposeOptions</span>, <span class="ident">TransposeOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_ReducerOptions</span>, <span class="ident">ReducerOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_SubOptions</span>, <span class="ident">SubOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_DivOptions</span>, <span class="ident">DivOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_SqueezeOptions</span>, <span class="ident">SqueezeOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_SequenceRNNOptions</span>, <span class="ident">SequenceRNNOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_StridedSliceOptions</span>, <span class="ident">StridedSliceOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_ExpOptions</span>, <span class="ident">ExpOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_TopKV2Options</span>, <span class="ident">TopKV2OptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_SplitOptions</span>, <span class="ident">SplitOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_LogSoftmaxOptions</span>, <span class="ident">LogSoftmaxOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_CastOptions</span>, <span class="ident">CastOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_DequantizeOptions</span>, <span class="ident">DequantizeOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_MaximumMinimumOptions</span>, <span class="ident">MaximumMinimumOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_ArgMaxOptions</span>, <span class="ident">ArgMaxOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_LessOptions</span>, <span class="ident">LessOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_NegOptions</span>, <span class="ident">NegOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_PadV2Options</span>, <span class="ident">PadV2OptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_GreaterOptions</span>, <span class="ident">GreaterOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_GreaterEqualOptions</span>, <span class="ident">GreaterEqualOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_LessEqualOptions</span>, <span class="ident">LessEqualOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_SelectOptions</span>, <span class="ident">SelectOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_SliceOptions</span>, <span class="ident">SliceOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_TransposeConvOptions</span>, <span class="ident">TransposeConvOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_SparseToDenseOptions</span>, <span class="ident">SparseToDenseOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_TileOptions</span>, <span class="ident">TileOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_ExpandDimsOptions</span>, <span class="ident">ExpandDimsOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_EqualOptions</span>, <span class="ident">EqualOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_NotEqualOptions</span>, <span class="ident">NotEqualOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_ShapeOptions</span>, <span class="ident">ShapeOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_PowOptions</span>, <span class="ident">PowOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_ArgMinOptions</span>, <span class="ident">ArgMinOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_FakeQuantOptions</span>, <span class="ident">FakeQuantOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_PackOptions</span>, <span class="ident">PackOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_LogicalOrOptions</span>, <span class="ident">LogicalOrOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_OneHotOptions</span>, <span class="ident">OneHotOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_LogicalAndOptions</span>, <span class="ident">LogicalAndOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_LogicalNotOptions</span>, <span class="ident">LogicalNotOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_UnpackOptions</span>, <span class="ident">UnpackOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_FloorDivOptions</span>, <span class="ident">FloorDivOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_SquareOptions</span>, <span class="ident">SquareOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_ZerosLikeOptions</span>, <span class="ident">ZerosLikeOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_FillOptions</span>, <span class="ident">FillOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_MulOptions</span>, <span class="ident">MulOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_PadOptions</span>, <span class="ident">PadOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_GatherOptions</span>, <span class="ident">GatherOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_BatchToSpaceNDOptions</span>, <span class="ident">BatchToSpaceNDOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_SpaceToBatchNDOptions</span>, <span class="ident">SpaceToBatchNDOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_TransposeOptions</span>, <span class="ident">TransposeOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_ReducerOptions</span>, <span class="ident">ReducerOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_SubOptions</span>, <span class="ident">SubOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_DivOptions</span>, <span class="ident">DivOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_SqueezeOptions</span>, <span class="ident">SqueezeOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_SequenceRNNOptions</span>, <span class="ident">SequenceRNNOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_StridedSliceOptions</span>, <span class="ident">StridedSliceOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_ExpOptions</span>, <span class="ident">ExpOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_TopKV2Options</span>, <span class="ident">TopKV2OptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_SplitOptions</span>, <span class="ident">SplitOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_LogSoftmaxOptions</span>, <span class="ident">LogSoftmaxOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_CastOptions</span>, <span class="ident">CastOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_DequantizeOptions</span>, <span class="ident">DequantizeOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_MaximumMinimumOptions</span>, <span class="ident">MaximumMinimumOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_ArgMaxOptions</span>, <span class="ident">ArgMaxOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_LessOptions</span>, <span class="ident">LessOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_NegOptions</span>, <span class="ident">NegOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_PadV2Options</span>, <span class="ident">PadV2OptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_GreaterOptions</span>, <span class="ident">GreaterOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_GreaterEqualOptions</span>, <span class="ident">GreaterEqualOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_LessEqualOptions</span>, <span class="ident">LessEqualOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_SelectOptions</span>, <span class="ident">SelectOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_SliceOptions</span>, <span class="ident">SliceOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_TransposeConvOptions</span>, <span class="ident">TransposeConvOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_SparseToDenseOptions</span>, <span class="ident">SparseToDenseOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_TileOptions</span>, <span class="ident">TileOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_ExpandDimsOptions</span>, <span class="ident">ExpandDimsOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_EqualOptions</span>, <span class="ident">EqualOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_NotEqualOptions</span>, <span class="ident">NotEqualOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_ShapeOptions</span>, <span class="ident">ShapeOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_PowOptions</span>, <span class="ident">PowOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_ArgMinOptions</span>, <span class="ident">ArgMinOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_FakeQuantOptions</span>, <span class="ident">FakeQuantOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_PackOptions</span>, <span class="ident">PackOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_LogicalOrOptions</span>, <span class="ident">LogicalOrOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_OneHotOptions</span>, <span class="ident">OneHotOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_LogicalAndOptions</span>, <span class="ident">LogicalAndOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_LogicalNotOptions</span>, <span class="ident">LogicalNotOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_UnpackOptions</span>, <span class="ident">UnpackOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_FloorDivOptions</span>, <span class="ident">FloorDivOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_SquareOptions</span>, <span class="ident">SquareOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_ZerosLikeOptions</span>, <span class="ident">ZerosLikeOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_FillOptions</span>, <span class="ident">FillOptionsT</span>);
         <span class="macro">compare!</span>(
-            <span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_BidirectionalSequenceLSTMOptions</span>,
+            <span class="ident">BuiltinOptions::BuiltinOptions_BidirectionalSequenceLSTMOptions</span>,
             <span class="ident">BidirectionalSequenceLSTMOptionsT</span>
         );
         <span class="macro">compare!</span>(
-            <span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_BidirectionalSequenceRNNOptions</span>,
+            <span class="ident">BuiltinOptions::BuiltinOptions_BidirectionalSequenceRNNOptions</span>,
             <span class="ident">BidirectionalSequenceRNNOptionsT</span>
         );
         <span class="macro">compare!</span>(
-            <span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_UnidirectionalSequenceLSTMOptions</span>,
+            <span class="ident">BuiltinOptions::BuiltinOptions_UnidirectionalSequenceLSTMOptions</span>,
             <span class="ident">UnidirectionalSequenceLSTMOptionsT</span>
         );
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_FloorModOptions</span>, <span class="ident">FloorModOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_RangeOptions</span>, <span class="ident">RangeOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_FloorModOptions</span>, <span class="ident">FloorModOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_RangeOptions</span>, <span class="ident">RangeOptionsT</span>);
         <span class="macro">compare!</span>(
-            <span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_ResizeNearestNeighborOptions</span>,
+            <span class="ident">BuiltinOptions::BuiltinOptions_ResizeNearestNeighborOptions</span>,
             <span class="ident">ResizeNearestNeighborOptionsT</span>
         );
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_LeakyReluOptions</span>, <span class="ident">LeakyReluOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_LeakyReluOptions</span>, <span class="ident">LeakyReluOptionsT</span>);
         <span class="macro">compare!</span>(
-            <span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_SquaredDifferenceOptions</span>,
+            <span class="ident">BuiltinOptions::BuiltinOptions_SquaredDifferenceOptions</span>,
             <span class="ident">SquaredDifferenceOptionsT</span>
         );
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_MirrorPadOptions</span>, <span class="ident">MirrorPadOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_AbsOptions</span>, <span class="ident">AbsOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_SplitVOptions</span>, <span class="ident">SplitVOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_UniqueOptions</span>, <span class="ident">UniqueOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_ReverseV2Options</span>, <span class="ident">ReverseV2OptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_AddNOptions</span>, <span class="ident">AddNOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_GatherNdOptions</span>, <span class="ident">GatherNdOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_CosOptions</span>, <span class="ident">CosOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_WhereOptions</span>, <span class="ident">WhereOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_RankOptions</span>, <span class="ident">RankOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_ReverseSequenceOptions</span>, <span class="ident">ReverseSequenceOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_MatrixDiagOptions</span>, <span class="ident">MatrixDiagOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_QuantizeOptions</span>, <span class="ident">QuantizeOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_MatrixSetDiagOptions</span>, <span class="ident">MatrixSetDiagOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_HardSwishOptions</span>, <span class="ident">HardSwishOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_IfOptions</span>, <span class="ident">IfOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_WhileOptions</span>, <span class="ident">WhileOptionsT</span>);
-        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions</span>::<span class="ident">BuiltinOptions_DepthToSpaceOptions</span>, <span class="ident">DepthToSpaceOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_MirrorPadOptions</span>, <span class="ident">MirrorPadOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_AbsOptions</span>, <span class="ident">AbsOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_SplitVOptions</span>, <span class="ident">SplitVOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_UniqueOptions</span>, <span class="ident">UniqueOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_ReverseV2Options</span>, <span class="ident">ReverseV2OptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_AddNOptions</span>, <span class="ident">AddNOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_GatherNdOptions</span>, <span class="ident">GatherNdOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_CosOptions</span>, <span class="ident">CosOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_WhereOptions</span>, <span class="ident">WhereOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_RankOptions</span>, <span class="ident">RankOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_ReverseSequenceOptions</span>, <span class="ident">ReverseSequenceOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_MatrixDiagOptions</span>, <span class="ident">MatrixDiagOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_QuantizeOptions</span>, <span class="ident">QuantizeOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_MatrixSetDiagOptions</span>, <span class="ident">MatrixSetDiagOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_HardSwishOptions</span>, <span class="ident">HardSwishOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_IfOptions</span>, <span class="ident">IfOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_WhileOptions</span>, <span class="ident">WhileOptionsT</span>);
+        <span class="macro">compare!</span>(<span class="ident">BuiltinOptions::BuiltinOptions_DepthToSpaceOptions</span>, <span class="ident">DepthToSpaceOptionsT</span>);
         <span class="bool-val">false</span>
     }
 }

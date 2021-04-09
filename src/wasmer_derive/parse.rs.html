@@ -145,8 +145,8 @@
 <span id="142">142</span>
 <span id="143">143</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">proc_macro2</span>::<span class="ident">Span</span>;
-<span class="kw">use</span> <span class="ident">proc_macro_error</span>::<span class="ident">abort</span>;
+<span class="kw">use</span> <span class="ident">proc_macro2::Span</span>;
+<span class="kw">use</span> <span class="ident">proc_macro_error::abort</span>;
 <span class="kw">use</span> <span class="ident">syn</span>::{
     <span class="ident">parenthesized</span>,
     <span class="ident">parse</span>::{<span class="ident">Parse</span>, <span class="ident">ParseStream</span>},
@@ -178,7 +178,7 @@
     <span class="ident">aliases</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">LitStr</span><span class="op">&gt;</span>,
 }
 <span class="kw">impl</span> <span class="ident">Parse</span> <span class="kw">for</span> <span class="ident">ExportOptions</span> {
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">name</span> <span class="op">=</span> <span class="prelude-val">None</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">optional</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="bool-val">false</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">aliases</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">LitStr</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec!</span>[];
@@ -222,7 +222,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Parse</span> <span class="kw">for</span> <span class="ident">ExportExpr</span> {
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">name</span>;
         <span class="kw">let</span> <span class="ident">optional</span>;
         <span class="kw">let</span> <span class="ident">aliases</span>;
@@ -248,15 +248,15 @@
 <span class="kw">struct</span> <span class="ident">WasmerAttrInner</span>(<span class="ident">WasmerAttr</span>);
 
 <span class="kw">impl</span> <span class="ident">Parse</span> <span class="kw">for</span> <span class="ident">WasmerAttrInner</span> {
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">ident</span>: <span class="ident">Ident</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">ident_str</span> <span class="op">=</span> <span class="ident">ident</span>.<span class="ident">to_string</span>();
         <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">ident</span>.<span class="ident">span</span>();
         <span class="kw">let</span> <span class="ident">out</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">ident_str</span>.<span class="ident">as_str</span>() {
             <span class="string">&quot;export&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">export_expr</span>;
-                <span class="kw">let</span> (<span class="ident">name</span>, <span class="ident">optional</span>, <span class="ident">aliases</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">input</span>.<span class="ident">peek</span>(<span class="ident">token</span>::<span class="ident">Paren</span>) {
-                    <span class="kw">let</span> <span class="kw">_</span>: <span class="ident">token</span>::<span class="ident">Paren</span> <span class="op">=</span> <span class="macro">parenthesized!</span>(<span class="ident">export_expr</span> <span class="kw">in</span> <span class="ident">input</span>);
+                <span class="kw">let</span> (<span class="ident">name</span>, <span class="ident">optional</span>, <span class="ident">aliases</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">input</span>.<span class="ident">peek</span>(<span class="ident">token::Paren</span>) {
+                    <span class="kw">let</span> <span class="kw">_</span>: <span class="ident">token::Paren</span> <span class="op">=</span> <span class="macro">parenthesized!</span>(<span class="ident">export_expr</span> <span class="kw">in</span> <span class="ident">input</span>);
 
                     <span class="kw">let</span> <span class="ident">expr</span> <span class="op">=</span> <span class="ident">export_expr</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">ExportExpr</span><span class="op">&gt;</span>()<span class="question-mark">?</span>;
                     (<span class="ident">expr</span>.<span class="ident">name</span>, <span class="ident">expr</span>.<span class="ident">optional</span>, <span class="ident">expr</span>.<span class="ident">aliases</span>)
@@ -264,7 +264,7 @@
                     (<span class="prelude-val">None</span>, <span class="bool-val">false</span>, <span class="macro">vec!</span>[])
                 };
 
-                <span class="ident">WasmerAttr</span>::<span class="ident">Export</span> {
+                <span class="ident">WasmerAttr::Export</span> {
                     <span class="ident">identifier</span>: <span class="ident">name</span>,
                     <span class="ident">optional</span>,
                     <span class="ident">aliases</span>,
@@ -282,7 +282,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Parse</span> <span class="kw">for</span> <span class="ident">WasmerAttr</span> {
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">input</span>: <span class="ident">ParseStream</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">attr_inner</span>;
         <span class="macro">parenthesized!</span>(<span class="ident">attr_inner</span> <span class="kw">in</span> <span class="ident">input</span>);
         <span class="prelude-val">Ok</span>(<span class="ident">attr_inner</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">WasmerAttrInner</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>)

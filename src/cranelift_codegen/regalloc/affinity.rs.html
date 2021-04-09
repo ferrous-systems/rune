@@ -138,9 +138,9 @@
 <span class="doccomment">//! subclass. This is just a hint, and the register allocator is allowed to pick a register from a</span>
 <span class="doccomment">//! larger register class instead.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">AbiParam</span>, <span class="ident">ArgumentLoc</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::{<span class="ident">ConstraintKind</span>, <span class="ident">OperandConstraint</span>, <span class="ident">RegClassIndex</span>, <span class="ident">RegInfo</span>, <span class="ident">TargetIsa</span>};
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">AbiParam</span>, <span class="ident">ArgumentLoc</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa</span>::{<span class="ident">ConstraintKind</span>, <span class="ident">OperandConstraint</span>, <span class="ident">RegClassIndex</span>, <span class="ident">RegInfo</span>, <span class="ident">TargetIsa</span>};
+<span class="kw">use</span> <span class="ident">core::fmt</span>;
 
 <span class="doccomment">/// Preferred register allocation for an SSA value.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>)]</span>
@@ -160,7 +160,7 @@
 
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Affinity</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Unassigned</span>
+        <span class="self">Self</span><span class="ident">::Unassigned</span>
     }
 }
 
@@ -170,26 +170,26 @@
     <span class="doccomment">/// This will never create an `Affinity::Unassigned`.</span>
     <span class="doccomment">/// Use the `Default` implementation for that.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">constraint</span>: <span class="kw-2">&amp;</span><span class="ident">OperandConstraint</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">if</span> <span class="ident">constraint</span>.<span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ConstraintKind</span>::<span class="ident">Stack</span> {
-            <span class="self">Self</span>::<span class="ident">Stack</span>
+        <span class="kw">if</span> <span class="ident">constraint</span>.<span class="ident">kind</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ConstraintKind::Stack</span> {
+            <span class="self">Self</span><span class="ident">::Stack</span>
         } <span class="kw">else</span> {
-            <span class="self">Self</span>::<span class="ident">Reg</span>(<span class="ident">constraint</span>.<span class="ident">regclass</span>.<span class="ident">into</span>())
+            <span class="self">Self</span><span class="ident">::Reg</span>(<span class="ident">constraint</span>.<span class="ident">regclass</span>.<span class="ident">into</span>())
         }
     }
 
     <span class="doccomment">/// Create an affinity that matches an ABI argument for `isa`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">abi</span>(<span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">AbiParam</span>, <span class="ident">isa</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">arg</span>.<span class="ident">location</span> {
-            <span class="ident">ArgumentLoc</span>::<span class="ident">Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Unassigned</span>,
-            <span class="ident">ArgumentLoc</span>::<span class="ident">Reg</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Reg</span>(<span class="ident">isa</span>.<span class="ident">regclass_for_abi_type</span>(<span class="ident">arg</span>.<span class="ident">value_type</span>).<span class="ident">into</span>()),
-            <span class="ident">ArgumentLoc</span>::<span class="ident">Stack</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Stack</span>,
+            <span class="ident">ArgumentLoc::Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Unassigned</span>,
+            <span class="ident">ArgumentLoc::Reg</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Reg</span>(<span class="ident">isa</span>.<span class="ident">regclass_for_abi_type</span>(<span class="ident">arg</span>.<span class="ident">value_type</span>).<span class="ident">into</span>()),
+            <span class="ident">ArgumentLoc::Stack</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Stack</span>,
         }
     }
 
     <span class="doccomment">/// Is this the `Unassigned` affinity?</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_unassigned</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+            <span class="self">Self</span><span class="ident">::Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
         }
     }
@@ -197,7 +197,7 @@
     <span class="doccomment">/// Is this the `Reg` affinity?</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_reg</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Reg</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+            <span class="self">Self</span><span class="ident">::Reg</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
         }
     }
@@ -205,7 +205,7 @@
     <span class="doccomment">/// Is this the `Stack` affinity?</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_stack</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Stack</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
+            <span class="self">Self</span><span class="ident">::Stack</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
         }
     }
@@ -216,19 +216,19 @@
     <span class="doccomment">/// satisfies the constraint.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">merge</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">constraint</span>: <span class="kw-2">&amp;</span><span class="ident">OperandConstraint</span>, <span class="ident">reginfo</span>: <span class="kw-2">&amp;</span><span class="ident">RegInfo</span>) {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">new</span>(<span class="ident">constraint</span>),
-            <span class="self">Self</span>::<span class="ident">Reg</span>(<span class="ident">rc</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="self">Self</span><span class="ident">::Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::new</span>(<span class="ident">constraint</span>),
+            <span class="self">Self</span><span class="ident">::Reg</span>(<span class="ident">rc</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="comment">// If the preferred register class is a subclass of the constraint, there&#39;s no need</span>
                 <span class="comment">// to change anything.</span>
-                <span class="kw">if</span> <span class="ident">constraint</span>.<span class="ident">kind</span> <span class="op">!</span><span class="op">=</span> <span class="ident">ConstraintKind</span>::<span class="ident">Stack</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">constraint</span>.<span class="ident">regclass</span>.<span class="ident">has_subclass</span>(<span class="ident">rc</span>)
+                <span class="kw">if</span> <span class="ident">constraint</span>.<span class="ident">kind</span> <span class="op">!</span><span class="op">=</span> <span class="ident">ConstraintKind::Stack</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">constraint</span>.<span class="ident">regclass</span>.<span class="ident">has_subclass</span>(<span class="ident">rc</span>)
                 {
                     <span class="comment">// If the register classes overlap, try to shrink our preferred register class.</span>
                     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">subclass</span>) <span class="op">=</span> <span class="ident">constraint</span>.<span class="ident">regclass</span>.<span class="ident">intersect_index</span>(<span class="ident">reginfo</span>.<span class="ident">rc</span>(<span class="ident">rc</span>)) {
-                        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">Reg</span>(<span class="ident">subclass</span>);
+                        <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::Reg</span>(<span class="ident">subclass</span>);
                     }
                 }
             }
-            <span class="self">Self</span>::<span class="ident">Stack</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="self">Self</span><span class="ident">::Stack</span> <span class="op">=</span><span class="op">&gt;</span> {}
         }
     }
 
@@ -242,12 +242,12 @@
 <span class="doccomment">/// Displaying an `Affinity` correctly requires the associated `RegInfo` from the target ISA.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DisplayAffinity</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">Affinity</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">RegInfo</span><span class="op">&gt;</span>);
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">DisplayAffinity</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">DisplayAffinity</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span> {
-            <span class="ident">Affinity</span>::<span class="ident">Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;unassigned&quot;</span>),
-            <span class="ident">Affinity</span>::<span class="ident">Stack</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;stack&quot;</span>),
-            <span class="ident">Affinity</span>::<span class="ident">Reg</span>(<span class="ident">rci</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="self">self</span>.<span class="number">1</span> {
+            <span class="ident">Affinity::Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;unassigned&quot;</span>),
+            <span class="ident">Affinity::Stack</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;stack&quot;</span>),
+            <span class="ident">Affinity::Reg</span>(<span class="ident">rci</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="self">self</span>.<span class="number">1</span> {
                 <span class="prelude-val">Some</span>(<span class="ident">regs</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">regs</span>.<span class="ident">rc</span>(<span class="ident">rci</span>)),
                 <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">rci</span>),
             },

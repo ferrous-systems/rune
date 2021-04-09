@@ -5,7 +5,7 @@
 0.0 and 1.0 (inclusive), where 1.0 means the strings are the same.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">strsim</span>::<span class="ident">normalized_damerau_levenshtein</span>;
+<span class="kw">use</span> <span class="ident">strsim::normalized_damerau_levenshtein</span>;
 
 <span class="macro">assert!</span>((<span class="ident">normalized_damerau_levenshtein</span>(<span class="string">&quot;levenshtein&quot;</span>, <span class="string">&quot;löwenbräu&quot;</span>) <span class="op">-</span> <span class="number">0.27272</span>).<span class="ident">abs</span>() <span class="op">&lt;</span> <span class="number">0.00001</span>);
 <span class="macro">assert!</span>((<span class="ident">normalized_damerau_levenshtein</span>(<span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>) <span class="op">-</span> <span class="number">1.0</span>).<span class="ident">abs</span>() <span class="op">&lt;</span> <span class="number">0.00001</span>);

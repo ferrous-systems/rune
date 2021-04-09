@@ -241,14 +241,14 @@
 <span class="doccomment">//! container that has a concept of scopes that can be entered and exited, such that</span>
 <span class="doccomment">//! values inserted while inside a scope aren&#39;t visible outside the scope.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">fx</span>::<span class="ident">FxHashMap</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">hash</span>::<span class="ident">Hash</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::fx::FxHashMap</span>;
+<span class="kw">use</span> <span class="ident">core::hash::Hash</span>;
+<span class="kw">use</span> <span class="ident">core::mem</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>))]</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">fx</span>::<span class="ident">FxHasher</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::fx::FxHasher</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>))]</span>
-<span class="kw">type</span> <span class="ident">Hasher</span> <span class="op">=</span> <span class="ident">core</span>::<span class="ident">hash</span>::<span class="ident">BuildHasherDefault</span><span class="op">&lt;</span><span class="ident">FxHasher</span><span class="op">&gt;</span>;
+<span class="kw">type</span> <span class="ident">Hasher</span> <span class="op">=</span> <span class="ident">core::hash::BuildHasherDefault</span><span class="op">&lt;</span><span class="ident">FxHasher</span><span class="op">&gt;</span>;
 
 <span class="kw">struct</span> <span class="ident">Val</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span> {
     <span class="ident">value</span>: <span class="ident">V</span>,
@@ -259,9 +259,9 @@
 <span class="doccomment">/// A view into an occupied entry in a `ScopedHashMap`. It is part of the `Entry` enum.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OccupiedEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">K</span>: <span class="lifetime">&#39;a</span>, <span class="ident">V</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
-    <span class="ident">entry</span>: <span class="kw">super</span>::<span class="ident">hash_map</span>::<span class="ident">OccupiedEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">K</span>, <span class="ident">Val</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">entry</span>: <span class="kw">super</span><span class="ident">::hash_map::OccupiedEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">K</span>, <span class="ident">Val</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>))]</span>
-    <span class="ident">entry</span>: <span class="kw">super</span>::<span class="ident">hash_map</span>::<span class="ident">OccupiedEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">K</span>, <span class="ident">Val</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span>, <span class="ident">Hasher</span><span class="op">&gt;</span>,
+    <span class="ident">entry</span>: <span class="kw">super</span><span class="ident">::hash_map::OccupiedEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">K</span>, <span class="ident">Val</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span>, <span class="ident">Hasher</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span> <span class="ident">OccupiedEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span> {
@@ -274,9 +274,9 @@
 <span class="doccomment">/// A view into a vacant entry in a `ScopedHashMap`. It is part of the `Entry` enum.</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VacantEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">K</span>: <span class="lifetime">&#39;a</span>, <span class="ident">V</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>)]</span>
-    <span class="ident">entry</span>: <span class="kw">super</span>::<span class="ident">hash_map</span>::<span class="ident">VacantEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">K</span>, <span class="ident">Val</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">entry</span>: <span class="kw">super</span><span class="ident">::hash_map::VacantEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">K</span>, <span class="ident">Val</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;std&quot;</span>))]</span>
-    <span class="ident">entry</span>: <span class="kw">super</span>::<span class="ident">hash_map</span>::<span class="ident">VacantEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">K</span>, <span class="ident">Val</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span>, <span class="ident">Hasher</span><span class="op">&gt;</span>,
+    <span class="ident">entry</span>: <span class="kw">super</span><span class="ident">::hash_map::VacantEntry</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">K</span>, <span class="ident">Val</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span>, <span class="ident">Hasher</span><span class="op">&gt;</span>,
     <span class="ident">next_key</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">K</span><span class="op">&gt;</span>,
     <span class="ident">depth</span>: <span class="ident">usize</span>,
 }
@@ -327,14 +327,14 @@
     <span class="doccomment">/// Similar to `FxHashMap::entry`, gets the given key&#39;s corresponding entry in the map for</span>
     <span class="doccomment">/// in-place manipulation.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">entry</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">K</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Entry</span><span class="op">&lt;</span><span class="ident">K</span>, <span class="ident">V</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">hash_map</span>::<span class="ident">Entry</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="kw">super</span><span class="ident">::hash_map::Entry</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">map</span>.<span class="ident">entry</span>(<span class="ident">key</span>) {
-            <span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">OccupiedEntry</span> { <span class="ident">entry</span> }),
+            <span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Entry::Occupied</span>(<span class="ident">OccupiedEntry</span> { <span class="ident">entry</span> }),
             <span class="ident">Vacant</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">clone_key</span> <span class="op">=</span> <span class="ident">entry</span>.<span class="ident">key</span>().<span class="ident">clone</span>();
-                <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">VacantEntry</span> {
+                <span class="ident">Entry::Vacant</span>(<span class="ident">VacantEntry</span> {
                     <span class="ident">entry</span>,
-                    <span class="ident">next_key</span>: <span class="ident">mem</span>::<span class="ident">replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">last_insert</span>, <span class="prelude-val">Some</span>(<span class="ident">clone_key</span>)),
+                    <span class="ident">next_key</span>: <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">last_insert</span>, <span class="prelude-val">Some</span>(<span class="ident">clone_key</span>)),
                     <span class="ident">depth</span>: <span class="self">self</span>.<span class="ident">current_depth</span>,
                 })
             }
@@ -351,7 +351,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">decrement_depth</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="comment">// Remove all elements inserted at the current depth.</span>
         <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">key</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">last_insert</span>.<span class="ident">clone</span>() {
-            <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">hash_map</span>::<span class="ident">Entry</span>::<span class="kw-2">*</span>;
+            <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::hash_map::Entry</span>::<span class="kw-2">*</span>;
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">map</span>.<span class="ident">entry</span>(<span class="ident">key</span>) {
                 <span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">if</span> <span class="ident">entry</span>.<span class="ident">get</span>().<span class="ident">depth</span> <span class="op">!</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">current_depth</span> {
@@ -374,97 +374,97 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">basic</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span>: <span class="ident">ScopedHashMap</span><span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">i32</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">ScopedHashMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span>: <span class="ident">ScopedHashMap</span><span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident">i32</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">ScopedHashMap::new</span>();
 
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">0</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">entry</span>.<span class="ident">insert</span>(<span class="number">1</span>),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">entry</span>.<span class="ident">insert</span>(<span class="number">1</span>),
         }
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">2</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">entry</span>.<span class="ident">insert</span>(<span class="number">8</span>),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">entry</span>.<span class="ident">insert</span>(<span class="number">8</span>),
         }
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">2</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
         }
         <span class="ident">map</span>.<span class="ident">increment_depth</span>();
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">2</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
         }
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">1</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">entry</span>.<span class="ident">insert</span>(<span class="number">3</span>),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">entry</span>.<span class="ident">insert</span>(<span class="number">3</span>),
         }
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">1</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">3</span>),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">3</span>),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
         }
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">0</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span>),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span>),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
         }
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">2</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
         }
         <span class="ident">map</span>.<span class="ident">decrement_depth</span>();
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">0</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span>),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">1</span>),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
         }
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">2</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
         }
         <span class="ident">map</span>.<span class="ident">increment_depth</span>();
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">2</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
         }
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">1</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">entry</span>.<span class="ident">insert</span>(<span class="number">4</span>),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">entry</span>.<span class="ident">insert</span>(<span class="number">4</span>),
         }
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">1</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">4</span>),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">4</span>),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
         }
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">2</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
         }
         <span class="ident">map</span>.<span class="ident">decrement_depth</span>();
         <span class="ident">map</span>.<span class="ident">increment_depth</span>();
         <span class="ident">map</span>.<span class="ident">increment_depth</span>();
         <span class="ident">map</span>.<span class="ident">increment_depth</span>();
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">2</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
         }
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">1</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">entry</span>.<span class="ident">insert</span>(<span class="number">5</span>),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">entry</span>.<span class="ident">insert</span>(<span class="number">5</span>),
         }
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">1</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">5</span>),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">5</span>),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
         }
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">2</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
         }
         <span class="ident">map</span>.<span class="ident">decrement_depth</span>();
         <span class="ident">map</span>.<span class="ident">decrement_depth</span>();
         <span class="ident">map</span>.<span class="ident">decrement_depth</span>();
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">2</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert!</span>(<span class="kw-2">*</span><span class="ident">entry</span>.<span class="ident">get</span>() <span class="op">=</span><span class="op">=</span> <span class="number">8</span>),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
         }
         <span class="kw">match</span> <span class="ident">map</span>.<span class="ident">entry</span>(<span class="number">1</span>) {
-            <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
-            <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">entry</span>.<span class="ident">insert</span>(<span class="number">3</span>),
+            <span class="ident">Entry::Occupied</span>(<span class="ident">_entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(),
+            <span class="ident">Entry::Vacant</span>(<span class="ident">entry</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">entry</span>.<span class="ident">insert</span>(<span class="number">3</span>),
         }
     }
 }

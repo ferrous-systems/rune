@@ -1370,24 +1370,24 @@
 <span class="doccomment">//!</span>
 <span class="doccomment">//! The exception is the entry block whose arguments are colored from the ABI requirements.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">EncCursor</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">dominator_tree</span>::<span class="ident">DominatorTree</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">flowgraph</span>::<span class="ident">ControlFlowGraph</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">ArgumentLoc</span>, <span class="ident">InstBuilder</span>, <span class="ident">ValueDef</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">Block</span>, <span class="ident">Function</span>, <span class="ident">Inst</span>, <span class="ident">InstructionData</span>, <span class="ident">Layout</span>, <span class="ident">Opcode</span>, <span class="ident">SigRef</span>, <span class="ident">Value</span>, <span class="ident">ValueLoc</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::{<span class="ident">regs_overlap</span>, <span class="ident">RegClass</span>, <span class="ident">RegInfo</span>, <span class="ident">RegUnit</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::{<span class="ident">ConstraintKind</span>, <span class="ident">EncInfo</span>, <span class="ident">OperandConstraint</span>, <span class="ident">RecipeConstraints</span>, <span class="ident">TargetIsa</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">packed_option</span>::<span class="ident">PackedOption</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">affinity</span>::<span class="ident">Affinity</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">diversion</span>::<span class="ident">RegDiversions</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">live_value_tracker</span>::{<span class="ident">LiveValue</span>, <span class="ident">LiveValueTracker</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">liveness</span>::<span class="ident">Liveness</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">liverange</span>::<span class="ident">LiveRange</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">register_set</span>::<span class="ident">RegisterSet</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">solver</span>::{<span class="ident">Solver</span>, <span class="ident">SolverError</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">timing</span>;
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">mem</span>;
-<span class="kw">use</span> <span class="ident">log</span>::<span class="ident">debug</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">EncCursor</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::dominator_tree::DominatorTree</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::flowgraph::ControlFlowGraph</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">ArgumentLoc</span>, <span class="ident">InstBuilder</span>, <span class="ident">ValueDef</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">Block</span>, <span class="ident">Function</span>, <span class="ident">Inst</span>, <span class="ident">InstructionData</span>, <span class="ident">Layout</span>, <span class="ident">Opcode</span>, <span class="ident">SigRef</span>, <span class="ident">Value</span>, <span class="ident">ValueLoc</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa</span>::{<span class="ident">regs_overlap</span>, <span class="ident">RegClass</span>, <span class="ident">RegInfo</span>, <span class="ident">RegUnit</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa</span>::{<span class="ident">ConstraintKind</span>, <span class="ident">EncInfo</span>, <span class="ident">OperandConstraint</span>, <span class="ident">RecipeConstraints</span>, <span class="ident">TargetIsa</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::packed_option::PackedOption</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::affinity::Affinity</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::diversion::RegDiversions</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::live_value_tracker</span>::{<span class="ident">LiveValue</span>, <span class="ident">LiveValueTracker</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::liveness::Liveness</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::liverange::LiveRange</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::register_set::RegisterSet</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::solver</span>::{<span class="ident">Solver</span>, <span class="ident">SolverError</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::timing</span>;
+<span class="kw">use</span> <span class="ident">core::mem</span>;
+<span class="kw">use</span> <span class="ident">log::debug</span>;
 
 <span class="doccomment">/// Data structures for the coloring pass.</span>
 <span class="doccomment">///</span>
@@ -1442,8 +1442,8 @@
     <span class="doccomment">/// Allocate scratch space data structures for the coloring pass.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">divert</span>: <span class="ident">RegDiversions</span>::<span class="ident">new</span>(),
-            <span class="ident">solver</span>: <span class="ident">Solver</span>::<span class="ident">new</span>(),
+            <span class="ident">divert</span>: <span class="ident">RegDiversions::new</span>(),
+            <span class="ident">solver</span>: <span class="ident">Solver::new</span>(),
         }
     }
 
@@ -1463,12 +1463,12 @@
         <span class="ident">liveness</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Liveness</span>,
         <span class="ident">tracker</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">LiveValueTracker</span>,
     ) {
-        <span class="kw">let</span> <span class="ident">_tt</span> <span class="op">=</span> <span class="ident">timing</span>::<span class="ident">ra_coloring</span>();
+        <span class="kw">let</span> <span class="ident">_tt</span> <span class="op">=</span> <span class="ident">timing::ra_coloring</span>();
         <span class="macro">debug!</span>(<span class="string">&quot;Coloring for:\n{}&quot;</span>, <span class="ident">func</span>.<span class="ident">display</span>(<span class="ident">isa</span>));
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context</span> {
             <span class="ident">usable_regs</span>: <span class="ident">isa</span>.<span class="ident">allocatable_registers</span>(<span class="ident">func</span>),
             <span class="ident">uses_pinned_reg</span>: <span class="ident">isa</span>.<span class="ident">flags</span>().<span class="ident">enable_pinned_reg</span>(),
-            <span class="ident">cur</span>: <span class="ident">EncCursor</span>::<span class="ident">new</span>(<span class="ident">func</span>, <span class="ident">isa</span>),
+            <span class="ident">cur</span>: <span class="ident">EncCursor::new</span>(<span class="ident">func</span>, <span class="ident">isa</span>),
             <span class="ident">reginfo</span>: <span class="ident">isa</span>.<span class="ident">register_info</span>(),
             <span class="ident">encinfo</span>: <span class="ident">isa</span>.<span class="ident">encoding_info</span>(),
             <span class="ident">cfg</span>,
@@ -1543,7 +1543,7 @@
                         <span class="ident">regs</span>.<span class="ident">input</span>.<span class="ident">display</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">reginfo</span>),
                         <span class="self">self</span>.<span class="ident">divert</span>.<span class="ident">display</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">reginfo</span>)
                     );
-                    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">instructions</span>::<span class="ident">BranchInfo</span>::<span class="kw-2">*</span>;
+                    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::instructions::BranchInfo</span>::<span class="kw-2">*</span>;
                     <span class="kw">let</span> <span class="ident">target</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">analyze_branch</span>(<span class="ident">branch</span>) {
                         <span class="ident">NotABranch</span> <span class="op">|</span> <span class="ident">Table</span>(<span class="kw">_</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(
                             <span class="string">&quot;unexpected instruction {} after a conditional branch&quot;</span>,
@@ -1625,7 +1625,7 @@
     <span class="kw">fn</span> <span class="ident">livein_regs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">live</span>: <span class="kw-2">&amp;</span>[<span class="ident">LiveValue</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AvailableRegs</span> {
         <span class="comment">// Start from the registers that are actually usable. We don&#39;t want to include any reserved</span>
         <span class="comment">// registers in the set.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">AvailableRegs</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">usable_regs</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">AvailableRegs::new</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">usable_regs</span>);
 
         <span class="kw">for</span> <span class="ident">lv</span> <span class="kw">in</span> <span class="ident">live</span>.<span class="ident">iter</span>().<span class="ident">filter</span>(<span class="op">|</span><span class="ident">lv</span><span class="op">|</span> <span class="op">!</span><span class="ident">lv</span>.<span class="ident">is_dead</span>) {
             <span class="macro">debug!</span>(
@@ -1636,13 +1636,13 @@
                     .<span class="ident">get</span>(<span class="ident">lv</span>.<span class="ident">value</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>)
                     .<span class="ident">display</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">reginfo</span>)
             );
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity</span>::<span class="ident">Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity::Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
                 <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reginfo</span>.<span class="ident">rc</span>(<span class="ident">rci</span>);
                 <span class="kw">let</span> <span class="ident">loc</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">lv</span>.<span class="ident">value</span>];
                 <span class="kw">let</span> <span class="ident">reg</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">loc</span> {
-                    <span class="ident">ValueLoc</span>::<span class="ident">Reg</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">reg</span>,
-                    <span class="ident">ValueLoc</span>::<span class="ident">Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Live-in {} wasn&#39;t assigned&quot;</span>, <span class="ident">lv</span>.<span class="ident">value</span>),
-                    <span class="ident">ValueLoc</span>::<span class="ident">Stack</span>(<span class="ident">ss</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">ValueLoc::Reg</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">reg</span>,
+                    <span class="ident">ValueLoc::Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Live-in {} wasn&#39;t assigned&quot;</span>, <span class="ident">lv</span>.<span class="ident">value</span>),
+                    <span class="ident">ValueLoc::Stack</span>(<span class="ident">ss</span>) <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="macro">panic!</span>(<span class="string">&quot;Live-in {} is in {}, should be register&quot;</span>, <span class="ident">lv</span>.<span class="ident">value</span>, <span class="ident">ss</span>)
                     }
                 };
@@ -1651,11 +1651,11 @@
                 } <span class="kw">else</span> {
                     <span class="kw">let</span> <span class="ident">loc</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">divert</span>.<span class="ident">get</span>(<span class="ident">lv</span>.<span class="ident">value</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>);
                     <span class="kw">let</span> <span class="ident">reg_divert</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">loc</span> {
-                        <span class="ident">ValueLoc</span>::<span class="ident">Reg</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">reg</span>,
-                        <span class="ident">ValueLoc</span>::<span class="ident">Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="ident">ValueLoc::Reg</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">reg</span>,
+                        <span class="ident">ValueLoc::Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> {
                             <span class="macro">panic!</span>(<span class="string">&quot;Diversion: Live-in {} wasn&#39;t assigned&quot;</span>, <span class="ident">lv</span>.<span class="ident">value</span>)
                         }
-                        <span class="ident">ValueLoc</span>::<span class="ident">Stack</span>(<span class="ident">ss</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(
+                        <span class="ident">ValueLoc::Stack</span>(<span class="ident">ss</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(
                             <span class="string">&quot;Diversion: Live-in {} is in {}, should be register&quot;</span>,
                             <span class="ident">lv</span>.<span class="ident">value</span>, <span class="ident">ss</span>
                         ),
@@ -1678,17 +1678,17 @@
         <span class="kw">let</span> <span class="ident">sig</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">signature</span>;
         <span class="macro">debug_assert_eq!</span>(<span class="ident">sig</span>.<span class="ident">params</span>.<span class="ident">len</span>(), <span class="ident">args</span>.<span class="ident">len</span>());
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">AvailableRegs</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">usable_regs</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">regs</span> <span class="op">=</span> <span class="ident">AvailableRegs::new</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">usable_regs</span>);
 
         <span class="kw">for</span> (<span class="ident">lv</span>, <span class="ident">abi</span>) <span class="kw">in</span> <span class="ident">args</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="kw-2">&amp;</span><span class="ident">sig</span>.<span class="ident">params</span>) {
             <span class="kw">match</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
-                <span class="ident">Affinity</span>::<span class="ident">Reg</span>(<span class="ident">rci</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">Affinity::Reg</span>(<span class="ident">rci</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reginfo</span>.<span class="ident">rc</span>(<span class="ident">rci</span>);
-                    <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ArgumentLoc</span>::<span class="ident">Reg</span>(<span class="ident">reg</span>) <span class="op">=</span> <span class="ident">abi</span>.<span class="ident">location</span> {
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ArgumentLoc::Reg</span>(<span class="ident">reg</span>) <span class="op">=</span> <span class="ident">abi</span>.<span class="ident">location</span> {
                         <span class="kw">if</span> <span class="op">!</span><span class="ident">lv</span>.<span class="ident">is_dead</span> {
                             <span class="ident">regs</span>.<span class="ident">take</span>(<span class="ident">rc</span>, <span class="ident">reg</span>, <span class="ident">lv</span>.<span class="ident">is_local</span>);
                         }
-                        <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">lv</span>.<span class="ident">value</span>] <span class="op">=</span> <span class="ident">ValueLoc</span>::<span class="ident">Reg</span>(<span class="ident">reg</span>);
+                        <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">lv</span>.<span class="ident">value</span>] <span class="op">=</span> <span class="ident">ValueLoc::Reg</span>(<span class="ident">reg</span>);
                     } <span class="kw">else</span> {
                         <span class="comment">// This should have been fixed by the reload pass.</span>
                         <span class="macro">panic!</span>(
@@ -1700,10 +1700,10 @@
                     }
                 }
                 <span class="comment">// The spiller will have assigned an incoming stack slot already.</span>
-                <span class="ident">Affinity</span>::<span class="ident">Stack</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">debug_assert!</span>(<span class="ident">abi</span>.<span class="ident">location</span>.<span class="ident">is_stack</span>()),
+                <span class="ident">Affinity::Stack</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">debug_assert!</span>(<span class="ident">abi</span>.<span class="ident">location</span>.<span class="ident">is_stack</span>()),
                 <span class="comment">// This is a ghost value, unused in the function. Don&#39;t assign it to a location</span>
                 <span class="comment">// either.</span>
-                <span class="ident">Affinity</span>::<span class="ident">Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> {}
+                <span class="ident">Affinity::Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> {}
             }
         }
 
@@ -1715,16 +1715,16 @@
     <span class="doccomment">/// ABI constraints are the fixed register assignments useds for calls and returns.</span>
     <span class="kw">fn</span> <span class="ident">program_input_abi</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">inst</span>: <span class="ident">Inst</span>, <span class="ident">abi_params</span>: <span class="ident">AbiParams</span>) {
         <span class="kw">let</span> <span class="ident">abi_types</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">abi_params</span> {
-            <span class="ident">AbiParams</span>::<span class="ident">Parameters</span>(<span class="ident">sig</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">signatures</span>[<span class="ident">sig</span>].<span class="ident">params</span>,
-            <span class="ident">AbiParams</span>::<span class="ident">Returns</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">signature</span>.<span class="ident">returns</span>,
+            <span class="ident">AbiParams::Parameters</span>(<span class="ident">sig</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">signatures</span>[<span class="ident">sig</span>].<span class="ident">params</span>,
+            <span class="ident">AbiParams::Returns</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">signature</span>.<span class="ident">returns</span>,
         };
 
         <span class="kw">for</span> (<span class="ident">abi</span>, <span class="kw-2">&amp;</span><span class="ident">value</span>) <span class="kw">in</span> <span class="ident">abi_types</span>
             .<span class="ident">iter</span>()
             .<span class="ident">zip</span>(<span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">inst_variable_args</span>(<span class="ident">inst</span>))
         {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ArgumentLoc</span>::<span class="ident">Reg</span>(<span class="ident">reg</span>) <span class="op">=</span> <span class="ident">abi</span>.<span class="ident">location</span> {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity</span>::<span class="ident">Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="self">self</span>
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ArgumentLoc::Reg</span>(<span class="ident">reg</span>) <span class="op">=</span> <span class="ident">abi</span>.<span class="ident">location</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity::Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="self">self</span>
                     .<span class="ident">liveness</span>
                     .<span class="ident">get</span>(<span class="ident">value</span>)
                     .<span class="ident">expect</span>(<span class="string">&quot;ABI register must have live range&quot;</span>)
@@ -1773,9 +1773,9 @@
 
         <span class="kw">let</span> <span class="ident">call_sig</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">call_signature</span>(<span class="ident">inst</span>);
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">sig</span>) <span class="op">=</span> <span class="ident">call_sig</span> {
-            <span class="self">self</span>.<span class="ident">program_input_abi</span>(<span class="ident">inst</span>, <span class="ident">AbiParams</span>::<span class="ident">Parameters</span>(<span class="ident">sig</span>));
+            <span class="self">self</span>.<span class="ident">program_input_abi</span>(<span class="ident">inst</span>, <span class="ident">AbiParams::Parameters</span>(<span class="ident">sig</span>));
         } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>].<span class="ident">opcode</span>().<span class="ident">is_return</span>() {
-            <span class="self">self</span>.<span class="ident">program_input_abi</span>(<span class="ident">inst</span>, <span class="ident">AbiParams</span>::<span class="ident">Returns</span>);
+            <span class="self">self</span>.<span class="ident">program_input_abi</span>(<span class="ident">inst</span>, <span class="ident">AbiParams::Returns</span>);
         } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>].<span class="ident">opcode</span>().<span class="ident">is_branch</span>() {
             <span class="comment">// This is a branch, so we need to make sure that globally live values are in their</span>
             <span class="comment">// global registers. For blocks that take arguments, we also need to place the argument</span>
@@ -1808,7 +1808,7 @@
 
         <span class="comment">// Get rid of the killed values.</span>
         <span class="kw">for</span> <span class="ident">lv</span> <span class="kw">in</span> <span class="ident">kills</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity</span>::<span class="ident">Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity::Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
                 <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reginfo</span>.<span class="ident">rc</span>(<span class="ident">rci</span>);
                 <span class="kw">let</span> <span class="ident">reg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">divert</span>.<span class="ident">reg</span>(<span class="ident">lv</span>.<span class="ident">value</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>);
 
@@ -1881,8 +1881,8 @@
         <span class="comment">// Finally, we&#39;ve fully programmed the constraint solver.</span>
         <span class="comment">// We expect a quick solution in most cases.</span>
         <span class="kw">let</span> <span class="ident">is_reload</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>] {
-            <span class="ident">InstructionData</span>::<span class="ident">Unary</span> {
-                <span class="ident">opcode</span>: <span class="ident">Opcode</span>::<span class="ident">Fill</span>,
+            <span class="ident">InstructionData::Unary</span> {
+                <span class="ident">opcode</span>: <span class="ident">Opcode::Fill</span>,
                 ..
             } <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
@@ -1913,7 +1913,7 @@
 
         <span class="comment">// Apply the solution to the defs.</span>
         <span class="kw">for</span> <span class="ident">v</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">solver</span>.<span class="ident">vars</span>().<span class="ident">iter</span>().<span class="ident">filter</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">is_define</span>()) {
-            <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">v</span>.<span class="ident">value</span>] <span class="op">=</span> <span class="ident">ValueLoc</span>::<span class="ident">Reg</span>(<span class="ident">v</span>.<span class="ident">solution</span>);
+            <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">v</span>.<span class="ident">value</span>] <span class="op">=</span> <span class="ident">ValueLoc::Reg</span>(<span class="ident">v</span>.<span class="ident">solution</span>);
         }
 
         <span class="comment">// Tied defs are not part of the solution above.</span>
@@ -1921,10 +1921,10 @@
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">constraints</span>) <span class="op">=</span> <span class="ident">constraints</span> {
             <span class="kw">if</span> <span class="ident">constraints</span>.<span class="ident">tied_ops</span> {
                 <span class="kw">for</span> (<span class="ident">constraint</span>, <span class="ident">lv</span>) <span class="kw">in</span> <span class="ident">constraints</span>.<span class="ident">outs</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">defs</span>) {
-                    <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ConstraintKind</span>::<span class="ident">Tied</span>(<span class="ident">num</span>) <span class="op">=</span> <span class="ident">constraint</span>.<span class="ident">kind</span> {
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ConstraintKind::Tied</span>(<span class="ident">num</span>) <span class="op">=</span> <span class="ident">constraint</span>.<span class="ident">kind</span> {
                         <span class="kw">let</span> <span class="ident">arg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">inst_args</span>(<span class="ident">inst</span>)[<span class="ident">num</span> <span class="kw">as</span> <span class="ident">usize</span>];
                         <span class="kw">let</span> <span class="ident">reg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">divert</span>.<span class="ident">reg</span>(<span class="ident">arg</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>);
-                        <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">lv</span>.<span class="ident">value</span>] <span class="op">=</span> <span class="ident">ValueLoc</span>::<span class="ident">Reg</span>(<span class="ident">reg</span>);
+                        <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">lv</span>.<span class="ident">value</span>] <span class="op">=</span> <span class="ident">ValueLoc::Reg</span>(<span class="ident">reg</span>);
                     }
                 }
             }
@@ -1947,13 +1947,13 @@
                 }
             );
 
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity</span>::<span class="ident">Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity::Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
                 <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reginfo</span>.<span class="ident">rc</span>(<span class="ident">rci</span>);
                 <span class="kw">let</span> <span class="ident">reg</span> <span class="op">=</span> <span class="ident">loc</span>.<span class="ident">unwrap_reg</span>();
 
                 <span class="macro">debug_assert!</span>(
                     <span class="op">!</span><span class="self">self</span>.<span class="ident">is_pinned_reg</span>(<span class="ident">rc</span>, <span class="ident">reg</span>)
-                        <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>].<span class="ident">opcode</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Opcode</span>::<span class="ident">GetPinnedReg</span>,
+                        <span class="op">|</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>].<span class="ident">opcode</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Opcode::GetPinnedReg</span>,
                     <span class="string">&quot;pinned register may not be part of outputs for &#39;{}&#39;.&quot;</span>,
                     <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>].<span class="ident">opcode</span>()
                 );
@@ -1985,20 +1985,20 @@
         <span class="kw">for</span> (<span class="ident">constraint</span>, <span class="kw-2">&amp;</span><span class="ident">arg_val</span>) <span class="kw">in</span> <span class="ident">constraints</span>
             .<span class="ident">iter</span>()
             .<span class="ident">zip</span>(<span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">inst_args</span>(<span class="ident">inst</span>))
-            .<span class="ident">filter</span>(<span class="op">|</span><span class="kw-2">&amp;</span>(<span class="ident">constraint</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">constraint</span>.<span class="ident">kind</span> <span class="op">!</span><span class="op">=</span> <span class="ident">ConstraintKind</span>::<span class="ident">Stack</span>)
+            .<span class="ident">filter</span>(<span class="op">|</span><span class="kw-2">&amp;</span>(<span class="ident">constraint</span>, <span class="kw">_</span>)<span class="op">|</span> <span class="ident">constraint</span>.<span class="ident">kind</span> <span class="op">!</span><span class="op">=</span> <span class="ident">ConstraintKind::Stack</span>)
         {
             <span class="comment">// Reload pass is supposed to ensure that all arguments to register operands are</span>
             <span class="comment">// already in a register.</span>
             <span class="kw">let</span> <span class="ident">cur_reg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">divert</span>.<span class="ident">reg</span>(<span class="ident">arg_val</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>);
             <span class="kw">match</span> <span class="ident">constraint</span>.<span class="ident">kind</span> {
-                <span class="ident">ConstraintKind</span>::<span class="ident">FixedReg</span>(<span class="ident">regunit</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ConstraintKind::FixedReg</span>(<span class="ident">regunit</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="comment">// Add the fixed constraint even if `cur_reg == regunit`.</span>
                     <span class="comment">// It is possible that we will want to convert the value to a variable later,</span>
                     <span class="comment">// and this identity assignment prevents that from happening.</span>
                     <span class="self">self</span>.<span class="ident">solver</span>
                         .<span class="ident">reassign_in</span>(<span class="ident">arg_val</span>, <span class="ident">constraint</span>.<span class="ident">regclass</span>, <span class="ident">cur_reg</span>, <span class="ident">regunit</span>);
                 }
-                <span class="ident">ConstraintKind</span>::<span class="ident">FixedTied</span>(<span class="ident">regunit</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ConstraintKind::FixedTied</span>(<span class="ident">regunit</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="comment">// The pinned register may not be part of a fixed tied requirement. If this</span>
                     <span class="comment">// becomes the case, then it must be changed to a different register.</span>
                     <span class="macro">debug_assert!</span>(
@@ -2009,7 +2009,7 @@
                     <span class="self">self</span>.<span class="ident">solver</span>
                         .<span class="ident">reassign_in</span>(<span class="ident">arg_val</span>, <span class="ident">constraint</span>.<span class="ident">regclass</span>, <span class="ident">cur_reg</span>, <span class="ident">regunit</span>);
                 }
-                <span class="ident">ConstraintKind</span>::<span class="ident">Tied</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ConstraintKind::Tied</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">if</span> <span class="self">self</span>.<span class="ident">is_pinned_reg</span>(<span class="ident">constraint</span>.<span class="ident">regclass</span>, <span class="ident">cur_reg</span>) {
                         <span class="comment">// Divert the pinned register; it shouldn&#39;t be reused for a tied input.</span>
                         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">solver</span>.<span class="ident">can_add_var</span>(<span class="ident">constraint</span>.<span class="ident">regclass</span>, <span class="ident">cur_reg</span>) {
@@ -2019,12 +2019,12 @@
                         <span class="self">self</span>.<span class="ident">solver</span>.<span class="ident">add_var</span>(<span class="ident">arg_val</span>, <span class="ident">constraint</span>.<span class="ident">regclass</span>, <span class="ident">cur_reg</span>);
                     }
                 }
-                <span class="ident">ConstraintKind</span>::<span class="ident">Reg</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ConstraintKind::Reg</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">if</span> <span class="op">!</span><span class="ident">constraint</span>.<span class="ident">regclass</span>.<span class="ident">contains</span>(<span class="ident">cur_reg</span>) {
                         <span class="self">self</span>.<span class="ident">solver</span>.<span class="ident">add_var</span>(<span class="ident">arg_val</span>, <span class="ident">constraint</span>.<span class="ident">regclass</span>, <span class="ident">cur_reg</span>);
                     }
                 }
-                <span class="ident">ConstraintKind</span>::<span class="ident">Stack</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+                <span class="ident">ConstraintKind::Stack</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
             }
         }
     }
@@ -2048,7 +2048,7 @@
 
         <span class="kw">for</span> (<span class="ident">constraint</span>, <span class="kw-2">&amp;</span><span class="ident">arg_val</span>) <span class="kw">in</span> <span class="ident">constraints</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">inst_args</span>(<span class="ident">inst</span>)) {
             <span class="kw">match</span> <span class="ident">constraint</span>.<span class="ident">kind</span> {
-                <span class="ident">ConstraintKind</span>::<span class="ident">Reg</span> <span class="op">|</span> <span class="ident">ConstraintKind</span>::<span class="ident">Tied</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ConstraintKind::Reg</span> <span class="op">|</span> <span class="ident">ConstraintKind::Tied</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">cur_reg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">divert</span>.<span class="ident">reg</span>(<span class="ident">arg_val</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>);
 
                     <span class="comment">// This is the opposite condition of `program_input_constraints()`. The pinned</span>
@@ -2068,9 +2068,9 @@
                         }
                     }
                 }
-                <span class="ident">ConstraintKind</span>::<span class="ident">FixedReg</span>(<span class="kw">_</span>)
-                <span class="op">|</span> <span class="ident">ConstraintKind</span>::<span class="ident">FixedTied</span>(<span class="kw">_</span>)
-                <span class="op">|</span> <span class="ident">ConstraintKind</span>::<span class="ident">Stack</span> <span class="op">=</span><span class="op">&gt;</span> {}
+                <span class="ident">ConstraintKind::FixedReg</span>(<span class="kw">_</span>)
+                <span class="op">|</span> <span class="ident">ConstraintKind::FixedTied</span>(<span class="kw">_</span>)
+                <span class="op">|</span> <span class="ident">ConstraintKind::Stack</span> <span class="op">=</span><span class="op">&gt;</span> {}
             }
         }
     }
@@ -2100,7 +2100,7 @@
             <span class="comment">// The first time we encounter a branch to `dest`, we get to pick the location. The</span>
             <span class="comment">// following times we see a branch to `dest`, we must follow suit.</span>
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">dest_arg</span>] {
-                <span class="ident">ValueLoc</span>::<span class="ident">Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ValueLoc::Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="comment">// This is the first branch to `dest`, so we should color `dest_arg` instead of</span>
                     <span class="comment">// `br_arg`. However, we don&#39;t know where `br_arg` will end up until</span>
                     <span class="comment">// after `shuffle_inputs`. See `color_block_params` below.</span>
@@ -2111,10 +2111,10 @@
                         <span class="kw">return</span> <span class="bool-val">true</span>;
                     }
                 }
-                <span class="ident">ValueLoc</span>::<span class="ident">Reg</span>(<span class="ident">dest_reg</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ValueLoc::Reg</span>(<span class="ident">dest_reg</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="comment">// We&#39;ve branched to `dest` before. Make sure we use the correct argument</span>
                     <span class="comment">// registers by reassigning `br_arg`.</span>
-                    <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity</span>::<span class="ident">Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">liveness</span>[<span class="ident">br_arg</span>].<span class="ident">affinity</span> {
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity::Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">liveness</span>[<span class="ident">br_arg</span>].<span class="ident">affinity</span> {
                         <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reginfo</span>.<span class="ident">rc</span>(<span class="ident">rci</span>);
                         <span class="kw">let</span> <span class="ident">br_reg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">divert</span>.<span class="ident">reg</span>(<span class="ident">br_arg</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>);
                         <span class="self">self</span>.<span class="ident">solver</span>.<span class="ident">reassign_in</span>(<span class="ident">br_arg</span>, <span class="ident">rc</span>, <span class="ident">br_reg</span>, <span class="ident">dest_reg</span>);
@@ -2122,9 +2122,9 @@
                         <span class="macro">panic!</span>(<span class="string">&quot;Branch argument {} is not in a register&quot;</span>, <span class="ident">br_arg</span>);
                     }
                 }
-                <span class="ident">ValueLoc</span>::<span class="ident">Stack</span>(<span class="ident">ss</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ValueLoc::Stack</span>(<span class="ident">ss</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="comment">// The spiller should already have given us identical stack slots.</span>
-                    <span class="macro">debug_assert_eq!</span>(<span class="ident">ValueLoc</span>::<span class="ident">Stack</span>(<span class="ident">ss</span>), <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">br_arg</span>]);
+                    <span class="macro">debug_assert_eq!</span>(<span class="ident">ValueLoc::Stack</span>(<span class="ident">ss</span>), <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">br_arg</span>]);
                 }
             }
         }
@@ -2143,15 +2143,15 @@
         <span class="macro">debug_assert_eq!</span>(<span class="ident">br_args</span>.<span class="ident">len</span>(), <span class="ident">dest_args</span>.<span class="ident">len</span>());
         <span class="kw">for</span> (<span class="kw-2">&amp;</span><span class="ident">dest_arg</span>, <span class="kw-2">&amp;</span><span class="ident">br_arg</span>) <span class="kw">in</span> <span class="ident">dest_args</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">br_args</span>) {
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">dest_arg</span>] {
-                <span class="ident">ValueLoc</span>::<span class="ident">Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ValueLoc::Unassigned</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">if</span> <span class="self">self</span>.<span class="ident">liveness</span>[<span class="ident">dest_arg</span>].<span class="ident">affinity</span>.<span class="ident">is_reg</span>() {
                         <span class="kw">let</span> <span class="ident">br_reg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">divert</span>.<span class="ident">reg</span>(<span class="ident">br_arg</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>);
-                        <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">dest_arg</span>] <span class="op">=</span> <span class="ident">ValueLoc</span>::<span class="ident">Reg</span>(<span class="ident">br_reg</span>);
+                        <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">dest_arg</span>] <span class="op">=</span> <span class="ident">ValueLoc::Reg</span>(<span class="ident">br_reg</span>);
                     }
                 }
-                <span class="ident">ValueLoc</span>::<span class="ident">Reg</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;{} arg {} already colored&quot;</span>, <span class="ident">dest</span>, <span class="ident">dest_arg</span>),
+                <span class="ident">ValueLoc::Reg</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;{} arg {} already colored&quot;</span>, <span class="ident">dest</span>, <span class="ident">dest_arg</span>),
                 <span class="comment">// Spilled value consistency is verified by `program_block_arguments()` above.</span>
-                <span class="ident">ValueLoc</span>::<span class="ident">Stack</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {}
+                <span class="ident">ValueLoc::Stack</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {}
             }
         }
     }
@@ -2168,7 +2168,7 @@
                 .<span class="ident">get</span>(<span class="ident">value</span>)
                 .<span class="ident">expect</span>(<span class="string">&quot;Missing live range for diverted register&quot;</span>);
             <span class="kw">if</span> <span class="ident">pred</span>(<span class="ident">lr</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">layout</span>) {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity</span>::<span class="ident">Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lr</span>.<span class="ident">affinity</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity::Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lr</span>.<span class="ident">affinity</span> {
                     <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reginfo</span>.<span class="ident">rc</span>(<span class="ident">rci</span>);
                     <span class="comment">// Stack diversions should not be possible here. They only live transiently</span>
                     <span class="comment">// during `shuffle_inputs()`.</span>
@@ -2193,7 +2193,7 @@
     <span class="doccomment">/// into the constraint solver. Convert them to solver variables so they can be diverted.</span>
     <span class="kw">fn</span> <span class="ident">divert_fixed_input_conflicts</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">live</span>: <span class="kw-2">&amp;</span>[<span class="ident">LiveValue</span>]) {
         <span class="kw">for</span> <span class="ident">lv</span> <span class="kw">in</span> <span class="ident">live</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity</span>::<span class="ident">Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity::Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
                 <span class="kw">let</span> <span class="ident">toprc</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reginfo</span>.<span class="ident">toprc</span>(<span class="ident">rci</span>);
                 <span class="kw">let</span> <span class="ident">reg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">divert</span>.<span class="ident">reg</span>(<span class="ident">lv</span>.<span class="ident">value</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>);
                 <span class="kw">if</span> <span class="self">self</span>.<span class="ident">solver</span>.<span class="ident">is_fixed_input_conflict</span>(<span class="ident">toprc</span>, <span class="ident">reg</span>) {
@@ -2220,7 +2220,7 @@
     ) {
         <span class="kw">for</span> (<span class="ident">constraint</span>, <span class="ident">lv</span>) <span class="kw">in</span> <span class="ident">constraints</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">defs</span>) {
             <span class="kw">match</span> <span class="ident">constraint</span>.<span class="ident">kind</span> {
-                <span class="ident">ConstraintKind</span>::<span class="ident">FixedReg</span>(<span class="ident">reg</span>) <span class="op">|</span> <span class="ident">ConstraintKind</span>::<span class="ident">FixedTied</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ConstraintKind::FixedReg</span>(<span class="ident">reg</span>) <span class="op">|</span> <span class="ident">ConstraintKind::FixedTied</span>(<span class="ident">reg</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="self">self</span>.<span class="ident">add_fixed_output</span>(<span class="ident">lv</span>.<span class="ident">value</span>, <span class="ident">constraint</span>.<span class="ident">regclass</span>, <span class="ident">reg</span>, <span class="ident">throughs</span>);
                     <span class="kw">if</span> <span class="op">!</span><span class="ident">lv</span>.<span class="ident">is_local</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">global_regs</span>.<span class="ident">is_avail</span>(<span class="ident">constraint</span>.<span class="ident">regclass</span>, <span class="ident">reg</span>) {
                         <span class="macro">debug!</span>(
@@ -2232,7 +2232,7 @@
                         <span class="kw-2">*</span><span class="ident">replace_global_defines</span> <span class="op">=</span> <span class="bool-val">true</span>;
                     }
                 }
-                <span class="ident">ConstraintKind</span>::<span class="ident">Reg</span> <span class="op">|</span> <span class="ident">ConstraintKind</span>::<span class="ident">Tied</span>(<span class="kw">_</span>) <span class="op">|</span> <span class="ident">ConstraintKind</span>::<span class="ident">Stack</span> <span class="op">=</span><span class="op">&gt;</span> {}
+                <span class="ident">ConstraintKind::Reg</span> <span class="op">|</span> <span class="ident">ConstraintKind::Tied</span>(<span class="kw">_</span>) <span class="op">|</span> <span class="ident">ConstraintKind::Stack</span> <span class="op">=</span><span class="op">&gt;</span> {}
             }
         }
     }
@@ -2254,8 +2254,8 @@
         <span class="macro">debug_assert_eq!</span>(<span class="ident">defs</span>.<span class="ident">len</span>(), <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">signatures</span>[<span class="ident">sig</span>].<span class="ident">returns</span>.<span class="ident">len</span>());
         <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">lv</span>) <span class="kw">in</span> <span class="ident">defs</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
             <span class="kw">let</span> <span class="ident">abi</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">signatures</span>[<span class="ident">sig</span>].<span class="ident">returns</span>[<span class="ident">i</span>];
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ArgumentLoc</span>::<span class="ident">Reg</span>(<span class="ident">reg</span>) <span class="op">=</span> <span class="ident">abi</span>.<span class="ident">location</span> {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity</span>::<span class="ident">Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">ArgumentLoc::Reg</span>(<span class="ident">reg</span>) <span class="op">=</span> <span class="ident">abi</span>.<span class="ident">location</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity::Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
                     <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reginfo</span>.<span class="ident">rc</span>(<span class="ident">rci</span>);
                     <span class="self">self</span>.<span class="ident">add_fixed_output</span>(<span class="ident">lv</span>.<span class="ident">value</span>, <span class="ident">rc</span>, <span class="ident">reg</span>, <span class="ident">throughs</span>);
                     <span class="kw">if</span> <span class="op">!</span><span class="ident">lv</span>.<span class="ident">is_local</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">global_regs</span>.<span class="ident">is_avail</span>(<span class="ident">rc</span>, <span class="ident">reg</span>) {
@@ -2287,7 +2287,7 @@
         <span class="kw">if</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">is_pinned_reg</span>(<span class="ident">rc</span>, <span class="ident">reg</span>) <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="self">self</span>.<span class="ident">solver</span>.<span class="ident">add_fixed_output</span>(<span class="ident">rc</span>, <span class="ident">reg</span>) {
             <span class="comment">// The fixed output conflicts with some of the live-through registers.</span>
             <span class="kw">for</span> <span class="ident">lv</span> <span class="kw">in</span> <span class="ident">throughs</span> {
-                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity</span>::<span class="ident">Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
+                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity::Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
                     <span class="kw">let</span> <span class="ident">toprc2</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reginfo</span>.<span class="ident">toprc</span>(<span class="ident">rci</span>);
                     <span class="kw">let</span> <span class="ident">reg2</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">divert</span>.<span class="ident">reg</span>(<span class="ident">lv</span>.<span class="ident">value</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>);
                     <span class="kw">if</span> <span class="ident">regs_overlap</span>(<span class="ident">rc</span>, <span class="ident">reg</span>, <span class="ident">toprc2</span>, <span class="ident">reg2</span>) {
@@ -2301,7 +2301,7 @@
             <span class="kw">let</span> <span class="ident">ok</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">solver</span>.<span class="ident">add_fixed_output</span>(<span class="ident">rc</span>, <span class="ident">reg</span>);
             <span class="macro">debug_assert!</span>(<span class="ident">ok</span>, <span class="string">&quot;Couldn&#39;t clear fixed output interference for {}&quot;</span>, <span class="ident">value</span>);
         }
-        <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">value</span>] <span class="op">=</span> <span class="ident">ValueLoc</span>::<span class="ident">Reg</span>(<span class="ident">reg</span>);
+        <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">value</span>] <span class="op">=</span> <span class="ident">ValueLoc::Reg</span>(<span class="ident">reg</span>);
     }
 
     <span class="doccomment">/// Program the output-side constraints for `inst` into the constraint solver.</span>
@@ -2317,14 +2317,14 @@
     ) {
         <span class="kw">for</span> (<span class="ident">constraint</span>, <span class="ident">lv</span>) <span class="kw">in</span> <span class="ident">constraints</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="ident">defs</span>) {
             <span class="kw">match</span> <span class="ident">constraint</span>.<span class="ident">kind</span> {
-                <span class="ident">ConstraintKind</span>::<span class="ident">FixedReg</span>(<span class="kw">_</span>)
-                <span class="op">|</span> <span class="ident">ConstraintKind</span>::<span class="ident">FixedTied</span>(<span class="kw">_</span>)
-                <span class="op">|</span> <span class="ident">ConstraintKind</span>::<span class="ident">Stack</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">continue</span>,
-                <span class="ident">ConstraintKind</span>::<span class="ident">Reg</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ConstraintKind::FixedReg</span>(<span class="kw">_</span>)
+                <span class="op">|</span> <span class="ident">ConstraintKind::FixedTied</span>(<span class="kw">_</span>)
+                <span class="op">|</span> <span class="ident">ConstraintKind::Stack</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">continue</span>,
+                <span class="ident">ConstraintKind::Reg</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="self">self</span>.<span class="ident">solver</span>
                         .<span class="ident">add_def</span>(<span class="ident">lv</span>.<span class="ident">value</span>, <span class="ident">constraint</span>.<span class="ident">regclass</span>, <span class="op">!</span><span class="ident">lv</span>.<span class="ident">is_local</span>);
                 }
-                <span class="ident">ConstraintKind</span>::<span class="ident">Tied</span>(<span class="ident">num</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">ConstraintKind::Tied</span>(<span class="ident">num</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="comment">// Find the input operand we&#39;re tied to.</span>
                     <span class="comment">// The solver doesn&#39;t care about the output value.</span>
                     <span class="kw">let</span> <span class="ident">arg</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">inst_args</span>(<span class="ident">inst</span>)[<span class="ident">num</span> <span class="kw">as</span> <span class="ident">usize</span>];
@@ -2369,12 +2369,12 @@
         <span class="kw">loop</span> {
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">solver</span>.<span class="ident">real_solve</span>(<span class="ident">global_regs</span>, <span class="ident">is_reload</span>) {
                 <span class="prelude-val">Ok</span>(<span class="ident">regs</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="ident">regs</span>,
-                <span class="prelude-val">Err</span>(<span class="ident">SolverError</span>::<span class="ident">Divert</span>(<span class="ident">rc</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Err</span>(<span class="ident">SolverError::Divert</span>(<span class="ident">rc</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="comment">// Do we have any live-through `rc` registers that are not already variables?</span>
                     <span class="kw">let</span> <span class="ident">added</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">try_add_var</span>(<span class="ident">rc</span>, <span class="ident">throughs</span>);
                     <span class="macro">debug_assert!</span>(<span class="ident">added</span>, <span class="string">&quot;Ran out of registers in {}&quot;</span>, <span class="ident">rc</span>);
                 }
-                <span class="prelude-val">Err</span>(<span class="ident">SolverError</span>::<span class="ident">Global</span>(<span class="ident">_value</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Err</span>(<span class="ident">SolverError::Global</span>(<span class="ident">_value</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="macro">debug!</span>(
                         <span class="string">&quot;Not enough global registers for {}, trying as local&quot;</span>,
                         <span class="ident">_value</span>
@@ -2393,7 +2393,7 @@
         <span class="macro">debug!</span>(<span class="string">&quot;Trying to add a {} reg from {} values&quot;</span>, <span class="ident">rc</span>, <span class="ident">throughs</span>.<span class="ident">len</span>());
 
         <span class="kw">for</span> <span class="ident">lv</span> <span class="kw">in</span> <span class="ident">throughs</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity</span>::<span class="ident">Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity::Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
                 <span class="comment">// The new variable gets to roam the whole top-level register class because it is</span>
                 <span class="comment">// not actually constrained by the instruction. We just want it out of the way.</span>
                 <span class="kw">let</span> <span class="ident">toprc2</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reginfo</span>.<span class="ident">toprc</span>(<span class="ident">rci</span>);
@@ -2417,7 +2417,7 @@
     <span class="doccomment">/// branch destinations. Branch arguments and block parameters are not considered live on the</span>
     <span class="doccomment">/// edge.</span>
     <span class="kw">fn</span> <span class="ident">is_live_on_outgoing_edge</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">value</span>: <span class="ident">Value</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">instructions</span>::<span class="ident">BranchInfo</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::instructions::BranchInfo</span>::<span class="kw-2">*</span>;
 
         <span class="kw">let</span> <span class="ident">inst</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">current_inst</span>().<span class="ident">expect</span>(<span class="string">&quot;Not on an instruction&quot;</span>);
         <span class="kw">let</span> <span class="ident">layout</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">layout</span>;
@@ -2446,7 +2446,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// The solver needs to be reminded of the available registers before any moves are inserted.</span>
     <span class="kw">fn</span> <span class="ident">shuffle_inputs</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">regs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">RegisterSet</span>) {
-        <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">regalloc</span>::<span class="ident">solver</span>::<span class="ident">Move</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::regalloc::solver::Move</span>::<span class="kw-2">*</span>;
 
         <span class="kw">let</span> <span class="ident">spills</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">solver</span>.<span class="ident">schedule_moves</span>(<span class="ident">regs</span>);
 
@@ -2454,7 +2454,7 @@
         <span class="comment">// consecutive indexes starting from 0. Map these to real stack slots.</span>
         <span class="comment">// It is very unlikely (impossible?) that we would need more than one spill per top-level</span>
         <span class="comment">// register class, so avoid allocation by using a fixed array here.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">slot</span> <span class="op">=</span> [<span class="ident">PackedOption</span>::<span class="ident">default</span>(); <span class="number">8</span>];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">slot</span> <span class="op">=</span> [<span class="ident">PackedOption::default</span>(); <span class="number">8</span>];
         <span class="macro">debug_assert!</span>(<span class="ident">spills</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">slot</span>.<span class="ident">len</span>(), <span class="string">&quot;Too many spills ({})&quot;</span>, <span class="ident">spills</span>);
 
         <span class="kw">for</span> <span class="ident">m</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">solver</span>.<span class="ident">moves</span>() {
@@ -2544,7 +2544,7 @@
         <span class="kw">for</span> <span class="ident">lv</span> <span class="kw">in</span> <span class="ident">tracker</span>.<span class="ident">live_mut</span>().<span class="ident">iter_mut</span>().<span class="ident">rev</span>() {
             <span class="comment">// Keep going until we reach a value that is not defined by `inst`.</span>
             <span class="kw">if</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_def</span>(<span class="ident">lv</span>.<span class="ident">value</span>) {
-                <span class="ident">ValueDef</span>::<span class="prelude-ty">Result</span>(<span class="ident">i</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">i</span> <span class="op">!</span><span class="op">=</span> <span class="ident">inst</span>,
+                <span class="ident">ValueDef::Result</span>(<span class="ident">i</span>, <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">i</span> <span class="op">!</span><span class="op">=</span> <span class="ident">inst</span>,
                 <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
             } {
                 <span class="kw">break</span>;
@@ -2573,7 +2573,7 @@
             <span class="self">self</span>.<span class="ident">liveness</span>.<span class="ident">move_def_locally</span>(<span class="ident">lv</span>.<span class="ident">value</span>, <span class="ident">copy</span>);
 
             <span class="comment">// Transfer the register coloring to `local`.</span>
-            <span class="kw">let</span> <span class="ident">loc</span> <span class="op">=</span> <span class="ident">mem</span>::<span class="ident">replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">lv</span>.<span class="ident">value</span>], <span class="ident">ValueLoc</span>::<span class="ident">default</span>());
+            <span class="kw">let</span> <span class="ident">loc</span> <span class="op">=</span> <span class="ident">mem::replace</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">lv</span>.<span class="ident">value</span>], <span class="ident">ValueLoc::default</span>());
             <span class="self">self</span>.<span class="ident">cur</span>.<span class="ident">func</span>.<span class="ident">locations</span>[<span class="ident">local</span>] <span class="op">=</span> <span class="ident">loc</span>;
 
             <span class="comment">// Update `lv` to reflect the new `local` live range.</span>
@@ -2596,7 +2596,7 @@
     <span class="doccomment">/// - Free killed registers.</span>
     <span class="kw">fn</span> <span class="ident">process_ghost_kills</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">kills</span>: <span class="kw-2">&amp;</span>[<span class="ident">LiveValue</span>], <span class="ident">regs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">AvailableRegs</span>) {
         <span class="kw">for</span> <span class="ident">lv</span> <span class="kw">in</span> <span class="ident">kills</span> {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity</span>::<span class="ident">Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Affinity::Reg</span>(<span class="ident">rci</span>) <span class="op">=</span> <span class="ident">lv</span>.<span class="ident">affinity</span> {
                 <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">reginfo</span>.<span class="ident">rc</span>(<span class="ident">rci</span>);
                 <span class="kw">let</span> <span class="ident">loc</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">divert</span>.<span class="ident">remove</span>(<span class="ident">lv</span>.<span class="ident">value</span>) {
                     <span class="prelude-val">Some</span>(<span class="ident">loc</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">loc</span>,

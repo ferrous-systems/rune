@@ -343,7 +343,7 @@
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">grapheme</span>::{<span class="ident">Graphemes</span>, <span class="ident">GraphemeIndices</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">grapheme</span>::{<span class="ident">GraphemeCursor</span>, <span class="ident">GraphemeIncomplete</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tables</span>::<span class="ident">UNICODE_VERSION</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tables::UNICODE_VERSION</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">word</span>::{<span class="ident">UWordBounds</span>, <span class="ident">UWordBoundIndices</span>, <span class="ident">UnicodeWords</span>};
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">sentence</span>::{<span class="ident">USentenceBounds</span>, <span class="ident">USentenceBoundIndices</span>, <span class="ident">UnicodeSentences</span>};
 
@@ -514,42 +514,42 @@
 <span class="kw">impl</span> <span class="ident">UnicodeSegmentation</span> <span class="kw">for</span> <span class="ident">str</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">graphemes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">is_extended</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Graphemes</span> {
-        <span class="ident">grapheme</span>::<span class="ident">new_graphemes</span>(<span class="self">self</span>, <span class="ident">is_extended</span>)
+        <span class="ident">grapheme::new_graphemes</span>(<span class="self">self</span>, <span class="ident">is_extended</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">grapheme_indices</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">is_extended</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">GraphemeIndices</span> {
-        <span class="ident">grapheme</span>::<span class="ident">new_grapheme_indices</span>(<span class="self">self</span>, <span class="ident">is_extended</span>)
+        <span class="ident">grapheme::new_grapheme_indices</span>(<span class="self">self</span>, <span class="ident">is_extended</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">unicode_words</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UnicodeWords</span> {
-        <span class="ident">word</span>::<span class="ident">new_unicode_words</span>(<span class="self">self</span>)
+        <span class="ident">word::new_unicode_words</span>(<span class="self">self</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">split_word_bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UWordBounds</span> {
-        <span class="ident">word</span>::<span class="ident">new_word_bounds</span>(<span class="self">self</span>)
+        <span class="ident">word::new_word_bounds</span>(<span class="self">self</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">split_word_bound_indices</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UWordBoundIndices</span> {
-        <span class="ident">word</span>::<span class="ident">new_word_bound_indices</span>(<span class="self">self</span>)
+        <span class="ident">word::new_word_bound_indices</span>(<span class="self">self</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">unicode_sentences</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">UnicodeSentences</span> {
-        <span class="ident">sentence</span>::<span class="ident">new_unicode_sentences</span>(<span class="self">self</span>)
+        <span class="ident">sentence::new_unicode_sentences</span>(<span class="self">self</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">split_sentence_bounds</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">USentenceBounds</span> {
-        <span class="ident">sentence</span>::<span class="ident">new_sentence_bounds</span>(<span class="self">self</span>)
+        <span class="ident">sentence::new_sentence_bounds</span>(<span class="self">self</span>)
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="kw">fn</span> <span class="ident">split_sentence_bound_indices</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">USentenceBoundIndices</span> {
-        <span class="ident">sentence</span>::<span class="ident">new_sentence_bound_indices</span>(<span class="self">self</span>)
+        <span class="ident">sentence::new_sentence_bound_indices</span>(<span class="self">self</span>)
     }
 }
 </pre></div>

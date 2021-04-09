@@ -7,7 +7,7 @@
 objects with very natural JSON syntax.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">serde_json</span>::<span class="ident">json</span>;
+<span class="kw">use</span> <span class="ident">serde_json::json</span>;
 
 <span class="kw">fn</span> <span class="ident">main</span>() {
     <span class="comment">// The type of `john` is `serde_json::Value`</span>
@@ -66,7 +66,7 @@ a TCP stream.</p>
         }&quot;#</span>;
 
     <span class="comment">// Parse the string of data into serde_json::Value.</span>
-    <span class="kw">let</span> <span class="ident">v</span>: <span class="ident">Value</span> <span class="op">=</span> <span class="ident">serde_json</span>::<span class="ident">from_str</span>(<span class="ident">data</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">v</span>: <span class="ident">Value</span> <span class="op">=</span> <span class="ident">serde_json::from_str</span>(<span class="ident">data</span>)<span class="question-mark">?</span>;
 
     <span class="comment">// Access parts of the data by indexing with square brackets.</span>
     <span class="macro">println!</span>(<span class="string">&quot;Please call {} at the number {}&quot;</span>, <span class="ident">v</span>[<span class="string">&quot;name&quot;</span>], <span class="ident">v</span>[<span class="string">&quot;phones&quot;</span>][<span class="number">0</span>]);

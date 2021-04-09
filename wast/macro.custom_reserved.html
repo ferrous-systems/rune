@@ -11,16 +11,16 @@
 instead of keywords (<code>Token::Keyword</code>).</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">wast</span>::<span class="ident">parser</span>::{<span class="ident">Parser</span>, <span class="prelude-ty">Result</span>, <span class="ident">Parse</span>};
+<span class="kw">use</span> <span class="ident">wast::parser</span>::{<span class="ident">Parser</span>, <span class="prelude-ty">Result</span>, <span class="ident">Parse</span>};
 
 <span class="comment">// Define a custom reserved symbol, the &quot;spaceship&quot; operator: `&lt;=&gt;`.</span>
-<span class="ident">wast</span>::<span class="macro">custom_reserved!</span>(<span class="ident">spaceship</span> <span class="op">=</span> <span class="string">&quot;&lt;=&gt;&quot;</span>);
+<span class="macro">wast::custom_reserved!</span>(<span class="ident">spaceship</span> <span class="op">=</span> <span class="string">&quot;&lt;=&gt;&quot;</span>);
 
 <span class="doccomment">/// A &quot;three-way comparison&quot; like `(&lt;=&gt; a b)` that returns -1 if `a` is less</span>
 <span class="doccomment">/// than `b`, 0 if they&#39;re equal, and 1 if `a` is greater than `b`.</span>
 <span class="kw">struct</span> <span class="ident">ThreeWayComparison</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">lhs</span>: <span class="ident">wast</span>::<span class="ident">Expression</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-    <span class="ident">rhs</span>: <span class="ident">wast</span>::<span class="ident">Expression</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+    <span class="ident">lhs</span>: <span class="ident">wast::Expression</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+    <span class="ident">rhs</span>: <span class="ident">wast::Expression</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Parse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ThreeWayComparison</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {

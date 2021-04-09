@@ -130,21 +130,21 @@
 <span class="kw">mod</span> <span class="ident">memory</span>;
 <span class="kw">mod</span> <span class="ident">table</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">function</span>::{
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::function</span>::{
     <span class="ident">FromToNativeWasmType</span>, <span class="ident">Function</span>, <span class="ident">HostFunction</span>, <span class="ident">WasmTypeList</span>, <span class="ident">WithEnv</span>, <span class="ident">WithoutEnv</span>,
 };
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;deprecated&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">function</span>::{<span class="ident">UnsafeMutableEnv</span>, <span class="ident">WithUnsafeMutableEnv</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">global</span>::<span class="ident">Global</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">memory</span>::<span class="ident">Memory</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">table</span>::<span class="ident">Table</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::function</span>::{<span class="ident">UnsafeMutableEnv</span>, <span class="ident">WithUnsafeMutableEnv</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::global::Global</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::memory::Memory</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span><span class="ident">::table::Table</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">exports</span>::{<span class="ident">ExportError</span>, <span class="ident">Exportable</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">store</span>::{<span class="ident">Store</span>, <span class="ident">StoreObject</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ExternType</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
-<span class="kw">use</span> <span class="ident">wasmer_engine</span>::<span class="ident">Export</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::exports</span>::{<span class="ident">ExportError</span>, <span class="ident">Exportable</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::store</span>::{<span class="ident">Store</span>, <span class="ident">StoreObject</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ExternType</span>;
+<span class="kw">use</span> <span class="ident">std::fmt</span>;
+<span class="kw">use</span> <span class="ident">wasmer_engine::Export</span>;
 
 <span class="doccomment">/// An `Extern` is the runtime representation of an entity that</span>
 <span class="doccomment">/// can be imported or exported.</span>
@@ -166,20 +166,20 @@
     <span class="doccomment">/// Return the undelying type of the inner `Extern`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ty</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExternType</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Function</span>(<span class="ident">ft</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ExternType</span>::<span class="ident">Function</span>(<span class="ident">ft</span>.<span class="ident">ty</span>().<span class="ident">clone</span>()),
-            <span class="self">Self</span>::<span class="ident">Memory</span>(<span class="ident">ft</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ExternType</span>::<span class="ident">Memory</span>(<span class="kw-2">*</span><span class="ident">ft</span>.<span class="ident">ty</span>()),
-            <span class="self">Self</span>::<span class="ident">Table</span>(<span class="ident">tt</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ExternType</span>::<span class="ident">Table</span>(<span class="kw-2">*</span><span class="ident">tt</span>.<span class="ident">ty</span>()),
-            <span class="self">Self</span>::<span class="ident">Global</span>(<span class="ident">gt</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ExternType</span>::<span class="ident">Global</span>(<span class="kw-2">*</span><span class="ident">gt</span>.<span class="ident">ty</span>()),
+            <span class="self">Self</span><span class="ident">::Function</span>(<span class="ident">ft</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ExternType::Function</span>(<span class="ident">ft</span>.<span class="ident">ty</span>().<span class="ident">clone</span>()),
+            <span class="self">Self</span><span class="ident">::Memory</span>(<span class="ident">ft</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ExternType::Memory</span>(<span class="kw-2">*</span><span class="ident">ft</span>.<span class="ident">ty</span>()),
+            <span class="self">Self</span><span class="ident">::Table</span>(<span class="ident">tt</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ExternType::Table</span>(<span class="kw-2">*</span><span class="ident">tt</span>.<span class="ident">ty</span>()),
+            <span class="self">Self</span><span class="ident">::Global</span>(<span class="ident">gt</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ExternType::Global</span>(<span class="kw-2">*</span><span class="ident">gt</span>.<span class="ident">ty</span>()),
         }
     }
 
     <span class="doccomment">/// Create an `Extern` from an `wasmer_vm::Export`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_vm_export</span>(<span class="ident">store</span>: <span class="kw-2">&amp;</span><span class="ident">Store</span>, <span class="ident">export</span>: <span class="ident">Export</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">export</span> {
-            <span class="ident">Export</span>::<span class="ident">Function</span>(<span class="ident">f</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Function</span>(<span class="ident">Function</span>::<span class="ident">from_vm_export</span>(<span class="ident">store</span>, <span class="ident">f</span>)),
-            <span class="ident">Export</span>::<span class="ident">Memory</span>(<span class="ident">m</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Memory</span>(<span class="ident">Memory</span>::<span class="ident">from_vm_export</span>(<span class="ident">store</span>, <span class="ident">m</span>)),
-            <span class="ident">Export</span>::<span class="ident">Global</span>(<span class="ident">g</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Global</span>(<span class="ident">Global</span>::<span class="ident">from_vm_export</span>(<span class="ident">store</span>, <span class="ident">g</span>)),
-            <span class="ident">Export</span>::<span class="ident">Table</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Table</span>(<span class="ident">Table</span>::<span class="ident">from_vm_export</span>(<span class="ident">store</span>, <span class="ident">t</span>)),
+            <span class="ident">Export::Function</span>(<span class="ident">f</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Function</span>(<span class="ident">Function::from_vm_export</span>(<span class="ident">store</span>, <span class="ident">f</span>)),
+            <span class="ident">Export::Memory</span>(<span class="ident">m</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Memory</span>(<span class="ident">Memory::from_vm_export</span>(<span class="ident">store</span>, <span class="ident">m</span>)),
+            <span class="ident">Export::Global</span>(<span class="ident">g</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Global</span>(<span class="ident">Global::from_vm_export</span>(<span class="ident">store</span>, <span class="ident">g</span>)),
+            <span class="ident">Export::Table</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Table</span>(<span class="ident">Table::from_vm_export</span>(<span class="ident">store</span>, <span class="ident">t</span>)),
         }
     }
 }
@@ -187,10 +187,10 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Exportable</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Extern</span> {
     <span class="kw">fn</span> <span class="ident">to_export</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Export</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Function</span>(<span class="ident">f</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">to_export</span>(),
-            <span class="self">Self</span>::<span class="ident">Global</span>(<span class="ident">g</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">g</span>.<span class="ident">to_export</span>(),
-            <span class="self">Self</span>::<span class="ident">Memory</span>(<span class="ident">m</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">m</span>.<span class="ident">to_export</span>(),
-            <span class="self">Self</span>::<span class="ident">Table</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_export</span>(),
+            <span class="self">Self</span><span class="ident">::Function</span>(<span class="ident">f</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">to_export</span>(),
+            <span class="self">Self</span><span class="ident">::Global</span>(<span class="ident">g</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">g</span>.<span class="ident">to_export</span>(),
+            <span class="self">Self</span><span class="ident">::Memory</span>(<span class="ident">m</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">m</span>.<span class="ident">to_export</span>(),
+            <span class="self">Self</span><span class="ident">::Table</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">to_export</span>(),
         }
     }
 
@@ -203,25 +203,25 @@
 <span class="kw">impl</span> <span class="ident">StoreObject</span> <span class="kw">for</span> <span class="ident">Extern</span> {
     <span class="kw">fn</span> <span class="ident">comes_from_same_store</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">store</span>: <span class="kw-2">&amp;</span><span class="ident">Store</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">my_store</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span>::<span class="ident">Function</span>(<span class="ident">f</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">store</span>(),
-            <span class="self">Self</span>::<span class="ident">Global</span>(<span class="ident">g</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">g</span>.<span class="ident">store</span>(),
-            <span class="self">Self</span>::<span class="ident">Memory</span>(<span class="ident">m</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">m</span>.<span class="ident">store</span>(),
-            <span class="self">Self</span>::<span class="ident">Table</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">store</span>(),
+            <span class="self">Self</span><span class="ident">::Function</span>(<span class="ident">f</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">f</span>.<span class="ident">store</span>(),
+            <span class="self">Self</span><span class="ident">::Global</span>(<span class="ident">g</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">g</span>.<span class="ident">store</span>(),
+            <span class="self">Self</span><span class="ident">::Memory</span>(<span class="ident">m</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">m</span>.<span class="ident">store</span>(),
+            <span class="self">Self</span><span class="ident">::Table</span>(<span class="ident">t</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">t</span>.<span class="ident">store</span>(),
         };
-        <span class="ident">Store</span>::<span class="ident">same</span>(<span class="ident">my_store</span>, <span class="ident">store</span>)
+        <span class="ident">Store::same</span>(<span class="ident">my_store</span>, <span class="ident">store</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Extern</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Extern</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(
             <span class="ident">f</span>,
             <span class="string">&quot;{}&quot;</span>,
             <span class="kw">match</span> <span class="self">self</span> {
-                <span class="self">Self</span>::<span class="ident">Function</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Function(...)&quot;</span>,
-                <span class="self">Self</span>::<span class="ident">Global</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Global(...)&quot;</span>,
-                <span class="self">Self</span>::<span class="ident">Memory</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Memory(...)&quot;</span>,
-                <span class="self">Self</span>::<span class="ident">Table</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Table(...)&quot;</span>,
+                <span class="self">Self</span><span class="ident">::Function</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Function(...)&quot;</span>,
+                <span class="self">Self</span><span class="ident">::Global</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Global(...)&quot;</span>,
+                <span class="self">Self</span><span class="ident">::Memory</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Memory(...)&quot;</span>,
+                <span class="self">Self</span><span class="ident">::Table</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;Table(...)&quot;</span>,
             }
         )
     }
@@ -229,25 +229,25 @@
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Function</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Extern</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">Function</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Function</span>(<span class="ident">r</span>)
+        <span class="self">Self</span><span class="ident">::Function</span>(<span class="ident">r</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Global</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Extern</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">Global</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Global</span>(<span class="ident">r</span>)
+        <span class="self">Self</span><span class="ident">::Global</span>(<span class="ident">r</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Memory</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Extern</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">Memory</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Memory</span>(<span class="ident">r</span>)
+        <span class="self">Self</span><span class="ident">::Memory</span>(<span class="ident">r</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Table</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Extern</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">r</span>: <span class="ident">Table</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Table</span>(<span class="ident">r</span>)
+        <span class="self">Self</span><span class="ident">::Table</span>(<span class="ident">r</span>)
     }
 }
 </pre></div>

@@ -14,16 +14,16 @@
 <p>In a struct collecting input for this attribute, that would be written as:</p>
 
 <div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
-<span class="kw">use</span> <span class="ident">darling</span>::<span class="ident">util</span>::<span class="ident">Override</span>;
+<span class="kw">use</span> <span class="ident">darling::util::Override</span>;
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">FromField</span>)]</span>
 <span class="attribute">#[<span class="ident">darling</span>(<span class="ident">attributes</span>(<span class="ident">darling</span>))]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Options</span> {
-   <span class="ident">default</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Override</span><span class="op">&lt;</span><span class="ident">syn</span>::<span class="ident">Path</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+   <span class="ident">default</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Override</span><span class="op">&lt;</span><span class="ident">syn::Path</span><span class="op">&gt;</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Options</span> {
-    <span class="kw">fn</span> <span class="ident">hydrate</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">syn</span>::<span class="ident">Path</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">default</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">ov</span><span class="op">|</span> <span class="ident">ov</span>.<span class="ident">unwrap_or</span>(<span class="ident">syn</span>::<span class="ident">parse_path</span>(<span class="string">&quot;::Default::default&quot;</span>).<span class="ident">unwrap</span>()))
+    <span class="kw">fn</span> <span class="ident">hydrate</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">syn::Path</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">default</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">ov</span><span class="op">|</span> <span class="ident">ov</span>.<span class="ident">unwrap_or</span>(<span class="ident">syn::parse_path</span>(<span class="string">&quot;::Default::default&quot;</span>).<span class="ident">unwrap</span>()))
     }
 }</pre></div>
 <p>The <code>word</code> format (with no associated value), would produce <code>Override::Inherit</code>, while a list

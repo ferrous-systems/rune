@@ -90,15 +90,15 @@
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">UnwindInfo</span> {
     <span class="doccomment">/// Windows x64 ABI unwind information.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unwind&quot;</span>)]</span>
-    <span class="ident">WindowsX64</span>(<span class="ident">winx64</span>::<span class="ident">UnwindInfo</span>),
+    <span class="ident">WindowsX64</span>(<span class="ident">winx64::UnwindInfo</span>),
     <span class="doccomment">/// System V ABI unwind information.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unwind&quot;</span>)]</span>
-    <span class="ident">SystemV</span>(<span class="ident">systemv</span>::<span class="ident">UnwindInfo</span>),
+    <span class="ident">SystemV</span>(<span class="ident">systemv::UnwindInfo</span>),
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">mod</span> <span class="ident">input</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">binemit</span>::<span class="ident">CodeOffset</span>;
-    <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">vec</span>::<span class="ident">Vec</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::binemit::CodeOffset</span>;
+    <span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;enable-serde&quot;</span>)]</span>
     <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 

@@ -11,17 +11,17 @@ need.</p>
 the <code>raw</code> module which has a much closer interface to libbz2.</p>
 <h1 id="example" class="section-header"><a href="#example">Example</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">bzip2</span>::<span class="ident">Compression</span>;
-<span class="kw">use</span> <span class="ident">bzip2</span>::<span class="ident">read</span>::{<span class="ident">BzEncoder</span>, <span class="ident">BzDecoder</span>};
+<span class="kw">use</span> <span class="ident">std::io::prelude</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">bzip2::Compression</span>;
+<span class="kw">use</span> <span class="ident">bzip2::read</span>::{<span class="ident">BzEncoder</span>, <span class="ident">BzDecoder</span>};
 
 <span class="comment">// Round trip some bytes from a byte source, into a compressor, into a</span>
 <span class="comment">// decompressor, and finally into a vector.</span>
 <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;Hello, World!&quot;</span>.<span class="ident">as_bytes</span>();
-<span class="kw">let</span> <span class="ident">compressor</span> <span class="op">=</span> <span class="ident">BzEncoder</span>::<span class="ident">new</span>(<span class="ident">data</span>, <span class="ident">Compression</span>::<span class="ident">Best</span>);
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">decompressor</span> <span class="op">=</span> <span class="ident">BzDecoder</span>::<span class="ident">new</span>(<span class="ident">compressor</span>);
+<span class="kw">let</span> <span class="ident">compressor</span> <span class="op">=</span> <span class="ident">BzEncoder::new</span>(<span class="ident">data</span>, <span class="ident">Compression::Best</span>);
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">decompressor</span> <span class="op">=</span> <span class="ident">BzDecoder::new</span>(<span class="ident">compressor</span>);
 
-<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">contents</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">new</span>();
+<span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">contents</span> <span class="op">=</span> <span class="ident">String::new</span>();
 <span class="ident">decompressor</span>.<span class="ident">read_to_string</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">contents</span>).<span class="ident">unwrap</span>();
 <span class="macro">assert_eq!</span>(<span class="ident">contents</span>, <span class="string">&quot;Hello, World!&quot;</span>);</pre></div>
 <h1 id="async-io" class="section-header"><a href="#async-io">Async I/O</a></h1>

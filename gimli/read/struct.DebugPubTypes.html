@@ -13,14 +13,14 @@ Linux, a Mach-O loader on OSX, etc.</p>
 <span class="kw">use</span> <span class="ident">gimli</span>::{<span class="ident">DebugPubTypes</span>, <span class="ident">LittleEndian</span>};
 
 <span class="kw">let</span> <span class="ident">debug_pubtypes</span> <span class="op">=</span>
-    <span class="ident">DebugPubTypes</span>::<span class="ident">new</span>(<span class="ident">read_debug_pubtypes_somehow</span>(), <span class="ident">LittleEndian</span>);</pre></div>
+    <span class="ident">DebugPubTypes::new</span>(<span class="ident">read_debug_pubtypes_somehow</span>(), <span class="ident">LittleEndian</span>);</pre></div>
 </div></div><h3 id="impl-1" class="impl"><code class="in-band">impl&lt;R:&nbsp;<a class="trait" href="../../gimli/read/trait.Reader.html" title="trait gimli::read::Reader">Reader</a>&gt; <a class="struct" href="../../gimli/read/struct.DebugPubTypes.html" title="struct gimli::read::DebugPubTypes">DebugPubTypes</a>&lt;R&gt;</code><a href="#impl-1" class="anchor"></a><a class="srclink" href="../../src/gimli/read/pubtypes.rs.html#76-95" title="goto source code">[src]</a></h3><div class="impl-items"><h4 id="method.items" class="method"><code>pub fn <a href="#method.items" class="fnname">items</a>(&amp;self) -&gt; <a class="struct" href="../../gimli/read/struct.PubTypesEntryIter.html" title="struct gimli::read::PubTypesEntryIter">PubTypesEntryIter</a>&lt;R&gt;</code><a class="srclink" href="../../src/gimli/read/pubtypes.rs.html#92-94" title="goto source code">[src]</a></h4><div class="docblock"><p>Iterate the pubtypes in the <code>.debug_pubtypes</code> section.</p>
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">gimli</span>::{<span class="ident">DebugPubTypes</span>, <span class="ident">EndianSlice</span>, <span class="ident">LittleEndian</span>};
 
 <span class="kw">let</span> <span class="ident">debug_pubtypes</span> <span class="op">=</span>
-    <span class="ident">DebugPubTypes</span>::<span class="ident">new</span>(<span class="ident">read_debug_pubtypes_section_somehow</span>(), <span class="ident">LittleEndian</span>);
+    <span class="ident">DebugPubTypes::new</span>(<span class="ident">read_debug_pubtypes_section_somehow</span>(), <span class="ident">LittleEndian</span>);
 
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iter</span> <span class="op">=</span> <span class="ident">debug_pubtypes</span>.<span class="ident">items</span>();
 <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">pubtype</span>) <span class="op">=</span> <span class="ident">iter</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>() {

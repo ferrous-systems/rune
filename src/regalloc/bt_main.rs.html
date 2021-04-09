@@ -1852,28 +1852,28 @@
 <span class="doccomment">//! Core implementation of the backtracking allocator.</span>
 
 <span class="kw">use</span> <span class="ident">log</span>::{<span class="ident">debug</span>, <span class="ident">info</span>, <span class="ident">log_enabled</span>, <span class="ident">Level</span>};
-<span class="kw">use</span> <span class="ident">smallvec</span>::<span class="ident">SmallVec</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">default</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>;
+<span class="kw">use</span> <span class="ident">smallvec::SmallVec</span>;
+<span class="kw">use</span> <span class="ident">std::default</span>;
+<span class="kw">use</span> <span class="ident">std::fmt</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">analysis_data_flow</span>::{<span class="ident">add_raw_reg_vecs_for_insn</span>, <span class="ident">does_inst_use_def_or_mod_reg</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">analysis_main</span>::{<span class="ident">run_analysis</span>, <span class="ident">AnalysisInfo</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">avl_tree</span>::{<span class="ident">AVLTree</span>, <span class="ident">AVL_NULL</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bt_coalescing_analysis</span>::{<span class="ident">do_coalescing_analysis</span>, <span class="ident">Hint</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bt_commitment_map</span>::{<span class="ident">CommitmentMap</span>, <span class="ident">RangeFragAndRangeId</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bt_spillslot_allocator</span>::<span class="ident">SpillSlotAllocator</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bt_vlr_priority_queue</span>::<span class="ident">VirtualRangePrioQ</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">data_structures</span>::{
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::analysis_data_flow</span>::{<span class="ident">add_raw_reg_vecs_for_insn</span>, <span class="ident">does_inst_use_def_or_mod_reg</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::analysis_main</span>::{<span class="ident">run_analysis</span>, <span class="ident">AnalysisInfo</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::avl_tree</span>::{<span class="ident">AVLTree</span>, <span class="ident">AVL_NULL</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bt_coalescing_analysis</span>::{<span class="ident">do_coalescing_analysis</span>, <span class="ident">Hint</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bt_commitment_map</span>::{<span class="ident">CommitmentMap</span>, <span class="ident">RangeFragAndRangeId</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bt_spillslot_allocator::SpillSlotAllocator</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bt_vlr_priority_queue::VirtualRangePrioQ</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::data_structures</span>::{
     <span class="ident">BlockIx</span>, <span class="ident">InstIx</span>, <span class="ident">InstPoint</span>, <span class="ident">Map</span>, <span class="ident">Point</span>, <span class="ident">RangeFrag</span>, <span class="ident">RangeFragIx</span>, <span class="ident">RangeId</span>, <span class="ident">RealRange</span>,
     <span class="ident">RealRangeIx</span>, <span class="ident">RealReg</span>, <span class="ident">RealRegUniverse</span>, <span class="ident">Reg</span>, <span class="ident">RegClass</span>, <span class="ident">RegVecBounds</span>, <span class="ident">RegVecs</span>, <span class="ident">RegVecsAndBounds</span>,
     <span class="ident">Set</span>, <span class="ident">SortedRangeFrags</span>, <span class="ident">SpillCost</span>, <span class="ident">SpillSlot</span>, <span class="ident">TypedIxVec</span>, <span class="ident">VirtualRange</span>, <span class="ident">VirtualRangeIx</span>,
     <span class="ident">VirtualReg</span>, <span class="ident">Writable</span>,
 };
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">inst_stream</span>::{
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::inst_stream</span>::{
     <span class="ident">edit_inst_stream</span>, <span class="ident">ExtPoint</span>, <span class="ident">InstExtPoint</span>, <span class="ident">InstToInsert</span>, <span class="ident">InstToInsertAndExtPoint</span>,
 };
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">sparse_set</span>::<span class="ident">SparseSetU</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">union_find</span>::<span class="ident">UnionFindEquivClasses</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::sparse_set::SparseSetU</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::union_find::UnionFindEquivClasses</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">AlgorithmWithDefaults</span>, <span class="ident">Function</span>, <span class="ident">RegAllocError</span>, <span class="ident">RegAllocResult</span>, <span class="ident">StackmapRequestInfo</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
@@ -1882,7 +1882,7 @@
     <span class="kw">pub</span> <span class="ident">request_block_annotations</span>: <span class="ident">bool</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">default</span>::<span class="ident">Default</span> <span class="kw">for</span> <span class="ident">BacktrackingOptions</span> {
+<span class="kw">impl</span> <span class="ident">default::Default</span> <span class="kw">for</span> <span class="ident">BacktrackingOptions</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">request_block_annotations</span>: <span class="bool-val">false</span>,
@@ -1890,8 +1890,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">BacktrackingOptions</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">BacktrackingOptions</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(
             <span class="ident">fmt</span>,
             <span class="string">&quot;backtracking (block annotations: {})&quot;</span>,
@@ -1920,8 +1920,8 @@
 <span class="kw">impl</span> <span class="ident">PerRealReg</span> {
     <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">committed</span>: <span class="ident">CommitmentMap</span>::<span class="ident">new</span>(),
-            <span class="ident">vlrixs_assigned</span>: <span class="ident">Set</span>::<span class="op">&lt;</span><span class="ident">VirtualRangeIx</span><span class="op">&gt;</span>::<span class="ident">empty</span>(),
+            <span class="ident">committed</span>: <span class="ident">CommitmentMap::new</span>(),
+            <span class="ident">vlrixs_assigned</span>: <span class="ident">Set</span>::<span class="op">&lt;</span><span class="ident">VirtualRangeIx</span><span class="op">&gt;</span><span class="ident">::empty</span>(),
         }
     }
 
@@ -1938,7 +1938,7 @@
         <span class="kw">let</span> <span class="ident">to_add_rlr</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">rlr_env</span>[<span class="ident">to_add_rlrix</span>];
         <span class="self">self</span>.<span class="ident">committed</span>.<span class="ident">add_indirect</span>(
             <span class="kw-2">&amp;</span><span class="ident">to_add_rlr</span>.<span class="ident">sorted_frags</span>,
-            <span class="ident">RangeId</span>::<span class="ident">new_real</span>(<span class="ident">to_add_rlrix</span>),
+            <span class="ident">RangeId::new_real</span>(<span class="ident">to_add_rlrix</span>),
             <span class="ident">frag_env</span>,
         );
     }
@@ -1951,7 +1951,7 @@
     ) {
         <span class="kw">let</span> <span class="ident">to_add_vlr</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">vlr_env</span>[<span class="ident">to_add_vlrix</span>];
         <span class="self">self</span>.<span class="ident">committed</span>
-            .<span class="ident">add</span>(<span class="kw-2">&amp;</span><span class="ident">to_add_vlr</span>.<span class="ident">sorted_frags</span>, <span class="ident">RangeId</span>::<span class="ident">new_virtual</span>(<span class="ident">to_add_vlrix</span>));
+            .<span class="ident">add</span>(<span class="kw-2">&amp;</span><span class="ident">to_add_vlr</span>.<span class="ident">sorted_frags</span>, <span class="ident">RangeId::new_virtual</span>(<span class="ident">to_add_vlrix</span>));
         <span class="macro">assert!</span>(<span class="op">!</span><span class="self">self</span>.<span class="ident">vlrixs_assigned</span>.<span class="ident">contains</span>(<span class="ident">to_add_vlrix</span>));
         <span class="self">self</span>.<span class="ident">vlrixs_assigned</span>.<span class="ident">insert</span>(<span class="ident">to_add_vlrix</span>);
     }
@@ -2002,7 +2002,7 @@
 <span class="kw">where</span>
     <span class="ident">IsAllowedToEvict</span>: <span class="ident">Fn</span>(<span class="ident">VirtualRangeIx</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>,
 {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack</span> <span class="op">=</span> <span class="ident">SmallVec</span>::<span class="op">&lt;</span>[<span class="ident">u32</span>; <span class="number">32</span>]<span class="op">&gt;</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack</span> <span class="op">=</span> <span class="ident">SmallVec</span>::<span class="op">&lt;</span>[<span class="ident">u32</span>; <span class="number">32</span>]<span class="op">&gt;</span><span class="ident">::new</span>();
     <span class="macro">assert!</span>(<span class="ident">tree</span>.<span class="ident">root</span> <span class="op">!</span><span class="op">=</span> <span class="ident">AVL_NULL</span>);
     <span class="ident">stack</span>.<span class="ident">push</span>(<span class="ident">tree</span>.<span class="ident">root</span>);
 
@@ -2129,8 +2129,8 @@
         <span class="comment">// Firstly, if the commitment tree is for this reg is empty, we can</span>
         <span class="comment">// declare success immediately.</span>
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">committed</span>.<span class="ident">tree</span>.<span class="ident">root</span> <span class="op">=</span><span class="op">=</span> <span class="ident">AVL_NULL</span> {
-            <span class="kw">let</span> <span class="ident">evict_set</span> <span class="op">=</span> <span class="ident">SparseSetU</span>::<span class="op">&lt;</span>[<span class="ident">VirtualRangeIx</span>; <span class="number">4</span>]<span class="op">&gt;</span>::<span class="ident">empty</span>();
-            <span class="kw">let</span> <span class="ident">evict_cost</span> <span class="op">=</span> <span class="ident">SpillCost</span>::<span class="ident">zero</span>();
+            <span class="kw">let</span> <span class="ident">evict_set</span> <span class="op">=</span> <span class="ident">SparseSetU</span>::<span class="op">&lt;</span>[<span class="ident">VirtualRangeIx</span>; <span class="number">4</span>]<span class="op">&gt;</span><span class="ident">::empty</span>();
+            <span class="kw">let</span> <span class="ident">evict_cost</span> <span class="op">=</span> <span class="ident">SpillCost::zero</span>();
             <span class="kw">return</span> <span class="prelude-val">Some</span>((<span class="ident">evict_set</span>, <span class="ident">evict_cost</span>));
         }
 
@@ -2146,8 +2146,8 @@
 
         <span class="comment">// The overall evict set and cost so far.  These are updated as we iterate</span>
         <span class="comment">// over the fragments that make up `would_like_to_add`.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">running_set</span> <span class="op">=</span> <span class="ident">SparseSetU</span>::<span class="op">&lt;</span>[<span class="ident">VirtualRangeIx</span>; <span class="number">4</span>]<span class="op">&gt;</span>::<span class="ident">empty</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">running_cost</span> <span class="op">=</span> <span class="ident">SpillCost</span>::<span class="ident">zero</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">running_set</span> <span class="op">=</span> <span class="ident">SparseSetU</span>::<span class="op">&lt;</span>[<span class="ident">VirtualRangeIx</span>; <span class="number">4</span>]<span class="op">&gt;</span><span class="ident">::empty</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">running_cost</span> <span class="op">=</span> <span class="ident">SpillCost::zero</span>();
 
         <span class="comment">// &quot;wlta&quot; = would like to add</span>
         <span class="kw">for</span> <span class="ident">wlta_frag</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">would_like_to_add_vlr</span>.<span class="ident">sorted_frags</span>.<span class="ident">frags</span> {
@@ -2286,16 +2286,16 @@
     <span class="comment">// elsewhere in the stack, and that will keep the object alive.  Maybe this needs a rethink.</span>
     <span class="comment">// Maybe the spills before the call should be only for the set Safter?</span>
 
-    <span class="kw">let</span> <span class="ident">pt</span> <span class="op">=</span> <span class="ident">InstPoint</span>::<span class="ident">new_use</span>(<span class="ident">iix</span>);
+    <span class="kw">let</span> <span class="ident">pt</span> <span class="op">=</span> <span class="ident">InstPoint::new_use</span>(<span class="ident">iix</span>);
 
     <span class="comment">// Compute Sbefore.</span>
 
     <span class="comment">// FIXME change this to SparseSet</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s_before</span> <span class="op">=</span> <span class="ident">Set</span>::<span class="op">&lt;</span><span class="ident">RealReg</span><span class="op">&gt;</span>::<span class="ident">empty</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">s_before</span> <span class="op">=</span> <span class="ident">Set</span>::<span class="op">&lt;</span><span class="ident">RealReg</span><span class="op">&gt;</span><span class="ident">::empty</span>();
 
     <span class="kw">let</span> <span class="ident">rci</span> <span class="op">=</span> <span class="ident">univ</span>.<span class="ident">allocable_by_class</span>[<span class="ident">reftype_class</span>.<span class="ident">rc_to_usize</span>()];
     <span class="kw">if</span> <span class="ident">rci</span>.<span class="ident">is_none</span>() {
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RegAllocError</span>::<span class="ident">Other</span>(
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RegAllocError::Other</span>(
             <span class="string">&quot;stackmap request: no regs in specified reftype class&quot;</span>.<span class="ident">to_string</span>(),
         ));
     }
@@ -2340,7 +2340,7 @@
     <span class="kw">let</span> <span class="ident">bounds</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">reg_vecs_and_bounds</span>.<span class="ident">bounds</span>[<span class="ident">iix</span>];
     <span class="kw">if</span> <span class="ident">bounds</span>.<span class="ident">mods_len</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span> {
         <span class="comment">// Only the GC is allowed to modify reftyped regs at this insn!</span>
-        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RegAllocError</span>::<span class="ident">Other</span>(
+        <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RegAllocError::Other</span>(
             <span class="string">&quot;stackmap request: safepoint insn modifies a reftyped reg&quot;</span>.<span class="ident">to_string</span>(),
         ));
     }
@@ -2358,14 +2358,14 @@
     <span class="comment">// spill in `spill_slot_allocator`, so we can later ask it to tell us all the reftyped spill</span>
     <span class="comment">// slots.</span>
 
-    <span class="kw">let</span> <span class="ident">frag</span> <span class="op">=</span> <span class="ident">RangeFrag</span>::<span class="ident">new</span>(<span class="ident">InstPoint</span>::<span class="ident">new_reload</span>(<span class="ident">iix</span>), <span class="ident">InstPoint</span>::<span class="ident">new_spill</span>(<span class="ident">iix</span>));
+    <span class="kw">let</span> <span class="ident">frag</span> <span class="op">=</span> <span class="ident">RangeFrag::new</span>(<span class="ident">InstPoint::new_reload</span>(<span class="ident">iix</span>), <span class="ident">InstPoint::new_spill</span>(<span class="ident">iix</span>));
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spill_insns</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">InstToInsert</span><span class="op">&gt;</span>::<span class="ident">new</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">where_reg_got_spilled_to</span> <span class="op">=</span> <span class="ident">Map</span>::<span class="op">&lt;</span><span class="ident">RealReg</span>, <span class="ident">SpillSlot</span><span class="op">&gt;</span>::<span class="ident">default</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spill_insns</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">InstToInsert</span><span class="op">&gt;</span><span class="ident">::new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">where_reg_got_spilled_to</span> <span class="op">=</span> <span class="ident">Map</span>::<span class="op">&lt;</span><span class="ident">RealReg</span>, <span class="ident">SpillSlot</span><span class="op">&gt;</span><span class="ident">::default</span>();
 
     <span class="kw">for</span> <span class="ident">from_reg</span> <span class="kw">in</span> <span class="ident">s_before</span>.<span class="ident">iter</span>() {
         <span class="kw">let</span> <span class="ident">to_slot</span> <span class="op">=</span> <span class="ident">spill_slot_allocator</span>.<span class="ident">alloc_reftyped_spillslot_for_frag</span>(<span class="ident">frag</span>.<span class="ident">clone</span>());
-        <span class="kw">let</span> <span class="ident">spill</span> <span class="op">=</span> <span class="ident">InstToInsert</span>::<span class="ident">Spill</span> {
+        <span class="kw">let</span> <span class="ident">spill</span> <span class="op">=</span> <span class="ident">InstToInsert::Spill</span> {
             <span class="ident">to_slot</span>,
             <span class="ident">from_reg</span>: <span class="kw-2">*</span><span class="ident">from_reg</span>,
             <span class="ident">for_vreg</span>: <span class="prelude-val">None</span>, <span class="comment">// spill isn&#39;t associated with any virtual reg</span>
@@ -2380,11 +2380,11 @@
     <span class="comment">// Create the reload insns, as defined by Safter.  Except, we might as well use the map we</span>
     <span class="comment">// just made, since its domain is the same as Safter.</span>
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reload_insns</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">InstToInsert</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reload_insns</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">InstToInsert</span><span class="op">&gt;</span><span class="ident">::new</span>();
 
     <span class="kw">for</span> (<span class="ident">to_reg</span>, <span class="ident">from_slot</span>) <span class="kw">in</span> <span class="ident">where_reg_got_spilled_to</span>.<span class="ident">iter</span>() {
-        <span class="kw">let</span> <span class="ident">reload</span> <span class="op">=</span> <span class="ident">InstToInsert</span>::<span class="ident">Reload</span> {
-            <span class="ident">to_reg</span>: <span class="ident">Writable</span>::<span class="ident">from_reg</span>(<span class="kw-2">*</span><span class="ident">to_reg</span>),
+        <span class="kw">let</span> <span class="ident">reload</span> <span class="op">=</span> <span class="ident">InstToInsert::Reload</span> {
+            <span class="ident">to_reg</span>: <span class="ident">Writable::from_reg</span>(<span class="kw-2">*</span><span class="ident">to_reg</span>),
             <span class="ident">from_slot</span>: <span class="kw-2">*</span><span class="ident">from_slot</span>,
             <span class="ident">for_vreg</span>: <span class="prelude-val">None</span>, <span class="comment">// reload isn&#39;t associated with any virtual reg</span>
         };
@@ -2454,12 +2454,12 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
     <span class="ident">DtoS</span>, <span class="comment">// A bridge for a DEF.  This connects the def to the spill.</span>
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">BridgeKind</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">BridgeKind</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">BridgeKind</span>::<span class="ident">RtoU</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;R-&gt;U&quot;</span>),
-            <span class="ident">BridgeKind</span>::<span class="ident">RtoS</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;R-&gt;S&quot;</span>),
-            <span class="ident">BridgeKind</span>::<span class="ident">DtoS</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;D-&gt;S&quot;</span>),
+            <span class="ident">BridgeKind::RtoU</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;R-&gt;U&quot;</span>),
+            <span class="ident">BridgeKind::RtoS</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;R-&gt;S&quot;</span>),
+            <span class="ident">BridgeKind::DtoS</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">fmt</span>, <span class="string">&quot;D-&gt;S&quot;</span>),
         }
     }
 }
@@ -2486,8 +2486,8 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
     <span class="ident">iix</span>: <span class="ident">InstIx</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">EditListItem</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">EditListItem</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(
             <span class="ident">fmt</span>,
             <span class="string">&quot;(ELI: at {:?} for {:?} add {:?}, slot={:?})&quot;</span>,
@@ -2521,7 +2521,7 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
                 <span class="kw-2">ref</span> <span class="ident">reftyped_vregs</span>,
                 <span class="kw-2">ref</span> <span class="ident">safepoint_insns</span>,
             }) <span class="op">=</span><span class="op">&gt;</span> (<span class="bool-val">true</span>, <span class="ident">reftype_class</span>, <span class="ident">reftyped_vregs</span>, <span class="ident">safepoint_insns</span>),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="bool-val">false</span>, <span class="ident">RegClass</span>::<span class="ident">INVALID</span>, <span class="kw-2">&amp;</span><span class="ident">empty_vec_vregs</span>, <span class="kw-2">&amp;</span><span class="ident">empty_vec_iixs</span>),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="bool-val">false</span>, <span class="ident">RegClass::INVALID</span>, <span class="kw-2">&amp;</span><span class="ident">empty_vec_vregs</span>, <span class="kw-2">&amp;</span><span class="ident">empty_vec_iixs</span>),
         };
 
     <span class="comment">// -------- Perform initial liveness analysis --------</span>
@@ -2539,12 +2539,12 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
     } <span class="op">=</span> <span class="ident">run_analysis</span>(
         <span class="ident">func</span>,
         <span class="ident">reg_universe</span>,
-        <span class="ident">AlgorithmWithDefaults</span>::<span class="ident">Backtracking</span>,
+        <span class="ident">AlgorithmWithDefaults::Backtracking</span>,
         <span class="ident">client_wants_stackmaps</span>,
         <span class="ident">reftype_class</span>,
         <span class="ident">reftyped_vregs</span>,
     )
-    .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">RegAllocError</span>::<span class="ident">Analysis</span>(<span class="ident">err</span>))<span class="question-mark">?</span>;
+    .<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="ident">RegAllocError::Analysis</span>(<span class="ident">err</span>))<span class="question-mark">?</span>;
 
     <span class="macro">assert!</span>(<span class="ident">reg_vecs_and_bounds</span>.<span class="ident">is_sanitized</span>());
     <span class="macro">assert!</span>(<span class="ident">frag_env</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">frag_metrics_env</span>.<span class="ident">len</span>());
@@ -2585,18 +2585,18 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
     );
 
     <span class="comment">// This is fully populated by the ::new call.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prioQ</span> <span class="op">=</span> <span class="ident">VirtualRangePrioQ</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">vlr_env</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prioQ</span> <span class="op">=</span> <span class="ident">VirtualRangePrioQ::new</span>(<span class="kw-2">&amp;</span><span class="ident">vlr_env</span>);
 
     <span class="comment">// Whereas this is empty.  We have to populate it &quot;by hand&quot;, by</span>
     <span class="comment">// effectively cloning the allocatable part (prefix) of the universe.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">per_real_reg</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">PerRealReg</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">per_real_reg</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">PerRealReg</span><span class="op">&gt;</span><span class="ident">::new</span>();
     <span class="kw">for</span> <span class="kw">_</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">reg_universe</span>.<span class="ident">allocable</span> {
         <span class="comment">// Doing this instead of simply .resize avoids needing Clone for</span>
         <span class="comment">// PerRealReg</span>
-        <span class="ident">per_real_reg</span>.<span class="ident">push</span>(<span class="ident">PerRealReg</span>::<span class="ident">new</span>());
+        <span class="ident">per_real_reg</span>.<span class="ident">push</span>(<span class="ident">PerRealReg::new</span>());
     }
     <span class="kw">for</span> (<span class="ident">rlrix_no</span>, <span class="ident">rlr</span>) <span class="kw">in</span> <span class="ident">rlr_env</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
-        <span class="kw">let</span> <span class="ident">rlrix</span> <span class="op">=</span> <span class="ident">RealRangeIx</span>::<span class="ident">new</span>(<span class="ident">rlrix_no</span> <span class="kw">as</span> <span class="ident">u32</span>);
+        <span class="kw">let</span> <span class="ident">rlrix</span> <span class="op">=</span> <span class="ident">RealRangeIx::new</span>(<span class="ident">rlrix_no</span> <span class="kw">as</span> <span class="ident">u32</span>);
         <span class="kw">let</span> <span class="ident">rregIndex</span> <span class="op">=</span> <span class="ident">rlr</span>.<span class="ident">rreg</span>.<span class="ident">get_index</span>();
         <span class="comment">// Ignore RealRanges for RealRegs that are not part of the allocatable</span>
         <span class="comment">// set.  As far as the allocator is concerned, such RealRegs simply</span>
@@ -2607,9 +2607,9 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
         <span class="ident">per_real_reg</span>[<span class="ident">rregIndex</span>].<span class="ident">add_RealRange</span>(<span class="ident">rlrix</span>, <span class="kw-2">&amp;</span><span class="ident">rlr_env</span>, <span class="kw-2">&amp;</span><span class="ident">frag_env</span>);
     }
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">edit_list_move</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">EditListItem</span><span class="op">&gt;</span>::<span class="ident">new</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">edit_list_other</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">EditListItem</span><span class="op">&gt;</span>::<span class="ident">new</span>();
-    <span class="kw">if</span> <span class="macro">log_enabled!</span>(<span class="ident">Level</span>::<span class="ident">Debug</span>) {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">edit_list_move</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">EditListItem</span><span class="op">&gt;</span><span class="ident">::new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">edit_list_other</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">EditListItem</span><span class="op">&gt;</span><span class="ident">::new</span>();
+    <span class="kw">if</span> <span class="macro">log_enabled!</span>(<span class="ident">Level::Debug</span>) {
         <span class="macro">debug!</span>(<span class="string">&quot;&quot;</span>);
         <span class="ident">print_RA_state</span>(
             <span class="string">&quot;Initial&quot;</span>,
@@ -2627,9 +2627,9 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
     <span class="comment">// assigned spill slot for each VirtualRange, if any.</span>
     <span class="comment">// `spill_slot_allocator` decides on the assignments and writes them into</span>
     <span class="comment">// `vlr_slot_env`.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">vlr_slot_env</span> <span class="op">=</span> <span class="ident">TypedIxVec</span>::<span class="op">&lt;</span><span class="ident">VirtualRangeIx</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SpillSlot</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">vlr_slot_env</span> <span class="op">=</span> <span class="ident">TypedIxVec</span>::<span class="op">&lt;</span><span class="ident">VirtualRangeIx</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SpillSlot</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::new</span>();
     <span class="ident">vlr_slot_env</span>.<span class="ident">resize</span>(<span class="ident">num_vlrs_initial</span>, <span class="prelude-val">None</span>);
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spill_slot_allocator</span> <span class="op">=</span> <span class="ident">SpillSlotAllocator</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spill_slot_allocator</span> <span class="op">=</span> <span class="ident">SpillSlotAllocator::new</span>();
 
     <span class="comment">// Main allocation loop.  Each time round, pull out the longest</span>
     <span class="comment">// unallocated VirtualRange, and do one of three things:</span>
@@ -2656,7 +2656,7 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
     <span class="lifetime">&#39;main_allocation_loop</span>: <span class="kw">loop</span> {
         <span class="macro">debug!</span>(<span class="string">&quot;-- still TODO          {}&quot;</span>, <span class="ident">prioQ</span>.<span class="ident">len</span>());
         <span class="kw">if</span> <span class="bool-val">false</span> {
-            <span class="kw">if</span> <span class="macro">log_enabled!</span>(<span class="ident">Level</span>::<span class="ident">Debug</span>) {
+            <span class="kw">if</span> <span class="macro">log_enabled!</span>(<span class="ident">Level::Debug</span>) {
                 <span class="macro">debug!</span>(<span class="string">&quot;&quot;</span>);
                 <span class="ident">print_RA_state</span>(
                     <span class="string">&quot;Loop Top&quot;</span>,
@@ -2697,7 +2697,7 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
         <span class="comment">// present the most favoured (weighty) first, so we merely need to retain</span>
         <span class="comment">// that ordering when copying into `hinted_regs`.</span>
         <span class="macro">assert!</span>(<span class="ident">hints</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">vlr_env</span>.<span class="ident">len</span>());
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hinted_regs</span> <span class="op">=</span> <span class="ident">SmallVec</span>::<span class="op">&lt;</span>[<span class="ident">RealReg</span>; <span class="number">8</span>]<span class="op">&gt;</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hinted_regs</span> <span class="op">=</span> <span class="ident">SmallVec</span>::<span class="op">&lt;</span>[<span class="ident">RealReg</span>; <span class="number">8</span>]<span class="op">&gt;</span><span class="ident">::new</span>();
 
         <span class="comment">// === BEGIN collect all hints for `curr_vlr` ===</span>
         <span class="comment">// `hints` has one entry per VLR, but only for VLRs which existed</span>
@@ -2708,13 +2708,13 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
             <span class="kw">for</span> <span class="ident">hint</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">hints</span>[<span class="ident">curr_vlrix</span>] {
                 <span class="comment">// BEGIN for each hint</span>
                 <span class="kw">let</span> <span class="ident">mb_cand</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">hint</span> {
-                    <span class="ident">Hint</span>::<span class="ident">SameAs</span>(<span class="ident">other_vlrix</span>, <span class="ident">_weight</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">Hint::SameAs</span>(<span class="ident">other_vlrix</span>, <span class="ident">_weight</span>) <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// It wants the same reg as some other VLR, but we can only honour</span>
                         <span class="comment">// that if the other VLR actually *has* a reg at this point.  Its</span>
                         <span class="comment">// `rreg` field will tell us exactly that.</span>
                         <span class="ident">vlr_env</span>[<span class="kw-2">*</span><span class="ident">other_vlrix</span>].<span class="ident">rreg</span>
                     }
-                    <span class="ident">Hint</span>::<span class="ident">Exactly</span>(<span class="ident">rreg</span>, <span class="ident">_weight</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="kw-2">*</span><span class="ident">rreg</span>),
+                    <span class="ident">Hint::Exactly</span>(<span class="ident">rreg</span>, <span class="ident">_weight</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="kw-2">*</span><span class="ident">rreg</span>),
                 };
                 <span class="comment">// So now `mb_cand` might have a preferred real reg.  If so, add it to</span>
                 <span class="comment">// the list of cands.  De-dup as we go, since that is way cheaper than</span>
@@ -2771,7 +2771,7 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
                 });
             }
 
-            <span class="kw">if</span> <span class="macro">log_enabled!</span>(<span class="ident">Level</span>::<span class="ident">Debug</span>) {
+            <span class="kw">if</span> <span class="macro">log_enabled!</span>(<span class="ident">Level::Debug</span>) {
                 <span class="kw">if</span> <span class="op">!</span><span class="ident">hinted_regs</span>.<span class="ident">is_empty</span>() {
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">candStr</span> <span class="op">=</span> <span class="string">&quot;pri {&quot;</span>.<span class="ident">to_string</span>();
                     <span class="kw">for</span> (<span class="ident">rreg</span>, <span class="ident">n</span>) <span class="kw">in</span> <span class="ident">hinted_regs</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="number">0</span>..) {
@@ -2877,7 +2877,7 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
 
         <span class="kw">let</span> (<span class="ident">first_in_rc</span>, <span class="ident">last_in_rc</span>) <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">reg_universe</span>.<span class="ident">allocable_by_class</span>[<span class="ident">curr_vlr_rc</span>] {
             <span class="kw-2">&amp;</span><span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RegAllocError</span>::<span class="ident">OutOfRegisters</span>(<span class="ident">curr_vlr_regclass</span>));
+                <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RegAllocError::OutOfRegisters</span>(<span class="ident">curr_vlr_regclass</span>));
             }
             <span class="kw-2">&amp;</span><span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">info</span>) <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">info</span>.<span class="ident">first</span>, <span class="ident">info</span>.<span class="ident">last</span>),
         };
@@ -2989,7 +2989,7 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
         <span class="comment">// requirement for them) are impossible to fulfill, and so we cannot</span>
         <span class="comment">// generate any valid allocation for this function.</span>
         <span class="kw">if</span> <span class="ident">curr_vlr</span>.<span class="ident">spill_cost</span>.<span class="ident">is_infinite</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RegAllocError</span>::<span class="ident">OutOfRegisters</span>(<span class="ident">curr_vlr_regclass</span>));
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">RegAllocError::OutOfRegisters</span>(<span class="ident">curr_vlr_regclass</span>));
         }
 
         <span class="comment">// Generate a new spill slot number, S</span>
@@ -3036,7 +3036,7 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
 
         <span class="comment">// Most spills won&#39;t require anywhere near 32 entries, so this avoids</span>
         <span class="comment">// almost all heap allocation.</span>
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sri_vec</span> <span class="op">=</span> <span class="ident">SmallVec</span>::<span class="op">&lt;</span>[<span class="ident">SpillAndOrReloadInfo</span>; <span class="number">32</span>]<span class="op">&gt;</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sri_vec</span> <span class="op">=</span> <span class="ident">SmallVec</span>::<span class="op">&lt;</span>[<span class="ident">SpillAndOrReloadInfo</span>; <span class="number">32</span>]<span class="op">&gt;</span><span class="ident">::new</span>();
 
         <span class="kw">let</span> <span class="ident">curr_vlr_vreg</span> <span class="op">=</span> <span class="ident">curr_vlr</span>.<span class="ident">vreg</span>;
         <span class="kw">let</span> <span class="ident">curr_vlr_reg</span> <span class="op">=</span> <span class="ident">curr_vlr_vreg</span>.<span class="ident">to_reg</span>();
@@ -3053,7 +3053,7 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
                 }
                 <span class="comment">// USES: Do we need to create a reload-to-use bridge</span>
                 <span class="comment">// (VirtualRange) ?</span>
-                <span class="kw">if</span> <span class="ident">iix_uses_curr_vlr_reg</span> <span class="op">&amp;&amp;</span> <span class="ident">frag</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">InstPoint</span>::<span class="ident">new_use</span>(<span class="ident">iix</span>)) {
+                <span class="kw">if</span> <span class="ident">iix_uses_curr_vlr_reg</span> <span class="op">&amp;&amp;</span> <span class="ident">frag</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">InstPoint::new_use</span>(<span class="ident">iix</span>)) {
                     <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">iix_mods_curr_vlr_reg</span>);
                     <span class="comment">// Stash enough info that we can create a new VirtualRange</span>
                     <span class="comment">// and a new edit list entry for the reload.</span>
@@ -3061,7 +3061,7 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
                     <span class="kw">let</span> <span class="ident">sri</span> <span class="op">=</span> <span class="ident">SpillAndOrReloadInfo</span> {
                         <span class="ident">bix</span>,
                         <span class="ident">iix</span>,
-                        <span class="ident">kind</span>: <span class="ident">BridgeKind</span>::<span class="ident">RtoU</span>,
+                        <span class="ident">kind</span>: <span class="ident">BridgeKind::RtoU</span>,
                     };
                     <span class="ident">sri_vec</span>.<span class="ident">push</span>(<span class="ident">sri</span>);
                 }
@@ -3072,8 +3072,8 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
                 <span class="comment">// later end up being assigned to different RealRegs, which is</span>
                 <span class="comment">// obviously nonsensical.</span>
                 <span class="kw">if</span> <span class="ident">iix_mods_curr_vlr_reg</span>
-                    <span class="op">&amp;&amp;</span> <span class="ident">frag</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">InstPoint</span>::<span class="ident">new_use</span>(<span class="ident">iix</span>))
-                    <span class="op">&amp;&amp;</span> <span class="ident">frag</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">InstPoint</span>::<span class="ident">new_def</span>(<span class="ident">iix</span>))
+                    <span class="op">&amp;&amp;</span> <span class="ident">frag</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">InstPoint::new_use</span>(<span class="ident">iix</span>))
+                    <span class="op">&amp;&amp;</span> <span class="ident">frag</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">InstPoint::new_def</span>(<span class="ident">iix</span>))
                 {
                     <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">iix_uses_curr_vlr_reg</span>);
                     <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">iix_defs_curr_vlr_reg</span>);
@@ -3081,18 +3081,18 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
                     <span class="kw">let</span> <span class="ident">sri</span> <span class="op">=</span> <span class="ident">SpillAndOrReloadInfo</span> {
                         <span class="ident">bix</span>,
                         <span class="ident">iix</span>,
-                        <span class="ident">kind</span>: <span class="ident">BridgeKind</span>::<span class="ident">RtoS</span>,
+                        <span class="ident">kind</span>: <span class="ident">BridgeKind::RtoS</span>,
                     };
                     <span class="ident">sri_vec</span>.<span class="ident">push</span>(<span class="ident">sri</span>);
                 }
                 <span class="comment">// DEFS: Do we need to create a def-to-spill bridge?</span>
-                <span class="kw">if</span> <span class="ident">iix_defs_curr_vlr_reg</span> <span class="op">&amp;&amp;</span> <span class="ident">frag</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">InstPoint</span>::<span class="ident">new_def</span>(<span class="ident">iix</span>)) {
+                <span class="kw">if</span> <span class="ident">iix_defs_curr_vlr_reg</span> <span class="op">&amp;&amp;</span> <span class="ident">frag</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">InstPoint::new_def</span>(<span class="ident">iix</span>)) {
                     <span class="macro">debug_assert!</span>(<span class="op">!</span><span class="ident">iix_mods_curr_vlr_reg</span>);
                     <span class="kw">let</span> <span class="ident">bix</span> <span class="op">=</span> <span class="ident">inst_to_block_map</span>.<span class="ident">map</span>(<span class="ident">iix</span>);
                     <span class="kw">let</span> <span class="ident">sri</span> <span class="op">=</span> <span class="ident">SpillAndOrReloadInfo</span> {
                         <span class="ident">bix</span>,
                         <span class="ident">iix</span>,
-                        <span class="ident">kind</span>: <span class="ident">BridgeKind</span>::<span class="ident">DtoS</span>,
+                        <span class="ident">kind</span>: <span class="ident">BridgeKind::DtoS</span>,
                     };
                     <span class="ident">sri_vec</span>.<span class="ident">push</span>(<span class="ident">sri</span>);
                 }
@@ -3109,7 +3109,7 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
         <span class="comment">// any we definitely shouldn&#39;t be trying to spill them again.  Hence we</span>
         <span class="comment">// can assert.</span>
         <span class="macro">assert!</span>(<span class="ident">vlr_slot_env</span>.<span class="ident">len</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">num_vlrs_initial</span>);
-        <span class="macro">assert!</span>(<span class="ident">curr_vlrix</span> <span class="op">&lt;</span> <span class="ident">VirtualRangeIx</span>::<span class="ident">new</span>(<span class="ident">num_vlrs_initial</span>));
+        <span class="macro">assert!</span>(<span class="ident">curr_vlrix</span> <span class="op">&lt;</span> <span class="ident">VirtualRangeIx::new</span>(<span class="ident">num_vlrs_initial</span>));
         <span class="kw">if</span> <span class="ident">vlr_slot_env</span>[<span class="ident">curr_vlrix</span>].<span class="ident">is_none</span>() {
             <span class="comment">// It hasn&#39;t been decided yet.  Cause it to be so by asking for an</span>
             <span class="comment">// allocation for the entire eclass that `curr_vlrix` belongs to.</span>
@@ -3141,16 +3141,16 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
 
         <span class="kw">for</span> <span class="ident">sri</span> <span class="kw">in</span> <span class="ident">sri_vec</span> {
             <span class="kw">let</span> (<span class="ident">new_vlr_first_pt</span>, <span class="ident">new_vlr_last_pt</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">sri</span>.<span class="ident">kind</span> {
-                <span class="ident">BridgeKind</span>::<span class="ident">RtoU</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">Point</span>::<span class="ident">Reload</span>, <span class="ident">Point</span>::<span class="ident">Use</span>),
-                <span class="ident">BridgeKind</span>::<span class="ident">RtoS</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">Point</span>::<span class="ident">Reload</span>, <span class="ident">Point</span>::<span class="ident">Spill</span>),
-                <span class="ident">BridgeKind</span>::<span class="ident">DtoS</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">Point</span>::<span class="ident">Def</span>, <span class="ident">Point</span>::<span class="ident">Spill</span>),
+                <span class="ident">BridgeKind::RtoU</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">Point::Reload</span>, <span class="ident">Point::Use</span>),
+                <span class="ident">BridgeKind::RtoS</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">Point::Reload</span>, <span class="ident">Point::Spill</span>),
+                <span class="ident">BridgeKind::DtoS</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">Point::Def</span>, <span class="ident">Point::Spill</span>),
             };
             <span class="kw">let</span> <span class="ident">new_vlr_frag</span> <span class="op">=</span> <span class="ident">RangeFrag</span> {
-                <span class="ident">first</span>: <span class="ident">InstPoint</span>::<span class="ident">new</span>(<span class="ident">sri</span>.<span class="ident">iix</span>, <span class="ident">new_vlr_first_pt</span>),
-                <span class="ident">last</span>: <span class="ident">InstPoint</span>::<span class="ident">new</span>(<span class="ident">sri</span>.<span class="ident">iix</span>, <span class="ident">new_vlr_last_pt</span>),
+                <span class="ident">first</span>: <span class="ident">InstPoint::new</span>(<span class="ident">sri</span>.<span class="ident">iix</span>, <span class="ident">new_vlr_first_pt</span>),
+                <span class="ident">last</span>: <span class="ident">InstPoint::new</span>(<span class="ident">sri</span>.<span class="ident">iix</span>, <span class="ident">new_vlr_last_pt</span>),
             };
             <span class="macro">debug!</span>(<span class="string">&quot;--     new RangeFrag    {:?}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">new_vlr_frag</span>);
-            <span class="kw">let</span> <span class="ident">new_vlr_sfrags</span> <span class="op">=</span> <span class="ident">SortedRangeFrags</span>::<span class="ident">unit</span>(<span class="ident">new_vlr_frag</span>);
+            <span class="kw">let</span> <span class="ident">new_vlr_sfrags</span> <span class="op">=</span> <span class="ident">SortedRangeFrags::unit</span>(<span class="ident">new_vlr_frag</span>);
             <span class="kw">let</span> <span class="ident">new_vlr</span> <span class="op">=</span> <span class="ident">VirtualRange</span> {
                 <span class="ident">vreg</span>: <span class="ident">curr_vlr_vreg</span>,
                 <span class="ident">rreg</span>: <span class="prelude-val">None</span>,
@@ -3159,9 +3159,9 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
                 <span class="ident">size</span>: <span class="number">1</span>,
                 <span class="comment">// Effectively infinite.  We&#39;ll never look at this again anyway.</span>
                 <span class="ident">total_cost</span>: <span class="number">0xFFFF_FFFFu32</span>,
-                <span class="ident">spill_cost</span>: <span class="ident">SpillCost</span>::<span class="ident">infinite</span>(),
+                <span class="ident">spill_cost</span>: <span class="ident">SpillCost::infinite</span>(),
             };
-            <span class="kw">let</span> <span class="ident">new_vlrix</span> <span class="op">=</span> <span class="ident">VirtualRangeIx</span>::<span class="ident">new</span>(<span class="ident">vlr_env</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>);
+            <span class="kw">let</span> <span class="ident">new_vlrix</span> <span class="op">=</span> <span class="ident">VirtualRangeIx::new</span>(<span class="ident">vlr_env</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">u32</span>);
             <span class="macro">debug!</span>(
                 <span class="string">&quot;--     new VirtRange    {:?}  :=  {:?}&quot;</span>,
                 <span class="ident">new_vlrix</span>, <span class="kw-2">&amp;</span><span class="ident">new_vlr</span>
@@ -3171,7 +3171,7 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
 
             <span class="comment">// BEGIN (optimisation only) see if we can create any coalescing hints</span>
             <span class="comment">// for this new VLR.</span>
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_vlr_hint</span> <span class="op">=</span> <span class="ident">SmallVec</span>::<span class="op">&lt;</span>[<span class="ident">Hint</span>; <span class="number">8</span>]<span class="op">&gt;</span>::<span class="ident">new</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_vlr_hint</span> <span class="op">=</span> <span class="ident">SmallVec</span>::<span class="op">&lt;</span>[<span class="ident">Hint</span>; <span class="number">8</span>]<span class="op">&gt;</span><span class="ident">::new</span>();
             <span class="kw">if</span> <span class="ident">is_vv_boundary_move</span>[<span class="ident">sri</span>.<span class="ident">iix</span>] {
                 <span class="comment">// Collect the src and dst regs for the move.  It must be a</span>
                 <span class="comment">// move because `is_vv_boundary_move` claims that to be true.</span>
@@ -3184,30 +3184,30 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
                 <span class="kw">let</span> <span class="ident">src_vreg</span>: <span class="ident">VirtualReg</span> <span class="op">=</span> <span class="ident">src_reg</span>.<span class="ident">to_virtual_reg</span>();
                 <span class="kw">let</span> <span class="ident">bridge_eef</span> <span class="op">=</span> <span class="ident">est_freqs</span>[<span class="ident">sri</span>.<span class="ident">bix</span>];
                 <span class="kw">match</span> <span class="ident">sri</span>.<span class="ident">kind</span> {
-                    <span class="ident">BridgeKind</span>::<span class="ident">RtoU</span> <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">BridgeKind::RtoU</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// Reload-to-Use bridge.  Hint that we want to be</span>
                         <span class="comment">// allocated to the same reg as the destination of the</span>
                         <span class="comment">// move.  That means we have to find the VLR that owns</span>
                         <span class="comment">// the destination vreg.</span>
                         <span class="kw">for</span> <span class="ident">vlrix</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">reg_to_ranges_maps</span>.<span class="ident">vreg_to_vlrs_map</span>[<span class="ident">dst_vreg</span>.<span class="ident">get_index</span>()] {
                             <span class="kw">if</span> <span class="ident">vlr_env</span>[<span class="kw-2">*</span><span class="ident">vlrix</span>].<span class="ident">vreg</span> <span class="op">=</span><span class="op">=</span> <span class="ident">dst_vreg</span> {
-                                <span class="ident">new_vlr_hint</span>.<span class="ident">push</span>(<span class="ident">Hint</span>::<span class="ident">SameAs</span>(<span class="kw-2">*</span><span class="ident">vlrix</span>, <span class="ident">bridge_eef</span>));
+                                <span class="ident">new_vlr_hint</span>.<span class="ident">push</span>(<span class="ident">Hint::SameAs</span>(<span class="kw-2">*</span><span class="ident">vlrix</span>, <span class="ident">bridge_eef</span>));
                                 <span class="kw">break</span>;
                             }
                         }
                     }
-                    <span class="ident">BridgeKind</span>::<span class="ident">DtoS</span> <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">BridgeKind::DtoS</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// Def-to-Spill bridge.  Hint that we want to be</span>
                         <span class="comment">// allocated to the same reg as the source of the</span>
                         <span class="comment">// move.</span>
                         <span class="kw">for</span> <span class="ident">vlrix</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">reg_to_ranges_maps</span>.<span class="ident">vreg_to_vlrs_map</span>[<span class="ident">src_vreg</span>.<span class="ident">get_index</span>()] {
                             <span class="kw">if</span> <span class="ident">vlr_env</span>[<span class="kw-2">*</span><span class="ident">vlrix</span>].<span class="ident">vreg</span> <span class="op">=</span><span class="op">=</span> <span class="ident">src_vreg</span> {
-                                <span class="ident">new_vlr_hint</span>.<span class="ident">push</span>(<span class="ident">Hint</span>::<span class="ident">SameAs</span>(<span class="kw-2">*</span><span class="ident">vlrix</span>, <span class="ident">bridge_eef</span>));
+                                <span class="ident">new_vlr_hint</span>.<span class="ident">push</span>(<span class="ident">Hint::SameAs</span>(<span class="kw-2">*</span><span class="ident">vlrix</span>, <span class="ident">bridge_eef</span>));
                                 <span class="kw">break</span>;
                             }
                         }
                     }
-                    <span class="ident">BridgeKind</span>::<span class="ident">RtoS</span> <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">BridgeKind::RtoS</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="comment">// A Reload-to-Spill bridge.  This can&#39;t happen.  It</span>
                         <span class="comment">// implies that the instruction modifies (both reads</span>
                         <span class="comment">// and writes) one of its operands, but the client&#39;s</span>
@@ -3246,7 +3246,7 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
 
     <span class="macro">info!</span>(<span class="string">&quot;alloc_main:   main allocation loop: end&quot;</span>);
 
-    <span class="kw">if</span> <span class="macro">log_enabled!</span>(<span class="ident">Level</span>::<span class="ident">Debug</span>) {
+    <span class="kw">if</span> <span class="macro">log_enabled!</span>(<span class="ident">Level::Debug</span>) {
         <span class="macro">debug!</span>(<span class="string">&quot;&quot;</span>);
         <span class="ident">print_RA_state</span>(
             <span class="string">&quot;Final&quot;</span>,
@@ -3310,7 +3310,7 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
     <span class="comment">// that this has to happen to.  It is in increasing order of InstIx (because</span>
     <span class="comment">// `edit_list_sorted` is), and the indices in it refer to the original</span>
     <span class="comment">// virtual-registerised code.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iixs_to_nop_out</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">InstIx</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">iixs_to_nop_out</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">InstIx</span><span class="op">&gt;</span><span class="ident">::new</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ghost_moves</span> <span class="op">=</span> <span class="macro">vec!</span>[];
 
     <span class="kw">let</span> <span class="ident">n_edit_list_move</span> <span class="op">=</span> <span class="ident">edit_list_move</span>.<span class="ident">len</span>();
@@ -3356,8 +3356,8 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
                 <span class="ident">frag2</span>.<span class="ident">first</span>.<span class="ident">pt</span>(),
                 <span class="ident">frag2</span>.<span class="ident">last</span>.<span class="ident">pt</span>(),
             ) {
-                (<span class="ident">Point</span>::<span class="ident">Reload</span>, <span class="ident">Point</span>::<span class="ident">Use</span>, <span class="ident">Point</span>::<span class="ident">Def</span>, <span class="ident">Point</span>::<span class="ident">Spill</span>)
-                <span class="op">|</span> (<span class="ident">Point</span>::<span class="ident">Def</span>, <span class="ident">Point</span>::<span class="ident">Spill</span>, <span class="ident">Point</span>::<span class="ident">Reload</span>, <span class="ident">Point</span>::<span class="ident">Use</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                (<span class="ident">Point::Reload</span>, <span class="ident">Point::Use</span>, <span class="ident">Point::Def</span>, <span class="ident">Point::Spill</span>)
+                <span class="op">|</span> (<span class="ident">Point::Def</span>, <span class="ident">Point::Spill</span>, <span class="ident">Point::Reload</span>, <span class="ident">Point::Use</span>) <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">let</span> <span class="ident">slot1</span> <span class="op">=</span> <span class="ident">edit_list_move</span>[<span class="ident">i_min</span>].<span class="ident">slot</span>;
                     <span class="kw">let</span> <span class="ident">slot2</span> <span class="op">=</span> <span class="ident">edit_list_move</span>[<span class="ident">i_max</span>].<span class="ident">slot</span>;
                     <span class="kw">if</span> <span class="ident">slot1</span> <span class="op">=</span><span class="op">=</span> <span class="ident">slot2</span> {
@@ -3369,19 +3369,19 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
                         <span class="ident">i_min</span> <span class="op">=</span> <span class="ident">i_max</span> <span class="op">+</span> <span class="number">1</span>;
                         <span class="ident">n_edit_list_move_processed</span> <span class="op">+</span><span class="op">=</span> <span class="number">2</span>;
                         <span class="kw">if</span> <span class="ident">use_checker</span> {
-                            <span class="kw">let</span> (<span class="ident">from_reg</span>, <span class="ident">to_reg</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">frag1</span>.<span class="ident">last</span>.<span class="ident">pt</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Point</span>::<span class="ident">Use</span> {
+                            <span class="kw">let</span> (<span class="ident">from_reg</span>, <span class="ident">to_reg</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">frag1</span>.<span class="ident">last</span>.<span class="ident">pt</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Point::Use</span> {
                                 (<span class="ident">vlr1</span>.<span class="ident">vreg</span>.<span class="ident">to_reg</span>(), <span class="ident">vlr2</span>.<span class="ident">vreg</span>.<span class="ident">to_reg</span>())
                             } <span class="kw">else</span> {
                                 (<span class="ident">vlr2</span>.<span class="ident">vreg</span>.<span class="ident">to_reg</span>(), <span class="ident">vlr1</span>.<span class="ident">vreg</span>.<span class="ident">to_reg</span>())
                             };
-                            <span class="ident">ghost_moves</span>.<span class="ident">push</span>(<span class="ident">InstToInsertAndExtPoint</span>::<span class="ident">new</span>(
-                                <span class="ident">InstToInsert</span>::<span class="ident">ChangeSpillSlotOwnership</span> {
+                            <span class="ident">ghost_moves</span>.<span class="ident">push</span>(<span class="ident">InstToInsertAndExtPoint::new</span>(
+                                <span class="ident">InstToInsert::ChangeSpillSlotOwnership</span> {
                                     <span class="ident">inst_ix</span>: <span class="ident">i_min_iix</span>,
                                     <span class="ident">slot</span>: <span class="ident">slot1</span>,
                                     <span class="ident">from_reg</span>,
                                     <span class="ident">to_reg</span>,
                                 },
-                                <span class="ident">InstExtPoint</span>::<span class="ident">new</span>(<span class="ident">i_min_iix</span>, <span class="ident">ExtPoint</span>::<span class="ident">Reload</span>),
+                                <span class="ident">InstExtPoint::new</span>(<span class="ident">i_min_iix</span>, <span class="ident">ExtPoint::Reload</span>),
                             ));
                         }
                         <span class="kw">continue</span>;
@@ -3412,7 +3412,7 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
     <span class="comment">// Reload and spill instructions are missing.  To generate them, go through</span>
     <span class="comment">// the &quot;edit list&quot;, which contains info on both how to generate the</span>
     <span class="comment">// instructions, and where to insert them.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spills_n_reloads</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">InstToInsertAndExtPoint</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">spills_n_reloads</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">InstToInsertAndExtPoint</span><span class="op">&gt;</span><span class="ident">::new</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">num_spills</span> <span class="op">=</span> <span class="number">0</span>; <span class="comment">// stats only</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">num_reloads</span> <span class="op">=</span> <span class="number">0</span>; <span class="comment">// stats only</span>
     <span class="kw">for</span> <span class="ident">eli</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">edit_list_other</span> {
@@ -3424,51 +3424,51 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
         <span class="kw">let</span> <span class="ident">rreg</span> <span class="op">=</span> <span class="ident">vlr</span>.<span class="ident">rreg</span>.<span class="ident">expect</span>(<span class="string">&quot;Gen of spill/reload: reg not assigned?!&quot;</span>);
         <span class="kw">let</span> <span class="ident">vreg</span> <span class="op">=</span> <span class="ident">vlr</span>.<span class="ident">vreg</span>;
         <span class="kw">match</span> <span class="ident">eli</span>.<span class="ident">kind</span> {
-            <span class="ident">BridgeKind</span>::<span class="ident">RtoU</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">BridgeKind::RtoU</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">debug_assert!</span>(<span class="ident">vlr_frag</span>.<span class="ident">first</span>.<span class="ident">pt</span>().<span class="ident">is_reload</span>());
                 <span class="macro">debug_assert!</span>(<span class="ident">vlr_frag</span>.<span class="ident">last</span>.<span class="ident">pt</span>().<span class="ident">is_use</span>());
                 <span class="macro">debug_assert!</span>(<span class="ident">vlr_frag</span>.<span class="ident">first</span>.<span class="ident">iix</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">vlr_frag</span>.<span class="ident">last</span>.<span class="ident">iix</span>());
-                <span class="kw">let</span> <span class="ident">insnR</span> <span class="op">=</span> <span class="ident">InstToInsert</span>::<span class="ident">Reload</span> {
-                    <span class="ident">to_reg</span>: <span class="ident">Writable</span>::<span class="ident">from_reg</span>(<span class="ident">rreg</span>),
+                <span class="kw">let</span> <span class="ident">insnR</span> <span class="op">=</span> <span class="ident">InstToInsert::Reload</span> {
+                    <span class="ident">to_reg</span>: <span class="ident">Writable::from_reg</span>(<span class="ident">rreg</span>),
                     <span class="ident">from_slot</span>: <span class="ident">eli</span>.<span class="ident">slot</span>,
                     <span class="ident">for_vreg</span>: <span class="prelude-val">Some</span>(<span class="ident">vreg</span>),
                 };
-                <span class="kw">let</span> <span class="ident">whereToR</span> <span class="op">=</span> <span class="ident">InstExtPoint</span>::<span class="ident">from_inst_point</span>(<span class="ident">vlr_frag</span>.<span class="ident">first</span>);
-                <span class="ident">spills_n_reloads</span>.<span class="ident">push</span>(<span class="ident">InstToInsertAndExtPoint</span>::<span class="ident">new</span>(<span class="ident">insnR</span>, <span class="ident">whereToR</span>));
+                <span class="kw">let</span> <span class="ident">whereToR</span> <span class="op">=</span> <span class="ident">InstExtPoint::from_inst_point</span>(<span class="ident">vlr_frag</span>.<span class="ident">first</span>);
+                <span class="ident">spills_n_reloads</span>.<span class="ident">push</span>(<span class="ident">InstToInsertAndExtPoint::new</span>(<span class="ident">insnR</span>, <span class="ident">whereToR</span>));
                 <span class="ident">num_reloads</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             }
-            <span class="ident">BridgeKind</span>::<span class="ident">RtoS</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">BridgeKind::RtoS</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">debug_assert!</span>(<span class="ident">vlr_frag</span>.<span class="ident">first</span>.<span class="ident">pt</span>().<span class="ident">is_reload</span>());
                 <span class="macro">debug_assert!</span>(<span class="ident">vlr_frag</span>.<span class="ident">last</span>.<span class="ident">pt</span>().<span class="ident">is_spill</span>());
                 <span class="macro">debug_assert!</span>(<span class="ident">vlr_frag</span>.<span class="ident">first</span>.<span class="ident">iix</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">vlr_frag</span>.<span class="ident">last</span>.<span class="ident">iix</span>());
-                <span class="kw">let</span> <span class="ident">insnR</span> <span class="op">=</span> <span class="ident">InstToInsert</span>::<span class="ident">Reload</span> {
-                    <span class="ident">to_reg</span>: <span class="ident">Writable</span>::<span class="ident">from_reg</span>(<span class="ident">rreg</span>),
+                <span class="kw">let</span> <span class="ident">insnR</span> <span class="op">=</span> <span class="ident">InstToInsert::Reload</span> {
+                    <span class="ident">to_reg</span>: <span class="ident">Writable::from_reg</span>(<span class="ident">rreg</span>),
                     <span class="ident">from_slot</span>: <span class="ident">eli</span>.<span class="ident">slot</span>,
                     <span class="ident">for_vreg</span>: <span class="prelude-val">Some</span>(<span class="ident">vreg</span>),
                 };
-                <span class="kw">let</span> <span class="ident">whereToR</span> <span class="op">=</span> <span class="ident">InstExtPoint</span>::<span class="ident">from_inst_point</span>(<span class="ident">vlr_frag</span>.<span class="ident">first</span>);
-                <span class="kw">let</span> <span class="ident">insnS</span> <span class="op">=</span> <span class="ident">InstToInsert</span>::<span class="ident">Spill</span> {
+                <span class="kw">let</span> <span class="ident">whereToR</span> <span class="op">=</span> <span class="ident">InstExtPoint::from_inst_point</span>(<span class="ident">vlr_frag</span>.<span class="ident">first</span>);
+                <span class="kw">let</span> <span class="ident">insnS</span> <span class="op">=</span> <span class="ident">InstToInsert::Spill</span> {
                     <span class="ident">to_slot</span>: <span class="ident">eli</span>.<span class="ident">slot</span>,
                     <span class="ident">from_reg</span>: <span class="ident">rreg</span>,
                     <span class="ident">for_vreg</span>: <span class="prelude-val">Some</span>(<span class="ident">vreg</span>),
                 };
-                <span class="kw">let</span> <span class="ident">whereToS</span> <span class="op">=</span> <span class="ident">InstExtPoint</span>::<span class="ident">from_inst_point</span>(<span class="ident">vlr_frag</span>.<span class="ident">last</span>);
-                <span class="ident">spills_n_reloads</span>.<span class="ident">push</span>(<span class="ident">InstToInsertAndExtPoint</span>::<span class="ident">new</span>(<span class="ident">insnR</span>, <span class="ident">whereToR</span>));
-                <span class="ident">spills_n_reloads</span>.<span class="ident">push</span>(<span class="ident">InstToInsertAndExtPoint</span>::<span class="ident">new</span>(<span class="ident">insnS</span>, <span class="ident">whereToS</span>));
+                <span class="kw">let</span> <span class="ident">whereToS</span> <span class="op">=</span> <span class="ident">InstExtPoint::from_inst_point</span>(<span class="ident">vlr_frag</span>.<span class="ident">last</span>);
+                <span class="ident">spills_n_reloads</span>.<span class="ident">push</span>(<span class="ident">InstToInsertAndExtPoint::new</span>(<span class="ident">insnR</span>, <span class="ident">whereToR</span>));
+                <span class="ident">spills_n_reloads</span>.<span class="ident">push</span>(<span class="ident">InstToInsertAndExtPoint::new</span>(<span class="ident">insnS</span>, <span class="ident">whereToS</span>));
                 <span class="ident">num_reloads</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
                 <span class="ident">num_spills</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             }
-            <span class="ident">BridgeKind</span>::<span class="ident">DtoS</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">BridgeKind::DtoS</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">debug_assert!</span>(<span class="ident">vlr_frag</span>.<span class="ident">first</span>.<span class="ident">pt</span>().<span class="ident">is_def</span>());
                 <span class="macro">debug_assert!</span>(<span class="ident">vlr_frag</span>.<span class="ident">last</span>.<span class="ident">pt</span>().<span class="ident">is_spill</span>());
                 <span class="macro">debug_assert!</span>(<span class="ident">vlr_frag</span>.<span class="ident">first</span>.<span class="ident">iix</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">vlr_frag</span>.<span class="ident">last</span>.<span class="ident">iix</span>());
-                <span class="kw">let</span> <span class="ident">insnS</span> <span class="op">=</span> <span class="ident">InstToInsert</span>::<span class="ident">Spill</span> {
+                <span class="kw">let</span> <span class="ident">insnS</span> <span class="op">=</span> <span class="ident">InstToInsert::Spill</span> {
                     <span class="ident">to_slot</span>: <span class="ident">eli</span>.<span class="ident">slot</span>,
                     <span class="ident">from_reg</span>: <span class="ident">rreg</span>,
                     <span class="ident">for_vreg</span>: <span class="prelude-val">Some</span>(<span class="ident">vreg</span>),
                 };
-                <span class="kw">let</span> <span class="ident">whereToS</span> <span class="op">=</span> <span class="ident">InstExtPoint</span>::<span class="ident">from_inst_point</span>(<span class="ident">vlr_frag</span>.<span class="ident">last</span>);
-                <span class="ident">spills_n_reloads</span>.<span class="ident">push</span>(<span class="ident">InstToInsertAndExtPoint</span>::<span class="ident">new</span>(<span class="ident">insnS</span>, <span class="ident">whereToS</span>));
+                <span class="kw">let</span> <span class="ident">whereToS</span> <span class="op">=</span> <span class="ident">InstExtPoint::from_inst_point</span>(<span class="ident">vlr_frag</span>.<span class="ident">last</span>);
+                <span class="ident">spills_n_reloads</span>.<span class="ident">push</span>(<span class="ident">InstToInsertAndExtPoint::new</span>(<span class="ident">insnS</span>, <span class="ident">whereToS</span>));
                 <span class="ident">num_spills</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
             }
         }
@@ -3492,7 +3492,7 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
 
     <span class="macro">info!</span>(<span class="string">&quot;alloc_main:   create frag_map&quot;</span>);
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">frag_map</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span>(<span class="ident">RangeFrag</span>, <span class="ident">VirtualReg</span>, <span class="ident">RealReg</span>)<span class="op">&gt;</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">frag_map</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span>(<span class="ident">RangeFrag</span>, <span class="ident">VirtualReg</span>, <span class="ident">RealReg</span>)<span class="op">&gt;</span><span class="ident">::new</span>();
     <span class="comment">// For each real register under our control ..</span>
     <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">reg_universe</span>.<span class="ident">allocable</span> {
         <span class="kw">let</span> <span class="ident">rreg</span> <span class="op">=</span> <span class="ident">reg_universe</span>.<span class="ident">regs</span>[<span class="ident">i</span>].<span class="number">0</span>;
@@ -3512,7 +3512,7 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
     }
 
     <span class="comment">// There is one of these for every entry in `safepoint_insns`.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stackmaps</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SpillSlot</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stackmaps</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">SpillSlot</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::new</span>();
 
     <span class="kw">if</span> <span class="op">!</span><span class="ident">safepoint_insns</span>.<span class="ident">is_empty</span>() {
         <span class="macro">info!</span>(<span class="string">&quot;alloc_main:   create safepoints and stackmaps&quot;</span>);
@@ -3550,15 +3550,15 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
             )<span class="question-mark">?</span>;
             <span class="ident">stackmaps</span>.<span class="ident">push</span>(<span class="ident">reftyped_spillslots</span>);
             <span class="kw">for</span> <span class="ident">spill_before</span> <span class="kw">in</span> <span class="ident">spills_before</span> {
-                <span class="ident">spills_n_reloads</span>.<span class="ident">push</span>(<span class="ident">InstToInsertAndExtPoint</span>::<span class="ident">new</span>(
+                <span class="ident">spills_n_reloads</span>.<span class="ident">push</span>(<span class="ident">InstToInsertAndExtPoint::new</span>(
                     <span class="ident">spill_before</span>,
-                    <span class="ident">InstExtPoint</span>::<span class="ident">new</span>(<span class="kw-2">*</span><span class="ident">safepoint_iix</span>, <span class="ident">ExtPoint</span>::<span class="ident">SpillBefore</span>),
+                    <span class="ident">InstExtPoint::new</span>(<span class="kw-2">*</span><span class="ident">safepoint_iix</span>, <span class="ident">ExtPoint::SpillBefore</span>),
                 ));
             }
             <span class="kw">for</span> <span class="ident">reload_after</span> <span class="kw">in</span> <span class="ident">reloads_after</span> {
-                <span class="ident">spills_n_reloads</span>.<span class="ident">push</span>(<span class="ident">InstToInsertAndExtPoint</span>::<span class="ident">new</span>(
+                <span class="ident">spills_n_reloads</span>.<span class="ident">push</span>(<span class="ident">InstToInsertAndExtPoint::new</span>(
                     <span class="ident">reload_after</span>,
-                    <span class="ident">InstExtPoint</span>::<span class="ident">new</span>(<span class="kw-2">*</span><span class="ident">safepoint_iix</span>, <span class="ident">ExtPoint</span>::<span class="ident">ReloadAfter</span>),
+                    <span class="ident">InstExtPoint::new</span>(<span class="kw-2">*</span><span class="ident">safepoint_iix</span>, <span class="ident">ExtPoint::ReloadAfter</span>),
                 ));
             }
         }
@@ -3633,12 +3633,12 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
     <span class="comment">// That&#39;s inefficient, but we don&#39;t care .. this should only be a temporary</span>
     <span class="comment">// fix.</span>
 
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">clobbered_registers</span>: <span class="ident">Set</span><span class="op">&lt;</span><span class="ident">RealReg</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Set</span>::<span class="ident">empty</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">clobbered_registers</span>: <span class="ident">Set</span><span class="op">&lt;</span><span class="ident">RealReg</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Set::empty</span>();
 
     <span class="comment">// We&#39;ll dump all the reg uses in here.  We don&#39;t care about the bounds, so just</span>
     <span class="comment">// pass a dummy one in the loop.</span>
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reg_vecs</span> <span class="op">=</span> <span class="ident">RegVecs</span>::<span class="ident">new</span>(<span class="comment">/*sanitized=*/</span> <span class="bool-val">false</span>);
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dummy_bounds</span> <span class="op">=</span> <span class="ident">RegVecBounds</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reg_vecs</span> <span class="op">=</span> <span class="ident">RegVecs::new</span>(<span class="comment">/*sanitized=*/</span> <span class="bool-val">false</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">dummy_bounds</span> <span class="op">=</span> <span class="ident">RegVecBounds::new</span>();
     <span class="kw">for</span> <span class="ident">insn</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">final_insns</span> {
         <span class="kw">if</span> <span class="ident">func</span>.<span class="ident">is_included_in_clobbers</span>(<span class="ident">insn</span>) {
             <span class="ident">add_raw_reg_vecs_for_insn</span>::<span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">insn</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">reg_vecs</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">dummy_bounds</span>);
@@ -3662,9 +3662,9 @@ fn show_commit_tab(commit_tab: &amp;Vec::&lt;SortedRangeFragIxs&gt;,
     <span class="macro">assert!</span>(<span class="ident">est_freqs</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">usize</span> <span class="op">=</span><span class="op">=</span> <span class="ident">func</span>.<span class="ident">blocks</span>().<span class="ident">len</span>());
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">block_annotations</span> <span class="op">=</span> <span class="prelude-val">None</span>;
     <span class="kw">if</span> <span class="ident">opts</span>.<span class="ident">request_block_annotations</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">anns</span> <span class="op">=</span> <span class="ident">TypedIxVec</span>::<span class="op">&lt;</span><span class="ident">BlockIx</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">anns</span> <span class="op">=</span> <span class="ident">TypedIxVec</span>::<span class="op">&lt;</span><span class="ident">BlockIx</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::new</span>();
         <span class="kw">for</span> (<span class="ident">estFreq</span>, <span class="ident">i</span>) <span class="kw">in</span> <span class="ident">est_freqs</span>.<span class="ident">iter</span>().<span class="ident">zip</span>(<span class="number">0</span>..) {
-            <span class="kw">let</span> <span class="ident">bix</span> <span class="op">=</span> <span class="ident">BlockIx</span>::<span class="ident">new</span>(<span class="ident">i</span>);
+            <span class="kw">let</span> <span class="ident">bix</span> <span class="op">=</span> <span class="ident">BlockIx::new</span>(<span class="ident">i</span>);
             <span class="kw">let</span> <span class="ident">ef_str</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;RA: bix {:?}, estFreq {}&quot;</span>, <span class="ident">bix</span>, <span class="ident">estFreq</span>);
             <span class="ident">anns</span>.<span class="ident">push</span>(<span class="macro">vec!</span>[<span class="ident">ef_str</span>]);
         }

@@ -148,7 +148,7 @@
 <span class="doccomment">//! [`log`]: https://docs.rs/log/</span>
 <span class="doccomment">//! [`log` crate]: https://docs.rs/log/latest/log/#compile-time-filters</span>
 <span class="doccomment">//! [f]: https://docs.rs/tracing/latest/tracing/#emitting-log-records</span>
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tracing_core</span>::{<span class="ident">metadata</span>::<span class="ident">ParseLevelFilterError</span>, <span class="ident">LevelFilter</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tracing_core</span>::{<span class="ident">metadata::ParseLevelFilterError</span>, <span class="ident">LevelFilter</span>};
 
 <span class="doccomment">/// The statically configured maximum trace level.</span>
 <span class="doccomment">///</span>
@@ -165,29 +165,29 @@
 
 <span class="macro">cfg_if!</span> {
     <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">not</span>(<span class="ident">debug_assertions</span>), <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;release_max_level_off&quot;</span>))]</span> {
-        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter</span>::<span class="ident">OFF</span>;
+        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter::OFF</span>;
     } <span class="kw">else</span> <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">not</span>(<span class="ident">debug_assertions</span>), <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;release_max_level_error&quot;</span>))]</span> {
-        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter</span>::<span class="ident">ERROR</span>;
+        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter::ERROR</span>;
     } <span class="kw">else</span> <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">not</span>(<span class="ident">debug_assertions</span>), <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;release_max_level_warn&quot;</span>))]</span> {
-        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter</span>::<span class="ident">WARN</span>;
+        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter::WARN</span>;
     } <span class="kw">else</span> <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">not</span>(<span class="ident">debug_assertions</span>), <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;release_max_level_info&quot;</span>))]</span> {
-        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter</span>::<span class="ident">INFO</span>;
+        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter::INFO</span>;
     } <span class="kw">else</span> <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">not</span>(<span class="ident">debug_assertions</span>), <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;release_max_level_debug&quot;</span>))]</span> {
-        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter</span>::<span class="ident">DEBUG</span>;
+        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter::DEBUG</span>;
     } <span class="kw">else</span> <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">not</span>(<span class="ident">debug_assertions</span>), <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;release_max_level_trace&quot;</span>))]</span> {
-        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter</span>::<span class="ident">TRACE</span>;
+        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter::TRACE</span>;
     } <span class="kw">else</span> <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;max_level_off&quot;</span>)]</span> {
-        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter</span>::<span class="ident">OFF</span>;
+        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter::OFF</span>;
     } <span class="kw">else</span> <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;max_level_error&quot;</span>)]</span> {
-        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter</span>::<span class="ident">ERROR</span>;
+        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter::ERROR</span>;
     } <span class="kw">else</span> <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;max_level_warn&quot;</span>)]</span> {
-        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter</span>::<span class="ident">WARN</span>;
+        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter::WARN</span>;
     } <span class="kw">else</span> <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;max_level_info&quot;</span>)]</span> {
-        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter</span>::<span class="ident">INFO</span>;
+        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter::INFO</span>;
     } <span class="kw">else</span> <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;max_level_debug&quot;</span>)]</span> {
-        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter</span>::<span class="ident">DEBUG</span>;
+        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter::DEBUG</span>;
     } <span class="kw">else</span> {
-        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter</span>::<span class="ident">TRACE</span>;
+        <span class="kw">const</span> <span class="ident">MAX_LEVEL</span>: <span class="ident">LevelFilter</span> <span class="op">=</span> <span class="ident">LevelFilter::TRACE</span>;
     }
 }
 </pre></div>

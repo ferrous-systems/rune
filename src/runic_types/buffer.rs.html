@@ -87,7 +87,7 @@
 <span id="84">84</span>
 <span id="85">85</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">AsType</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::AsType</span>;
 
 <span class="doccomment">/// A generic buffer that can be used for transferring data between the Rune</span>
 <span class="doccomment">/// and the runtime.</span>
@@ -96,13 +96,13 @@
     <span class="kw">const</span> <span class="ident">OVERALL_LENGTH</span>: <span class="ident">usize</span>;
 
     <span class="kw">fn</span> <span class="ident">zeroed</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
-    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Item</span>;
-    <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Item</span>;
-    <span class="kw">fn</span> <span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="self">Self</span>::<span class="ident">Item</span>];
-    <span class="kw">fn</span> <span class="ident">as_mut_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="self">Self</span>::<span class="ident">Item</span>];
+    <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Item</span>;
+    <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Item</span>;
+    <span class="kw">fn</span> <span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="self">Self</span><span class="ident">::Item</span>];
+    <span class="kw">fn</span> <span class="ident">as_mut_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="self">Self</span><span class="ident">::Item</span>];
 
     <span class="kw">fn</span> <span class="ident">size_in_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="self">Self</span>::<span class="ident">OVERALL_LENGTH</span> <span class="op">*</span> <span class="ident">core</span>::<span class="ident">mem</span>::<span class="ident">size_of</span>::<span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span><span class="op">&gt;</span>()
+        <span class="self">Self</span><span class="ident">::OVERALL_LENGTH</span> <span class="op">*</span> <span class="ident">core::mem::size_of</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="ident">::Item</span><span class="op">&gt;</span>()
     }
 }
 
@@ -123,7 +123,7 @@
         [<span class="macro">array_zeroed!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">dims</span>),<span class="kw-2">*</span>) ; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">first_dim</span>]
     };
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>:<span class="ident">ty</span> $(,)<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> {
-        <span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span>::<span class="ident">default</span>()
+        <span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span><span class="op">&gt;</span><span class="ident">::default</span>()
     };
 }
 
@@ -139,25 +139,25 @@
                 <span class="macro">array_zeroed!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">underlying_type</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">first</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">other_dims</span>),<span class="kw-2">*</span>)
             }
 
-            <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+            <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="self">Self</span><span class="ident">::Item</span> {
                 <span class="self">self</span>[..].<span class="ident">as_ptr</span>().<span class="ident">cast</span>()
             }
 
-            <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span>::<span class="ident">Item</span> {
+            <span class="kw">fn</span> <span class="ident">as_mut_ptr</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Item</span> {
                 <span class="self">self</span>[..].<span class="ident">as_mut_ptr</span>().<span class="ident">cast</span>()
             }
 
-            <span class="kw">fn</span> <span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="self">Self</span>::<span class="ident">Item</span>] {
+            <span class="kw">fn</span> <span class="ident">as_slice</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="self">Self</span><span class="ident">::Item</span>] {
                 <span class="kw">unsafe</span> {
-                    <span class="ident">core</span>::<span class="ident">slice</span>::<span class="ident">from_raw_parts</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="self">Self</span>::<span class="ident">OVERALL_LENGTH</span>)
+                    <span class="ident">core::slice::from_raw_parts</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>(), <span class="self">Self</span><span class="ident">::OVERALL_LENGTH</span>)
                 }
             }
 
-            <span class="kw">fn</span> <span class="ident">as_mut_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="self">Self</span>::<span class="ident">Item</span>] {
+            <span class="kw">fn</span> <span class="ident">as_mut_slice</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="self">Self</span><span class="ident">::Item</span>] {
                 <span class="kw">unsafe</span> {
-                    <span class="ident">core</span>::<span class="ident">slice</span>::<span class="ident">from_raw_parts_mut</span>(
+                    <span class="ident">core::slice::from_raw_parts_mut</span>(
                         <span class="self">self</span>.<span class="ident">as_mut_ptr</span>(),
-                        <span class="self">Self</span>::<span class="ident">OVERALL_LENGTH</span>,
+                        <span class="self">Self</span><span class="ident">::OVERALL_LENGTH</span>,
                     )
                 }
             }

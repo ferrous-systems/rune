@@ -252,8 +252,8 @@
             <span class="kw">fn</span> <span class="ident">__to_inner_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span> {
                 <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
                     $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tag</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>, )<span class="op">*</span>
-                    $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>::<span class="ident">Unknown</span>(<span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">unknown_doc</span>; <span class="ident">n</span> }, )<span class="op">*</span>
-                    <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>::<span class="ident">__NonExhaustive</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+                    $( <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name::Unknown</span>(<span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="macro-nonterminal">$</span><span class="macro-nonterminal">unknown_doc</span>; <span class="ident">n</span> }, )<span class="op">*</span>
+                    <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name::__NonExhaustive</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
                 }
             }
         }
@@ -265,20 +265,20 @@
         <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> {
             <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
             <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_u16</span>(<span class="ident">val</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-                <span class="self">Self</span>::<span class="ident">__from_inner_type</span>(<span class="ident">val</span>).<span class="ident">ok</span>()
+                <span class="self">Self</span><span class="ident">::__from_inner_type</span>(<span class="ident">val</span>).<span class="ident">ok</span>()
             }
 
             $(
             <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
             <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_u16_exhaustive</span>(<span class="ident">val</span>: <span class="ident">u16</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">unknown_doc</span>;
-                <span class="self">Self</span>::<span class="ident">__from_inner_type</span>(<span class="ident">val</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>::<span class="ident">Unknown</span>(<span class="ident">val</span>))
+                <span class="self">Self</span><span class="ident">::__from_inner_type</span>(<span class="ident">val</span>).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name::Unknown</span>(<span class="ident">val</span>))
             }
             )<span class="op">*</span>
 
             <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
             <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">to_u16</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
-                <span class="self">Self</span>::<span class="ident">__to_inner_type</span>(<span class="self">self</span>)
+                <span class="self">Self</span><span class="ident">::__to_inner_type</span>(<span class="self">self</span>)
             }
         }
     };

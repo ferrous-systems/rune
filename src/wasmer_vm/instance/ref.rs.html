@@ -212,10 +212,10 @@
 <span id="209">209</span>
 <span id="210">210</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">super</span>::<span class="ident">Instance</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">alloc</span>::<span class="ident">Layout</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ptr</span>::{<span class="self">self</span>, <span class="ident">NonNull</span>};
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">atomic</span>, <span class="ident">Arc</span>};
+<span class="kw">use</span> <span class="kw">super</span><span class="ident">::Instance</span>;
+<span class="kw">use</span> <span class="ident">std::alloc::Layout</span>;
+<span class="kw">use</span> <span class="ident">std::ptr</span>::{<span class="self">self</span>, <span class="ident">NonNull</span>};
+<span class="kw">use</span> <span class="ident">std::sync</span>::{<span class="ident">atomic</span>, <span class="ident">Arc</span>};
 
 <span class="doccomment">/// An `InstanceRef` is responsible to properly deallocate,</span>
 <span class="doccomment">/// and to give access to an `Instance`, in such a way that `Instance`</span>
@@ -249,7 +249,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InstanceRef</span> {
     <span class="doccomment">/// Number of `Self` in the nature. It increases when `Self` is</span>
     <span class="doccomment">/// cloned, and it decreases when `Self` is dropped.</span>
-    <span class="ident">strong</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">atomic</span>::<span class="ident">AtomicUsize</span><span class="op">&gt;</span>,
+    <span class="ident">strong</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">atomic::AtomicUsize</span><span class="op">&gt;</span>,
 
     <span class="doccomment">/// The layout of `Instance` (which can vary).</span>
     <span class="ident">instance_layout</span>: <span class="ident">Layout</span>,
@@ -280,7 +280,7 @@
     <span class="doccomment">/// this API.</span>
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">instance</span>: <span class="ident">NonNull</span><span class="op">&lt;</span><span class="ident">Instance</span><span class="op">&gt;</span>, <span class="ident">instance_layout</span>: <span class="ident">Layout</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">strong</span>: <span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">atomic</span>::<span class="ident">AtomicUsize</span>::<span class="ident">new</span>(<span class="number">1</span>)),
+            <span class="ident">strong</span>: <span class="ident">Arc::new</span>(<span class="ident">atomic::AtomicUsize::new</span>(<span class="number">1</span>)),
             <span class="ident">instance_layout</span>,
             <span class="ident">instance</span>,
         }
@@ -290,7 +290,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Going above this limit will make the program to panic at exactly</span>
     <span class="doccomment">/// `MAX_REFCOUNT` references.</span>
-    <span class="kw">const</span> <span class="ident">MAX_REFCOUNT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">usize</span>::<span class="ident">MAX</span> <span class="op">-</span> <span class="number">1</span>;
+    <span class="kw">const</span> <span class="ident">MAX_REFCOUNT</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="ident">std::usize::MAX</span> <span class="op">-</span> <span class="number">1</span>;
 
     <span class="doccomment">/// Deallocate `Instance`.</span>
     <span class="doccomment">///</span>
@@ -301,14 +301,14 @@
     <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">deallocate_instance</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">let</span> <span class="ident">instance_ptr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">instance</span>.<span class="ident">as_ptr</span>();
 
-        <span class="ident">ptr</span>::<span class="ident">drop_in_place</span>(<span class="ident">instance_ptr</span>);
-        <span class="ident">std</span>::<span class="ident">alloc</span>::<span class="ident">dealloc</span>(<span class="ident">instance_ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="self">self</span>.<span class="ident">instance_layout</span>);
+        <span class="ident">ptr::drop_in_place</span>(<span class="ident">instance_ptr</span>);
+        <span class="ident">std::alloc::dealloc</span>(<span class="ident">instance_ptr</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">u8</span>, <span class="self">self</span>.<span class="ident">instance_layout</span>);
     }
 
     <span class="doccomment">/// Get the number of strong references pointing to this</span>
     <span class="doccomment">/// `InstanceRef`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">strong_count</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-        <span class="self">self</span>.<span class="ident">strong</span>.<span class="ident">load</span>(<span class="ident">atomic</span>::<span class="ident">Ordering</span>::<span class="ident">SeqCst</span>)
+        <span class="self">self</span>.<span class="ident">strong</span>.<span class="ident">load</span>(<span class="ident">atomic::Ordering::SeqCst</span>)
     }
 
     <span class="doccomment">/// Get a reference to the `Instance`.</span>
@@ -350,7 +350,7 @@
         <span class="comment">// &gt; provide any required synchronization.</span>
         <span class="comment">//</span>
         <span class="comment">// [1]: https://www.boost.org/doc/libs/1_55_0/doc/html/atomic/usage_examples.html</span>
-        <span class="kw">let</span> <span class="ident">old_size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">strong</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">atomic</span>::<span class="ident">Ordering</span>::<span class="ident">Relaxed</span>);
+        <span class="kw">let</span> <span class="ident">old_size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">strong</span>.<span class="ident">fetch_add</span>(<span class="number">1</span>, <span class="ident">atomic::Ordering::Relaxed</span>);
 
         <span class="comment">// However we need to guard against massive refcounts in case</span>
         <span class="comment">// someone is `mem::forget`ing `InstanceRef`. If we</span>
@@ -363,7 +363,7 @@
         <span class="comment">// We abort because such a program is incredibly degenerate,</span>
         <span class="comment">// and we don&#39;t care to support it.</span>
 
-        <span class="kw">if</span> <span class="ident">old_size</span> <span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">MAX_REFCOUNT</span> {
+        <span class="kw">if</span> <span class="ident">old_size</span> <span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::MAX_REFCOUNT</span> {
             <span class="macro">panic!</span>(<span class="string">&quot;Too many references of `InstanceRef`&quot;</span>);
         }
 
@@ -392,7 +392,7 @@
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="comment">// Because `fetch_sub` is already atomic, we do not need to</span>
         <span class="comment">// synchronize with other thread.</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">strong</span>.<span class="ident">fetch_sub</span>(<span class="number">1</span>, <span class="ident">atomic</span>::<span class="ident">Ordering</span>::<span class="ident">Release</span>) <span class="op">!</span><span class="op">=</span> <span class="number">1</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">strong</span>.<span class="ident">fetch_sub</span>(<span class="number">1</span>, <span class="ident">atomic::Ordering::Release</span>) <span class="op">!</span><span class="op">=</span> <span class="number">1</span> {
             <span class="kw">return</span>;
         }
 
@@ -413,13 +413,13 @@
         <span class="comment">// &gt; &quot;acquire&quot; operation before deleting the object.</span>
         <span class="comment">//</span>
         <span class="comment">// [1]: https://www.boost.org/doc/libs/1_55_0/doc/html/atomic/usage_examples.html</span>
-        <span class="ident">atomic</span>::<span class="ident">fence</span>(<span class="ident">atomic</span>::<span class="ident">Ordering</span>::<span class="ident">Acquire</span>);
+        <span class="ident">atomic::fence</span>(<span class="ident">atomic::Ordering::Acquire</span>);
 
         <span class="comment">// Now we can deallocate the instance. Note that we don&#39;t</span>
         <span class="comment">// check the pointer to `Instance` is correctly initialized,</span>
         <span class="comment">// but the way `InstanceHandle` creates the</span>
         <span class="comment">// `InstanceRef` ensures that.</span>
-        <span class="kw">unsafe</span> { <span class="self">Self</span>::<span class="ident">deallocate_instance</span>(<span class="self">self</span>) };
+        <span class="kw">unsafe</span> { <span class="self">Self</span><span class="ident">::deallocate_instance</span>(<span class="self">self</span>) };
     }
 }
 </pre></div>

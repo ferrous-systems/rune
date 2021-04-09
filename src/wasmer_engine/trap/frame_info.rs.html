@@ -384,22 +384,22 @@
 <span class="doccomment">//! let module: ModuleInfo = ...;</span>
 <span class="doccomment">//! FRAME_INFO.register(module, compiled_functions);</span>
 <span class="doccomment">//! ```</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">serialize</span>::<span class="ident">SerializableFunctionFrameInfo</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">cmp</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">BTreeMap</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::{<span class="ident">Arc</span>, <span class="ident">RwLock</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::serialize::SerializableFunctionFrameInfo</span>;
+<span class="kw">use</span> <span class="ident">std::cmp</span>;
+<span class="kw">use</span> <span class="ident">std::collections::BTreeMap</span>;
+<span class="kw">use</span> <span class="ident">std::sync</span>::{<span class="ident">Arc</span>, <span class="ident">RwLock</span>};
 <span class="kw">use</span> <span class="ident">wasmer_compiler</span>::{<span class="ident">CompiledFunctionFrameInfo</span>, <span class="ident">SourceLoc</span>, <span class="ident">TrapInformation</span>};
-<span class="kw">use</span> <span class="ident">wasmer_types</span>::<span class="ident">entity</span>::{<span class="ident">BoxedSlice</span>, <span class="ident">EntityRef</span>, <span class="ident">PrimaryMap</span>};
-<span class="kw">use</span> <span class="ident">wasmer_types</span>::<span class="ident">LocalFunctionIndex</span>;
+<span class="kw">use</span> <span class="ident">wasmer_types::entity</span>::{<span class="ident">BoxedSlice</span>, <span class="ident">EntityRef</span>, <span class="ident">PrimaryMap</span>};
+<span class="kw">use</span> <span class="ident">wasmer_types::LocalFunctionIndex</span>;
 <span class="kw">use</span> <span class="ident">wasmer_vm</span>::{<span class="ident">FunctionBodyPtr</span>, <span class="ident">ModuleInfo</span>};
 
-<span class="ident">lazy_static</span>::<span class="macro">lazy_static!</span> {
+<span class="macro">lazy_static::lazy_static!</span> {
     <span class="doccomment">/// This is a global cache of backtrace frame information for all active</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This global cache is used during `Trap` creation to symbolicate frames.</span>
     <span class="doccomment">/// This is populated on module compilation, and it is cleared out whenever</span>
     <span class="doccomment">/// all references to a module are dropped.</span>
-    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">FRAME_INFO</span>: <span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">GlobalFrameInfo</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Default</span>::<span class="ident">default</span>();
+    <span class="kw">pub</span> <span class="kw">static</span> <span class="kw-2">ref</span> <span class="ident">FRAME_INFO</span>: <span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">GlobalFrameInfo</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Default::default</span>();
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Default</span>)]</span>
@@ -442,13 +442,13 @@
     <span class="kw">fn</span> <span class="ident">process_function_debug_info</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">local_index</span>: <span class="ident">LocalFunctionIndex</span>) {
         <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">frame_infos</span>.<span class="ident">get_mut</span>(<span class="ident">local_index</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">processed</span>: <span class="ident">CompiledFunctionFrameInfo</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">func</span> {
-            <span class="ident">SerializableFunctionFrameInfo</span>::<span class="ident">Processed</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">SerializableFunctionFrameInfo::Processed</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="comment">// This should be a no-op on processed info</span>
                 <span class="kw">return</span>;
             }
-            <span class="ident">SerializableFunctionFrameInfo</span>::<span class="ident">Unprocessed</span>(<span class="ident">unprocessed</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">unprocessed</span>.<span class="ident">deserialize</span>(),
+            <span class="ident">SerializableFunctionFrameInfo::Unprocessed</span>(<span class="ident">unprocessed</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">unprocessed</span>.<span class="ident">deserialize</span>(),
         };
-        <span class="kw-2">*</span><span class="ident">func</span> <span class="op">=</span> <span class="ident">SerializableFunctionFrameInfo</span>::<span class="ident">Processed</span>(<span class="ident">processed</span>)
+        <span class="kw-2">*</span><span class="ident">func</span> <span class="op">=</span> <span class="ident">SerializableFunctionFrameInfo::Processed</span>(<span class="ident">processed</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">processed_function_frame_info</span>(
@@ -456,7 +456,7 @@
         <span class="ident">local_index</span>: <span class="ident">LocalFunctionIndex</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">CompiledFunctionFrameInfo</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">function_debug_info</span>(<span class="ident">local_index</span>) {
-            <span class="ident">SerializableFunctionFrameInfo</span>::<span class="ident">Processed</span>(<span class="ident">di</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">di</span>,
+            <span class="ident">SerializableFunctionFrameInfo::Processed</span>(<span class="ident">di</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">di</span>,
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(<span class="string">&quot;frame info should already be processed&quot;</span>),
         }
     }
@@ -617,9 +617,9 @@
     <span class="ident">finished_functions</span>: <span class="kw-2">&amp;</span><span class="ident">BoxedSlice</span><span class="op">&lt;</span><span class="ident">LocalFunctionIndex</span>, <span class="ident">FunctionExtent</span><span class="op">&gt;</span>,
     <span class="ident">frame_infos</span>: <span class="ident">PrimaryMap</span><span class="op">&lt;</span><span class="ident">LocalFunctionIndex</span>, <span class="ident">SerializableFunctionFrameInfo</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">GlobalFrameInfoRegistration</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min</span> <span class="op">=</span> <span class="ident">usize</span>::<span class="ident">max_value</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min</span> <span class="op">=</span> <span class="ident">usize::max_value</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">max</span> <span class="op">=</span> <span class="number">0</span>;
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">functions</span> <span class="op">=</span> <span class="ident">BTreeMap</span>::<span class="ident">new</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">functions</span> <span class="op">=</span> <span class="ident">BTreeMap::new</span>();
     <span class="kw">for</span> (
         <span class="ident">i</span>,
         <span class="ident">FunctionExtent</span> {
@@ -630,8 +630,8 @@
     {
         <span class="kw">let</span> <span class="ident">start</span> <span class="op">=</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">start</span> <span class="kw">as</span> <span class="ident">usize</span>;
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">start</span> <span class="op">+</span> <span class="ident">len</span>;
-        <span class="ident">min</span> <span class="op">=</span> <span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">min</span>, <span class="ident">start</span>);
-        <span class="ident">max</span> <span class="op">=</span> <span class="ident">cmp</span>::<span class="ident">max</span>(<span class="ident">max</span>, <span class="ident">end</span>);
+        <span class="ident">min</span> <span class="op">=</span> <span class="ident">cmp::min</span>(<span class="ident">min</span>, <span class="ident">start</span>);
+        <span class="ident">max</span> <span class="op">=</span> <span class="ident">cmp::max</span>(<span class="ident">max</span>, <span class="ident">end</span>);
         <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> <span class="ident">FunctionInfo</span> {
             <span class="ident">start</span>,
             <span class="ident">local_index</span>: <span class="ident">i</span>,

@@ -74,7 +74,7 @@
 
 <span class="comment">// A declaration for the stack probe function in Rust&#39;s standard library, for</span>
 <span class="comment">// catching callstack overflow.</span>
-<span class="ident">cfg_if</span>::<span class="macro">cfg_if!</span> {
+<span class="macro">cfg_if::cfg_if!</span> {
     <span class="kw">if</span> <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(
             <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;windows&quot;</span>,
             <span class="ident">target_env</span> <span class="op">=</span> <span class="string">&quot;msvc&quot;</span>,

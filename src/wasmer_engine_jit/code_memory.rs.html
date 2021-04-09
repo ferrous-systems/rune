@@ -229,7 +229,7 @@
 <span class="comment">// Attributions: https://github.com/wasmerio/wasmer/blob/master/ATTRIBUTIONS.md</span>
 
 <span class="doccomment">//! Memory management for executable code.</span>
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">unwind</span>::<span class="ident">UnwindRegistry</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::unwind::UnwindRegistry</span>;
 <span class="kw">use</span> <span class="ident">wasmer_compiler</span>::{<span class="ident">CompiledFunctionUnwindInfo</span>, <span class="ident">CustomSection</span>, <span class="ident">FunctionBody</span>};
 <span class="kw">use</span> <span class="ident">wasmer_vm</span>::{<span class="ident">Mmap</span>, <span class="ident">VMFunctionBody</span>};
 
@@ -255,8 +255,8 @@
     <span class="doccomment">/// Create a new `CodeMemory` instance.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
-            <span class="ident">unwind_registry</span>: <span class="ident">UnwindRegistry</span>::<span class="ident">new</span>(),
-            <span class="ident">mmap</span>: <span class="ident">Mmap</span>::<span class="ident">new</span>(),
+            <span class="ident">unwind_registry</span>: <span class="ident">UnwindRegistry::new</span>(),
+            <span class="ident">mmap</span>: <span class="ident">Mmap::new</span>(),
             <span class="ident">start_of_nonexecutable_pages</span>: <span class="number">0</span>,
         }
     }
@@ -277,7 +277,7 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">data_section_result</span> <span class="op">=</span> <span class="macro">vec!</span>[];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">executable_section_result</span> <span class="op">=</span> <span class="macro">vec!</span>[];
 
-        <span class="kw">let</span> <span class="ident">page_size</span> <span class="op">=</span> <span class="ident">region</span>::<span class="ident">page</span>::<span class="ident">size</span>();
+        <span class="kw">let</span> <span class="ident">page_size</span> <span class="op">=</span> <span class="ident">region::page::size</span>();
 
         <span class="comment">// 1. Calculate the total size, that is:</span>
         <span class="comment">// - function body size, including all trampolines</span>
@@ -292,7 +292,7 @@
         <span class="kw">let</span> <span class="ident">total_len</span> <span class="op">=</span> <span class="ident">round_up</span>(
             <span class="ident">functions</span>.<span class="ident">iter</span>().<span class="ident">fold</span>(<span class="number">0</span>, <span class="op">|</span><span class="ident">acc</span>, <span class="ident">func</span><span class="op">|</span> {
                 <span class="ident">round_up</span>(
-                    <span class="ident">acc</span> <span class="op">+</span> <span class="self">Self</span>::<span class="ident">function_allocation_size</span>(<span class="ident">func</span>),
+                    <span class="ident">acc</span> <span class="op">+</span> <span class="self">Self</span><span class="ident">::function_allocation_size</span>(<span class="ident">func</span>),
                     <span class="ident">ARCH_FUNCTION_ALIGNMENT</span>,
                 )
             }) <span class="op">+</span> <span class="ident">executable_sections</span>.<span class="ident">iter</span>().<span class="ident">fold</span>(<span class="number">0</span>, <span class="op">|</span><span class="ident">acc</span>, <span class="ident">exec</span><span class="op">|</span> {
@@ -305,7 +305,7 @@
 
         <span class="comment">// 2. Allocate the pages. Mark them all read-write.</span>
 
-        <span class="self">self</span>.<span class="ident">mmap</span> <span class="op">=</span> <span class="ident">Mmap</span>::<span class="ident">with_at_least</span>(<span class="ident">total_len</span>)<span class="question-mark">?</span>;
+        <span class="self">self</span>.<span class="ident">mmap</span> <span class="op">=</span> <span class="ident">Mmap::with_at_least</span>(<span class="ident">total_len</span>)<span class="question-mark">?</span>;
 
         <span class="comment">// 3. Determine where the pointers to each function, executable section</span>
         <span class="comment">// or data section are. Copy the functions. Collect the addresses of each and return them.</span>
@@ -314,14 +314,14 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buf</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">mmap</span>.<span class="ident">as_mut_slice</span>();
         <span class="kw">for</span> <span class="ident">func</span> <span class="kw">in</span> <span class="ident">functions</span> {
             <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">round_up</span>(
-                <span class="self">Self</span>::<span class="ident">function_allocation_size</span>(<span class="ident">func</span>),
+                <span class="self">Self</span><span class="ident">::function_allocation_size</span>(<span class="ident">func</span>),
                 <span class="ident">ARCH_FUNCTION_ALIGNMENT</span>,
             );
             <span class="kw">let</span> (<span class="ident">func_buf</span>, <span class="ident">next_buf</span>) <span class="op">=</span> <span class="ident">buf</span>.<span class="ident">split_at_mut</span>(<span class="ident">len</span>);
             <span class="ident">buf</span> <span class="op">=</span> <span class="ident">next_buf</span>;
             <span class="ident">bytes</span> <span class="op">+</span><span class="op">=</span> <span class="ident">len</span>;
 
-            <span class="kw">let</span> <span class="ident">vmfunc</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">copy_function</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">unwind_registry</span>, <span class="ident">func</span>, <span class="ident">func_buf</span>);
+            <span class="kw">let</span> <span class="ident">vmfunc</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::copy_function</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">unwind_registry</span>, <span class="ident">func</span>, <span class="ident">func_buf</span>);
             <span class="macro">assert_eq!</span>(<span class="ident">vmfunc</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="ident">usize</span> <span class="op">%</span> <span class="ident">ARCH_FUNCTION_ALIGNMENT</span>, <span class="number">0</span>);
             <span class="ident">function_result</span>.<span class="ident">push</span>(<span class="ident">vmfunc</span>);
         }
@@ -369,10 +369,10 @@
         }
         <span class="macro">assert!</span>(<span class="self">self</span>.<span class="ident">mmap</span>.<span class="ident">len</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">start_of_nonexecutable_pages</span>);
         <span class="kw">unsafe</span> {
-            <span class="ident">region</span>::<span class="ident">protect</span>(
+            <span class="ident">region::protect</span>(
                 <span class="self">self</span>.<span class="ident">mmap</span>.<span class="ident">as_mut_ptr</span>(),
                 <span class="self">self</span>.<span class="ident">start_of_nonexecutable_pages</span>,
-                <span class="ident">region</span>::<span class="ident">Protection</span>::<span class="ident">READ_EXECUTE</span>,
+                <span class="ident">region::Protection::READ_EXECUTE</span>,
             )
         }
         .<span class="ident">expect</span>(<span class="string">&quot;unable to make memory readonly and executable&quot;</span>);
@@ -381,7 +381,7 @@
     <span class="doccomment">/// Calculates the allocation size of the given compiled function.</span>
     <span class="kw">fn</span> <span class="ident">function_allocation_size</span>(<span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">FunctionBody</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
         <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">unwind_info</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">CompiledFunctionUnwindInfo</span>::<span class="ident">WindowsX64</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Some</span>(<span class="ident">CompiledFunctionUnwindInfo::WindowsX64</span>(<span class="ident">info</span>)) <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="comment">// Windows unwind information is required to be emitted into code memory</span>
                 <span class="comment">// This is because it must be a positive relative offset from the start of the memory</span>
                 <span class="comment">// Account for necessary unwind information alignment padding (32-bit alignment)</span>
@@ -405,9 +405,9 @@
 
         <span class="kw">let</span> (<span class="ident">body</span>, <span class="ident">remainder</span>) <span class="op">=</span> <span class="ident">buf</span>.<span class="ident">split_at_mut</span>(<span class="ident">func_len</span>);
         <span class="ident">body</span>.<span class="ident">copy_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">body</span>);
-        <span class="kw">let</span> <span class="ident">vmfunc</span> <span class="op">=</span> <span class="self">Self</span>::<span class="ident">view_as_mut_vmfunc_slice</span>(<span class="ident">body</span>);
+        <span class="kw">let</span> <span class="ident">vmfunc</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::view_as_mut_vmfunc_slice</span>(<span class="ident">body</span>);
 
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">CompiledFunctionUnwindInfo</span>::<span class="ident">WindowsX64</span>(<span class="ident">info</span>)) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">unwind_info</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">CompiledFunctionUnwindInfo::WindowsX64</span>(<span class="ident">info</span>)) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">unwind_info</span> {
             <span class="comment">// Windows unwind information is written following the function body</span>
             <span class="comment">// Keep unwind information 32-bit aligned (round up to the nearest 4 byte boundary)</span>
             <span class="kw">let</span> <span class="ident">unwind_start</span> <span class="op">=</span> (<span class="ident">func_len</span> <span class="op">+</span> <span class="number">3</span>) <span class="op">&amp;</span> <span class="op">!</span><span class="number">3</span>;
@@ -442,7 +442,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="ident">CodeMemory</span>;
+    <span class="kw">use</span> <span class="kw">super</span><span class="ident">::CodeMemory</span>;
     <span class="kw">fn</span> <span class="ident">_assert</span>() {
         <span class="kw">fn</span> <span class="ident">_assert_send_sync</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span><span class="op">&gt;</span>() {}
         <span class="ident">_assert_send_sync</span>::<span class="op">&lt;</span><span class="ident">CodeMemory</span><span class="op">&gt;</span>();

@@ -24,7 +24,7 @@
 <span class="kw">mod</span> <span class="ident">trapcode</span>;
 <span class="kw">mod</span> <span class="ident">traphandlers</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">trapcode</span>::<span class="ident">TrapCode</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">trapcode::TrapCode</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">traphandlers</span>::{
     <span class="ident">catch_traps</span>, <span class="ident">catch_traps_with_result</span>, <span class="ident">raise_lib_trap</span>, <span class="ident">raise_user_trap</span>, <span class="ident">wasmer_call_trampoline</span>,
     <span class="ident">Trap</span>,

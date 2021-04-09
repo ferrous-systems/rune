@@ -16,10 +16,10 @@
 <span id="13">13</span>
 <span id="14">14</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">regex_automata</span>::<span class="ident">DFA</span>;
+<span class="kw">use</span> <span class="ident">regex_automata::DFA</span>;
 
-<span class="kw">use</span> <span class="ident">unicode</span>::<span class="ident">fsm</span>::<span class="ident">whitespace_anchored_fwd</span>::<span class="ident">WHITESPACE_ANCHORED_FWD</span>;
-<span class="kw">use</span> <span class="ident">unicode</span>::<span class="ident">fsm</span>::<span class="ident">whitespace_anchored_rev</span>::<span class="ident">WHITESPACE_ANCHORED_REV</span>;
+<span class="kw">use</span> <span class="ident">unicode::fsm::whitespace_anchored_fwd::WHITESPACE_ANCHORED_FWD</span>;
+<span class="kw">use</span> <span class="ident">unicode::fsm::whitespace_anchored_rev::WHITESPACE_ANCHORED_REV</span>;
 
 <span class="doccomment">/// Return the first position of a non-whitespace character.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">whitespace_len_fwd</span>(<span class="ident">slice</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {

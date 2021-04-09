@@ -195,7 +195,7 @@
     <span class="ident">VMExportTable</span>,
 };
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">sync</span>::<span class="ident">Arc</span>;
+<span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
 
 <span class="doccomment">/// The value of an export passed from one instance to another.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
@@ -216,10 +216,10 @@
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Export</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VMExport</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">Export</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">other</span> {
-            <span class="ident">Export</span>::<span class="ident">Function</span>(<span class="ident">ExportFunction</span> { <span class="ident">vm_function</span>, .. }) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Function</span>(<span class="ident">vm_function</span>),
-            <span class="ident">Export</span>::<span class="ident">Memory</span>(<span class="ident">ExportMemory</span> { <span class="ident">vm_memory</span> }) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Memory</span>(<span class="ident">vm_memory</span>),
-            <span class="ident">Export</span>::<span class="ident">Table</span>(<span class="ident">ExportTable</span> { <span class="ident">vm_table</span> }) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Table</span>(<span class="ident">vm_table</span>),
-            <span class="ident">Export</span>::<span class="ident">Global</span>(<span class="ident">ExportGlobal</span> { <span class="ident">vm_global</span> }) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Global</span>(<span class="ident">vm_global</span>),
+            <span class="ident">Export::Function</span>(<span class="ident">ExportFunction</span> { <span class="ident">vm_function</span>, .. }) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Function</span>(<span class="ident">vm_function</span>),
+            <span class="ident">Export::Memory</span>(<span class="ident">ExportMemory</span> { <span class="ident">vm_memory</span> }) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Memory</span>(<span class="ident">vm_memory</span>),
+            <span class="ident">Export::Table</span>(<span class="ident">ExportTable</span> { <span class="ident">vm_table</span> }) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Table</span>(<span class="ident">vm_table</span>),
+            <span class="ident">Export::Global</span>(<span class="ident">ExportGlobal</span> { <span class="ident">vm_global</span> }) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Global</span>(<span class="ident">vm_global</span>),
         }
     }
 }
@@ -227,13 +227,13 @@
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">VMExport</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Export</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">VMExport</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">other</span> {
-            <span class="ident">VMExport</span>::<span class="ident">Function</span>(<span class="ident">vm_function</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Function</span>(<span class="ident">ExportFunction</span> {
+            <span class="ident">VMExport::Function</span>(<span class="ident">vm_function</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Function</span>(<span class="ident">ExportFunction</span> {
                 <span class="ident">vm_function</span>,
                 <span class="ident">metadata</span>: <span class="prelude-val">None</span>,
             }),
-            <span class="ident">VMExport</span>::<span class="ident">Memory</span>(<span class="ident">vm_memory</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Memory</span>(<span class="ident">ExportMemory</span> { <span class="ident">vm_memory</span> }),
-            <span class="ident">VMExport</span>::<span class="ident">Table</span>(<span class="ident">vm_table</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Table</span>(<span class="ident">ExportTable</span> { <span class="ident">vm_table</span> }),
-            <span class="ident">VMExport</span>::<span class="ident">Global</span>(<span class="ident">vm_global</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span>::<span class="ident">Global</span>(<span class="ident">ExportGlobal</span> { <span class="ident">vm_global</span> }),
+            <span class="ident">VMExport::Memory</span>(<span class="ident">vm_memory</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Memory</span>(<span class="ident">ExportMemory</span> { <span class="ident">vm_memory</span> }),
+            <span class="ident">VMExport::Table</span>(<span class="ident">vm_table</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Table</span>(<span class="ident">ExportTable</span> { <span class="ident">vm_table</span> }),
+            <span class="ident">VMExport::Global</span>(<span class="ident">vm_global</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Global</span>(<span class="ident">ExportGlobal</span> { <span class="ident">vm_global</span> }),
         }
     }
 }
@@ -260,7 +260,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// See `wasmer_vm::export::VMExportFunction::vmctx` for the version of</span>
     <span class="doccomment">/// this pointer that is used by the VM when creating an `Instance`.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">host_env</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">c_void</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">host_env</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std::ffi::c_void</span>,
     <span class="doccomment">/// Function pointer to `WasmerEnv::init_with_instance(&amp;mut self, instance: &amp;Instance)`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function is called to finish setting up the environment after</span>
@@ -269,13 +269,13 @@
     <span class="comment">// of this without the init fn</span>
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">import_init_function_ptr</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImportInitializerFuncPtr</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A function analogous to `Clone::clone` that returns a leaked `Box`.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">host_env_clone_fn</span>: <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">c_void</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">c_void</span>,
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">host_env_clone_fn</span>: <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std::ffi::c_void</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std::ffi::c_void</span>,
     <span class="doccomment">/// The destructor to free the host environment.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">/// - This function should only be called in when properly synchronized.</span>
     <span class="doccomment">/// For example, in the `Drop` implementation of this type.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">host_env_drop_fn</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">c_void</span>),
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">host_env_drop_fn</span>: <span class="kw">unsafe</span> <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std::ffi::c_void</span>),
 }
 
 <span class="doccomment">/// This can be `Send` because `host_env` comes from `WasmerEnv` which is</span>
@@ -293,10 +293,10 @@
     <span class="doccomment">/// - the `host_env` must be `Send`.</span>
     <span class="doccomment">/// - all function pointers must work on any thread.</span>
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(
-        <span class="ident">host_env</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">c_void</span>,
+        <span class="ident">host_env</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std::ffi::c_void</span>,
         <span class="ident">import_init_function_ptr</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ImportInitializerFuncPtr</span><span class="op">&gt;</span>,
-        <span class="ident">host_env_clone_fn</span>: <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">c_void</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">c_void</span>,
-        <span class="ident">host_env_drop_fn</span>: <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std</span>::<span class="ident">ffi</span>::<span class="ident">c_void</span>),
+        <span class="ident">host_env_clone_fn</span>: <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std::ffi::c_void</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std::ffi::c_void</span>,
+        <span class="ident">host_env_drop_fn</span>: <span class="kw">fn</span>(<span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">std::ffi::c_void</span>),
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">host_env</span>,
@@ -336,7 +336,7 @@
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ExportFunction</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Export</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">func</span>: <span class="ident">ExportFunction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Function</span>(<span class="ident">func</span>)
+        <span class="self">Self</span><span class="ident">::Function</span>(<span class="ident">func</span>)
     }
 }
 
@@ -349,7 +349,7 @@
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ExportTable</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Export</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">table</span>: <span class="ident">ExportTable</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Table</span>(<span class="ident">table</span>)
+        <span class="self">Self</span><span class="ident">::Table</span>(<span class="ident">table</span>)
     }
 }
 
@@ -362,7 +362,7 @@
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ExportMemory</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Export</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">memory</span>: <span class="ident">ExportMemory</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Memory</span>(<span class="ident">memory</span>)
+        <span class="self">Self</span><span class="ident">::Memory</span>(<span class="ident">memory</span>)
     }
 }
 
@@ -375,7 +375,7 @@
 
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">ExportGlobal</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Export</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">global</span>: <span class="ident">ExportGlobal</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>::<span class="ident">Global</span>(<span class="ident">global</span>)
+        <span class="self">Self</span><span class="ident">::Global</span>(<span class="ident">global</span>)
     }
 }
 </pre></div>

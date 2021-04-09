@@ -36,7 +36,7 @@ compilers.</p>
 }
 
 <span class="comment">// but we provide an instance of the type and it&#39;s all good.</span>
-<span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="ident">MyNotDefaultType</span> { <span class="ident">counter</span>: <span class="number">5</span>, <span class="ident">some_field</span>: <span class="ident">MyExampleEnum</span>::<span class="ident">A</span> };
+<span class="kw">let</span> <span class="ident">val</span> <span class="op">=</span> <span class="ident">MyNotDefaultType</span> { <span class="ident">counter</span>: <span class="number">5</span>, <span class="ident">some_field</span>: <span class="ident">MyExampleEnum::A</span> };
 <span class="macro">assert_eq!</span>(<span class="macro">offset_of!</span>(<span class="ident">val</span>, <span class="ident">MyNotDefaultType</span>, <span class="ident">some_field</span>), <span class="number">4</span>);</pre></div>
 <h3 id="2-arg-usage" class="section-header"><a href="#2-arg-usage">2-arg Usage</a></h3>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
@@ -70,7 +70,7 @@ which can lead to unsoundness.
   <span class="ident">field</span>: <span class="ident">u32</span>,
 }
 <span class="comment">// Doesn&#39;t compile:</span>
-<span class="kw">let</span> <span class="ident">_offset</span> <span class="op">=</span> <span class="ident">bytemuck</span>::<span class="macro">offset_of!</span>(<span class="ident">Example</span>, <span class="ident">field</span>);</pre></div>
+<span class="kw">let</span> <span class="ident">_offset</span> <span class="op">=</span> <span class="macro">bytemuck::offset_of!</span>(<span class="ident">Example</span>, <span class="ident">field</span>);</pre></div>
 <p>While the error message this generates will mention the
 <code>safe_packed_borrows</code> lint, the macro will still fail to compile even if
 that lint is <code>#[allow]</code>ed:</p>
@@ -78,7 +78,7 @@ that lint is <code>#[allow]</code>ed:</p>
 <div class='information'><div class='tooltip compile_fail'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered compile_fail">
 <span class="comment">// Still doesn&#39;t compile:</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">safe_packed_borrows</span>)]</span> {
-  <span class="kw">let</span> <span class="ident">_offset</span> <span class="op">=</span> <span class="ident">bytemuck</span>::<span class="macro">offset_of!</span>(<span class="ident">Example</span>, <span class="ident">field</span>);
+  <span class="kw">let</span> <span class="ident">_offset</span> <span class="op">=</span> <span class="macro">bytemuck::offset_of!</span>(<span class="ident">Example</span>, <span class="ident">field</span>);
 }</pre></div>
 <p>This <em>can</em> be worked around by using <code>unsafe</code>, but it is only sound to do so
 if you can guarantee that taking a reference to the field is sound.</p>

@@ -138,8 +138,8 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Trap codes describing the reason for a trap.</span>
 
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">fmt</span>::{<span class="self">self</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>};
-<span class="kw">use</span> <span class="ident">core</span>::<span class="ident">str</span>::<span class="ident">FromStr</span>;
+<span class="kw">use</span> <span class="ident">core::fmt</span>::{<span class="self">self</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>};
+<span class="kw">use</span> <span class="ident">core::str::FromStr</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;enable-serde&quot;</span>)]</span>
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
 
@@ -192,8 +192,8 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">TrapCode</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">TrapCode</span>::<span class="kw-2">*</span>;
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        <span class="kw">use</span> <span class="self">self</span><span class="ident">::TrapCode</span>::<span class="kw-2">*</span>;
         <span class="kw">let</span> <span class="ident">identifier</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
             <span class="ident">StackOverflow</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;stk_ovf&quot;</span>,
             <span class="ident">HeapOutOfBounds</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;heap_oob&quot;</span>,
@@ -215,8 +215,8 @@
 <span class="kw">impl</span> <span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">TrapCode</span> {
     <span class="kw">type</span> <span class="prelude-val">Err</span> <span class="op">=</span> ();
 
-    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span>::<span class="prelude-val">Err</span><span class="op">&gt;</span> {
-        <span class="kw">use</span> <span class="self">self</span>::<span class="ident">TrapCode</span>::<span class="kw-2">*</span>;
+    <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="self">Self</span><span class="ident">::Err</span><span class="op">&gt;</span> {
+        <span class="kw">use</span> <span class="self">self</span><span class="ident">::TrapCode</span>::<span class="kw-2">*</span>;
         <span class="kw">match</span> <span class="ident">s</span> {
             <span class="string">&quot;stk_ovf&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">StackOverflow</span>),
             <span class="string">&quot;heap_oob&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">HeapOutOfBounds</span>),
@@ -238,21 +238,21 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">alloc</span>::<span class="ident">string</span>::<span class="ident">ToString</span>;
+    <span class="kw">use</span> <span class="ident">alloc::string::ToString</span>;
 
     <span class="comment">// Everything but user-defined codes.</span>
     <span class="kw">const</span> <span class="ident">CODES</span>: [<span class="ident">TrapCode</span>; <span class="number">11</span>] <span class="op">=</span> [
-        <span class="ident">TrapCode</span>::<span class="ident">StackOverflow</span>,
-        <span class="ident">TrapCode</span>::<span class="ident">HeapOutOfBounds</span>,
-        <span class="ident">TrapCode</span>::<span class="ident">HeapMisaligned</span>,
-        <span class="ident">TrapCode</span>::<span class="ident">TableOutOfBounds</span>,
-        <span class="ident">TrapCode</span>::<span class="ident">IndirectCallToNull</span>,
-        <span class="ident">TrapCode</span>::<span class="ident">BadSignature</span>,
-        <span class="ident">TrapCode</span>::<span class="ident">IntegerOverflow</span>,
-        <span class="ident">TrapCode</span>::<span class="ident">IntegerDivisionByZero</span>,
-        <span class="ident">TrapCode</span>::<span class="ident">BadConversionToInteger</span>,
-        <span class="ident">TrapCode</span>::<span class="ident">UnreachableCodeReached</span>,
-        <span class="ident">TrapCode</span>::<span class="ident">Interrupt</span>,
+        <span class="ident">TrapCode::StackOverflow</span>,
+        <span class="ident">TrapCode::HeapOutOfBounds</span>,
+        <span class="ident">TrapCode::HeapMisaligned</span>,
+        <span class="ident">TrapCode::TableOutOfBounds</span>,
+        <span class="ident">TrapCode::IndirectCallToNull</span>,
+        <span class="ident">TrapCode::BadSignature</span>,
+        <span class="ident">TrapCode::IntegerOverflow</span>,
+        <span class="ident">TrapCode::IntegerDivisionByZero</span>,
+        <span class="ident">TrapCode::BadConversionToInteger</span>,
+        <span class="ident">TrapCode::UnreachableCodeReached</span>,
+        <span class="ident">TrapCode::Interrupt</span>,
     ];
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -263,8 +263,8 @@
         }
         <span class="macro">assert_eq!</span>(<span class="string">&quot;bogus&quot;</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">TrapCode</span><span class="op">&gt;</span>(), <span class="prelude-val">Err</span>(()));
 
-        <span class="macro">assert_eq!</span>(<span class="ident">TrapCode</span>::<span class="ident">User</span>(<span class="number">17</span>).<span class="ident">to_string</span>(), <span class="string">&quot;user17&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="string">&quot;user22&quot;</span>.<span class="ident">parse</span>(), <span class="prelude-val">Ok</span>(<span class="ident">TrapCode</span>::<span class="ident">User</span>(<span class="number">22</span>)));
+        <span class="macro">assert_eq!</span>(<span class="ident">TrapCode::User</span>(<span class="number">17</span>).<span class="ident">to_string</span>(), <span class="string">&quot;user17&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="string">&quot;user22&quot;</span>.<span class="ident">parse</span>(), <span class="prelude-val">Ok</span>(<span class="ident">TrapCode::User</span>(<span class="number">22</span>)));
         <span class="macro">assert_eq!</span>(<span class="string">&quot;user&quot;</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">TrapCode</span><span class="op">&gt;</span>(), <span class="prelude-val">Err</span>(()));
         <span class="macro">assert_eq!</span>(<span class="string">&quot;user-1&quot;</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">TrapCode</span><span class="op">&gt;</span>(), <span class="prelude-val">Err</span>(()));
         <span class="macro">assert_eq!</span>(<span class="string">&quot;users&quot;</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">TrapCode</span><span class="op">&gt;</span>(), <span class="prelude-val">Err</span>(()));

@@ -22,8 +22,8 @@ modify the executable properties of any code segments.</p>
 
 <span class="kw">let</span> <span class="ident">ret5</span> <span class="op">=</span> [<span class="number">0xB8</span>, <span class="number">0x05</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0xC3</span>];
 <span class="kw">let</span> <span class="ident">x</span>: <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> <span class="op">=</span> <span class="kw">unsafe</span> {
-  <span class="ident">region</span>::<span class="ident">protect</span>(<span class="ident">ret5</span>.<span class="ident">as_ptr</span>(), <span class="ident">ret5</span>.<span class="ident">len</span>(), <span class="ident">Protection</span>::<span class="ident">READ_WRITE_EXECUTE</span>).<span class="ident">unwrap</span>();
-  <span class="ident">std</span>::<span class="ident">mem</span>::<span class="ident">transmute</span>(<span class="ident">ret5</span>.<span class="ident">as_ptr</span>())
+  <span class="ident">region::protect</span>(<span class="ident">ret5</span>.<span class="ident">as_ptr</span>(), <span class="ident">ret5</span>.<span class="ident">len</span>(), <span class="ident">Protection::READ_WRITE_EXECUTE</span>).<span class="ident">unwrap</span>();
+  <span class="ident">std::mem::transmute</span>(<span class="ident">ret5</span>.<span class="ident">as_ptr</span>())
 };
 <span class="macro">assert_eq!</span>(<span class="ident">x</span>(), <span class="number">5</span>);</pre></div>
 </div></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="region" data-search-js="../search-index.js"></div>

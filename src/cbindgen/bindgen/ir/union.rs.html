@@ -360,21 +360,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Write</span>;
+<span class="kw">use</span> <span class="ident">std::io::Write</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">config</span>::{<span class="ident">Config</span>, <span class="ident">Language</span>, <span class="ident">LayoutConfig</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">declarationtyperesolver</span>::<span class="ident">DeclarationTypeResolver</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">dependencies</span>::<span class="ident">Dependencies</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">ir</span>::{
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::config</span>::{<span class="ident">Config</span>, <span class="ident">Language</span>, <span class="ident">LayoutConfig</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::declarationtyperesolver::DeclarationTypeResolver</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::dependencies::Dependencies</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::ir</span>::{
     <span class="ident">AnnotationSet</span>, <span class="ident">Cfg</span>, <span class="ident">ConditionWrite</span>, <span class="ident">Documentation</span>, <span class="ident">Field</span>, <span class="ident">GenericParams</span>, <span class="ident">Item</span>, <span class="ident">ItemContainer</span>,
     <span class="ident">Path</span>, <span class="ident">Repr</span>, <span class="ident">ReprAlign</span>, <span class="ident">ReprStyle</span>, <span class="ident">ToCondition</span>, <span class="ident">Type</span>,
 };
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">library</span>::<span class="ident">Library</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">mangle</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">monomorph</span>::<span class="ident">Monomorphs</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">rename</span>::{<span class="ident">IdentifierType</span>, <span class="ident">RenameRule</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">utilities</span>::<span class="ident">IterHelpers</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">bindgen</span>::<span class="ident">writer</span>::{<span class="ident">ListType</span>, <span class="ident">Source</span>, <span class="ident">SourceWriter</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::library::Library</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::mangle</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::monomorph::Monomorphs</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::rename</span>::{<span class="ident">IdentifierType</span>, <span class="ident">RenameRule</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::utilities::IterHelpers</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::bindgen::writer</span>::{<span class="ident">ListType</span>, <span class="ident">Source</span>, <span class="ident">SourceWriter</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Union</span> {
@@ -392,11 +392,11 @@
 <span class="kw">impl</span> <span class="ident">Union</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">load</span>(
         <span class="ident">layout_config</span>: <span class="kw-2">&amp;</span><span class="ident">LayoutConfig</span>,
-        <span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="ident">syn</span>::<span class="ident">ItemUnion</span>,
+        <span class="ident">item</span>: <span class="kw-2">&amp;</span><span class="ident">syn::ItemUnion</span>,
         <span class="ident">mod_cfg</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Cfg</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Union</span>, <span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">repr</span> <span class="op">=</span> <span class="ident">Repr</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>)<span class="question-mark">?</span>;
-        <span class="kw">if</span> <span class="ident">repr</span>.<span class="ident">style</span> <span class="op">!</span><span class="op">=</span> <span class="ident">ReprStyle</span>::<span class="ident">C</span> {
+        <span class="kw">let</span> <span class="ident">repr</span> <span class="op">=</span> <span class="ident">Repr::load</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>)<span class="question-mark">?</span>;
+        <span class="kw">if</span> <span class="ident">repr</span>.<span class="ident">style</span> <span class="op">!</span><span class="op">=</span> <span class="ident">ReprStyle::C</span> {
             <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="string">&quot;Union is not marked #[repr(C)].&quot;</span>.<span class="ident">to_owned</span>());
         }
 
@@ -405,30 +405,30 @@
             <span class="ident">layout_config</span>.<span class="ident">ensure_safe_to_represent</span>(<span class="kw-2">&amp;</span><span class="ident">align</span>)<span class="question-mark">?</span>;
         }
 
-        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path</span>::<span class="ident">new</span>(<span class="ident">item</span>.<span class="ident">ident</span>.<span class="ident">to_string</span>());
+        <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="ident">item</span>.<span class="ident">ident</span>.<span class="ident">to_string</span>());
 
         <span class="kw">let</span> (<span class="ident">fields</span>, <span class="ident">tuple_union</span>) <span class="op">=</span> {
             <span class="kw">let</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">item</span>
                 .<span class="ident">fields</span>
                 .<span class="ident">named</span>
                 .<span class="ident">iter</span>()
-                .<span class="ident">try_skip_map</span>(<span class="op">|</span><span class="ident">field</span><span class="op">|</span> <span class="ident">Field</span>::<span class="ident">load</span>(<span class="ident">field</span>, <span class="kw-2">&amp;</span><span class="ident">path</span>))<span class="question-mark">?</span>;
+                .<span class="ident">try_skip_map</span>(<span class="op">|</span><span class="ident">field</span><span class="op">|</span> <span class="ident">Field::load</span>(<span class="ident">field</span>, <span class="kw-2">&amp;</span><span class="ident">path</span>))<span class="question-mark">?</span>;
             (<span class="ident">out</span>, <span class="bool-val">false</span>)
         };
 
-        <span class="prelude-val">Ok</span>(<span class="ident">Union</span>::<span class="ident">new</span>(
+        <span class="prelude-val">Ok</span>(<span class="ident">Union::new</span>(
             <span class="ident">path</span>,
-            <span class="ident">GenericParams</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">generics</span>),
+            <span class="ident">GenericParams::new</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">generics</span>),
             <span class="ident">fields</span>,
             <span class="ident">repr</span>.<span class="ident">align</span>,
             <span class="ident">tuple_union</span>,
-            <span class="ident">Cfg</span>::<span class="ident">append</span>(<span class="ident">mod_cfg</span>, <span class="ident">Cfg</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>)),
-            <span class="ident">AnnotationSet</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>)<span class="question-mark">?</span>,
-            <span class="ident">Documentation</span>::<span class="ident">load</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>),
+            <span class="ident">Cfg::append</span>(<span class="ident">mod_cfg</span>, <span class="ident">Cfg::load</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>)),
+            <span class="ident">AnnotationSet::load</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>)<span class="question-mark">?</span>,
+            <span class="ident">Documentation::load</span>(<span class="kw-2">&amp;</span><span class="ident">item</span>.<span class="ident">attrs</span>),
         ))
     }
 
-    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy</span>::<span class="ident">too_many_arguments</span>)]</span>
+    <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
         <span class="ident">path</span>: <span class="ident">Path</span>,
         <span class="ident">generic_params</span>: <span class="ident">GenericParams</span>,
@@ -504,7 +504,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">container</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ItemContainer</span> {
-        <span class="ident">ItemContainer</span>::<span class="ident">Union</span>(<span class="self">self</span>.<span class="ident">clone</span>())
+        <span class="ident">ItemContainer::Union</span>(<span class="self">self</span>.<span class="ident">clone</span>())
     }
 
     <span class="kw">fn</span> <span class="ident">collect_declaration_types</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">resolver</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">DeclarationTypeResolver</span>) {
@@ -529,7 +529,7 @@
             .<span class="ident">unwrap_or</span>(<span class="ident">config</span>.<span class="ident">structure</span>.<span class="ident">rename_fields</span>);
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">o</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">annotations</span>.<span class="ident">list</span>(<span class="string">&quot;field-names&quot;</span>) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">overriden_fields</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">overriden_fields</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
 
             <span class="kw">for</span> (<span class="ident">i</span>, <span class="ident">field</span>) <span class="kw">in</span> <span class="self">self</span>.<span class="ident">fields</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
                 <span class="kw">if</span> <span class="ident">i</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">o</span>.<span class="ident">len</span>() {
@@ -552,7 +552,7 @@
                 .<span class="ident">iter</span>()
                 .<span class="ident">map</span>(<span class="op">|</span><span class="ident">field</span><span class="op">|</span> <span class="ident">Field</span> {
                     <span class="ident">name</span>: <span class="ident">r</span>
-                        .<span class="ident">apply</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">name</span>, <span class="ident">IdentifierType</span>::<span class="ident">StructMember</span>)
+                        .<span class="ident">apply</span>(<span class="kw-2">&amp;</span><span class="ident">field</span>.<span class="ident">name</span>, <span class="ident">IdentifierType::StructMember</span>)
                         .<span class="ident">into_owned</span>(),
                     <span class="ident">ty</span>: <span class="ident">field</span>.<span class="ident">ty</span>.<span class="ident">clone</span>(),
                     <span class="ident">cfg</span>: <span class="ident">field</span>.<span class="ident">cfg</span>.<span class="ident">clone</span>(),
@@ -602,15 +602,15 @@
             .<span class="ident">zip</span>(<span class="ident">generic_values</span>.<span class="ident">iter</span>())
             .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
 
-        <span class="kw">let</span> <span class="ident">mangled_path</span> <span class="op">=</span> <span class="ident">mangle</span>::<span class="ident">mangle_path</span>(
+        <span class="kw">let</span> <span class="ident">mangled_path</span> <span class="op">=</span> <span class="ident">mangle::mangle_path</span>(
             <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">path</span>,
             <span class="ident">generic_values</span>,
             <span class="kw-2">&amp;</span><span class="ident">library</span>.<span class="ident">get_config</span>().<span class="ident">export</span>.<span class="ident">mangle</span>,
         );
 
-        <span class="kw">let</span> <span class="ident">monomorph</span> <span class="op">=</span> <span class="ident">Union</span>::<span class="ident">new</span>(
+        <span class="kw">let</span> <span class="ident">monomorph</span> <span class="op">=</span> <span class="ident">Union::new</span>(
             <span class="ident">mangled_path</span>,
-            <span class="ident">GenericParams</span>::<span class="ident">default</span>(),
+            <span class="ident">GenericParams::default</span>(),
             <span class="self">self</span>.<span class="ident">fields</span>
                 .<span class="ident">iter</span>()
                 .<span class="ident">map</span>(<span class="op">|</span><span class="ident">field</span><span class="op">|</span> <span class="ident">Field</span> {
@@ -652,23 +652,23 @@
         <span class="comment">// C with Both as style:</span>
         <span class="comment">//   typedef union Name {</span>
         <span class="kw">match</span> <span class="ident">config</span>.<span class="ident">language</span> {
-            <span class="ident">Language</span>::<span class="ident">C</span> <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_typedef</span>() <span class="op">=</span><span class="op">&gt;</span> <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;typedef &quot;</span>),
-            <span class="ident">Language</span>::<span class="ident">C</span> <span class="op">|</span> <span class="ident">Language</span>::<span class="ident">Cxx</span> <span class="op">=</span><span class="op">&gt;</span> {}
-            <span class="ident">Language</span>::<span class="ident">Cython</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">out</span>.<span class="ident">write</span>(<span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">cython_def</span>()),
+            <span class="ident">Language::C</span> <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_typedef</span>() <span class="op">=</span><span class="op">&gt;</span> <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;typedef &quot;</span>),
+            <span class="ident">Language::C</span> <span class="op">|</span> <span class="ident">Language::Cxx</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="ident">Language::Cython</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">out</span>.<span class="ident">write</span>(<span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">cython_def</span>()),
         }
 
         <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;union&quot;</span>);
 
         <span class="comment">// Cython supports `packed` on structs (see comments there), but not on unions.</span>
-        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span> {
+        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::Cython</span> {
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">align</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">alignment</span> {
                 <span class="kw">match</span> <span class="ident">align</span> {
-                    <span class="ident">ReprAlign</span>::<span class="ident">Packed</span> <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">ReprAlign::Packed</span> <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">anno</span>) <span class="op">=</span> <span class="ident">config</span>.<span class="ident">layout</span>.<span class="ident">packed</span> {
                             <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">anno</span>);
                         }
                     }
-                    <span class="ident">ReprAlign</span>::<span class="ident">Align</span>(<span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="ident">ReprAlign::Align</span>(<span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> {
                         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="kw-2">ref</span> <span class="ident">anno</span>) <span class="op">=</span> <span class="ident">config</span>.<span class="ident">layout</span>.<span class="ident">aligned_n</span> {
                             <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot; {}({})&quot;</span>, <span class="ident">anno</span>, <span class="ident">n</span>);
                         }
@@ -677,7 +677,7 @@
             }
         }
 
-        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">C</span> <span class="op">|</span><span class="op">|</span> <span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_tag</span>() {
+        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Language::C</span> <span class="op">|</span><span class="op">|</span> <span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_tag</span>() {
             <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot; {}&quot;</span>, <span class="self">self</span>.<span class="ident">export_name</span>);
         }
 
@@ -689,8 +689,8 @@
             <span class="ident">out</span>.<span class="ident">new_line</span>();
         }
 
-        <span class="ident">out</span>.<span class="ident">write_vertical_source_list</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fields</span>, <span class="ident">ListType</span>::<span class="ident">Cap</span>(<span class="string">&quot;;&quot;</span>));
-        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">Cython</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">fields</span>.<span class="ident">is_empty</span>() {
+        <span class="ident">out</span>.<span class="ident">write_vertical_source_list</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">fields</span>, <span class="ident">ListType::Cap</span>(<span class="string">&quot;;&quot;</span>));
+        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language::Cython</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">fields</span>.<span class="ident">is_empty</span>() {
             <span class="ident">out</span>.<span class="ident">write</span>(<span class="string">&quot;pass&quot;</span>);
         }
 
@@ -700,7 +700,7 @@
             <span class="ident">out</span>.<span class="ident">write_raw_block</span>(<span class="ident">body</span>);
         }
 
-        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language</span>::<span class="ident">C</span> <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_typedef</span>() {
+        <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">language</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Language::C</span> <span class="op">&amp;&amp;</span> <span class="ident">config</span>.<span class="ident">style</span>.<span class="ident">generate_typedef</span>() {
             <span class="ident">out</span>.<span class="ident">close_brace</span>(<span class="bool-val">false</span>);
             <span class="macro">write!</span>(<span class="ident">out</span>, <span class="string">&quot; {};&quot;</span>, <span class="self">self</span>.<span class="ident">export_name</span>);
         } <span class="kw">else</span> {

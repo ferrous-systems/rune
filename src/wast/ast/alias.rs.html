@@ -62,52 +62,52 @@
 <span id="59">59</span>
 <span id="60">60</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ast</span>::{<span class="self">self</span>, <span class="ident">kw</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">parser</span>::{<span class="ident">Parse</span>, <span class="ident">Parser</span>, <span class="prelude-ty">Result</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ast</span>::{<span class="self">self</span>, <span class="ident">kw</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::parser</span>::{<span class="ident">Parse</span>, <span class="ident">Parser</span>, <span class="prelude-ty">Result</span>};
 
 <span class="doccomment">/// An `alias` statement used to juggle indices with nested modules.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Alias</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Where this `alias` was defined.</span>
-    <span class="kw">pub</span> <span class="ident">span</span>: <span class="ident">ast</span>::<span class="ident">Span</span>,
+    <span class="kw">pub</span> <span class="ident">span</span>: <span class="ident">ast::Span</span>,
     <span class="doccomment">/// An identifier that this alias is resolved with (optionally) for name</span>
     <span class="doccomment">/// resolution.</span>
-    <span class="kw">pub</span> <span class="ident">id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">Id</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ast::Id</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// An optional name for this alias stored in the custom `name` section.</span>
-    <span class="kw">pub</span> <span class="ident">name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">NameAnnotation</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ast::NameAnnotation</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The source of this alias.</span>
     <span class="kw">pub</span> <span class="ident">source</span>: <span class="ident">AliasSource</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The kind of item that&#39;s being aliased.</span>
-    <span class="kw">pub</span> <span class="ident">kind</span>: <span class="ident">ast</span>::<span class="ident">ExportKind</span>,
+    <span class="kw">pub</span> <span class="ident">kind</span>: <span class="ident">ast::ExportKind</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AliasSource</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="ident">InstanceExport</span> {
-        <span class="ident">instance</span>: <span class="ident">ast</span>::<span class="ident">ItemRef</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">kw</span>::<span class="ident">instance</span><span class="op">&gt;</span>,
+        <span class="ident">instance</span>: <span class="ident">ast::ItemRef</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">kw::instance</span><span class="op">&gt;</span>,
         <span class="ident">export</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
     },
     <span class="ident">Outer</span> {
         <span class="doccomment">/// The index of the module that this reference is referring to.</span>
-        <span class="ident">module</span>: <span class="ident">ast</span>::<span class="ident">Index</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+        <span class="ident">module</span>: <span class="ident">ast::Index</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
         <span class="doccomment">/// The index of the item within `module` that this alias is referering</span>
         <span class="doccomment">/// to.</span>
-        <span class="ident">index</span>: <span class="ident">ast</span>::<span class="ident">Index</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
+        <span class="ident">index</span>: <span class="ident">ast::Index</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
     },
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Parse</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Alias</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">parser</span>: <span class="ident">Parser</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">alias</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">kw</span>::<span class="ident">outer</span><span class="op">&gt;</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="ident">is_some</span>() {
-            <span class="ident">AliasSource</span>::<span class="ident">Outer</span> {
+        <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">kw::alias</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>;
+        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">kw::outer</span><span class="op">&gt;</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="ident">is_some</span>() {
+            <span class="ident">AliasSource::Outer</span> {
                 <span class="ident">module</span>: <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
                 <span class="ident">index</span>: <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
             }
         } <span class="kw">else</span> {
-            <span class="ident">AliasSource</span>::<span class="ident">InstanceExport</span> {
-                <span class="ident">instance</span>: <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">ast</span>::<span class="ident">IndexOrRef</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>,
+            <span class="ident">AliasSource::InstanceExport</span> {
+                <span class="ident">instance</span>: <span class="ident">parser</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">ast::IndexOrRef</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>()<span class="question-mark">?</span>.<span class="number">0</span>,
                 <span class="ident">export</span>: <span class="ident">parser</span>.<span class="ident">parse</span>()<span class="question-mark">?</span>,
             }
         };

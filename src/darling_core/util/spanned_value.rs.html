@@ -112,10 +112,10 @@
 <span id="109">109</span>
 <span id="110">110</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">proc_macro2</span>::<span class="ident">Span</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>};
+<span class="kw">use</span> <span class="ident">proc_macro2::Span</span>;
+<span class="kw">use</span> <span class="ident">std::ops</span>::{<span class="ident">Deref</span>, <span class="ident">DerefMut</span>};
 <span class="kw">use</span> <span class="ident">syn</span>;
-<span class="kw">use</span> <span class="ident">syn</span>::<span class="ident">spanned</span>::<span class="ident">Spanned</span>;
+<span class="kw">use</span> <span class="ident">syn::spanned::Spanned</span>;
 <span class="kw">use</span> {
     <span class="ident">FromDeriveInput</span>, <span class="ident">FromField</span>, <span class="ident">FromGenericParam</span>, <span class="ident">FromGenerics</span>, <span class="ident">FromMeta</span>, <span class="ident">FromTypeParam</span>,
     <span class="ident">FromVariant</span>, <span class="prelude-ty">Result</span>,
@@ -152,7 +152,7 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Default</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">SpannedValue</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">SpannedValue</span>::<span class="ident">new</span>(<span class="ident">Default</span>::<span class="ident">default</span>(), <span class="ident">Span</span>::<span class="ident">call_site</span>())
+        <span class="ident">SpannedValue::new</span>(<span class="ident">Default::default</span>(), <span class="ident">Span::call_site</span>())
     }
 }
 
@@ -186,7 +186,7 @@
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">trayt</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">method</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">syn</span>:<span class="ident">path</span>) <span class="op">=</span><span class="op">&gt;</span> {
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">trayt</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">trayt</span> <span class="kw">for</span> <span class="ident">SpannedValue</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
             <span class="kw">fn</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">method</span>(<span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">syn</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-                <span class="prelude-val">Ok</span>(<span class="ident">SpannedValue</span>::<span class="ident">new</span>(
+                <span class="prelude-val">Ok</span>(<span class="ident">SpannedValue::new</span>(
                     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">trayt</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">method</span>(<span class="ident">value</span>).<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">with_span</span>(<span class="ident">value</span>))<span class="question-mark">?</span>,
                     <span class="ident">value</span>.<span class="ident">span</span>(),
                 ))
@@ -195,30 +195,30 @@
     };
 }
 
-<span class="macro">spanned!</span>(<span class="ident">FromGenericParam</span>, <span class="ident">from_generic_param</span>, <span class="ident">syn</span>::<span class="ident">GenericParam</span>);
-<span class="macro">spanned!</span>(<span class="ident">FromGenerics</span>, <span class="ident">from_generics</span>, <span class="ident">syn</span>::<span class="ident">Generics</span>);
-<span class="macro">spanned!</span>(<span class="ident">FromTypeParam</span>, <span class="ident">from_type_param</span>, <span class="ident">syn</span>::<span class="ident">TypeParam</span>);
-<span class="macro">spanned!</span>(<span class="ident">FromMeta</span>, <span class="ident">from_meta</span>, <span class="ident">syn</span>::<span class="ident">Meta</span>);
-<span class="macro">spanned!</span>(<span class="ident">FromDeriveInput</span>, <span class="ident">from_derive_input</span>, <span class="ident">syn</span>::<span class="ident">DeriveInput</span>);
-<span class="macro">spanned!</span>(<span class="ident">FromField</span>, <span class="ident">from_field</span>, <span class="ident">syn</span>::<span class="ident">Field</span>);
-<span class="macro">spanned!</span>(<span class="ident">FromVariant</span>, <span class="ident">from_variant</span>, <span class="ident">syn</span>::<span class="ident">Variant</span>);
+<span class="macro">spanned!</span>(<span class="ident">FromGenericParam</span>, <span class="ident">from_generic_param</span>, <span class="ident">syn::GenericParam</span>);
+<span class="macro">spanned!</span>(<span class="ident">FromGenerics</span>, <span class="ident">from_generics</span>, <span class="ident">syn::Generics</span>);
+<span class="macro">spanned!</span>(<span class="ident">FromTypeParam</span>, <span class="ident">from_type_param</span>, <span class="ident">syn::TypeParam</span>);
+<span class="macro">spanned!</span>(<span class="ident">FromMeta</span>, <span class="ident">from_meta</span>, <span class="ident">syn::Meta</span>);
+<span class="macro">spanned!</span>(<span class="ident">FromDeriveInput</span>, <span class="ident">from_derive_input</span>, <span class="ident">syn::DeriveInput</span>);
+<span class="macro">spanned!</span>(<span class="ident">FromField</span>, <span class="ident">from_field</span>, <span class="ident">syn::Field</span>);
+<span class="macro">spanned!</span>(<span class="ident">FromVariant</span>, <span class="ident">from_variant</span>, <span class="ident">syn::Variant</span>);
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Spanned</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SpannedValue</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">value</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">span</span> <span class="op">=</span> <span class="ident">value</span>.<span class="ident">span</span>();
-        <span class="ident">SpannedValue</span>::<span class="ident">new</span>(<span class="ident">value</span>, <span class="ident">span</span>)
+        <span class="ident">SpannedValue::new</span>(<span class="ident">value</span>, <span class="ident">span</span>)
     }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">proc_macro2</span>::<span class="ident">Span</span>;
+    <span class="kw">use</span> <span class="ident">proc_macro2::Span</span>;
 
     <span class="doccomment">/// Make sure that `SpannedValue` can be seamlessly used as its underlying type.</span>
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">deref</span>() {
-        <span class="kw">let</span> <span class="ident">test</span> <span class="op">=</span> <span class="ident">SpannedValue</span>::<span class="ident">new</span>(<span class="string">&quot;hello&quot;</span>, <span class="ident">Span</span>::<span class="ident">call_site</span>());
+        <span class="kw">let</span> <span class="ident">test</span> <span class="op">=</span> <span class="ident">SpannedValue::new</span>(<span class="string">&quot;hello&quot;</span>, <span class="ident">Span::call_site</span>());
         <span class="macro">assert_eq!</span>(<span class="string">&quot;hello&quot;</span>, <span class="ident">test</span>.<span class="ident">trim</span>());
     }
 }

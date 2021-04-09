@@ -9,10 +9,10 @@ format is used as it’s more pemissive for human input as this is the
 expected use of the type (e.g. command-line parsing).</p>
 <h1 id="example" class="section-header"><a href="#example">Example</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">SystemTime</span>;
+<span class="kw">use</span> <span class="ident">std::time::SystemTime</span>;
 <span class="kw">let</span> <span class="ident">x</span>: <span class="ident">SystemTime</span>;
-<span class="ident">x</span> <span class="op">=</span> <span class="string">&quot;2018-02-16T00:31:37Z&quot;</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">humantime</span>::<span class="ident">Timestamp</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>().<span class="ident">into</span>();
-<span class="macro">assert_eq!</span>(<span class="ident">humantime</span>::<span class="ident">format_rfc3339</span>(<span class="ident">x</span>).<span class="ident">to_string</span>(), <span class="string">&quot;2018-02-16T00:31:37Z&quot;</span>);</pre></div>
+<span class="ident">x</span> <span class="op">=</span> <span class="string">&quot;2018-02-16T00:31:37Z&quot;</span>.<span class="ident">parse</span>::<span class="op">&lt;</span><span class="ident">humantime::Timestamp</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>().<span class="ident">into</span>();
+<span class="macro">assert_eq!</span>(<span class="ident">humantime::format_rfc3339</span>(<span class="ident">x</span>).<span class="ident">to_string</span>(), <span class="string">&quot;2018-02-16T00:31:37Z&quot;</span>);</pre></div>
 </div><h2 id="deref-methods-SystemTime" class="small-section-header">Methods from <a class="trait" href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html" title="trait core::ops::deref::Deref">Deref</a>&lt;Target = <a class="struct" href="https://doc.rust-lang.org/nightly/std/time/struct.SystemTime.html" title="struct std::time::SystemTime">SystemTime</a>&gt;<a href="#deref-methods-SystemTime" class="anchor"></a></h2><div class="impl-items"><h4 id="associatedconstant.UNIX_EPOCH" class="associatedconstant"><code>pub const <a href="#associatedconstant.UNIX_EPOCH" class="constant"><b>UNIX_EPOCH</b></a>: <a class="struct" href="https://doc.rust-lang.org/nightly/std/time/struct.SystemTime.html" title="struct std::time::SystemTime">SystemTime</a></code><span class="since" title="Stable since Rust version 1.28.0">1.28.0</span><a class="srclink" href="https://doc.rust-lang.org/nightly/src/std/time.rs.html#438" title="goto source code">[src]</a></h4><h4 id="method.duration_since" class="method"><code>pub fn <a href="#method.duration_since" class="fnname">duration_since</a>(<br>&nbsp;&nbsp;&nbsp;&nbsp;&amp;self, <br>&nbsp;&nbsp;&nbsp;&nbsp;earlier: <a class="struct" href="https://doc.rust-lang.org/nightly/std/time/struct.SystemTime.html" title="struct std::time::SystemTime">SystemTime</a><br>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html" title="struct core::time::Duration">Duration</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/std/time/struct.SystemTimeError.html" title="struct std::time::SystemTimeError">SystemTimeError</a>&gt;</code><span class="since" title="Stable since Rust version 1.8.0">1.8.0</span><a class="srclink" href="https://doc.rust-lang.org/nightly/src/std/time.rs.html#479" title="goto source code">[src]</a></h4><div class="docblock"><p>Returns the amount of time elapsed from an earlier point in time.</p>
 <p>This function may fail because measurements taken earlier are not
 guaranteed to always be before later measurements (due to anomalies such
@@ -24,10 +24,10 @@ the amount of time elapsed from the specified measurement to this one.</p>
 contains how far from <code>self</code> the time is.</p>
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::<span class="ident">SystemTime</span>;
+<span class="kw">use</span> <span class="ident">std::time::SystemTime</span>;
 
-<span class="kw">let</span> <span class="ident">sys_time</span> <span class="op">=</span> <span class="ident">SystemTime</span>::<span class="ident">now</span>();
-<span class="kw">let</span> <span class="ident">new_sys_time</span> <span class="op">=</span> <span class="ident">SystemTime</span>::<span class="ident">now</span>();
+<span class="kw">let</span> <span class="ident">sys_time</span> <span class="op">=</span> <span class="ident">SystemTime::now</span>();
+<span class="kw">let</span> <span class="ident">new_sys_time</span> <span class="op">=</span> <span class="ident">SystemTime::now</span>();
 <span class="kw">let</span> <span class="ident">difference</span> <span class="op">=</span> <span class="ident">new_sys_time</span>.<span class="ident">duration_since</span>(<span class="ident">sys_time</span>)
     .<span class="ident">expect</span>(<span class="string">&quot;Clock may have gone backwards&quot;</span>);
 <span class="macro">println!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">difference</span>);</pre></div>
@@ -43,11 +43,11 @@ this time measurement to the current time.</p>
 the error contains how far from the current system time <code>self</code> is.</p>
 <h1 id="examples-1" class="section-header"><a href="#examples-1">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>::<span class="ident">sleep</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">time</span>::{<span class="ident">Duration</span>, <span class="ident">SystemTime</span>};
+<span class="kw">use</span> <span class="ident">std::thread::sleep</span>;
+<span class="kw">use</span> <span class="ident">std::time</span>::{<span class="ident">Duration</span>, <span class="ident">SystemTime</span>};
 
-<span class="kw">let</span> <span class="ident">sys_time</span> <span class="op">=</span> <span class="ident">SystemTime</span>::<span class="ident">now</span>();
-<span class="kw">let</span> <span class="ident">one_sec</span> <span class="op">=</span> <span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">1</span>);
+<span class="kw">let</span> <span class="ident">sys_time</span> <span class="op">=</span> <span class="ident">SystemTime::now</span>();
+<span class="kw">let</span> <span class="ident">one_sec</span> <span class="op">=</span> <span class="ident">Duration::from_secs</span>(<span class="number">1</span>);
 <span class="ident">sleep</span>(<span class="ident">one_sec</span>);
 <span class="macro">assert!</span>(<span class="ident">sys_time</span>.<span class="ident">elapsed</span>().<span class="ident">unwrap</span>() <span class="op">&gt;</span><span class="op">=</span> <span class="ident">one_sec</span>);</pre></div>
 </div><h4 id="method.checked_add" class="method"><code>pub fn <a href="#method.checked_add" class="fnname">checked_add</a>(&amp;self, duration: <a class="struct" href="https://doc.rust-lang.org/nightly/core/time/struct.Duration.html" title="struct core::time::Duration">Duration</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/std/time/struct.SystemTime.html" title="struct std::time::SystemTime">SystemTime</a>&gt;</code><span class="since" title="Stable since Rust version 1.34.0">1.34.0</span><a class="srclink" href="https://doc.rust-lang.org/nightly/src/std/time.rs.html#517" title="goto source code">[src]</a></h4><div class="docblock"><p>Returns <code>Some(t)</code> where <code>t</code> is the time <code>self + duration</code> if <code>t</code> can be represented as

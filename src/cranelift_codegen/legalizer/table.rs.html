@@ -120,29 +120,29 @@
 <span class="doccomment">//! This module exports the `expand_table_addr` function which transforms a `table_addr`</span>
 <span class="doccomment">//! instruction into code that depends on the kind of table referenced.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">FuncCursor</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">flowgraph</span>::<span class="ident">ControlFlowGraph</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">condcodes</span>::<span class="ident">IntCC</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::<span class="ident">immediates</span>::<span class="ident">Offset32</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="self">self</span>, <span class="ident">InstBuilder</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">TargetIsa</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::cursor</span>::{<span class="ident">Cursor</span>, <span class="ident">FuncCursor</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::flowgraph::ControlFlowGraph</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::condcodes::IntCC</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::immediates::Offset32</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="self">self</span>, <span class="ident">InstBuilder</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::TargetIsa</span>;
 
 <span class="doccomment">/// Expand a `table_addr` instruction according to the definition of the table.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">expand_table_addr</span>(
-    <span class="ident">inst</span>: <span class="ident">ir</span>::<span class="ident">Inst</span>,
-    <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir</span>::<span class="ident">Function</span>,
+    <span class="ident">inst</span>: <span class="ident">ir::Inst</span>,
+    <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir::Function</span>,
     <span class="ident">_cfg</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ControlFlowGraph</span>,
     <span class="ident">_isa</span>: <span class="kw-2">&amp;</span><span class="kw">dyn</span> <span class="ident">TargetIsa</span>,
 ) {
     <span class="comment">// Unpack the instruction.</span>
     <span class="kw">let</span> (<span class="ident">table</span>, <span class="ident">index</span>, <span class="ident">element_offset</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>] {
-        <span class="ident">ir</span>::<span class="ident">InstructionData</span>::<span class="ident">TableAddr</span> {
+        <span class="ident">ir::InstructionData::TableAddr</span> {
             <span class="ident">opcode</span>,
             <span class="ident">table</span>,
             <span class="ident">arg</span>,
             <span class="ident">offset</span>,
         } <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="macro">debug_assert_eq!</span>(<span class="ident">opcode</span>, <span class="ident">ir</span>::<span class="ident">Opcode</span>::<span class="ident">TableAddr</span>);
+            <span class="macro">debug_assert_eq!</span>(<span class="ident">opcode</span>, <span class="ident">ir::Opcode::TableAddr</span>);
             (<span class="ident">table</span>, <span class="ident">arg</span>, <span class="ident">offset</span>)
         }
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;Wanted table_addr: {}&quot;</span>, <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">display_inst</span>(<span class="ident">inst</span>, <span class="prelude-val">None</span>)),
@@ -153,16 +153,16 @@
 
 <span class="doccomment">/// Expand a `table_addr` for a dynamic table.</span>
 <span class="kw">fn</span> <span class="ident">dynamic_addr</span>(
-    <span class="ident">inst</span>: <span class="ident">ir</span>::<span class="ident">Inst</span>,
-    <span class="ident">table</span>: <span class="ident">ir</span>::<span class="ident">Table</span>,
-    <span class="ident">index</span>: <span class="ident">ir</span>::<span class="ident">Value</span>,
+    <span class="ident">inst</span>: <span class="ident">ir::Inst</span>,
+    <span class="ident">table</span>: <span class="ident">ir::Table</span>,
+    <span class="ident">index</span>: <span class="ident">ir::Value</span>,
     <span class="ident">element_offset</span>: <span class="ident">Offset32</span>,
-    <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir</span>::<span class="ident">Function</span>,
+    <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir::Function</span>,
 ) {
     <span class="kw">let</span> <span class="ident">bound_gv</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">tables</span>[<span class="ident">table</span>].<span class="ident">bound_gv</span>;
     <span class="kw">let</span> <span class="ident">index_ty</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">index</span>);
     <span class="kw">let</span> <span class="ident">addr_ty</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">first_result</span>(<span class="ident">inst</span>));
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor</span>::<span class="ident">new</span>(<span class="ident">func</span>).<span class="ident">at_inst</span>(<span class="ident">inst</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor::new</span>(<span class="ident">func</span>).<span class="ident">at_inst</span>(<span class="ident">inst</span>);
     <span class="ident">pos</span>.<span class="ident">use_srcloc</span>(<span class="ident">inst</span>);
 
     <span class="comment">// Start with the bounds check. Trap if `index + 1 &gt; bound`.</span>
@@ -171,8 +171,8 @@
     <span class="comment">// `index &gt; bound - 1` is the same as `index &gt;= bound`.</span>
     <span class="kw">let</span> <span class="ident">oob</span> <span class="op">=</span> <span class="ident">pos</span>
         .<span class="ident">ins</span>()
-        .<span class="ident">icmp</span>(<span class="ident">IntCC</span>::<span class="ident">UnsignedGreaterThanOrEqual</span>, <span class="ident">index</span>, <span class="ident">bound</span>);
-    <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">trapnz</span>(<span class="ident">oob</span>, <span class="ident">ir</span>::<span class="ident">TrapCode</span>::<span class="ident">TableOutOfBounds</span>);
+        .<span class="ident">icmp</span>(<span class="ident">IntCC::UnsignedGreaterThanOrEqual</span>, <span class="ident">index</span>, <span class="ident">bound</span>);
+    <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">trapnz</span>(<span class="ident">oob</span>, <span class="ident">ir::TrapCode::TableOutOfBounds</span>);
 
     <span class="ident">compute_addr</span>(
         <span class="ident">inst</span>,
@@ -187,15 +187,15 @@
 
 <span class="doccomment">/// Emit code for the base address computation of a `table_addr` instruction.</span>
 <span class="kw">fn</span> <span class="ident">compute_addr</span>(
-    <span class="ident">inst</span>: <span class="ident">ir</span>::<span class="ident">Inst</span>,
-    <span class="ident">table</span>: <span class="ident">ir</span>::<span class="ident">Table</span>,
-    <span class="ident">addr_ty</span>: <span class="ident">ir</span>::<span class="ident">Type</span>,
-    <span class="kw-2">mut</span> <span class="ident">index</span>: <span class="ident">ir</span>::<span class="ident">Value</span>,
-    <span class="ident">index_ty</span>: <span class="ident">ir</span>::<span class="ident">Type</span>,
+    <span class="ident">inst</span>: <span class="ident">ir::Inst</span>,
+    <span class="ident">table</span>: <span class="ident">ir::Table</span>,
+    <span class="ident">addr_ty</span>: <span class="ident">ir::Type</span>,
+    <span class="kw-2">mut</span> <span class="ident">index</span>: <span class="ident">ir::Value</span>,
+    <span class="ident">index_ty</span>: <span class="ident">ir::Type</span>,
     <span class="ident">element_offset</span>: <span class="ident">Offset32</span>,
-    <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir</span>::<span class="ident">Function</span>,
+    <span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ir::Function</span>,
 ) {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor</span>::<span class="ident">new</span>(<span class="ident">func</span>).<span class="ident">at_inst</span>(<span class="ident">inst</span>);
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">pos</span> <span class="op">=</span> <span class="ident">FuncCursor::new</span>(<span class="ident">func</span>).<span class="ident">at_inst</span>(<span class="ident">inst</span>);
     <span class="ident">pos</span>.<span class="ident">use_srcloc</span>(<span class="ident">inst</span>);
 
     <span class="comment">// Convert `index` to `addr_ty`.</span>
@@ -215,12 +215,12 @@
     } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">element_size</span>.<span class="ident">is_power_of_two</span>() {
         <span class="ident">offset</span> <span class="op">=</span> <span class="ident">pos</span>
             .<span class="ident">ins</span>()
-            .<span class="ident">ishl_imm</span>(<span class="ident">index</span>, <span class="ident">i64</span>::<span class="ident">from</span>(<span class="ident">element_size</span>.<span class="ident">trailing_zeros</span>()));
+            .<span class="ident">ishl_imm</span>(<span class="ident">index</span>, <span class="ident">i64::from</span>(<span class="ident">element_size</span>.<span class="ident">trailing_zeros</span>()));
     } <span class="kw">else</span> {
         <span class="ident">offset</span> <span class="op">=</span> <span class="ident">pos</span>.<span class="ident">ins</span>().<span class="ident">imul_imm</span>(<span class="ident">index</span>, <span class="ident">element_size</span> <span class="kw">as</span> <span class="ident">i64</span>);
     }
 
-    <span class="kw">if</span> <span class="ident">element_offset</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Offset32</span>::<span class="ident">new</span>(<span class="number">0</span>) {
+    <span class="kw">if</span> <span class="ident">element_offset</span> <span class="op">=</span><span class="op">=</span> <span class="ident">Offset32::new</span>(<span class="number">0</span>) {
         <span class="ident">pos</span>.<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">replace</span>(<span class="ident">inst</span>).<span class="ident">iadd</span>(<span class="ident">base</span>, <span class="ident">offset</span>);
     } <span class="kw">else</span> {
         <span class="kw">let</span> <span class="ident">imm</span>: <span class="ident">i64</span> <span class="op">=</span> <span class="ident">element_offset</span>.<span class="ident">into</span>();

@@ -6,9 +6,9 @@
 
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">arch</span>::<span class="ident">x86</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">std::arch::x86</span>::<span class="kw-2">*</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86_64&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">arch</span>::<span class="ident">x86_64</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">std::arch::x86_64</span>::<span class="kw-2">*</span>;
 
 <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">_mm256_setr_epi64x</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);
 <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">_mm256_setr_epi64x</span>(<span class="number">0</span>, <span class="op">-</span><span class="number">1</span>, <span class="op">-</span><span class="number">2</span>, <span class="op">-</span><span class="number">3</span>);

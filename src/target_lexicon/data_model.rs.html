@@ -191,8 +191,8 @@
         <span class="kw">use</span> <span class="ident">CDataModel</span>::<span class="kw-2">*</span>;
 
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">LP32</span> <span class="op">|</span> <span class="ident">ILP32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Size</span>::<span class="ident">U32</span>,
-            <span class="ident">LLP64</span> <span class="op">|</span> <span class="ident">LP64</span> <span class="op">|</span> <span class="ident">ILP64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Size</span>::<span class="ident">U64</span>,
+            <span class="ident">LP32</span> <span class="op">|</span> <span class="ident">ILP32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Size::U32</span>,
+            <span class="ident">LLP64</span> <span class="op">|</span> <span class="ident">LP64</span> <span class="op">|</span> <span class="ident">ILP64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Size::U64</span>,
         }
     }
     <span class="doccomment">/// The size of a C `short`. This is required to be at least 16 bits.</span>
@@ -200,7 +200,7 @@
         <span class="kw">use</span> <span class="ident">CDataModel</span>::<span class="kw-2">*</span>;
 
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">LP32</span> <span class="op">|</span> <span class="ident">ILP32</span> <span class="op">|</span> <span class="ident">LLP64</span> <span class="op">|</span> <span class="ident">LP64</span> <span class="op">|</span> <span class="ident">ILP64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Size</span>::<span class="ident">U16</span>,
+            <span class="ident">LP32</span> <span class="op">|</span> <span class="ident">ILP32</span> <span class="op">|</span> <span class="ident">LLP64</span> <span class="op">|</span> <span class="ident">LP64</span> <span class="op">|</span> <span class="ident">ILP64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Size::U16</span>,
         }
     }
     <span class="doccomment">/// The size of a C `int`. This is required to be at least 16 bits.</span>
@@ -208,8 +208,8 @@
         <span class="kw">use</span> <span class="ident">CDataModel</span>::<span class="kw-2">*</span>;
 
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">LP32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Size</span>::<span class="ident">U16</span>,
-            <span class="ident">ILP32</span> <span class="op">|</span> <span class="ident">LLP64</span> <span class="op">|</span> <span class="ident">LP64</span> <span class="op">|</span> <span class="ident">ILP64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Size</span>::<span class="ident">U32</span>,
+            <span class="ident">LP32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Size::U16</span>,
+            <span class="ident">ILP32</span> <span class="op">|</span> <span class="ident">LLP64</span> <span class="op">|</span> <span class="ident">LP64</span> <span class="op">|</span> <span class="ident">ILP64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Size::U32</span>,
         }
     }
     <span class="doccomment">/// The size of a C `long`. This is required to be at least 32 bits.</span>
@@ -217,8 +217,8 @@
         <span class="kw">use</span> <span class="ident">CDataModel</span>::<span class="kw-2">*</span>;
 
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">LP32</span> <span class="op">|</span> <span class="ident">ILP32</span> <span class="op">|</span> <span class="ident">LLP64</span> <span class="op">|</span> <span class="ident">ILP64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Size</span>::<span class="ident">U32</span>,
-            <span class="ident">LP64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Size</span>::<span class="ident">U64</span>,
+            <span class="ident">LP32</span> <span class="op">|</span> <span class="ident">ILP32</span> <span class="op">|</span> <span class="ident">LLP64</span> <span class="op">|</span> <span class="ident">ILP64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Size::U32</span>,
+            <span class="ident">LP64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Size::U64</span>,
         }
     }
     <span class="doccomment">/// The size of a C `long long`. This is required (in C99+) to be at least 64 bits.</span>
@@ -226,18 +226,18 @@
         <span class="kw">use</span> <span class="ident">CDataModel</span>::<span class="kw-2">*</span>;
 
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">LP32</span> <span class="op">|</span> <span class="ident">ILP32</span> <span class="op">|</span> <span class="ident">LLP64</span> <span class="op">|</span> <span class="ident">ILP64</span> <span class="op">|</span> <span class="ident">LP64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Size</span>::<span class="ident">U64</span>,
+            <span class="ident">LP32</span> <span class="op">|</span> <span class="ident">ILP32</span> <span class="op">|</span> <span class="ident">LLP64</span> <span class="op">|</span> <span class="ident">ILP64</span> <span class="op">|</span> <span class="ident">LP64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Size::U64</span>,
         }
     }
     <span class="doccomment">/// The size of a C `float`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">float_size</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Size</span> {
         <span class="comment">// TODO: this is probably wrong on at least one architecture</span>
-        <span class="ident">Size</span>::<span class="ident">U32</span>
+        <span class="ident">Size::U32</span>
     }
     <span class="doccomment">/// The size of a C `double`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">double_size</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Size</span> {
         <span class="comment">// TODO: this is probably wrong on at least one architecture</span>
-        <span class="ident">Size</span>::<span class="ident">U64</span>
+        <span class="ident">Size::U64</span>
     }
 }
 </pre></div>

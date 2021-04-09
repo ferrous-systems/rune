@@ -20,9 +20,9 @@ a “bag of bits” which is left up to interpretation at the point of use.</p>
 <h1 id="examples" class="section-header"><a href="#examples">Examples</a></h1>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">arch</span>::<span class="ident">x86</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">std::arch::x86</span>::<span class="kw-2">*</span>;
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_arch</span> <span class="op">=</span> <span class="string">&quot;x86_64&quot;</span>)]</span>
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">arch</span>::<span class="ident">x86_64</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident">std::arch::x86_64</span>::<span class="kw-2">*</span>;
 
 <span class="kw">let</span> <span class="ident">all_bytes_zero</span> <span class="op">=</span> <span class="ident">_mm256_setzero_si256</span>();
 <span class="kw">let</span> <span class="ident">all_bytes_one</span> <span class="op">=</span> <span class="ident">_mm256_set1_epi8</span>(<span class="number">1</span>);

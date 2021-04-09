@@ -3171,8 +3171,8 @@
 
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">missing_docs</span>)]</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">endian</span>::{<span class="ident">BigEndian</span>, <span class="ident">Endian</span>, <span class="ident">U64Bytes</span>, <span class="ident">U16</span>, <span class="ident">U32</span>, <span class="ident">U64</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">pod</span>::<span class="ident">Pod</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::endian</span>::{<span class="ident">BigEndian</span>, <span class="ident">Endian</span>, <span class="ident">U64Bytes</span>, <span class="ident">U16</span>, <span class="ident">U32</span>, <span class="ident">U64</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::pod::Pod</span>;
 
 <span class="comment">// Definitions from &quot;/usr/include/mach-o/machine.h&quot;.</span>
 
@@ -5804,21 +5804,21 @@ pub struct TlvDescriptor&lt;E: Endian&gt;
 <span class="kw">impl</span> <span class="ident">RelocationInfo</span> {
     <span class="doccomment">/// Combine the fields into a `Relocation`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">relocation</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Endian</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">endian</span>: <span class="ident">E</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Relocation</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">r_word0</span> <span class="op">=</span> <span class="ident">U32</span>::<span class="ident">new</span>(<span class="ident">endian</span>, <span class="self">self</span>.<span class="ident">r_address</span>);
-        <span class="kw">let</span> <span class="ident">r_word1</span> <span class="op">=</span> <span class="ident">U32</span>::<span class="ident">new</span>(
+        <span class="kw">let</span> <span class="ident">r_word0</span> <span class="op">=</span> <span class="ident">U32::new</span>(<span class="ident">endian</span>, <span class="self">self</span>.<span class="ident">r_address</span>);
+        <span class="kw">let</span> <span class="ident">r_word1</span> <span class="op">=</span> <span class="ident">U32::new</span>(
             <span class="ident">endian</span>,
             <span class="kw">if</span> <span class="ident">endian</span>.<span class="ident">is_little_endian</span>() {
                 <span class="self">self</span>.<span class="ident">r_symbolnum</span> <span class="op">&amp;</span> <span class="number">0x00ff_ffff</span>
-                    <span class="op">|</span> <span class="ident">u32</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="ident">r_pcrel</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span>
-                    <span class="op">|</span> <span class="ident">u32</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="ident">r_length</span> <span class="op">&amp;</span> <span class="number">0x3</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">25</span>
-                    <span class="op">|</span> <span class="ident">u32</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="ident">r_extern</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">27</span>
-                    <span class="op">|</span> <span class="ident">u32</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="ident">r_type</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">28</span>
+                    <span class="op">|</span> <span class="ident">u32::from</span>(<span class="self">self</span>.<span class="ident">r_pcrel</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span>
+                    <span class="op">|</span> <span class="ident">u32::from</span>(<span class="self">self</span>.<span class="ident">r_length</span> <span class="op">&amp;</span> <span class="number">0x3</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">25</span>
+                    <span class="op">|</span> <span class="ident">u32::from</span>(<span class="self">self</span>.<span class="ident">r_extern</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">27</span>
+                    <span class="op">|</span> <span class="ident">u32::from</span>(<span class="self">self</span>.<span class="ident">r_type</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">28</span>
             } <span class="kw">else</span> {
                 <span class="self">self</span>.<span class="ident">r_symbolnum</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">8</span>
-                    <span class="op">|</span> <span class="ident">u32</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="ident">r_pcrel</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>
-                    <span class="op">|</span> <span class="ident">u32</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="ident">r_length</span> <span class="op">&amp;</span> <span class="number">0x3</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">5</span>
-                    <span class="op">|</span> <span class="ident">u32</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="ident">r_extern</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span>
-                    <span class="op">|</span> <span class="ident">u32</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="ident">r_type</span>) <span class="op">&amp;</span> <span class="number">0xf</span>
+                    <span class="op">|</span> <span class="ident">u32::from</span>(<span class="self">self</span>.<span class="ident">r_pcrel</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">7</span>
+                    <span class="op">|</span> <span class="ident">u32::from</span>(<span class="self">self</span>.<span class="ident">r_length</span> <span class="op">&amp;</span> <span class="number">0x3</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">5</span>
+                    <span class="op">|</span> <span class="ident">u32::from</span>(<span class="self">self</span>.<span class="ident">r_extern</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">4</span>
+                    <span class="op">|</span> <span class="ident">u32::from</span>(<span class="self">self</span>.<span class="ident">r_type</span>) <span class="op">&amp;</span> <span class="number">0xf</span>
             },
         );
         <span class="ident">Relocation</span> { <span class="ident">r_word0</span>, <span class="ident">r_word1</span> }
@@ -5911,15 +5911,15 @@ pub struct TlvDescriptor&lt;E: Endian&gt;
 <span class="kw">impl</span> <span class="ident">ScatteredRelocationInfo</span> {
     <span class="doccomment">/// Combine the fields into a `Relocation`.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">relocation</span><span class="op">&lt;</span><span class="ident">E</span>: <span class="ident">Endian</span><span class="op">&gt;</span>(<span class="self">self</span>, <span class="ident">endian</span>: <span class="ident">E</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Relocation</span><span class="op">&lt;</span><span class="ident">E</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">r_word0</span> <span class="op">=</span> <span class="ident">U32</span>::<span class="ident">new</span>(
+        <span class="kw">let</span> <span class="ident">r_word0</span> <span class="op">=</span> <span class="ident">U32::new</span>(
             <span class="ident">endian</span>,
             <span class="self">self</span>.<span class="ident">r_address</span> <span class="op">&amp;</span> <span class="number">0x00ff_ffff</span>
-                <span class="op">|</span> <span class="ident">u32</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="ident">r_type</span> <span class="op">&amp;</span> <span class="number">0xf</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span>
-                <span class="op">|</span> <span class="ident">u32</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="ident">r_length</span> <span class="op">&amp;</span> <span class="number">0x3</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">28</span>
-                <span class="op">|</span> <span class="ident">u32</span>::<span class="ident">from</span>(<span class="self">self</span>.<span class="ident">r_pcrel</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">30</span>
+                <span class="op">|</span> <span class="ident">u32::from</span>(<span class="self">self</span>.<span class="ident">r_type</span> <span class="op">&amp;</span> <span class="number">0xf</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">24</span>
+                <span class="op">|</span> <span class="ident">u32::from</span>(<span class="self">self</span>.<span class="ident">r_length</span> <span class="op">&amp;</span> <span class="number">0x3</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">28</span>
+                <span class="op">|</span> <span class="ident">u32::from</span>(<span class="self">self</span>.<span class="ident">r_pcrel</span>) <span class="op">&lt;</span><span class="op">&lt;</span> <span class="number">30</span>
                 <span class="op">|</span> <span class="ident">R_SCATTERED</span>,
         );
-        <span class="kw">let</span> <span class="ident">r_word1</span> <span class="op">=</span> <span class="ident">U32</span>::<span class="ident">new</span>(<span class="ident">endian</span>, <span class="self">self</span>.<span class="ident">r_value</span>);
+        <span class="kw">let</span> <span class="ident">r_word1</span> <span class="op">=</span> <span class="ident">U32::new</span>(<span class="ident">endian</span>, <span class="self">self</span>.<span class="ident">r_value</span>);
         <span class="ident">Relocation</span> { <span class="ident">r_word0</span>, <span class="ident">r_word1</span> }
     }
 }

@@ -85,14 +85,14 @@
 <span id="82">82</span>
 <span id="83">83</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">serde_json</span>::<span class="ident">value</span>::<span class="ident">Value</span> <span class="kw">as</span> <span class="ident">Json</span>;
+<span class="kw">use</span> <span class="ident">serde_json::value::Value</span> <span class="kw">as</span> <span class="ident">Json</span>;
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">context</span>::<span class="ident">Context</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">error</span>::<span class="ident">RenderError</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">helpers</span>::<span class="ident">HelperDef</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">json</span>::<span class="ident">value</span>::<span class="ident">ScopedJson</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">registry</span>::<span class="ident">Registry</span>;
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">render</span>::{<span class="ident">Helper</span>, <span class="ident">RenderContext</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::context::Context</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::error::RenderError</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::helpers::HelperDef</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::json::value::ScopedJson</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::registry::Registry</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::render</span>::{<span class="ident">Helper</span>, <span class="ident">RenderContext</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LookupHelper</span>;
@@ -107,22 +107,22 @@
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ScopedJson</span><span class="op">&lt;</span><span class="lifetime">&#39;reg</span>, <span class="lifetime">&#39;rc</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">RenderError</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">collection_value</span> <span class="op">=</span> <span class="ident">h</span>
             .<span class="ident">param</span>(<span class="number">0</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">RenderError</span>::<span class="ident">new</span>(<span class="string">&quot;Param not found for helper \&quot;lookup\&quot;&quot;</span>))<span class="question-mark">?</span>;
+            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">RenderError::new</span>(<span class="string">&quot;Param not found for helper \&quot;lookup\&quot;&quot;</span>))<span class="question-mark">?</span>;
         <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">h</span>
             .<span class="ident">param</span>(<span class="number">1</span>)
-            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">RenderError</span>::<span class="ident">new</span>(<span class="string">&quot;Insufficient params for helper \&quot;lookup\&quot;&quot;</span>))<span class="question-mark">?</span>;
+            .<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">RenderError::new</span>(<span class="string">&quot;Insufficient params for helper \&quot;lookup\&quot;&quot;</span>))<span class="question-mark">?</span>;
 
         <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">collection_value</span>.<span class="ident">value</span>() {
-            <span class="ident">Json</span>::<span class="ident">Array</span>(<span class="kw-2">ref</span> <span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">index</span>
+            <span class="ident">Json::Array</span>(<span class="kw-2">ref</span> <span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">index</span>
                 .<span class="ident">value</span>()
                 .<span class="ident">as_u64</span>()
                 .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">u</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">get</span>(<span class="ident">u</span> <span class="kw">as</span> <span class="ident">usize</span>))
-                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">ScopedJson</span>::<span class="ident">Derived</span>(<span class="ident">i</span>.<span class="ident">clone</span>())),
-            <span class="ident">Json</span>::<span class="ident">Object</span>(<span class="kw-2">ref</span> <span class="ident">m</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">index</span>
+                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">ScopedJson::Derived</span>(<span class="ident">i</span>.<span class="ident">clone</span>())),
+            <span class="ident">Json::Object</span>(<span class="kw-2">ref</span> <span class="ident">m</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">index</span>
                 .<span class="ident">value</span>()
                 .<span class="ident">as_str</span>()
                 .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">k</span><span class="op">|</span> <span class="ident">m</span>.<span class="ident">get</span>(<span class="ident">k</span>))
-                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">ScopedJson</span>::<span class="ident">Derived</span>(<span class="ident">i</span>.<span class="ident">clone</span>())),
+                .<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> <span class="ident">ScopedJson::Derived</span>(<span class="ident">i</span>.<span class="ident">clone</span>())),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         };
         <span class="prelude-val">Ok</span>(<span class="ident">value</span>)
@@ -133,13 +133,13 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">test</span> {
-    <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">registry</span>::<span class="ident">Registry</span>;
+    <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::registry::Registry</span>;
 
-    <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">collections</span>::<span class="ident">BTreeMap</span>;
+    <span class="kw">use</span> <span class="ident">std::collections::BTreeMap</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_lookup</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">handlebars</span> <span class="op">=</span> <span class="ident">Registry::new</span>();
         <span class="macro">assert!</span>(<span class="ident">handlebars</span>
             .<span class="ident">register_template_string</span>(<span class="string">&quot;t0&quot;</span>, <span class="string">&quot;{{#each v1}}{{lookup ../v2 @index}}{{/each}}&quot;</span>)
             .<span class="ident">is_ok</span>());
@@ -150,7 +150,7 @@
             .<span class="ident">register_template_string</span>(<span class="string">&quot;t2&quot;</span>, <span class="string">&quot;{{lookup kk \&quot;a\&quot;}}&quot;</span>)
             .<span class="ident">is_ok</span>());
 
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span>: <span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">BTreeMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span>: <span class="ident">BTreeMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">BTreeMap::new</span>();
         <span class="ident">m</span>.<span class="ident">insert</span>(<span class="string">&quot;v1&quot;</span>.<span class="ident">to_string</span>(), <span class="macro">vec!</span>[<span class="number">1u16</span>, <span class="number">2u16</span>, <span class="number">3u16</span>]);
         <span class="ident">m</span>.<span class="ident">insert</span>(<span class="string">&quot;v2&quot;</span>.<span class="ident">to_string</span>(), <span class="macro">vec!</span>[<span class="number">9u16</span>, <span class="number">8u16</span>, <span class="number">7u16</span>]);
 

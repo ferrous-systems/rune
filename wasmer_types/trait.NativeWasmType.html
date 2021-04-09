@@ -18,8 +18,8 @@ Wasm type associated with a native Rust type.</p>
 <div class="example-wrap"><pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">wasmer_types</span>::{<span class="ident">NativeWasmType</span>, <span class="ident">Type</span>};
 
-<span class="kw">let</span> <span class="ident">wasm_type</span> <span class="op">=</span> <span class="ident">i32</span>::<span class="ident">WASM_TYPE</span>;
-<span class="macro">assert_eq!</span>(<span class="ident">wasm_type</span>, <span class="ident">Type</span>::<span class="ident">I32</span>);</pre></div>
+<span class="kw">let</span> <span class="ident">wasm_type</span> <span class="op">=</span> <span class="ident">i32::WASM_TYPE</span>;
+<span class="macro">assert_eq!</span>(<span class="ident">wasm_type</span>, <span class="ident">Type::I32</span>);</pre></div>
 <blockquote>
 <p>Note: This strategy will be needed later to
 automatically detect the signature of a Rust function.</p>

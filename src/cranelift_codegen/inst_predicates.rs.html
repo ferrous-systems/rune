@@ -91,9 +91,9 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Instruction predicates/properties, shared by various analyses.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">ir</span>::{<span class="ident">DataFlowGraph</span>, <span class="ident">Function</span>, <span class="ident">Inst</span>, <span class="ident">InstructionData</span>, <span class="ident">Opcode</span>};
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">machinst</span>::<span class="ident">ty_bits</span>;
-<span class="kw">use</span> <span class="ident">cranelift_entity</span>::<span class="ident">EntityRef</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">DataFlowGraph</span>, <span class="ident">Function</span>, <span class="ident">Inst</span>, <span class="ident">InstructionData</span>, <span class="ident">Opcode</span>};
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::machinst::ty_bits</span>;
+<span class="kw">use</span> <span class="ident">cranelift_entity::EntityRef</span>;
 
 <span class="doccomment">/// Preserve instructions with used result values.</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">any_inst_results_used</span>(<span class="ident">inst</span>: <span class="ident">Inst</span>, <span class="ident">live</span>: <span class="kw-2">&amp;</span>[<span class="ident">bool</span>], <span class="ident">dfg</span>: <span class="kw-2">&amp;</span><span class="ident">DataFlowGraph</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
@@ -119,8 +119,8 @@
         <span class="kw">return</span> <span class="bool-val">false</span>;
     }
     <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">data</span> {
-        <span class="ident">InstructionData</span>::<span class="ident">StackLoad</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
-        <span class="ident">InstructionData</span>::<span class="ident">Load</span> { <span class="ident">flags</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="op">!</span><span class="ident">flags</span>.<span class="ident">notrap</span>(),
+        <span class="ident">InstructionData::StackLoad</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+        <span class="ident">InstructionData::Load</span> { <span class="ident">flags</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="op">!</span><span class="ident">flags</span>.<span class="ident">notrap</span>(),
         <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
     }
 }
@@ -137,28 +137,28 @@
 <span class="doccomment">/// but not the get_pinned_reg opcode?</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_lowering_side_effect</span>(<span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>, <span class="ident">inst</span>: <span class="ident">Inst</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
     <span class="kw">let</span> <span class="ident">op</span> <span class="op">=</span> <span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>].<span class="ident">opcode</span>();
-    <span class="ident">op</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Opcode</span>::<span class="ident">GetPinnedReg</span> <span class="op">&amp;&amp;</span> (<span class="ident">has_side_effect</span>(<span class="ident">func</span>, <span class="ident">inst</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">op</span>.<span class="ident">can_load</span>())
+    <span class="ident">op</span> <span class="op">!</span><span class="op">=</span> <span class="ident">Opcode::GetPinnedReg</span> <span class="op">&amp;&amp;</span> (<span class="ident">has_side_effect</span>(<span class="ident">func</span>, <span class="ident">inst</span>) <span class="op">|</span><span class="op">|</span> <span class="ident">op</span>.<span class="ident">can_load</span>())
 }
 
 <span class="doccomment">/// Is the given instruction a constant value (`iconst`, `fconst`, `bconst`) that can be</span>
 <span class="doccomment">/// represented in 64 bits?</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_constant_64bit</span>(<span class="ident">func</span>: <span class="kw-2">&amp;</span><span class="ident">Function</span>, <span class="ident">inst</span>: <span class="ident">Inst</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">func</span>.<span class="ident">dfg</span>[<span class="ident">inst</span>];
-    <span class="kw">if</span> <span class="ident">data</span>.<span class="ident">opcode</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Opcode</span>::<span class="ident">Null</span> {
+    <span class="kw">if</span> <span class="ident">data</span>.<span class="ident">opcode</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">Opcode::Null</span> {
         <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="number">0</span>);
     }
     <span class="kw">match</span> <span class="ident">data</span> {
-        <span class="kw-2">&amp;</span><span class="ident">InstructionData</span>::<span class="ident">UnaryImm</span> { <span class="ident">imm</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">imm</span>.<span class="ident">bits</span>() <span class="kw">as</span> <span class="ident">u64</span>),
-        <span class="kw-2">&amp;</span><span class="ident">InstructionData</span>::<span class="ident">UnaryIeee32</span> { <span class="ident">imm</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">imm</span>.<span class="ident">bits</span>() <span class="kw">as</span> <span class="ident">u64</span>),
-        <span class="kw-2">&amp;</span><span class="ident">InstructionData</span>::<span class="ident">UnaryIeee64</span> { <span class="ident">imm</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">imm</span>.<span class="ident">bits</span>()),
-        <span class="kw-2">&amp;</span><span class="ident">InstructionData</span>::<span class="ident">UnaryBool</span> { <span class="ident">imm</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+        <span class="kw-2">&amp;</span><span class="ident">InstructionData::UnaryImm</span> { <span class="ident">imm</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">imm</span>.<span class="ident">bits</span>() <span class="kw">as</span> <span class="ident">u64</span>),
+        <span class="kw-2">&amp;</span><span class="ident">InstructionData::UnaryIeee32</span> { <span class="ident">imm</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">imm</span>.<span class="ident">bits</span>() <span class="kw">as</span> <span class="ident">u64</span>),
+        <span class="kw-2">&amp;</span><span class="ident">InstructionData::UnaryIeee64</span> { <span class="ident">imm</span>, .. } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">imm</span>.<span class="ident">bits</span>()),
+        <span class="kw-2">&amp;</span><span class="ident">InstructionData::UnaryBool</span> { <span class="ident">imm</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">imm</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">imm</span> {
                 <span class="kw">let</span> <span class="ident">bits</span> <span class="op">=</span> <span class="ident">ty_bits</span>(<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">value_type</span>(<span class="ident">func</span>.<span class="ident">dfg</span>.<span class="ident">inst_results</span>(<span class="ident">inst</span>)[<span class="number">0</span>]));
 
                 <span class="kw">if</span> <span class="ident">bits</span> <span class="op">&lt;</span> <span class="number">64</span> {
                     (<span class="number">1u64</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">bits</span>) <span class="op">-</span> <span class="number">1</span>
                 } <span class="kw">else</span> {
-                    <span class="ident">u64</span>::<span class="ident">MAX</span>
+                    <span class="ident">u64::MAX</span>
                 }
             } <span class="kw">else</span> {
                 <span class="number">0</span>

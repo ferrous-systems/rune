@@ -736,20 +736,20 @@
 <span class="attribute">#![<span class="ident">forbid</span>(<span class="ident">unsafe_code</span>)]</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::{
-    <span class="ident">borrow</span>::<span class="ident">Cow</span>,
-    <span class="ident">collections</span>::<span class="ident">HashMap</span>,
+    <span class="ident">borrow::Cow</span>,
+    <span class="ident">collections::HashMap</span>,
     <span class="ident">env</span>,
-    <span class="ident">ffi</span>::<span class="ident">OsString</span>,
+    <span class="ident">ffi::OsString</span>,
     <span class="ident">fmt</span>,
     <span class="ident">io</span>::{<span class="self">self</span>, <span class="ident">Read</span>, <span class="ident">Write</span>},
     <span class="ident">iter</span>,
-    <span class="ident">path</span>::<span class="ident">PathBuf</span>,
-    <span class="ident">process</span>::<span class="ident">Stdio</span>,
-    <span class="ident">sync</span>::<span class="ident">Arc</span>,
+    <span class="ident">path::PathBuf</span>,
+    <span class="ident">process::Stdio</span>,
+    <span class="ident">sync::Arc</span>,
 };
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">error</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">io</span>::<span class="ident">BufRead</span>;
+<span class="kw">use</span> <span class="ident">io::BufRead</span>;
 
 <span class="doccomment">/// Create a [`Cmd`] with the given binary and arguments.</span>
 <span class="doccomment">///</span>
@@ -773,7 +773,7 @@
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">cmd</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">bin</span>:<span class="ident">expr</span> $(, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>:<span class="ident">expr</span> )<span class="op">*</span> $(,)<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> {{
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cmd</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro-nonterminal">Cmd</span>::<span class="ident">new</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">bin</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cmd</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro-nonterminal">::Cmd::new</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">bin</span>);
         $(<span class="ident">cmd</span>.<span class="ident">arg</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">arg</span>);)<span class="op">*</span>
         <span class="ident">cmd</span>
     }};
@@ -783,21 +783,21 @@
 <span class="doccomment">/// See [`Cmd::run`](struct.Cmd.html#method.run) for details</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">run</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">params</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {{ <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro">cmd!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">params</span>)<span class="kw-2">*</span>).<span class="ident">run</span>() }}
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">params</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {{ <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::cmd!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">params</span>)<span class="kw-2">*</span>).<span class="ident">run</span>() }}
 }
 
 <span class="doccomment">/// Shortcut for `cmd!(...).read()`.</span>
 <span class="doccomment">/// See [`Cmd::read`](struct.Cmd.html#method.read) for details</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">read</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">params</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {{ <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro">cmd!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">params</span>)<span class="kw-2">*</span>).<span class="ident">read</span>() }}
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">params</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {{ <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::cmd!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">params</span>)<span class="kw-2">*</span>).<span class="ident">read</span>() }}
 }
 
 <span class="doccomment">/// Shortcut for `cmd!(...).read_bytes()`.</span>
 <span class="doccomment">/// See [`Cmd::read`](struct.Cmd.html#method.read_bytes) for details</span>
 <span class="attribute">#[<span class="ident">macro_export</span>]</span>
 <span class="macro">macro_rules!</span> <span class="ident">read_bytes</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">params</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {{ <span class="macro-nonterminal">$</span><span class="kw">crate</span>::<span class="macro">cmd!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">params</span>)<span class="kw-2">*</span>).<span class="ident">read_bytes</span>() }}
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">params</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {{ <span class="macro-nonterminal">$</span><span class="kw">crate</span><span class="macro">::cmd!</span>($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">params</span>)<span class="kw-2">*</span>).<span class="ident">read_bytes</span>() }}
 }
 
 <span class="kw">mod</span> <span class="ident">error</span>;
@@ -808,11 +808,11 @@
     <span class="ident">Utf8</span>(<span class="ident">String</span>),
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">BinOrUtf8</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">BinOrUtf8</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">BinOrUtf8</span>::<span class="ident">Bin</span>(<span class="ident">bytes</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;[bytes]:\n{:?}&quot;</span>, <span class="ident">bytes</span>),
-            <span class="ident">BinOrUtf8</span>::<span class="ident">Utf8</span>(<span class="ident">utf8</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;[utf8]:\n{}&quot;</span>, <span class="ident">utf8</span>),
+            <span class="ident">BinOrUtf8::Bin</span>(<span class="ident">bytes</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;[bytes]:\n{:?}&quot;</span>, <span class="ident">bytes</span>),
+            <span class="ident">BinOrUtf8::Utf8</span>(<span class="ident">utf8</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;[utf8]:\n{}&quot;</span>, <span class="ident">utf8</span>),
         }
     }
 }
@@ -820,8 +820,8 @@
 <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">BinOrUtf8</span> {
     <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">BinOrUtf8</span>::<span class="ident">Bin</span>(<span class="ident">it</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">it</span>.<span class="ident">as_ref</span>(),
-            <span class="ident">BinOrUtf8</span>::<span class="ident">Utf8</span>(<span class="ident">it</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">it</span>.<span class="ident">as_ref</span>(),
+            <span class="ident">BinOrUtf8::Bin</span>(<span class="ident">it</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">it</span>.<span class="ident">as_ref</span>(),
+            <span class="ident">BinOrUtf8::Utf8</span>(<span class="ident">it</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">it</span>.<span class="ident">as_ref</span>(),
         }
     }
 }
@@ -879,22 +879,22 @@
     <span class="ident">env</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">OsString</span>, <span class="ident">OsString</span><span class="op">&gt;</span>,
     <span class="ident">stdin</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BinOrUtf8</span><span class="op">&gt;</span>,
     <span class="ident">current_dir</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
-    <span class="ident">log_cmd</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">log</span>::<span class="ident">Level</span><span class="op">&gt;</span>,
-    <span class="ident">log_err</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">log</span>::<span class="ident">Level</span><span class="op">&gt;</span>,
+    <span class="ident">log_cmd</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">log::Level</span><span class="op">&gt;</span>,
+    <span class="ident">log_err</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">log::Level</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Cmd</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
-        <span class="ident">fmt</span>::<span class="ident">Display</span>::<span class="ident">fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
+<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">Cmd</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        <span class="ident">fmt::Display::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Cmd</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Cmd</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{}&quot;</span>, (<span class="self">self</span>.<span class="number">0</span>).<span class="ident">bin</span>.<span class="ident">display</span>())<span class="question-mark">?</span>;
         <span class="kw">for</span> <span class="ident">arg</span> <span class="kw">in</span> <span class="kw-2">&amp;</span>(<span class="self">self</span>.<span class="number">0</span>).<span class="ident">args</span> {
             <span class="kw">let</span> <span class="ident">arg</span> <span class="op">=</span> <span class="ident">arg</span>.<span class="ident">to_string_lossy</span>();
-            <span class="kw">if</span> <span class="ident">arg</span>.<span class="ident">chars</span>().<span class="ident">any</span>(<span class="ident">char</span>::<span class="ident">is_whitespace</span>) {
+            <span class="kw">if</span> <span class="ident">arg</span>.<span class="ident">chars</span>().<span class="ident">any</span>(<span class="ident">char::is_whitespace</span>) {
                 <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot; &#39;{}&#39;&quot;</span>, <span class="ident">arg</span>)<span class="question-mark">?</span>;
             } <span class="kw">else</span> {
                 <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot; {}&quot;</span>, <span class="ident">arg</span>)<span class="question-mark">?</span>;
@@ -920,12 +920,12 @@
     <span class="doccomment">/// Does not verify that the binary is actually available at the given path.</span>
     <span class="doccomment">/// If it isn&#39;t, then an error will be returned when executing the command.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">bin</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="self">Self</span>(<span class="ident">Arc</span>::<span class="ident">new</span>(<span class="ident">CmdShared</span> {
+        <span class="self">Self</span>(<span class="ident">Arc::new</span>(<span class="ident">CmdShared</span> {
             <span class="ident">bin</span>: <span class="ident">bin</span>.<span class="ident">into</span>(),
-            <span class="ident">args</span>: <span class="ident">Vec</span>::<span class="ident">new</span>(),
-            <span class="ident">env</span>: <span class="ident">HashMap</span>::<span class="ident">default</span>(),
-            <span class="ident">log_cmd</span>: <span class="prelude-val">Some</span>(<span class="ident">log</span>::<span class="ident">Level</span>::<span class="ident">Debug</span>),
-            <span class="ident">log_err</span>: <span class="prelude-val">Some</span>(<span class="ident">log</span>::<span class="ident">Level</span>::<span class="ident">Error</span>),
+            <span class="ident">args</span>: <span class="ident">Vec::new</span>(),
+            <span class="ident">env</span>: <span class="ident">HashMap::default</span>(),
+            <span class="ident">log_cmd</span>: <span class="prelude-val">Some</span>(<span class="ident">log::Level::Debug</span>),
+            <span class="ident">log_err</span>: <span class="prelude-val">Some</span>(<span class="ident">log::Level::Error</span>),
             <span class="ident">stdin</span>: <span class="prelude-val">None</span>,
             <span class="ident">current_dir</span>: <span class="prelude-val">None</span>,
         }))
@@ -944,33 +944,33 @@
     <span class="doccomment">/// [`Cmd::lookup_in_path`]: struct.Cmd.html#method.lookup_in_path</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_at</span>(<span class="ident">bin_path</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="comment">// Compile time: reduces monomorphizations</span>
-        <span class="self">Self</span>::<span class="ident">_try_at</span>(<span class="ident">bin_path</span>.<span class="ident">into</span>())
+        <span class="self">Self</span><span class="ident">::_try_at</span>(<span class="ident">bin_path</span>.<span class="ident">into</span>())
     }
 
     <span class="kw">fn</span> <span class="ident">_try_at</span>(<span class="ident">bin</span>: <span class="ident">PathBuf</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">with_extension</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">env</span>::<span class="ident">consts</span>::<span class="ident">EXE_EXTENSION</span> {
+        <span class="kw">let</span> <span class="ident">with_extension</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">env::consts::EXE_EXTENSION</span> {
             <span class="string">&quot;&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
             <span class="ident">it</span> <span class="kw">if</span> <span class="ident">bin</span>.<span class="ident">extension</span>().<span class="ident">is_none</span>() <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">bin</span>.<span class="ident">with_extension</span>(<span class="ident">it</span>)),
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         };
-        <span class="ident">iter</span>::<span class="ident">once</span>(<span class="ident">bin</span>)
+        <span class="ident">iter::once</span>(<span class="ident">bin</span>)
             .<span class="ident">chain</span>(<span class="ident">with_extension</span>)
             .<span class="ident">find</span>(<span class="op">|</span><span class="ident">it</span><span class="op">|</span> <span class="ident">it</span>.<span class="ident">is_file</span>())
-            .<span class="ident">map</span>(<span class="self">Self</span>::<span class="ident">new</span>)
+            .<span class="ident">map</span>(<span class="self">Self</span><span class="ident">::new</span>)
     }
 
     <span class="doccomment">/// Returns a command builder for the given `bin_name` only if this</span>
     <span class="doccomment">/// `bin_name` is accessible trough `PATH` env variable, otherwise returns `None`</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lookup_in_path</span>(<span class="ident">bin_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">paths</span> <span class="op">=</span> <span class="ident">env</span>::<span class="ident">var_os</span>(<span class="string">&quot;PATH&quot;</span>).<span class="ident">unwrap_or_default</span>();
-        <span class="ident">env</span>::<span class="ident">split_paths</span>(<span class="kw-2">&amp;</span><span class="ident">paths</span>)
+        <span class="kw">let</span> <span class="ident">paths</span> <span class="op">=</span> <span class="ident">env::var_os</span>(<span class="string">&quot;PATH&quot;</span>).<span class="ident">unwrap_or_default</span>();
+        <span class="ident">env::split_paths</span>(<span class="kw-2">&amp;</span><span class="ident">paths</span>)
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">path</span><span class="op">|</span> <span class="ident">path</span>.<span class="ident">join</span>(<span class="ident">bin_name</span>))
-            .<span class="ident">find_map</span>(<span class="self">Self</span>::<span class="ident">try_at</span>)
+            .<span class="ident">find_map</span>(<span class="self">Self</span><span class="ident">::try_at</span>)
     }
 
     <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">CmdShared</span> {
         <span class="comment">// Clone-on-write is so easy to do with `Arc` :D</span>
-        <span class="ident">Arc</span>::<span class="ident">make_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>)
+        <span class="ident">Arc::make_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>)
     }
 
     <span class="doccomment">/// Set binary path, overwrites the path that was set before.</span>
@@ -996,7 +996,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Cmd::log_err`]: struct.Cmd.html#method.log_err</span>
     <span class="doccomment">/// [`log`]: https://docs.rs/log</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">log_cmd</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">level</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">log</span>::<span class="ident">Level</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">log_cmd</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">level</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">log::Level</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">log_cmd</span> <span class="op">=</span> <span class="ident">level</span>.<span class="ident">into</span>();
         <span class="self">self</span>
     }
@@ -1011,7 +1011,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Cmd::log_cmd`]: struct.Cmd.html#method.log_cmd</span>
     <span class="doccomment">/// [`log`]: https://docs.rs/log</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">log_err</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">level</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">log</span>::<span class="ident">Level</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">log_err</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">level</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">log::Level</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">log_err</span> <span class="op">=</span> <span class="ident">level</span>.<span class="ident">into</span>();
         <span class="self">self</span>
     }
@@ -1025,7 +1025,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Cmd::stdin_bytes`]: struct.Cmd.html#method.stdin_bytes</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stdin</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">stdin</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">stdin</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">BinOrUtf8</span>::<span class="ident">Utf8</span>(<span class="ident">stdin</span>.<span class="ident">into</span>()));
+        <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">stdin</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">BinOrUtf8::Utf8</span>(<span class="ident">stdin</span>.<span class="ident">into</span>()));
         <span class="self">self</span>
     }
 
@@ -1034,7 +1034,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Nothing is written to `stdin` by default.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stdin_bytes</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">stdin</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">stdin</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">BinOrUtf8</span>::<span class="ident">Bin</span>(<span class="ident">stdin</span>));
+        <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">stdin</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">BinOrUtf8::Bin</span>(<span class="ident">stdin</span>));
         <span class="self">self</span>
     }
 
@@ -1064,9 +1064,9 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">args</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">args</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">I</span>: <span class="ident">IntoIterator</span>,
-        <span class="ident">I</span>::<span class="ident">Item</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">OsString</span><span class="op">&gt;</span>,
+        <span class="ident">I::Item</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">OsString</span><span class="op">&gt;</span>,
     {
-        <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">args</span>.<span class="ident">extend</span>(<span class="ident">args</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="ident">Into</span>::<span class="ident">into</span>));
+        <span class="self">self</span>.<span class="ident">as_mut</span>().<span class="ident">args</span>.<span class="ident">extend</span>(<span class="ident">args</span>.<span class="ident">into_iter</span>().<span class="ident">map</span>(<span class="ident">Into::into</span>));
         <span class="self">self</span>
     }
 
@@ -1113,7 +1113,7 @@
     <span class="doccomment">/// [`Child`]: struct.Child.html</span>
     <span class="doccomment">/// [`Cmd::spawn_piped`]: struct.Cmd.html#method.spawn_piped</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Child</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">spawn_with</span>(<span class="ident">Stdio</span>::<span class="ident">inherit</span>())
+        <span class="self">self</span>.<span class="ident">spawn_with</span>(<span class="ident">Stdio::inherit</span>())
     }
 
     <span class="doccomment">/// Spawns a child process returning a handle to it.</span>
@@ -1123,14 +1123,14 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Child`]: struct.Child.html</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn_piped</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Child</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">spawn_with</span>(<span class="ident">Stdio</span>::<span class="ident">piped</span>())
+        <span class="self">self</span>.<span class="ident">spawn_with</span>(<span class="ident">Stdio::piped</span>())
     }
 
     <span class="kw">fn</span> <span class="ident">spawn_with</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">stdout</span>: <span class="ident">Stdio</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Child</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cmd</span> <span class="op">=</span> <span class="ident">std</span>::<span class="ident">process</span>::<span class="ident">Command</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>.<span class="ident">bin</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cmd</span> <span class="op">=</span> <span class="ident">std::process::Command::new</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>.<span class="ident">bin</span>);
         <span class="ident">cmd</span>.<span class="ident">args</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>.<span class="ident">args</span>)
             .<span class="ident">envs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>.<span class="ident">env</span>)
-            .<span class="ident">stderr</span>(<span class="ident">Stdio</span>::<span class="ident">inherit</span>())
+            .<span class="ident">stderr</span>(<span class="ident">Stdio::inherit</span>())
             .<span class="ident">stdout</span>(<span class="ident">stdout</span>);
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">dir</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>.<span class="ident">current_dir</span> {
@@ -1138,20 +1138,20 @@
         }
 
         <span class="kw">let</span> <span class="ident">child</span> <span class="op">=</span> <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>.<span class="ident">stdin</span> {
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">cmd</span>.<span class="ident">stdin</span>(<span class="ident">Stdio</span>::<span class="ident">null</span>()).<span class="ident">spawn</span>().<span class="ident">cmd_context</span>(<span class="self">self</span>)<span class="question-mark">?</span>,
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">cmd</span>.<span class="ident">stdin</span>(<span class="ident">Stdio::null</span>()).<span class="ident">spawn</span>().<span class="ident">cmd_context</span>(<span class="self">self</span>)<span class="question-mark">?</span>,
             <span class="prelude-val">Some</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">cmd</span>.<span class="ident">stdin</span>(<span class="ident">Stdio</span>::<span class="ident">piped</span>());
+                <span class="ident">cmd</span>.<span class="ident">stdin</span>(<span class="ident">Stdio::piped</span>());
                 <span class="ident">cmd</span>.<span class="ident">spawn</span>().<span class="ident">cmd_context</span>(<span class="self">self</span>)<span class="question-mark">?</span>
             }
         };
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">child</span> <span class="op">=</span> <span class="ident">Child</span> {
-            <span class="ident">cmd</span>: <span class="ident">Cmd</span>(<span class="ident">Arc</span>::<span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>)),
+            <span class="ident">cmd</span>: <span class="ident">Cmd</span>(<span class="ident">Arc::clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>)),
             <span class="ident">child</span>,
         };
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">level</span>) <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>.<span class="ident">log_cmd</span> {
-            <span class="ident">log</span>::<span class="macro">log!</span>(<span class="ident">level</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">child</span>);
+            <span class="macro">log::log!</span>(<span class="ident">level</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">child</span>);
         }
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">stdin</span>) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>.<span class="ident">stdin</span> {
@@ -1194,14 +1194,14 @@
 <span class="doccomment">/// [`std::process::Child::kill`]: https://doc.rust-lang.org/std/process/struct.Child.html#method.kill</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Child</span> {
     <span class="ident">cmd</span>: <span class="ident">Cmd</span>,
-    <span class="ident">child</span>: <span class="ident">std</span>::<span class="ident">process</span>::<span class="ident">Child</span>,
+    <span class="ident">child</span>: <span class="ident">std::process::Child</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">Child</span> {
     <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">child</span>.<span class="ident">try_wait</span>() {
             <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="ident">log</span>::<span class="macro">debug!</span>(<span class="string">&quot;[KILL {}] {}&quot;</span>, <span class="self">self</span>.<span class="ident">child</span>.<span class="ident">id</span>(), <span class="self">self</span>.<span class="ident">cmd</span>.<span class="ident">bin_name</span>());
+                <span class="macro">log::debug!</span>(<span class="string">&quot;[KILL {}] {}&quot;</span>, <span class="self">self</span>.<span class="ident">child</span>.<span class="ident">id</span>(), <span class="self">self</span>.<span class="ident">cmd</span>.<span class="ident">bin_name</span>());
                 <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">child</span>.<span class="ident">kill</span>();
                 <span class="self">self</span>.<span class="ident">child</span>.<span class="ident">wait</span>().<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> {
                     <span class="macro">panic!</span>(<span class="string">&quot;Failed to wait for process: {}\nProcess: {}&quot;</span>, <span class="ident">err</span>, <span class="self">self</span>);
@@ -1214,8 +1214,8 @@
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Child</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Child</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
         <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">child</span>.<span class="ident">id</span>();
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;[PID {}] {}&quot;</span>, <span class="ident">id</span>, <span class="self">self</span>.<span class="ident">cmd</span>)
     }
@@ -1236,7 +1236,7 @@
         <span class="kw">let</span> <span class="ident">exit_status</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">child</span>.<span class="ident">wait</span>().<span class="ident">proc_context</span>(<span class="self">self</span>)<span class="question-mark">?</span>;
 
         <span class="kw">if</span> <span class="op">!</span><span class="ident">exit_status</span>.<span class="ident">success</span>() {
-            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error</span>::<span class="ident">proc</span>(
+            <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Error::proc</span>(
                 <span class="kw-2">&amp;</span><span class="self">self</span>,
                 <span class="kw-2">&amp;</span><span class="macro">format_args!</span>(<span class="string">&quot;Non-zero exit code: {}&quot;</span>, <span class="ident">exit_status</span>),
             ));
@@ -1253,8 +1253,8 @@
     <span class="doccomment">/// [`Child::read`]: struct.Child.html#method.read</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read_bytes</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">read_impl</span>(<span class="bool-val">false</span>)<span class="question-mark">?</span> {
-            <span class="ident">BinOrUtf8</span>::<span class="ident">Utf8</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
-            <span class="ident">BinOrUtf8</span>::<span class="ident">Bin</span>(<span class="ident">it</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">it</span>),
+            <span class="ident">BinOrUtf8::Utf8</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="ident">BinOrUtf8::Bin</span>(<span class="ident">it</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">it</span>),
         }
     }
 
@@ -1279,8 +1279,8 @@
     <span class="doccomment">/// [`String`]: https://doc.rust-lang.org/std/string/struct.String.html</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">read_impl</span>(<span class="bool-val">true</span>)<span class="question-mark">?</span> {
-            <span class="ident">BinOrUtf8</span>::<span class="ident">Utf8</span>(<span class="ident">it</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">it</span>),
-            <span class="ident">BinOrUtf8</span>::<span class="ident">Bin</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="ident">BinOrUtf8::Utf8</span>(<span class="ident">it</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">it</span>),
+            <span class="ident">BinOrUtf8::Bin</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
         }
     }
 
@@ -1292,13 +1292,13 @@
                 .<span class="ident">as_mut</span>()
                 .<span class="ident">expect</span>(<span class="string">&quot;use spawn_piped() to capture stdout instead of spawn()&quot;</span>);
             <span class="kw">if</span> <span class="ident">expect_utf8</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">String</span>::<span class="ident">new</span>();
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">String::new</span>();
                 <span class="ident">stdout</span>.<span class="ident">read_to_string</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">out</span>).<span class="ident">proc_context</span>(<span class="kw-2">&amp;</span><span class="self">self</span>)<span class="question-mark">?</span>;
-                <span class="ident">BinOrUtf8</span>::<span class="ident">Utf8</span>(<span class="ident">out</span>)
+                <span class="ident">BinOrUtf8::Utf8</span>(<span class="ident">out</span>)
             } <span class="kw">else</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
                 <span class="ident">stdout</span>.<span class="ident">read_to_end</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">out</span>).<span class="ident">proc_context</span>(<span class="kw-2">&amp;</span><span class="self">self</span>)<span class="question-mark">?</span>;
-                <span class="ident">BinOrUtf8</span>::<span class="ident">Bin</span>(<span class="ident">out</span>)
+                <span class="ident">BinOrUtf8::Bin</span>(<span class="ident">out</span>)
             }
         };
 
@@ -1307,7 +1307,7 @@
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">level</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">cmd</span>.<span class="number">0</span>.<span class="ident">log_cmd</span> {
             <span class="kw">let</span> <span class="ident">pid</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">child</span>.<span class="ident">id</span>();
             <span class="kw">let</span> <span class="ident">bin_name</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cmd</span>.<span class="ident">bin_name</span>();
-            <span class="ident">log</span>::<span class="macro">log!</span>(<span class="ident">level</span>, <span class="string">&quot;[STDOUT {} {}] {}&quot;</span>, <span class="ident">pid</span>, <span class="ident">bin_name</span>, <span class="kw-2">&amp;</span><span class="ident">stdout</span>);
+            <span class="macro">log::log!</span>(<span class="ident">level</span>, <span class="string">&quot;[STDOUT {} {}] {}&quot;</span>, <span class="ident">pid</span>, <span class="ident">bin_name</span>, <span class="kw-2">&amp;</span><span class="ident">stdout</span>);
         }
         <span class="prelude-val">Ok</span>(<span class="ident">stdout</span>)
     }
@@ -1331,13 +1331,13 @@
         <span class="kw">let</span> <span class="ident">log_cmd</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cmd</span>.<span class="number">0</span>.<span class="ident">log_cmd</span>;
         <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">child</span>.<span class="ident">id</span>();
         <span class="kw">let</span> <span class="ident">bin_name</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">cmd</span>.<span class="ident">bin_name</span>();
-        <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">BufReader</span>::<span class="ident">new</span>(<span class="self">self</span>.<span class="ident">child</span>.<span class="ident">stdout</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>());
+        <span class="kw">let</span> <span class="ident">stdout</span> <span class="op">=</span> <span class="ident">io::BufReader::new</span>(<span class="self">self</span>.<span class="ident">child</span>.<span class="ident">stdout</span>.<span class="ident">as_mut</span>().<span class="ident">unwrap</span>());
         <span class="ident">stdout</span>
             .<span class="ident">lines</span>()
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">line</span><span class="op">|</span> <span class="ident">line</span>.<span class="ident">expect</span>(<span class="string">&quot;Unexpected io error&quot;</span>))
             .<span class="ident">inspect</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">line</span><span class="op">|</span> {
                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">level</span>) <span class="op">=</span> <span class="ident">log_cmd</span> {
-                    <span class="ident">log</span>::<span class="macro">log!</span>(<span class="ident">level</span>, <span class="string">&quot;[{} {}] {}&quot;</span>, <span class="ident">id</span>, <span class="ident">bin_name</span>, <span class="ident">line</span>);
+                    <span class="macro">log::log!</span>(<span class="ident">level</span>, <span class="string">&quot;[{} {}] {}&quot;</span>, <span class="ident">id</span>, <span class="ident">bin_name</span>, <span class="ident">line</span>);
                 }
             })
     }

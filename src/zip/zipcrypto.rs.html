@@ -169,7 +169,7 @@
 <span class="doccomment">//! The following paper was used to implement the ZipCrypto algorithm:</span>
 <span class="doccomment">//! [https://courses.cs.ut.ee/MTAT.07.022/2015_fall/uploads/Main/dmitri-report-f15-16.pdf](https://courses.cs.ut.ee/MTAT.07.022/2015_fall/uploads/Main/dmitri-report-f15-16.pdf)</span>
 
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">num</span>::<span class="ident">Wrapping</span>;
+<span class="kw">use</span> <span class="ident">std::num::Wrapping</span>;
 
 <span class="doccomment">/// A container to hold the current key state</span>
 <span class="kw">struct</span> <span class="ident">ZipCryptoKeys</span> {
@@ -188,10 +188,10 @@
     }
 
     <span class="kw">fn</span> <span class="ident">update</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">input</span>: <span class="ident">u8</span>) {
-        <span class="self">self</span>.<span class="ident">key_0</span> <span class="op">=</span> <span class="ident">ZipCryptoKeys</span>::<span class="ident">crc32</span>(<span class="self">self</span>.<span class="ident">key_0</span>, <span class="ident">input</span>);
+        <span class="self">self</span>.<span class="ident">key_0</span> <span class="op">=</span> <span class="ident">ZipCryptoKeys::crc32</span>(<span class="self">self</span>.<span class="ident">key_0</span>, <span class="ident">input</span>);
         <span class="self">self</span>.<span class="ident">key_1</span> <span class="op">=</span>
             (<span class="self">self</span>.<span class="ident">key_1</span> <span class="op">+</span> (<span class="self">self</span>.<span class="ident">key_0</span> <span class="op">&amp;</span> <span class="ident">Wrapping</span>(<span class="number">0xff</span>))) <span class="op">*</span> <span class="ident">Wrapping</span>(<span class="number">0x08088405</span>) <span class="op">+</span> <span class="ident">Wrapping</span>(<span class="number">1</span>);
-        <span class="self">self</span>.<span class="ident">key_2</span> <span class="op">=</span> <span class="ident">ZipCryptoKeys</span>::<span class="ident">crc32</span>(<span class="self">self</span>.<span class="ident">key_2</span>, (<span class="self">self</span>.<span class="ident">key_1</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">24</span>).<span class="number">0</span> <span class="kw">as</span> <span class="ident">u8</span>);
+        <span class="self">self</span>.<span class="ident">key_2</span> <span class="op">=</span> <span class="ident">ZipCryptoKeys::crc32</span>(<span class="self">self</span>.<span class="ident">key_2</span>, (<span class="self">self</span>.<span class="ident">key_1</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">24</span>).<span class="number">0</span> <span class="kw">as</span> <span class="ident">u8</span>);
     }
 
     <span class="kw">fn</span> <span class="ident">stream_byte</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u8</span> {
@@ -223,7 +223,7 @@
     <span class="ident">keys</span>: <span class="ident">ZipCryptoKeys</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Read</span><span class="op">&gt;</span> <span class="ident">ZipCryptoReader</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">std::io::Read</span><span class="op">&gt;</span> <span class="ident">ZipCryptoReader</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Note: The password is `&amp;[u8]` and not `&amp;str` because the</span>
     <span class="doccomment">/// [zip specification](https://pkware.cachefly.net/webdocs/APPNOTE/APPNOTE-6.3.3.TXT)</span>
     <span class="doccomment">/// does not specify password encoding (see function `update_keys` in the specification).</span>
@@ -233,7 +233,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">file</span>: <span class="ident">R</span>, <span class="ident">password</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ZipCryptoReader</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">ZipCryptoReader</span> {
             <span class="ident">file</span>: <span class="ident">file</span>,
-            <span class="ident">keys</span>: <span class="ident">ZipCryptoKeys</span>::<span class="ident">new</span>(),
+            <span class="ident">keys</span>: <span class="ident">ZipCryptoKeys::new</span>(),
         };
 
         <span class="comment">// Key the cipher by updating the keys with the password.</span>
@@ -248,7 +248,7 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">validate</span>(
         <span class="kw-2">mut</span> <span class="self">self</span>,
         <span class="ident">crc32_plaintext</span>: <span class="ident">u32</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ZipCryptoReaderValid</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ZipCryptoReaderValid</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">std::io::Error</span><span class="op">&gt;</span> {
         <span class="comment">// ZipCrypto prefixes a file with a 12 byte header</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">header_buf</span> <span class="op">=</span> [<span class="number">0u8</span>; <span class="number">12</span>];
         <span class="self">self</span>.<span class="ident">file</span>.<span class="ident">read_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">header_buf</span>)<span class="question-mark">?</span>;
@@ -272,8 +272,8 @@
     <span class="ident">reader</span>: <span class="ident">ZipCryptoReader</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Read</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Read</span> <span class="kw">for</span> <span class="ident">ZipCryptoReaderValid</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std</span>::<span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">std::io::Read</span><span class="op">&gt;</span> <span class="ident">std::io::Read</span> <span class="kw">for</span> <span class="ident">ZipCryptoReaderValid</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">std::io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="comment">// Note: There might be potential for optimization. Inspiration can be found at:</span>
         <span class="comment">// https://github.com/kornelski/7z/blob/master/CPP/7zip/Crypto/ZipCrypto.cpp</span>
 
@@ -285,7 +285,7 @@
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">std</span>::<span class="ident">io</span>::<span class="ident">Read</span><span class="op">&gt;</span> <span class="ident">ZipCryptoReaderValid</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">std::io::Read</span><span class="op">&gt;</span> <span class="ident">ZipCryptoReaderValid</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Consumes this decoder, returning the underlying reader.</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_inner</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">R</span> {
         <span class="self">self</span>.<span class="ident">reader</span>.<span class="ident">file</span>

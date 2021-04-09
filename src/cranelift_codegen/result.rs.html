@@ -52,9 +52,9 @@
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! Result and error types representing the outcome of compiling a function.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">verifier</span>::<span class="ident">VerifierErrors</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">string</span>::<span class="ident">String</span>;
-<span class="kw">use</span> <span class="ident">thiserror</span>::<span class="ident">Error</span>;
+<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::verifier::VerifierErrors</span>;
+<span class="kw">use</span> <span class="ident">std::string::String</span>;
+<span class="kw">use</span> <span class="ident">thiserror::Error</span>;
 
 <span class="doccomment">/// A compilation error.</span>
 <span class="doccomment">///</span>
@@ -93,7 +93,7 @@
     <span class="doccomment">/// A failure to map Cranelift register representation to a DWARF register representation.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;unwind&quot;</span>)]</span>
     <span class="attribute">#[<span class="ident">error</span>(<span class="string">&quot;Register mapping error&quot;</span>)]</span>
-    <span class="ident">RegisterMappingError</span>(<span class="kw">crate</span>::<span class="ident">isa</span>::<span class="ident">unwind</span>::<span class="ident">systemv</span>::<span class="ident">RegisterMappingError</span>),
+    <span class="ident">RegisterMappingError</span>(<span class="kw">crate</span><span class="ident">::isa::unwind::systemv::RegisterMappingError</span>),
 }
 
 <span class="doccomment">/// A convenient alias for a `Result` that uses `CodegenError` as the error type.</span>
