@@ -193,12 +193,27 @@
 <span id="190">190</span>
 <span id="191">191</span>
 <span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fs::File</span>, <span class="ident">path::PathBuf</span>, <span class="ident">str::FromStr</span>};
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">hound::WavReader</span>;
 <span class="kw">use</span> <span class="ident">log</span>;
-<span class="kw">use</span> <span class="ident">rune_runtime::common_capabilities</span>::{<span class="ident">Accelerometer</span>, <span class="ident">Image</span>, <span class="ident">Random</span>, <span class="ident">Sound</span>};
+<span class="kw">use</span> <span class="ident">rune_runtime::common_capabilities</span>::{<span class="ident">Accelerometer</span>, <span class="ident">Image</span>, <span class="ident">Random</span>, <span class="ident">Raw</span>, <span class="ident">Sound</span>};
 <span class="kw">use</span> <span class="ident">rune_wasmer_runtime::Runtime</span>;
 <span class="kw">use</span> <span class="ident">runicos_base::BaseImage</span>;
 
@@ -226,6 +241,8 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// - `image:person.png` is an image file that will be returned by the</span>
     <span class="doccomment">///   image capability</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// - `raw:data.bin` is a file who&#39;s bytes will be used as-is</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span>, <span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;capability&quot;</span>)]</span>
     <span class="ident">capabilities</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Capability</span><span class="op">&gt;</span>,
 }
@@ -336,6 +353,15 @@
                     <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">Sound::new</span>(<span class="ident">samples</span>.<span class="ident">clone</span>())))
                 });
             },
+            <span class="ident">Capability::Raw</span> { <span class="ident">filename</span> } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> <span class="ident">bytes</span> <span class="op">=</span> <span class="ident">std::fs::read</span>(<span class="ident">filename</span>).<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> {
+                    <span class="macro">format!</span>(
+                        <span class="string">&quot;Unable to open \&quot;{}\&quot; for reading&quot;</span>,
+                        <span class="ident">filename</span>.<span class="ident">display</span>()
+                    )
+                })<span class="question-mark">?</span>;
+                <span class="ident">env</span>.<span class="ident">with_raw</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">Raw::new</span>(<span class="ident">bytes</span>.<span class="ident">clone</span>()))));
+            },
         }
     }
 
@@ -349,6 +375,7 @@
     <span class="ident">Accelerometer</span> { <span class="ident">filename</span>: <span class="ident">PathBuf</span> },
     <span class="ident">Image</span> { <span class="ident">filename</span>: <span class="ident">PathBuf</span> },
     <span class="ident">Sound</span> { <span class="ident">filename</span>: <span class="ident">PathBuf</span> },
+    <span class="ident">Raw</span> { <span class="ident">filename</span>: <span class="ident">PathBuf</span> },
 }
 
 <span class="kw">impl</span> <span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">Capability</span> {
@@ -375,6 +402,9 @@
             },
             <span class="string">&quot;i&quot;</span> <span class="op">|</span> <span class="string">&quot;img&quot;</span> <span class="op">|</span> <span class="string">&quot;image&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="prelude-val">Ok</span>(<span class="ident">Capability::Image</span> { <span class="ident">filename</span>: <span class="ident">PathBuf::from</span>(<span class="ident">value</span>) })
+            }
+            <span class="string">&quot;w&quot;</span> <span class="op">|</span> <span class="string">&quot;raw&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">Capability::Raw</span> { <span class="ident">filename</span>: <span class="ident">PathBuf::from</span>(<span class="ident">value</span>) })
             }
             <span class="string">&quot;s&quot;</span> <span class="op">|</span> <span class="string">&quot;sound&quot;</span> <span class="op">|</span> <span class="string">&quot;wav&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="prelude-val">Ok</span>(<span class="ident">Capability::Sound</span> { <span class="ident">filename</span>: <span class="ident">PathBuf::from</span>(<span class="ident">value</span>) })

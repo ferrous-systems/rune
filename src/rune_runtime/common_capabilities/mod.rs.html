@@ -30,16 +30,20 @@
 <span id="27">27</span>
 <span id="28">28</span>
 <span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">accelerometer</span>;
 <span class="kw">mod</span> <span class="ident">image</span>;
 <span class="kw">mod</span> <span class="ident">random</span>;
 <span class="kw">mod</span> <span class="ident">sound</span>;
+<span class="kw">mod</span> <span class="ident">raw</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ParameterError</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::{
     <span class="ident">accelerometer::Accelerometer</span>, <span class="ident">random::Random</span>, <span class="ident">sound::Sound</span>, <span class="ident">image::Image</span>,
+    <span class="ident">raw::Raw</span>,
 };
 
 <span class="kw">use</span> <span class="ident">anyhow::Error</span>;

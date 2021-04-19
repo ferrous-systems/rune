@@ -701,6 +701,21 @@
 <span id="698">698</span>
 <span id="699">699</span>
 <span id="700">700</span>
+<span id="701">701</span>
+<span id="702">702</span>
+<span id="703">703</span>
+<span id="704">704</span>
+<span id="705">705</span>
+<span id="706">706</span>
+<span id="707">707</span>
+<span id="708">708</span>
+<span id="709">709</span>
+<span id="710">710</span>
+<span id="711">711</span>
+<span id="712">712</span>
+<span id="713">713</span>
+<span id="714">714</span>
+<span id="715">715</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections::HashMap</span>,
@@ -735,6 +750,7 @@
     <span class="ident">rand</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CapabilityFactory</span><span class="op">&gt;</span>,
     <span class="ident">serial</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">OutputFactory</span><span class="op">&gt;</span>,
     <span class="ident">sound</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CapabilityFactory</span><span class="op">&gt;</span>,
+    <span class="ident">raw</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CapabilityFactory</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">BaseImage</span> {
@@ -780,6 +796,14 @@
         <span class="self">self</span>
     }
 
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_raw</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">raw</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>
+    <span class="kw">where</span>
+        <span class="ident">F</span>: <span class="ident">Fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Capability</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+    {
+        <span class="self">self</span>.<span class="ident">raw</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">raw</span>);
+        <span class="self">self</span>
+    }
+
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_serial</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">serial</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">Fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">Output</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
@@ -802,6 +826,9 @@
         <span class="ident">BaseImage</span> {
             <span class="ident">accelerometer</span>: <span class="ident">Arc::new</span>(<span class="op">|</span><span class="op">|</span> {
                 <span class="macro">anyhow::bail!</span>(<span class="string">&quot;The accelerometer capability is not supported&quot;</span>)
+            }),
+            <span class="ident">raw</span>: <span class="ident">Arc::new</span>(<span class="op">|</span><span class="op">|</span> {
+                <span class="macro">anyhow::bail!</span>(<span class="string">&quot;The raw capability is not supported&quot;</span>)
             }),
             <span class="ident">image</span>: <span class="ident">Arc::new</span>(<span class="op">|</span><span class="op">|</span> {
                 <span class="macro">anyhow::bail!</span>(<span class="string">&quot;The image capability is not supported&quot;</span>)
@@ -848,6 +875,7 @@
             <span class="ident">accel</span>: <span class="ident">Arc::clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">accelerometer</span>),
             <span class="ident">image</span>: <span class="ident">Arc::clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">image</span>),
             <span class="ident">sound</span>: <span class="ident">Arc::clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">sound</span>),
+            <span class="ident">raw</span>: <span class="ident">Arc::clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">raw</span>),
         };
         <span class="ident">registrar</span>.<span class="ident">register_function</span>(
             <span class="string">&quot;env&quot;</span>,
@@ -960,6 +988,7 @@
     <span class="ident">image</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CapabilityFactory</span><span class="op">&gt;</span>,
     <span class="ident">rand</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CapabilityFactory</span><span class="op">&gt;</span>,
     <span class="ident">sound</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CapabilityFactory</span><span class="op">&gt;</span>,
+    <span class="ident">raw</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">CapabilityFactory</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">fn</span> <span class="ident">request_capability</span>(
@@ -976,6 +1005,7 @@
             <span class="ident">runic_types::capabilities::IMAGE</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">factories</span>.<span class="ident">image</span>)()<span class="question-mark">?</span>,
             <span class="ident">runic_types::capabilities::RAND</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">factories</span>.<span class="ident">rand</span>)()<span class="question-mark">?</span>,
             <span class="ident">runic_types::capabilities::SOUND</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">factories</span>.<span class="ident">sound</span>)()<span class="question-mark">?</span>,
+            <span class="ident">runic_types::capabilities::RAW</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">factories</span>.<span class="ident">raw</span>)()<span class="question-mark">?</span>,
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">anyhow::bail!</span>(<span class="string">&quot;Unknown capability type: {}&quot;</span>, <span class="ident">capability_type</span>),
         };
 
