@@ -165,13 +165,27 @@
 <span id="162">162</span>
 <span id="163">163</span>
 <span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">codespan_reporting</span>::{
     <span class="ident">files::SimpleFiles</span>,
     <span class="ident">term</span>::{<span class="ident">termcolor::StandardStream</span>, <span class="ident">Config</span>, <span class="ident">termcolor::ColorChoice</span>},
 };
-<span class="kw">use</span> <span class="ident">rune_codegen::Compilation</span>;
+<span class="kw">use</span> <span class="ident">rune_codegen</span>::{<span class="ident">Compilation</span>, <span class="ident">RuneProject</span>};
 <span class="kw">use</span> <span class="ident">rune_syntax</span>::{<span class="ident">Diagnostics</span>, <span class="ident">hir::Rune</span>};
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">env::current_dir</span>,
@@ -221,10 +235,24 @@
             <span class="ident">name</span>,
             <span class="ident">working_directory</span>.<span class="ident">display</span>()
         );
+        <span class="kw">let</span> <span class="ident">rune_project</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">nearest_git_repo</span>() {
+            <span class="prelude-val">Some</span>(<span class="ident">root_dir</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RuneProject::Disk</span>(<span class="ident">root_dir</span>),
+            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="kw">let</span> <span class="ident">build_info</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::version::version</span>();
+                <span class="kw">let</span> <span class="ident">git</span> <span class="op">=</span> <span class="ident">build_info</span>
+                    .<span class="ident">version_control</span>
+                    .<span class="ident">as_ref</span>()
+                    .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">git</span>())
+                    .<span class="ident">context</span>(<span class="string">&quot;Unable to determine the rune project dir&quot;</span>)<span class="question-mark">?</span>;
+                <span class="ident">RuneProject::Git</span> {
+                    <span class="ident">committish</span>: <span class="ident">git</span>.<span class="ident">commit_id</span>.<span class="ident">clone</span>(),
+                }
+            },
+        };
         <span class="kw">let</span> <span class="ident">compilation</span> <span class="op">=</span> <span class="ident">Compilation</span> {
             <span class="ident">name</span>,
             <span class="ident">rune</span>,
-            <span class="ident">rune_project_dir</span>: <span class="ident">nearest_git_repo</span>(),
+            <span class="ident">rune_project</span>,
             <span class="ident">current_directory</span>,
             <span class="ident">working_directory</span>,
             <span class="ident">optimized</span>: <span class="op">!</span><span class="self">self</span>.<span class="ident">debug</span>,
@@ -279,16 +307,16 @@
     }
 }
 
-<span class="kw">fn</span> <span class="ident">nearest_git_repo</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PathBuf</span> {
+<span class="kw">fn</span> <span class="ident">nearest_git_repo</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">current_dir</span> <span class="op">=</span> <span class="ident">std::env::current_dir</span>().<span class="ident">unwrap</span>();
 
     <span class="kw">for</span> <span class="ident">parent</span> <span class="kw">in</span> <span class="ident">current_dir</span>.<span class="ident">ancestors</span>() {
         <span class="kw">if</span> <span class="ident">parent</span>.<span class="ident">join</span>(<span class="string">&quot;.git&quot;</span>).<span class="ident">exists</span>() {
-            <span class="kw">return</span> <span class="ident">parent</span>.<span class="ident">to_path_buf</span>();
+            <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">parent</span>.<span class="ident">to_path_buf</span>());
         }
     }
 
-    <span class="macro">panic!</span>(<span class="string">&quot;Unable to find the rune project root&quot;</span>);
+    <span class="prelude-val">None</span>
 }
 
 <span class="kw">static</span> <span class="ident">DEFAULT_CACHE_DIR</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy::new</span>(<span class="op">|</span><span class="op">|</span> {
@@ -331,5 +359,5 @@
     <span class="prelude-val">Ok</span>(<span class="ident">rune</span>)
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rune" data-search-js="../../search-index.js"></div>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rune" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>

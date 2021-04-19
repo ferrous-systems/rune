@@ -18,12 +18,12 @@ can be referencing it anymore.</p>
 more complicated. Anyhow, memory reclamation is designed to be fully automatic and something
 users of concurrent collections don’t have to worry much about.</p>
 <h1 id="pointers" class="section-header"><a href="#pointers">Pointers</a></h1>
-<p>Concurrent collections are built using atomic pointers. This module provides <a href="../crossbeam_epoch/struct.Atomic.html" title="Atomic"><code>Atomic</code></a>, which
-is just a shared atomic pointer to a heap-allocated object. Loading an <a href="../crossbeam_epoch/struct.Atomic.html" title="Atomic"><code>Atomic</code></a> yields a
-<a href="../crossbeam_epoch/struct.Shared.html" title="Shared"><code>Shared</code></a>, which is an epoch-protected pointer through which the loaded object can be safely
+<p>Concurrent collections are built using atomic pointers. This module provides <a href="struct.Atomic.html" title="Atomic"><code>Atomic</code></a>, which
+is just a shared atomic pointer to a heap-allocated object. Loading an <a href="struct.Atomic.html" title="Atomic"><code>Atomic</code></a> yields a
+<a href="struct.Shared.html" title="Shared"><code>Shared</code></a>, which is an epoch-protected pointer through which the loaded object can be safely
 read.</p>
 <h1 id="pinning" class="section-header"><a href="#pinning">Pinning</a></h1>
-<p>Before an <a href="../crossbeam_epoch/struct.Atomic.html" title="Atomic"><code>Atomic</code></a> can be loaded, a participant must be <a href="../crossbeam_epoch/fn.pin.html" title="pin"><code>pin</code></a>ned. By pinning a participant
+<p>Before an <a href="struct.Atomic.html" title="Atomic"><code>Atomic</code></a> can be loaded, a participant must be <a href="fn.pin.html" title="pin"><code>pin</code></a>ned. By pinning a participant
 we declare that any object that gets removed from now on must not be destructed just
 yet. Garbage collection of newly removed objects is suspended until the participant gets
 unpinned.</p>
@@ -31,12 +31,12 @@ unpinned.</p>
 <p>Objects that get removed from concurrent collections must be stashed away until all currently
 pinned participants get unpinned. Such objects can be stored into a thread-local or global
 storage, where they are kept until the right time for their destruction comes.</p>
-<p>There is a global shared instance of garbage queue. You can <a href="../crossbeam_epoch/struct.Guard.html#method.defer"><code>defer</code></a> the execution of an
+<p>There is a global shared instance of garbage queue. You can <a href="struct.Guard.html#method.defer"><code>defer</code></a> the execution of an
 arbitrary function until the global epoch is advanced enough. Most notably, concurrent data
 structures may defer the deallocation of an object.</p>
 <h1 id="apis" class="section-header"><a href="#apis">APIs</a></h1>
-<p>For majority of use cases, just use the default garbage collector by invoking <a href="../crossbeam_epoch/fn.pin.html" title="pin"><code>pin</code></a>. If you
-want to create your own garbage collector, use the <a href="../crossbeam_epoch/struct.Collector.html" title="Collector"><code>Collector</code></a> API.</p>
+<p>For majority of use cases, just use the default garbage collector by invoking <a href="fn.pin.html" title="pin"><code>pin</code></a>. If you
+want to create your own garbage collector, use the <a href="struct.Collector.html" title="Collector"><code>Collector</code></a> API.</p>
 </div><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
 <table><tr class="module-item"><td><a class="struct" href="struct.Atomic.html" title="crossbeam_epoch::Atomic struct">Atomic</a></td><td class="docblock-short"><p>An atomic pointer that can be safely shared between threads.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.Collector.html" title="crossbeam_epoch::Collector struct">Collector</a></td><td class="docblock-short"><p>An epoch-based garbage collector.</p>
@@ -53,8 +53,8 @@ want to create your own garbage collector, use the <a href="../crossbeam_epoch/s
 <table><tr class="module-item"><td><a class="fn" href="fn.default_collector.html" title="crossbeam_epoch::default_collector fn">default_collector</a></td><td class="docblock-short"><p>Returns the default global collector.</p>
 </td></tr><tr class="module-item"><td><a class="fn" href="fn.is_pinned.html" title="crossbeam_epoch::is_pinned fn">is_pinned</a></td><td class="docblock-short"><p>Returns <code>true</code> if the current thread is pinned.</p>
 </td></tr><tr class="module-item"><td><a class="fn" href="fn.pin.html" title="crossbeam_epoch::pin fn">pin</a></td><td class="docblock-short"><p>Pins the current thread.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.unprotected.html" title="crossbeam_epoch::unprotected fn">unprotected</a><a title="unsafe function" href="#"><sup>⚠</sup></a></td><td class="docblock-short"><p>Returns a reference to a dummy guard that allows unprotected access to <a href="../crossbeam_epoch/struct.Atomic.html"><code>Atomic</code></a>s.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.unprotected.html" title="crossbeam_epoch::unprotected fn">unprotected</a><a title="unsafe function" href="#"><sup>⚠</sup></a></td><td class="docblock-short"><p>Returns a reference to a dummy guard that allows unprotected access to <a href="struct.Atomic.html"><code>Atomic</code></a>s.</p>
 </td></tr></table><h2 id="types" class="section-header"><a href="#types">Type Definitions</a></h2>
 <table><tr class="module-item"><td><a class="type" href="type.CompareAndSetError.html" title="crossbeam_epoch::CompareAndSetError type">CompareAndSetError</a></td><td class="docblock-short"><span class="stab deprecated" title="">Deprecated</span><p>The error returned on failed compare-and-set operation.</p>
-</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="crossbeam_epoch" data-search-js="../search-index.js"></div>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="crossbeam_epoch" data-search-index-js="../search-index.js" data-search-js="../search.js"></div>
     <script src="../main.js"></script></body></html>

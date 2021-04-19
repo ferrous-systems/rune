@@ -103,16 +103,53 @@
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">build</span>;
 <span class="kw">mod</span> <span class="ident">graph</span>;
 <span class="kw">mod</span> <span class="ident">run</span>;
+<span class="kw">mod</span> <span class="ident">version</span>;
 
 <span class="kw">use</span> <span class="ident">std::str::FromStr</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::build::Build</span>;
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">build::Build</span>,
+    <span class="ident">version</span>::{<span class="ident">Format</span>, <span class="ident">Version</span>},
+};
 <span class="kw">use</span> <span class="ident">anyhow::Error</span>;
 <span class="kw">use</span> <span class="ident">codespan_reporting::term::termcolor</span>;
-<span class="kw">use</span> <span class="ident">structopt::StructOpt</span>;
+<span class="kw">use</span> <span class="ident">structopt</span>::{<span class="ident">clap::AppSettings</span>, <span class="ident">StructOpt</span>};
 <span class="kw">use</span> <span class="ident">env_logger</span>::{<span class="ident">Env</span>, <span class="ident">WriteStyle</span>};
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::run::Run</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::graph::Graph</span>;
@@ -126,7 +163,12 @@
 );
 
 <span class="kw">fn</span> <span class="ident">main</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">Args</span> { <span class="ident">colour</span>, <span class="ident">cmd</span> } <span class="op">=</span> <span class="ident">Args::from_args</span>();
+    <span class="kw">let</span> <span class="ident">Args</span> {
+        <span class="ident">colour</span>,
+        <span class="ident">cmd</span>,
+        <span class="ident">version</span>,
+        <span class="ident">verbose</span>,
+    } <span class="op">=</span> <span class="ident">Args::from_args</span>();
 
     <span class="kw">let</span> <span class="ident">env</span> <span class="op">=</span> <span class="ident">Env::new</span>().<span class="ident">default_filter_or</span>(<span class="ident">DEFAULT_RUST_LOG</span>);
     <span class="ident">env_logger::builder</span>()
@@ -137,9 +179,26 @@
         .<span class="ident">init</span>();
 
     <span class="kw">match</span> <span class="ident">cmd</span> {
-        <span class="ident">Cmd::Build</span>(<span class="ident">build</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">build</span>.<span class="ident">execute</span>(<span class="ident">colour</span>.<span class="ident">into</span>()),
-        <span class="ident">Cmd::Run</span>(<span class="ident">run</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">run</span>.<span class="ident">execute</span>(),
-        <span class="ident">Cmd::Graph</span>(<span class="ident">graph</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">graph</span>.<span class="ident">execute</span>(<span class="ident">colour</span>.<span class="ident">into</span>()),
+        <span class="prelude-val">Some</span>(<span class="ident">Cmd::Build</span>(<span class="ident">build</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">build</span>.<span class="ident">execute</span>(<span class="ident">colour</span>.<span class="ident">into</span>()),
+        <span class="prelude-val">Some</span>(<span class="ident">Cmd::Run</span>(<span class="ident">run</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">run</span>.<span class="ident">execute</span>(),
+        <span class="prelude-val">Some</span>(<span class="ident">Cmd::Graph</span>(<span class="ident">graph</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">graph</span>.<span class="ident">execute</span>(<span class="ident">colour</span>.<span class="ident">into</span>()),
+        <span class="prelude-val">Some</span>(<span class="ident">Cmd::Version</span>(<span class="kw-2">mut</span> <span class="ident">version</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">version</span>.<span class="ident">verbose</span> <span class="op">|</span><span class="op">=</span> <span class="ident">verbose</span>;
+            <span class="ident">version</span>.<span class="ident">execute</span>()
+        },
+        <span class="prelude-val">None</span> <span class="kw">if</span> <span class="ident">version</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">Version</span> {
+                <span class="ident">format</span>: <span class="ident">Format::Text</span>,
+                <span class="ident">verbose</span>,
+            };
+            <span class="ident">v</span>.<span class="ident">execute</span>()
+        },
+        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="comment">// we haven&#39;t been asked to print the version or execute a command,</span>
+            <span class="comment">// so just print out the usage and bail.</span>
+            <span class="ident">Args::clap</span>().<span class="ident">print_help</span>()<span class="question-mark">?</span>;
+            <span class="prelude-val">Ok</span>(())
+        },
     }
 }
 
@@ -153,8 +212,12 @@
         <span class="ident">possible_values</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;always&quot;</span>, <span class="string">&quot;never&quot;</span>, <span class="string">&quot;auto&quot;</span>])
     ]
     <span class="ident">colour</span>: <span class="ident">ColorChoice</span>,
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span> <span class="op">=</span> <span class="string">&quot;V&quot;</span>, <span class="ident">long</span>, <span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;Print out version information&quot;</span>)]</span>
+    <span class="ident">version</span>: <span class="ident">bool</span>,
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span>, <span class="ident">long</span>, <span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;Prints even more detailed information&quot;</span>)]</span>
+    <span class="ident">verbose</span>: <span class="ident">bool</span>,
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">subcommand</span>)]</span>
-    <span class="ident">cmd</span>: <span class="ident">Cmd</span>,
+    <span class="ident">cmd</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Cmd</span><span class="op">&gt;</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
@@ -198,6 +261,7 @@
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">StructOpt</span>)]</span>
+<span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">setting</span>(<span class="ident">AppSettings::DisableVersion</span>))]</span>
 <span class="kw">enum</span> <span class="ident">Cmd</span> {
     <span class="doccomment">/// Compile a Runefile into a Rune.</span>
     <span class="ident">Build</span>(<span class="ident">Build</span>),
@@ -205,7 +269,9 @@
     <span class="ident">Run</span>(<span class="ident">Run</span>),
     <span class="doccomment">/// Parse a Runefile and generate a DOT graph showing the pipelines inside.</span>
     <span class="ident">Graph</span>(<span class="ident">Graph</span>),
+    <span class="doccomment">/// Print detailed version information.</span>
+    <span class="ident">Version</span>(<span class="ident">Version</span>),
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rune" data-search-js="../../search-index.js"></div>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rune" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>

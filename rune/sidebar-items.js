@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["DEFAULT_RUST_LOG",""]],"enum":[["Cmd",""],["ColorChoice",""]],"fn":[["main",""]],"mod":[["build",""],["graph",""],["run",""]],"struct":[["Args",""]]});
+initSidebarItems({"constant":[["DEFAULT_RUST_LOG",""]],"enum":[["Cmd",""],["ColorChoice",""]],"fn":[["main",""]],"mod":[["build",""],["graph",""],["run",""],["version",""]],"struct":[["Args",""]]});

@@ -6,11 +6,11 @@
 <p>Data comes in five basic forms in Rust, so we have five basic casting
 functions:</p>
 <ul>
-<li><code>T</code> uses <a href="../bytemuck/fn.cast.html" title="cast"><code>cast</code></a></li>
-<li><code>&amp;T</code> uses <a href="../bytemuck/fn.cast_ref.html" title="cast_ref"><code>cast_ref</code></a></li>
-<li><code>&amp;mut T</code> uses <a href="../bytemuck/fn.cast_mut.html" title="cast_mut"><code>cast_mut</code></a></li>
-<li><code>&amp;[T]</code> uses <a href="../bytemuck/fn.cast_slice.html" title="cast_slice"><code>cast_slice</code></a></li>
-<li><code>&amp;mut [T]</code> uses <a href="../bytemuck/fn.cast_slice_mut.html" title="cast_slice_mut"><code>cast_slice_mut</code></a></li>
+<li><code>T</code> uses <a href="fn.cast.html" title="cast"><code>cast</code></a></li>
+<li><code>&amp;T</code> uses <a href="fn.cast_ref.html" title="cast_ref"><code>cast_ref</code></a></li>
+<li><code>&amp;mut T</code> uses <a href="fn.cast_mut.html" title="cast_mut"><code>cast_mut</code></a></li>
+<li><code>&amp;[T]</code> uses <a href="fn.cast_slice.html" title="cast_slice"><code>cast_slice</code></a></li>
+<li><code>&amp;mut [T]</code> uses <a href="fn.cast_slice_mut.html" title="cast_slice_mut"><code>cast_slice_mut</code></a></li>
 </ul>
 <p>Some casts will never fail (eg: <code>cast::&lt;u32, f32&gt;</code> always works), other
 casts might fail (eg: <code>cast_ref::&lt;[u8; 4], u32&gt;</code> will fail if the reference
@@ -18,8 +18,8 @@ isn’t already aligned to 4). Each casting function has a “try” version whi
 will return a <code>Result</code>, and the “normal” version which will simply panic on
 invalid input.</p>
 <h2 id="using-your-own-types" class="section-header"><a href="#using-your-own-types">Using Your Own Types</a></h2>
-<p>All the functions here are guarded by the <a href="../bytemuck/trait.Pod.html" title="Pod"><code>Pod</code></a> trait, which is a
-sub-trait of the <a href="../bytemuck/trait.Zeroable.html" title="Zeroable"><code>Zeroable</code></a> trait.</p>
+<p>All the functions here are guarded by the <a href="trait.Pod.html" title="Pod"><code>Pod</code></a> trait, which is a
+sub-trait of the <a href="trait.Zeroable.html" title="Zeroable"><code>Zeroable</code></a> trait.</p>
 <p>If you’re very sure that your type is eligible, you can implement those
 traits for your type and then they’ll have full casting support. However,
 these traits are <code>unsafe</code>, and you should carefully read the requirements
@@ -35,7 +35,7 @@ is always built with <code>extern_crate_alloc</code> cargo feature enabled.</li>
 <table><tr class="module-item"><td><a class="macro" href="macro.offset_of.html" title="bytemuck::offset_of macro">offset_of</a></td><td class="docblock-short"><p>Find the offset in bytes of the given <code>$field</code> of <code>$Type</code>. Requires an
 already initialized <code>$instance</code> value to work with.</p>
 </td></tr></table><h2 id="enums" class="section-header"><a href="#enums">Enums</a></h2>
-<table><tr class="module-item"><td><a class="enum" href="enum.PodCastError.html" title="bytemuck::PodCastError enum">PodCastError</a></td><td class="docblock-short"><p>The things that can go wrong when casting between <a href="../bytemuck/trait.Pod.html" title="Pod"><code>Pod</code></a> data forms.</p>
+<table><tr class="module-item"><td><a class="enum" href="enum.PodCastError.html" title="bytemuck::PodCastError enum">PodCastError</a></td><td class="docblock-short"><p>The things that can go wrong when casting between <a href="trait.Pod.html" title="Pod"><code>Pod</code></a> data forms.</p>
 </td></tr></table><h2 id="traits" class="section-header"><a href="#traits">Traits</a></h2>
 <table><tr class="module-item"><td><a class="trait" href="trait.Contiguous.html" title="bytemuck::Contiguous trait">Contiguous</a></td><td class="docblock-short"><p>A trait indicating that:</p>
 </td></tr><tr class="module-item"><td><a class="trait" href="trait.Pod.html" title="bytemuck::Pod trait">Pod</a></td><td class="docblock-short"><p>Marker trait for “plain old data”.</p>
@@ -53,8 +53,8 @@ the <code>Wrapped</code> value.</p>
 </td></tr><tr class="module-item"><td><a class="fn" href="fn.cast_slice_mut.html" title="bytemuck::cast_slice_mut fn">cast_slice_mut</a></td><td class="docblock-short"><p>Cast <code>&amp;mut [T]</code> into <code>&amp;mut [U]</code>.</p>
 </td></tr><tr class="module-item"><td><a class="fn" href="fn.from_bytes.html" title="bytemuck::from_bytes fn">from_bytes</a></td><td class="docblock-short"><p>Re-interprets <code>&amp;[u8]</code> as <code>&amp;T</code>.</p>
 </td></tr><tr class="module-item"><td><a class="fn" href="fn.from_bytes_mut.html" title="bytemuck::from_bytes_mut fn">from_bytes_mut</a></td><td class="docblock-short"><p>Re-interprets <code>&amp;mut [u8]</code> as <code>&amp;mut T</code>.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.pod_align_to.html" title="bytemuck::pod_align_to fn">pod_align_to</a></td><td class="docblock-short"><p>As <code>align_to</code>, but safe because of the <a href="../bytemuck/trait.Pod.html" title="Pod"><code>Pod</code></a> bound.</p>
-</td></tr><tr class="module-item"><td><a class="fn" href="fn.pod_align_to_mut.html" title="bytemuck::pod_align_to_mut fn">pod_align_to_mut</a></td><td class="docblock-short"><p>As <code>align_to_mut</code>, but safe because of the <a href="../bytemuck/trait.Pod.html" title="Pod"><code>Pod</code></a> bound.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.pod_align_to.html" title="bytemuck::pod_align_to fn">pod_align_to</a></td><td class="docblock-short"><p>As <code>align_to</code>, but safe because of the <a href="trait.Pod.html" title="Pod"><code>Pod</code></a> bound.</p>
+</td></tr><tr class="module-item"><td><a class="fn" href="fn.pod_align_to_mut.html" title="bytemuck::pod_align_to_mut fn">pod_align_to_mut</a></td><td class="docblock-short"><p>As <code>align_to_mut</code>, but safe because of the <a href="trait.Pod.html" title="Pod"><code>Pod</code></a> bound.</p>
 </td></tr><tr class="module-item"><td><a class="fn" href="fn.try_cast.html" title="bytemuck::try_cast fn">try_cast</a></td><td class="docblock-short"><p>Try to cast <code>T</code> into <code>U</code>.</p>
 </td></tr><tr class="module-item"><td><a class="fn" href="fn.try_cast_mut.html" title="bytemuck::try_cast_mut fn">try_cast_mut</a></td><td class="docblock-short"><p>Try to convert a <code>&amp;mut T</code> into <code>&amp;mut U</code>.</p>
 </td></tr><tr class="module-item"><td><a class="fn" href="fn.try_cast_ref.html" title="bytemuck::try_cast_ref fn">try_cast_ref</a></td><td class="docblock-short"><p>Try to convert a <code>&amp;T</code> into <code>&amp;U</code>.</p>
@@ -63,5 +63,5 @@ the <code>Wrapped</code> value.</p>
 length).</p>
 </td></tr><tr class="module-item"><td><a class="fn" href="fn.try_from_bytes.html" title="bytemuck::try_from_bytes fn">try_from_bytes</a></td><td class="docblock-short"><p>Re-interprets <code>&amp;[u8]</code> as <code>&amp;T</code>.</p>
 </td></tr><tr class="module-item"><td><a class="fn" href="fn.try_from_bytes_mut.html" title="bytemuck::try_from_bytes_mut fn">try_from_bytes_mut</a></td><td class="docblock-short"><p>Re-interprets <code>&amp;mut [u8]</code> as <code>&amp;mut T</code>.</p>
-</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="bytemuck" data-search-js="../search-index.js"></div>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="bytemuck" data-search-index-js="../search-index.js" data-search-js="../search.js"></div>
     <script src="../main.js"></script></body></html>

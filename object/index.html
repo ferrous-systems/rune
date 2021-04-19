@@ -6,13 +6,13 @@
 across platforms. It supports reading object files and executable files,
 and writing object files.</p>
 <h2 id="raw-struct-definitions" class="section-header"><a href="#raw-struct-definitions">Raw struct definitions</a></h2>
-<p>Raw structs are defined for: <a href="../object/elf/index.html">ELF</a>, <a href="../object/macho/index.html">Mach-O</a>, <a href="../object/pe/index.html">PE/COFF</a>, <a href="../object/archive/index.html" title="archive">archive</a>.
-Types and traits for zerocopy support are defined in <a href="../object/pod/index.html" title="pod">pod</a> and <a href="../object/endian/index.html" title="endian">endian</a>.</p>
+<p>Raw structs are defined for: <a href="elf/index.html">ELF</a>, <a href="macho/index.html">Mach-O</a>, <a href="pe/index.html">PE/COFF</a>, <a href="archive/index.html" title="archive">archive</a>.
+Types and traits for zerocopy support are defined in <a href="pod/index.html" title="pod">pod</a> and <a href="endian/index.html" title="endian">endian</a>.</p>
 <h2 id="unified-read-api" class="section-header"><a href="#unified-read-api">Unified read API</a></h2>
-<p>The <a href="../object/read/trait.Object.html" title="read::Object">read::Object</a> trait defines the unified interace. This trait is implemented
-by <a href="../object/read/struct.File.html" title="read::File">read::File</a>, which allows reading any file format, as well as implementations
-for each file format: <a href="../object/read/elf/struct.ElfFile.html">ELF</a>, <a href="../object/read/macho/struct.MachOFile.html">Mach-O</a>,
-<a href="../object/read/coff/struct.CoffFile.html">COFF</a>, <a href="../object/read/pe/struct.PeFile.html">PE</a>, <a href="read::wasm::WasmFile">Wasm</a>.</p>
+<p>The <a href="read/trait.Object.html" title="read::Object">read::Object</a> trait defines the unified interace. This trait is implemented
+by <a href="read/struct.File.html" title="read::File">read::File</a>, which allows reading any file format, as well as implementations
+for each file format: <a href="read/elf/struct.ElfFile.html">ELF</a>, <a href="read/macho/struct.MachOFile.html">Mach-O</a>,
+<a href="read/coff/struct.CoffFile.html">COFF</a>, <a href="read/pe/struct.PeFile.html">PE</a>, <a href="read::wasm::WasmFile">Wasm</a>.</p>
 <h2 id="low-level-read-api" class="section-header"><a href="#low-level-read-api">Low level read API</a></h2>
 <p>In addition to the unified read API, the various <code>read</code> modules define helpers that
 operate on the raw structs. These also provide traits that abstract over the differences
@@ -20,7 +20,7 @@ between 32-bit and 64-bit versions of the file format.</p>
 <h2 id="unified-write-api" class="section-header"><a href="#unified-write-api">Unified write API</a></h2>
 <p>[write::Object] allows building an object and then writing it out.</p>
 </div><h2 id="reexports" class="section-header"><a href="#reexports">Re-exports</a></h2>
-<table><tr><td><code>pub use <a class="mod" href="../object/endian/index.html" title="mod object::endian">endian</a>::*;</code></td></tr><tr><td><code>pub use <a class="mod" href="../object/pod/index.html" title="mod object::pod">pod</a>::*;</code></td></tr><tr><td><code>pub use <a class="mod" href="../object/read/index.html" title="mod object::read">read</a>::*;</code></td></tr></table><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2>
+<table><tr><td><code>pub use <a class="mod" href="endian/index.html" title="mod object::endian">endian</a>::*;</code></td></tr><tr><td><code>pub use <a class="mod" href="pod/index.html" title="mod object::pod">pod</a>::*;</code></td></tr><tr><td><code>pub use <a class="mod" href="read/index.html" title="mod object::read">read</a>::*;</code></td></tr></table><h2 id="modules" class="section-header"><a href="#modules">Modules</a></h2>
 <table><tr class="module-item"><td><a class="mod" href="archive/index.html" title="object::archive mod">archive</a></td><td class="docblock-short"><p>Archive definitions.</p>
 </td></tr><tr class="module-item"><td><a class="mod" href="elf/index.html" title="object::elf mod">elf</a></td><td class="docblock-short"><p>ELF definitions.</p>
 </td></tr><tr class="module-item"><td><a class="mod" href="endian/index.html" title="object::endian mod">endian</a></td><td class="docblock-short"><p>Types for compile-time and run-time endianness.</p>
@@ -41,5 +41,5 @@ between 32-bit and 64-bit versions of the file format.</p>
 </td></tr><tr class="module-item"><td><a class="enum" href="enum.SymbolFlags.html" title="object::SymbolFlags enum">SymbolFlags</a></td><td class="docblock-short"><p>Symbol flags that are specific to each file format.</p>
 </td></tr><tr class="module-item"><td><a class="enum" href="enum.SymbolKind.html" title="object::SymbolKind enum">SymbolKind</a></td><td class="docblock-short"><p>The kind of a symbol.</p>
 </td></tr><tr class="module-item"><td><a class="enum" href="enum.SymbolScope.html" title="object::SymbolScope enum">SymbolScope</a></td><td class="docblock-short"><p>A symbol scope.</p>
-</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="object" data-search-js="../search-index.js"></div>
+</td></tr></table></section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../" data-current-crate="object" data-search-index-js="../search-index.js" data-search-js="../search.js"></div>
     <script src="../main.js"></script></body></html>
