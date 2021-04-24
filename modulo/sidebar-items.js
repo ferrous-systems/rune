@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Modulo",""]]});
+initSidebarItems({"fn":[["modulo",""]],"struct":[["Modulo",""]]});
