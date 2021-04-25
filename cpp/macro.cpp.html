@@ -14,6 +14,8 @@ order which they were defined, inlining module declarations.</p>
 
 <div class='information'><div class='tooltip ignore'>ⓘ</div></div><div class="example-wrap"><pre class="rust rust-example-rendered ignore">
 <span class="macro">cpp!</span> {{
+    #<span class="ident">include</span> <span class="op">&lt;</span><span class="ident">stdint</span>.<span class="ident">h</span><span class="op">&gt;</span>
+    #<span class="ident">include</span> <span class="op">&lt;</span><span class="ident">stdio</span>.<span class="ident">h</span><span class="op">&gt;</span>
 }}</pre></div>
 <p>The second variant is used to embed C++ code within Rust code. A list of
 variable names which should be captured are taken as the first argument,
