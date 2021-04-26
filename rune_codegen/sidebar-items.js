@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["RuneProject",""]],"fn":[["generate",""]],"struct":[["Compilation",""]]});
+initSidebarItems({"enum":[["GitSpecifier",""],["RuneProject",""]],"fn":[["generate",""]],"struct":[["Compilation",""]]});
