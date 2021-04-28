@@ -218,6 +218,17 @@
 <span id="215">215</span>
 <span id="216">216</span>
 <span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">alloc</span>;
@@ -226,7 +237,9 @@
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">std</span>;
 
-<span class="kw">use</span> <span class="ident">runic_types</span>::{<span class="ident">Transform</span>, <span class="ident">HasOutputs</span>};
+<span class="kw">use</span> <span class="ident">core::convert::TryInto</span>;
+
+<span class="kw">use</span> <span class="ident">runic_types</span>::{<span class="ident">HasOutputs</span>, <span class="ident">Tensor</span>, <span class="ident">Transform</span>};
 <span class="kw">use</span> <span class="ident">alloc::collections::VecDeque</span>;
 
 <span class="doccomment">/// Person Detection Aggregator takes a list of confidences and returns the</span>
@@ -323,6 +336,15 @@
             },
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">unknown</span>,
         }
+    }
+}
+
+<span class="kw">impl</span><span class="op">&lt;</span><span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Transform</span><span class="op">&lt;</span><span class="ident">Tensor</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">PersonDetectionAgg</span><span class="op">&lt;</span><span class="ident">N</span><span class="op">&gt;</span> {
+    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>;
+
+    <span class="kw">fn</span> <span class="ident">transform</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">input</span>: <span class="ident">Tensor</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
+        <span class="kw">let</span> <span class="ident">elements</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>; <span class="ident">N</span>] <span class="op">=</span> <span class="ident">input</span>.<span class="ident">elements</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>();
+        <span class="self">self</span>.<span class="ident">transform</span>(<span class="kw-2">*</span><span class="ident">elements</span>)
     }
 }
 

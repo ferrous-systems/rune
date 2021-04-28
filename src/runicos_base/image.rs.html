@@ -1047,9 +1047,9 @@
             <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">Value::from_le_bytes</span>(<span class="ident">value_type</span>, <span class="ident">value</span>)
                 .<span class="ident">context</span>(<span class="string">&quot;Unable to unmarshal the value&quot;</span>)<span class="question-mark">?</span>;
 
-            <span class="ident">capability</span>
-                .<span class="ident">set_parameter</span>(<span class="ident">key</span>, <span class="ident">value</span>)
-                .<span class="ident">context</span>(<span class="string">&quot;Unable to set the parameter&quot;</span>)<span class="question-mark">?</span>;
+            <span class="ident">capability</span>.<span class="ident">set_parameter</span>(<span class="ident">key</span>, <span class="ident">value</span>).<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> {
+                <span class="macro">format!</span>(<span class="string">&quot;Unable to set \&quot;{}\&quot; = {}&quot;</span>, <span class="ident">key</span>, <span class="ident">value</span>,)
+            })<span class="question-mark">?</span>;
 
             <span class="prelude-val">Ok</span>(<span class="number">0</span>)
         },
