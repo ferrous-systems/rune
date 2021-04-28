@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Fft",""]]});
+initSidebarItems({"struct":[["Fft",""],["GainControl",""],["NoiseReduction",""],["ShortTimeFourierTransform",""]]});
