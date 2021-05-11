@@ -79,13 +79,21 @@
 <span id="76">76</span>
 <span id="77">77</span>
 <span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
 </pre><pre class="rust">
 <span class="kw">mod</span> <span class="ident">bulk_copy</span>;
+<span class="kw">mod</span> <span class="ident">convert</span>;
 <span class="kw">mod</span> <span class="ident">dist</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">bulk_copy::BulkCopy</span>;
-<span class="kw">use</span> <span class="ident">dist::Dist</span>;
-
+<span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">bulk_copy::BulkCopy</span>, <span class="ident">dist::Dist</span>, <span class="ident">convert::Convert</span>,
+};
 <span class="kw">use</span> <span class="ident">std::path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">devx_pre_commit::PreCommitContext</span>;
@@ -114,6 +122,7 @@
                 .<span class="ident">context</span>(<span class="string">&quot;Unable to install the pre-commit hook&quot;</span>)<span class="question-mark">?</span>;
         },
         <span class="ident">Command::Dist</span>(<span class="ident">dist</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">dist</span>.<span class="ident">run</span>()<span class="question-mark">?</span>,
+        <span class="ident">Command::Convert</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">c</span>.<span class="ident">run</span>()<span class="question-mark">?</span>,
     }
 
     <span class="prelude-val">Ok</span>(())
@@ -144,6 +153,11 @@
     <span class="ident">InstallPreCommit</span>,
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;dist&quot;</span>, <span class="ident">about</span> <span class="op">=</span> <span class="string">&quot;Generate a release bundle&quot;</span>)]</span>
     <span class="ident">Dist</span>(<span class="ident">Dist</span>),
+    <span class="attribute">#[<span class="ident">structopt</span>(
+        <span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;convert&quot;</span>,
+        <span class="ident">about</span> <span class="op">=</span> <span class="string">&quot;Convert an old style Runefile to its YAML equivalent&quot;</span>
+    )]</span>
+    <span class="ident">Convert</span>(<span class="ident">Convert</span>),
 }
 
 <span class="kw">fn</span> <span class="ident">project_root</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">Error</span><span class="op">&gt;</span> {

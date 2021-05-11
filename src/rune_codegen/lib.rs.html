@@ -1290,7 +1290,7 @@
     <span class="kw">fn</span> <span class="ident">parse_runefile</span>(<span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Rune</span> {
         <span class="kw">let</span> <span class="ident">parsed</span> <span class="op">=</span> <span class="ident">rune_syntax::parse</span>(<span class="ident">src</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
-        <span class="kw">let</span> <span class="ident">rune</span> <span class="op">=</span> <span class="ident">rune_syntax::analyse</span>(<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="ident">parsed</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
+        <span class="kw">let</span> <span class="ident">rune</span> <span class="op">=</span> <span class="ident">rune_syntax::analyse</span>(<span class="kw-2">&amp;</span><span class="ident">parsed</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">diags</span>.<span class="ident">has_errors</span>());
 
         <span class="ident">rune</span>
