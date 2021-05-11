@@ -1,3 +1,0 @@
-(function() {var implementors = {};
-implementors["fs_err"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/std/sys/unix/ext/fs/trait.DirEntryExt.html\" title=\"trait std::sys::unix::ext::fs::DirEntryExt\">DirEntryExt</a> for <a class=\"struct\" href=\"fs_err/struct.DirEntry.html\" title=\"struct fs_err::DirEntry\">DirEntry</a>","synthetic":false,"types":["fs_err::dir::DirEntry"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
