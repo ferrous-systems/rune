@@ -717,6 +717,48 @@
 <span id="714">714</span>
 <span id="715">715</span>
 <span id="716">716</span>
+<span id="717">717</span>
+<span id="718">718</span>
+<span id="719">719</span>
+<span id="720">720</span>
+<span id="721">721</span>
+<span id="722">722</span>
+<span id="723">723</span>
+<span id="724">724</span>
+<span id="725">725</span>
+<span id="726">726</span>
+<span id="727">727</span>
+<span id="728">728</span>
+<span id="729">729</span>
+<span id="730">730</span>
+<span id="731">731</span>
+<span id="732">732</span>
+<span id="733">733</span>
+<span id="734">734</span>
+<span id="735">735</span>
+<span id="736">736</span>
+<span id="737">737</span>
+<span id="738">738</span>
+<span id="739">739</span>
+<span id="740">740</span>
+<span id="741">741</span>
+<span id="742">742</span>
+<span id="743">743</span>
+<span id="744">744</span>
+<span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">handlebars</span>::{<span class="ident">Context</span>, <span class="ident">Handlebars</span>, <span class="ident">Helper</span>, <span class="ident">Output</span>, <span class="ident">RenderContext</span>, <span class="ident">RenderError</span>};
@@ -788,6 +830,28 @@
         .<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> <span class="macro">format!</span>(<span class="string">&quot;Unable to read \&quot;{}\&quot;&quot;</span>, <span class="ident">wasm</span>.<span class="ident">display</span>()))
 }
 
+<span class="kw">fn</span> <span class="ident">load_templates</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Handlebars</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hbs</span> <span class="op">=</span> <span class="ident">Handlebars::new</span>();
+    <span class="ident">hbs</span>.<span class="ident">set_strict_mode</span>(<span class="bool-val">true</span>);
+    <span class="ident">hbs</span>.<span class="ident">register_escape_fn</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">to_string</span>());
+
+    <span class="ident">hbs</span>.<span class="ident">register_template_string</span>(
+        <span class="string">&quot;.cargo/config.toml&quot;</span>,
+        <span class="macro">include_str!</span>(<span class="string">&quot;./boilerplate/config.toml.hbs&quot;</span>),
+    )<span class="question-mark">?</span>;
+    <span class="ident">hbs</span>.<span class="ident">register_template_string</span>(
+        <span class="string">&quot;Cargo.toml&quot;</span>,
+        <span class="macro">include_str!</span>(<span class="string">&quot;./boilerplate/Cargo.toml.hbs&quot;</span>),
+    )<span class="question-mark">?</span>;
+    <span class="ident">hbs</span>.<span class="ident">register_template_string</span>(
+        <span class="string">&quot;lib.rs&quot;</span>,
+        <span class="macro">include_str!</span>(<span class="string">&quot;./boilerplate/lib.rs.hbs&quot;</span>),
+    )<span class="question-mark">?</span>;
+    <span class="ident">hbs</span>.<span class="ident">register_helper</span>(<span class="string">&quot;toml&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">to_toml</span>));
+
+    <span class="prelude-val">Ok</span>(<span class="ident">hbs</span>)
+}
+
 <span class="kw">struct</span> <span class="ident">Generator</span> {
     <span class="ident">name</span>: <span class="ident">String</span>,
     <span class="ident">hbs</span>: <span class="ident">Handlebars</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span>,
@@ -800,29 +864,7 @@
 
 <span class="kw">impl</span> <span class="ident">Generator</span> {
     <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">compilation</span>: <span class="ident">Compilation</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hbs</span> <span class="op">=</span> <span class="ident">Handlebars::new</span>();
-        <span class="ident">hbs</span>.<span class="ident">set_strict_mode</span>(<span class="bool-val">true</span>);
-        <span class="ident">hbs</span>.<span class="ident">register_escape_fn</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">to_string</span>());
-
-        <span class="comment">// Note: all these templates are within our control, so any error here</span>
-        <span class="comment">// is the developer&#39;s fault.</span>
-        <span class="ident">hbs</span>.<span class="ident">register_template_string</span>(
-            <span class="string">&quot;.cargo/config.toml&quot;</span>,
-            <span class="macro">include_str!</span>(<span class="string">&quot;./boilerplate/config.toml.hbs&quot;</span>),
-        )
-        .<span class="ident">unwrap</span>();
-        <span class="ident">hbs</span>.<span class="ident">register_template_string</span>(
-            <span class="string">&quot;Cargo.toml&quot;</span>,
-            <span class="macro">include_str!</span>(<span class="string">&quot;./boilerplate/Cargo.toml.hbs&quot;</span>),
-        )
-        .<span class="ident">unwrap</span>();
-        <span class="ident">hbs</span>.<span class="ident">register_template_string</span>(
-            <span class="string">&quot;lib.rs&quot;</span>,
-            <span class="macro">include_str!</span>(<span class="string">&quot;./boilerplate/lib.rs.hbs&quot;</span>),
-        )
-        .<span class="ident">unwrap</span>();
-        <span class="ident">hbs</span>.<span class="ident">register_helper</span>(<span class="string">&quot;toml&quot;</span>, <span class="ident">Box::new</span>(<span class="ident">to_toml</span>));
-
+        <span class="kw">let</span> <span class="ident">hbs</span> <span class="op">=</span> <span class="ident">load_templates</span>().<span class="ident">expect</span>(<span class="string">&quot;Initializing handlebars with hard-coded templates should never fail&quot;</span>);
         <span class="kw">let</span> <span class="ident">Compilation</span> {
             <span class="ident">name</span>,
             <span class="ident">rune</span>,
@@ -968,7 +1010,8 @@
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">name</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">get_name</span>(<span class="ident">id</span>) {
                 <span class="kw">let</span> <span class="ident">module_name</span> <span class="op">=</span> <span class="ident">proc_block</span>.<span class="ident">name</span>();
                 <span class="kw">let</span> <span class="ident">type_name</span> <span class="op">=</span>
-                    <span class="macro">format!</span>(<span class="string">&quot;{}::{}&quot;</span>, <span class="ident">module_name</span>, <span class="ident">module_name</span>.<span class="ident">to_camel_case</span>()).<span class="ident">replace</span>(<span class="string">&quot;-&quot;</span>, <span class="string">&quot;_&quot;</span>);
+                    <span class="macro">format!</span>(<span class="string">&quot;{}::{}&quot;</span>, <span class="ident">module_name</span>, <span class="ident">module_name</span>.<span class="ident">to_camel_case</span>())
+                        .<span class="ident">replace</span>(<span class="string">&quot;-&quot;</span>, <span class="string">&quot;_&quot;</span>);
 
                 <span class="kw">let</span> <span class="ident">parameters</span> <span class="op">=</span> <span class="ident">proc_block</span>
                     .<span class="ident">parameters</span>
@@ -1137,6 +1180,10 @@
             <span class="ident">kind</span>: <span class="ident">LiteralKind::Float</span>(<span class="ident">f</span>),
             ..
         }) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;{:.1}&quot;</span>, <span class="ident">f</span>),
+        <span class="ident">ArgumentValue::Literal</span>(<span class="ident">Literal</span> {
+            <span class="ident">kind</span>: <span class="ident">LiteralKind::String</span>(<span class="ident">s</span>),
+            ..
+        }) <span class="kw">if</span> <span class="ident">s</span>.<span class="ident">starts_with</span>(<span class="string">&quot;@&quot;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">s</span>[<span class="number">1</span>..]),
         <span class="ident">ArgumentValue::Literal</span>(<span class="ident">Literal</span> {
             <span class="ident">kind</span>: <span class="ident">LiteralKind::String</span>(<span class="ident">s</span>),
             ..
@@ -1310,7 +1357,10 @@
     <span class="kw">let</span> <span class="ident">rust_toolchain</span> <span class="op">=</span> <span class="macro">include_str!</span>(<span class="string">&quot;../../rust-toolchain.toml&quot;</span>);
     <span class="kw">let</span> <span class="ident">parsed</span>: <span class="ident">OverrideFile</span> <span class="op">=</span> <span class="ident">toml::from_str</span>(<span class="ident">rust_toolchain</span>).<span class="ident">unwrap</span>();
 
-    <span class="ident">parsed</span>.<span class="ident">toolchain</span>.<span class="ident">channel</span>.<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">String::from</span>(<span class="string">&quot;nightly&quot;</span>))
+    <span class="ident">parsed</span>
+        .<span class="ident">toolchain</span>
+        .<span class="ident">channel</span>
+        .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">String::from</span>(<span class="string">&quot;nightly&quot;</span>))
 });
 
 <span class="doccomment">/// Serialized form of `rust-toolchain.toml`. Copied directly from</span>
@@ -1328,8 +1378,6 @@
     <span class="ident">targets</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">profile</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
-
-
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
@@ -1432,6 +1480,42 @@
         <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">pipeline_stage</span>(<span class="ident">rune</span>, <span class="ident">node_index</span>);
 
         <span class="macro">assert_eq!</span>(<span class="ident">got</span>, <span class="ident">should_be</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">parameters_can_use_at_symbol_to_include_literals</span>() {
+        <span class="kw">let</span> <span class="ident">temp</span> <span class="op">=</span> <span class="ident">tempfile::tempdir</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">runefile</span> <span class="op">=</span> <span class="string">r#&quot;
+            FROM runicos/base
+
+            CAPABILITY&lt;_&gt; image IMAGE --pixel-format @PixelFormat::RGB
+        &quot;#</span>;
+        <span class="kw">let</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Generator::new</span>(<span class="ident">Compilation</span> {
+            <span class="ident">name</span>: <span class="ident">String::from</span>(<span class="string">&quot;test&quot;</span>),
+            <span class="ident">rune</span>: <span class="ident">parse_runefile</span>(<span class="ident">runefile</span>),
+            <span class="ident">working_directory</span>: <span class="ident">temp</span>.<span class="ident">path</span>().<span class="ident">to_path_buf</span>(),
+            <span class="ident">current_directory</span>: <span class="ident">temp</span>.<span class="ident">path</span>().<span class="ident">to_path_buf</span>(),
+            <span class="ident">rune_project</span>: <span class="ident">RuneProject::Disk</span>(
+                <span class="ident">std::path::Path::new</span>(<span class="macro">env!</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>))
+                    .<span class="ident">parent</span>()
+                    .<span class="ident">unwrap</span>()
+                    .<span class="ident">to_path_buf</span>(),
+            ),
+            <span class="ident">optimized</span>: <span class="bool-val">false</span>,
+        });
+
+        <span class="ident">ctx</span>.<span class="ident">render_lib_rs</span>().<span class="ident">unwrap</span>();
+
+        <span class="kw">let</span> <span class="ident">lib_rs</span> <span class="op">=</span>
+            <span class="ident">std::fs::read_to_string</span>(<span class="ident">temp</span>.<span class="ident">path</span>().<span class="ident">join</span>(<span class="string">&quot;lib.rs&quot;</span>)).<span class="ident">unwrap</span>();
+
+        <span class="kw">let</span> <span class="ident">expected</span> <span class="op">=</span> <span class="string">r#&quot;.set_parameter(&quot;pixel_format&quot;, PixelFormat::RGB)&quot;#</span>;
+        <span class="macro">assert!</span>(
+            <span class="ident">lib_rs</span>.<span class="ident">contains</span>(<span class="ident">expected</span>),
+            <span class="string">&quot;Unable to find {:?} in lib.rs:\n{}&quot;</span>,
+            <span class="ident">expected</span>,
+            <span class="ident">lib_rs</span>
+        );
     }
 }
 </pre></div>

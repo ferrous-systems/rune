@@ -207,7 +207,6 @@
 <span id="204">204</span>
 <span id="205">205</span>
 <span id="206">206</span>
-<span id="207">207</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fs::File</span>, <span class="ident">path::PathBuf</span>, <span class="ident">str::FromStr</span>};
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="ident">Error</span>};
@@ -331,7 +330,6 @@
                 <span class="kw">let</span> <span class="ident">img</span> <span class="op">=</span> <span class="ident">image::open</span>(<span class="ident">filename</span>).<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> {
                     <span class="macro">format!</span>(<span class="string">&quot;Unable to load \&quot;{}\&quot;&quot;</span>, <span class="ident">filename</span>.<span class="ident">display</span>())
                 })<span class="question-mark">?</span>;
-                <span class="kw">let</span> <span class="ident">img</span> <span class="op">=</span> <span class="ident">img</span>.<span class="ident">to_rgb8</span>();
                 <span class="ident">env</span>.<span class="ident">with_image</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">Image::new</span>(<span class="ident">img</span>.<span class="ident">clone</span>()))));
             },
             <span class="ident">Capability::Sound</span> { <span class="ident">filename</span> } <span class="op">=</span><span class="op">&gt;</span> {
