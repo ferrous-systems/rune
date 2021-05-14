@@ -754,7 +754,6 @@
 <span id="751">751</span>
 <span id="752">752</span>
 <span id="753">753</span>
-<span id="754">754</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span> <span class="kw">as</span> <span class="kw">_</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">handlebars</span>::{<span class="ident">Context</span>, <span class="ident">Handlebars</span>, <span class="ident">Helper</span>, <span class="ident">Output</span>, <span class="ident">RenderContext</span>, <span class="ident">RenderError</span>};
@@ -1006,8 +1005,7 @@
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">name</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">get_name</span>(<span class="ident">id</span>) {
                 <span class="kw">let</span> <span class="ident">module_name</span> <span class="op">=</span> <span class="ident">proc_block</span>.<span class="ident">name</span>();
                 <span class="kw">let</span> <span class="ident">type_name</span> <span class="op">=</span>
-                    <span class="macro">format!</span>(<span class="string">&quot;{}::{}&quot;</span>, <span class="ident">module_name</span>, <span class="ident">module_name</span>.<span class="ident">to_camel_case</span>())
-                        .<span class="ident">replace</span>(<span class="string">&quot;-&quot;</span>, <span class="string">&quot;_&quot;</span>);
+                    <span class="macro">format!</span>(<span class="string">&quot;{}::{}&quot;</span>, <span class="ident">module_name</span>, <span class="ident">module_name</span>.<span class="ident">to_camel_case</span>()).<span class="ident">replace</span>(<span class="string">&quot;-&quot;</span>, <span class="string">&quot;_&quot;</span>);
 
                 <span class="kw">let</span> <span class="ident">parameters</span> <span class="op">=</span> <span class="ident">proc_block</span>
                     .<span class="ident">parameters</span>
