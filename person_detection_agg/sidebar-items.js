@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["PersonDetectionAgg","Person Detection Aggregator takes a list of confidences and returns the associated label of the most confident person_detection so it identifies which person_detection is occuring."]]});

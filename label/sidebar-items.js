@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Label","A proc block which, when given a set of indices, will return their associated labels."]]});
