@@ -156,7 +156,7 @@
         .<span class="ident">context</span>(<span class="string">&quot;Unable to construct the \&quot;config.toml\&quot; file&quot;</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">models</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::models::load</span>(<span class="kw-2">&amp;</span><span class="ident">c</span>.<span class="ident">rune</span>, <span class="ident">env</span>)
         .<span class="ident">context</span>(<span class="string">&quot;Unable to load the models&quot;</span>)<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">lib_rs</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::code::generate</span>(<span class="kw-2">&amp;</span><span class="ident">c</span>.<span class="ident">rune</span>)
+    <span class="kw">let</span> <span class="ident">lib_rs</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::code::generate</span>(<span class="kw-2">&amp;</span><span class="ident">c</span>.<span class="ident">rune</span>, <span class="ident">env</span>.<span class="ident">build_info</span>())
         .<span class="ident">context</span>(<span class="string">&quot;Unable to generate the \&quot;lib.rs\&quot; file&quot;</span>)<span class="question-mark">?</span>;
 
     <span class="kw">let</span> <span class="ident">project</span> <span class="op">=</span> <span class="ident">Project</span> {

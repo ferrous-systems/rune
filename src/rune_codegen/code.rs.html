@@ -772,13 +772,44 @@
 <span id="769">769</span>
 <span id="770">770</span>
 <span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
-
-<span class="kw">use</span> <span class="ident">anyhow::Error</span>;
+<span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Error</span>, <span class="ident">Context</span>};
 <span class="kw">use</span> <span class="ident">heck</span>::{<span class="ident">CamelCase</span>, <span class="ident">SnakeCase</span>};
 <span class="kw">use</span> <span class="ident">quote</span>::{<span class="ident">ToTokens</span>, <span class="ident">TokenStreamExt</span>, <span class="ident">quote</span>};
-<span class="kw">use</span> <span class="ident">proc_macro2</span>::{<span class="ident">Ident</span>, <span class="ident">Span</span>, <span class="ident">TokenStream</span>};
+<span class="kw">use</span> <span class="ident">proc_macro2</span>::{<span class="ident">Ident</span>, <span class="ident">Literal</span>, <span class="ident">Span</span>, <span class="ident">TokenStream</span>};
 <span class="kw">use</span> <span class="ident">rune_syntax</span>::{
     <span class="ident">hir</span>::{
         <span class="ident">HirId</span>, <span class="ident">Node</span>, <span class="ident">Primitive</span>, <span class="ident">ProcBlock</span>, <span class="ident">Rune</span>, <span class="ident">Sink</span>, <span class="ident">SinkKind</span>, <span class="ident">Slot</span>, <span class="ident">Source</span>,
@@ -786,10 +817,14 @@
     },
     <span class="ident">yaml::Value</span>,
 };
+<span class="kw">use</span> <span class="ident">serde::Serialize</span>;
 
 <span class="doccomment">/// Generate the Rune&#39;s `lib.rs` file.</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generate</span>(<span class="ident">rune</span>: <span class="kw-2">&amp;</span><span class="ident">Rune</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">preamble</span> <span class="op">=</span> <span class="ident">preamble</span>();
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">generate</span>(
+    <span class="ident">rune</span>: <span class="kw-2">&amp;</span><span class="ident">Rune</span>,
+    <span class="ident">build_info</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">serde_json::Value</span><span class="op">&gt;</span>,
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">preamble</span> <span class="op">=</span> <span class="ident">preamble</span>(<span class="ident">rune</span>, <span class="ident">build_info</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">manifest</span> <span class="op">=</span> <span class="ident">manifest_function</span>(<span class="ident">rune</span>);
     <span class="kw">let</span> <span class="ident">call</span> <span class="op">=</span> <span class="ident">call</span>();
 
@@ -1145,8 +1180,34 @@
     <span class="ident">tokens</span>
 }
 
-<span class="kw">fn</span> <span class="ident">preamble</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">ToTokens</span> {
-    <span class="macro">quote!</span> {
+<span class="kw">fn</span> <span class="ident">custom_section</span>(
+    <span class="ident">section_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+    <span class="ident">global</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
+    <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">Serialize</span>,
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">jsonified</span> <span class="op">=</span> <span class="ident">serde_json::to_string</span>(<span class="ident">value</span>)
+        .<span class="ident">context</span>(<span class="string">&quot;Unable to serialize the Rune to JSON&quot;</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">global</span> <span class="op">=</span> <span class="ident">Ident::new</span>(<span class="ident">global</span>, <span class="ident">Span::call_site</span>());
+    <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">jsonified</span>.<span class="ident">len</span>();
+    <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">Literal::byte_string</span>(<span class="ident">jsonified</span>.<span class="ident">as_bytes</span>());
+
+    <span class="prelude-val">Ok</span>(<span class="macro">quote!</span> {
+        <span class="attribute">#[<span class="ident">link_section</span> <span class="op">=</span> #<span class="ident">section_name</span>]</span>
+        <span class="kw">static</span> #<span class="ident">global</span>: [<span class="ident">u8</span>; #<span class="ident">len</span>] <span class="op">=</span> <span class="kw-2">*</span>#<span class="ident">data</span>;
+    })
+}
+
+<span class="kw">fn</span> <span class="ident">preamble</span>(
+    <span class="ident">rune</span>: <span class="kw-2">&amp;</span><span class="ident">Rune</span>,
+    <span class="ident">build_info</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">serde_json::Value</span><span class="op">&gt;</span>,
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TokenStream</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">rune_graph</span> <span class="op">=</span> <span class="ident">custom_section</span>(<span class="string">&quot;rune_graph&quot;</span>, <span class="string">&quot;RUNE_GRAPH&quot;</span>, <span class="ident">rune</span>)<span class="question-mark">?</span>;
+    <span class="kw">let</span> <span class="ident">build_info</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">build_info</span> {
+        <span class="prelude-val">Some</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">custom_section</span>(<span class="string">&quot;rune_version&quot;</span>, <span class="string">&quot;RUNE_VERSION&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>)<span class="question-mark">?</span>,
+        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote!</span>(),
+    };
+
+    <span class="prelude-val">Ok</span>(<span class="macro">quote!</span> {
         <span class="doccomment">//! Automatically generated by rune. DO NOT EDIT!</span>
 
         <span class="attribute">#![<span class="ident">no_std</span>]</span>
@@ -1158,8 +1219,11 @@
         <span class="kw">use</span> <span class="ident">runic_types</span>::<span class="kw-2">*</span>;
         <span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
 
+        #<span class="ident">rune_graph</span>
+        #<span class="ident">build_info</span>
+
         <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">PIPELINE</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnMut</span>()<span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
-    }
+    })
 }
 
 <span class="kw">fn</span> <span class="ident">call</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">ToTokens</span> {
