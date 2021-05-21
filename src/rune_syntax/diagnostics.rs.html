@@ -34,6 +34,13 @@
 <span id="31">31</span>
 <span id="32">32</span>
 <span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">codespan_reporting::diagnostic</span>::{<span class="ident">Diagnostic</span>, <span class="ident">Severity</span>};
 
@@ -49,8 +56,15 @@
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">iter</span>()
     }
 
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">iter_severity</span>(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        <span class="ident">severity</span>: <span class="ident">Severity</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;_</span> <span class="ident">Diagnostic</span><span class="op">&lt;</span><span class="ident">FileId</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;_</span> {
+        <span class="self">self</span>.<span class="ident">iter</span>().<span class="ident">filter</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">diag</span><span class="op">|</span> <span class="ident">diag</span>.<span class="ident">severity</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">severity</span>)
+    }
+
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_severity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">severity</span>: <span class="ident">Severity</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">diag</span><span class="op">|</span> <span class="ident">diag</span>.<span class="ident">severity</span> <span class="op">&gt;</span><span class="op">=</span> <span class="ident">severity</span>)
+        <span class="self">self</span>.<span class="ident">iter_severity</span>(<span class="ident">severity</span>).<span class="ident">next</span>().<span class="ident">is_some</span>()
     }
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_errors</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> { <span class="self">self</span>.<span class="ident">has_severity</span>(<span class="ident">Severity::Error</span>) }

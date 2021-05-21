@@ -82,6 +82,10 @@
 <span id="79">79</span>
 <span id="80">80</span>
 <span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 
@@ -108,7 +112,10 @@
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Modulo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_modulus</span>(<span class="self">self</span>, <span class="ident">modulus</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">Modulo</span> { <span class="ident">modulus</span> } }
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_modulus</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">modulus</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
+        <span class="self">self</span>.<span class="ident">modulus</span> <span class="op">=</span> <span class="ident">modulus</span>;
+        <span class="self">self</span>
+    }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">One</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Modulo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
@@ -157,7 +164,8 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">mod_360</span>() {
         <span class="kw">let</span> <span class="ident">number</span> <span class="op">=</span> <span class="number">42</span> <span class="op">+</span> <span class="number">360</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Modulo::new</span>().<span class="ident">with_modulus</span>(<span class="number">360</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Modulo::new</span>();
+        <span class="ident">m</span>.<span class="ident">set_modulus</span>(<span class="number">360</span>);
 
         <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">m</span>.<span class="ident">transform</span>(<span class="ident">number</span>);
 

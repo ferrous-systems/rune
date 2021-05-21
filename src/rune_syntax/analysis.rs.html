@@ -749,303 +749,201 @@
 <span id="746">746</span>
 <span id="747">747</span>
 <span id="748">748</span>
-<span id="749">749</span>
-<span id="750">750</span>
-<span id="751">751</span>
-<span id="752">752</span>
-<span id="753">753</span>
-<span id="754">754</span>
-<span id="755">755</span>
-<span id="756">756</span>
-<span id="757">757</span>
-<span id="758">758</span>
-<span id="759">759</span>
-<span id="760">760</span>
-<span id="761">761</span>
-<span id="762">762</span>
-<span id="763">763</span>
-<span id="764">764</span>
-<span id="765">765</span>
-<span id="766">766</span>
-<span id="767">767</span>
-<span id="768">768</span>
-<span id="769">769</span>
-<span id="770">770</span>
-<span id="771">771</span>
-<span id="772">772</span>
-<span id="773">773</span>
-<span id="774">774</span>
-<span id="775">775</span>
-<span id="776">776</span>
-<span id="777">777</span>
-<span id="778">778</span>
-<span id="779">779</span>
-<span id="780">780</span>
-<span id="781">781</span>
-<span id="782">782</span>
-<span id="783">783</span>
-<span id="784">784</span>
-<span id="785">785</span>
-<span id="786">786</span>
-<span id="787">787</span>
-<span id="788">788</span>
-<span id="789">789</span>
-<span id="790">790</span>
-<span id="791">791</span>
-<span id="792">792</span>
-<span id="793">793</span>
-<span id="794">794</span>
-<span id="795">795</span>
-<span id="796">796</span>
-<span id="797">797</span>
-<span id="798">798</span>
-<span id="799">799</span>
-<span id="800">800</span>
-<span id="801">801</span>
-<span id="802">802</span>
-<span id="803">803</span>
-<span id="804">804</span>
-<span id="805">805</span>
-<span id="806">806</span>
-<span id="807">807</span>
-<span id="808">808</span>
-<span id="809">809</span>
-<span id="810">810</span>
-<span id="811">811</span>
-<span id="812">812</span>
-<span id="813">813</span>
-<span id="814">814</span>
-<span id="815">815</span>
-<span id="816">816</span>
-<span id="817">817</span>
-<span id="818">818</span>
-<span id="819">819</span>
-<span id="820">820</span>
-<span id="821">821</span>
-<span id="822">822</span>
-<span id="823">823</span>
-<span id="824">824</span>
-<span id="825">825</span>
-<span id="826">826</span>
-<span id="827">827</span>
-<span id="828">828</span>
-<span id="829">829</span>
-<span id="830">830</span>
-<span id="831">831</span>
 </pre><div class="example-wrap"><pre class="rust ">
+<span class="kw">use</span> <span class="ident">std::collections</span>::{<span class="ident">HashSet</span>, <span class="ident">VecDeque</span>};
+
+<span class="kw">use</span> <span class="ident">codespan::Span</span>;
+<span class="kw">use</span> <span class="ident">codespan_reporting</span>::{
+    <span class="ident">diagnostic</span>::{<span class="ident">Diagnostic</span>, <span class="ident">Label</span>},
+};
+<span class="kw">use</span> <span class="ident">indexmap::IndexMap</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{
     <span class="ident">Diagnostics</span>,
-    <span class="ident">ast</span>::{
-        <span class="ident">Argument</span>, <span class="ident">ArgumentValue</span>, <span class="ident">CapabilityInstruction</span>, <span class="ident">Ident</span>, <span class="ident">Instruction</span>,
-        <span class="ident">ModelInstruction</span>, <span class="ident">OutInstruction</span>, <span class="ident">ProcBlockInstruction</span>, <span class="ident">RunInstruction</span>,
-        <span class="ident">Runefile</span>,
-    },
-    <span class="ident">hir</span>::{
-        <span class="ident">Edge</span>, <span class="ident">HirId</span>, <span class="ident">Model</span>, <span class="ident">Pipeline</span>, <span class="ident">Primitive</span>, <span class="ident">ProcBlock</span>, <span class="ident">Rune</span>, <span class="ident">Sink</span>, <span class="ident">Source</span>,
-        <span class="ident">SourceKind</span>, <span class="ident">Stage</span>, <span class="ident">Type</span>,
-    },
+    <span class="ident">hir</span>::{<span class="self">self</span>, <span class="ident">HirId</span>, <span class="ident">Node</span>, <span class="ident">Primitive</span>, <span class="ident">Rune</span>, <span class="ident">Slot</span>},
+    <span class="ident">yaml</span>::<span class="kw-2">*</span>,
+    <span class="ident">utils</span>::{<span class="ident">Builtins</span>, <span class="ident">HirIds</span>, <span class="ident">range_span</span>},
 };
-<span class="kw">use</span> <span class="ident">codespan::Span</span>;
-<span class="kw">use</span> <span class="ident">codespan_reporting::diagnostic</span>::{<span class="ident">Diagnostic</span>, <span class="ident">Label</span>};
-<span class="kw">use</span> <span class="ident">petgraph</span>::{
-    <span class="ident">graph</span>::{<span class="ident">IndexType</span>, <span class="ident">NodeIndex</span>},
-    <span class="ident">visit::EdgeRef</span>,
-};
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::HashMap</span>, <span class="ident">path::PathBuf</span>};
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">analyse</span>(<span class="ident">runefile</span>: <span class="kw-2">&amp;</span><span class="ident">Runefile</span>, <span class="ident">diags</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Diagnostics</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Rune</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">analyser</span> <span class="op">=</span> <span class="ident">Analyser::new</span>(<span class="ident">diags</span>);
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">analyse</span>(<span class="ident">doc</span>: <span class="kw-2">&amp;</span><span class="ident">Document</span>, <span class="ident">diags</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Diagnostics</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Rune</span> {
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context::new</span>(<span class="ident">diags</span>);
 
-    <span class="ident">analyser</span>.<span class="ident">load_runefile</span>(<span class="ident">runefile</span>);
-    <span class="ident">analyser</span>.<span class="ident">infer_types</span>();
+    <span class="kw">let</span> <span class="ident">image</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">doc</span>.<span class="ident">image</span>;
+    <span class="ident">ctx</span>.<span class="ident">rune</span>.<span class="ident">base_image</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">image</span>.<span class="ident">into</span>());
 
-    <span class="ident">analyser</span>.<span class="ident">rune</span>
+    <span class="ident">ctx</span>.<span class="ident">register_stages</span>(<span class="kw-2">&amp;</span><span class="ident">doc</span>.<span class="ident">pipeline</span>);
+    <span class="ident">ctx</span>.<span class="ident">register_output_slots</span>(<span class="kw-2">&amp;</span><span class="ident">doc</span>.<span class="ident">pipeline</span>);
+    <span class="ident">ctx</span>.<span class="ident">construct_pipeline</span>(<span class="kw-2">&amp;</span><span class="ident">doc</span>.<span class="ident">pipeline</span>);
+    <span class="ident">ctx</span>.<span class="ident">check_for_loops</span>();
+
+    <span class="ident">ctx</span>.<span class="ident">rune</span>
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
-<span class="kw">struct</span> <span class="ident">Analyser</span><span class="op">&lt;</span><span class="lifetime">&#39;diag</span><span class="op">&gt;</span> {
+<span class="kw">struct</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;diag</span><span class="op">&gt;</span> {
     <span class="ident">diags</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;diag</span> <span class="kw-2">mut</span> <span class="ident">Diagnostics</span>,
     <span class="ident">rune</span>: <span class="ident">Rune</span>,
     <span class="ident">ids</span>: <span class="ident">HirIds</span>,
     <span class="ident">builtins</span>: <span class="ident">Builtins</span>,
-    <span class="ident">stages</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">HirId</span>, <span class="ident">NodeIndex</span><span class="op">&gt;</span>,
-    <span class="ident">input_types</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">NodeIndex</span>, <span class="ident">HirId</span><span class="op">&gt;</span>,
-    <span class="ident">output_types</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">NodeIndex</span>, <span class="ident">HirId</span><span class="op">&gt;</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;diag</span><span class="op">&gt;</span> <span class="ident">Analyser</span><span class="op">&lt;</span><span class="lifetime">&#39;diag</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;diag</span><span class="op">&gt;</span> <span class="ident">Context</span><span class="op">&lt;</span><span class="lifetime">&#39;diag</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">diags</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;diag</span> <span class="kw-2">mut</span> <span class="ident">Diagnostics</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rune</span> <span class="op">=</span> <span class="ident">Rune::default</span>();
-
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ids</span> <span class="op">=</span> <span class="ident">HirIds::new</span>();
         <span class="kw">let</span> <span class="ident">builtins</span> <span class="op">=</span> <span class="ident">Builtins::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">ids</span>);
         <span class="ident">builtins</span>.<span class="ident">copy_into</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">rune</span>);
 
-        <span class="ident">Analyser</span> {
-            <span class="ident">diags</span>,
-            <span class="ident">rune</span>,
+        <span class="ident">Context</span> {
             <span class="ident">ids</span>,
             <span class="ident">builtins</span>,
-            <span class="ident">stages</span>: <span class="ident">HashMap::new</span>(),
-            <span class="ident">input_types</span>: <span class="ident">HashMap::new</span>(),
-            <span class="ident">output_types</span>: <span class="ident">HashMap::new</span>(),
+            <span class="ident">rune</span>,
+            <span class="ident">diags</span>,
         }
     }
 
-    <span class="doccomment">/// Report an error to the user.</span>
-    <span class="kw">fn</span> <span class="ident">error</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">msg</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">span</span>: <span class="ident">Span</span>) {
-        <span class="kw">let</span> <span class="ident">diag</span> <span class="op">=</span> <span class="ident">Diagnostic::error</span>()
-            .<span class="ident">with_message</span>(<span class="ident">msg</span>)
-            .<span class="ident">with_labels</span>(<span class="macro">vec!</span>[<span class="ident">Label::primary</span>((), <span class="ident">span</span>)]);
-        <span class="self">self</span>.<span class="ident">diags</span>.<span class="ident">push</span>(<span class="ident">diag</span>);
+    <span class="kw">fn</span> <span class="ident">register_name</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">id</span>: <span class="ident">HirId</span>, <span class="ident">definition</span>: <span class="ident">Span</span>) {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">original_definition_id</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">register</span>(<span class="ident">name</span>, <span class="ident">id</span>)
+        {
+            <span class="kw">let</span> <span class="ident">duplicate</span> <span class="op">=</span> <span class="ident">Label::primary</span>((), <span class="ident">range_span</span>(<span class="ident">definition</span>))
+                .<span class="ident">with_message</span>(<span class="string">&quot;Original definition here&quot;</span>);
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">labels</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="ident">duplicate</span>];
+
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">original_definition</span>) <span class="op">=</span>
+                <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">spans</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">original_definition_id</span>)
+            {
+                <span class="kw">let</span> <span class="ident">original</span> <span class="op">=</span>
+                    <span class="ident">Label::secondary</span>((), <span class="ident">range_span</span>(<span class="kw-2">*</span><span class="ident">original_definition</span>))
+                        .<span class="ident">with_message</span>(<span class="string">&quot;Original definition here&quot;</span>);
+                <span class="ident">labels</span>.<span class="ident">push</span>(<span class="ident">original</span>);
+            }
+
+            <span class="kw">let</span> <span class="ident">diag</span> <span class="op">=</span> <span class="ident">Diagnostic::error</span>()
+                .<span class="ident">with_message</span>(<span class="macro">format!</span>(<span class="string">&quot;\&quot;{}\&quot; is already defined&quot;</span>, <span class="ident">name</span>))
+                .<span class="ident">with_labels</span>(<span class="ident">labels</span>);
+            <span class="self">self</span>.<span class="ident">diags</span>.<span class="ident">push</span>(<span class="ident">diag</span>);
+        }
     }
 
-    <span class="doccomment">/// Report a warning to the user.</span>
-    <span class="kw">fn</span> <span class="ident">warn</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">msg</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">span</span>: <span class="ident">Span</span>) {
-        <span class="kw">let</span> <span class="ident">diag</span> <span class="op">=</span> <span class="ident">Diagnostic::warning</span>()
-            .<span class="ident">with_message</span>(<span class="ident">msg</span>)
-            .<span class="ident">with_labels</span>(<span class="macro">vec!</span>[<span class="ident">Label::primary</span>((), <span class="ident">span</span>)]);
-        <span class="self">self</span>.<span class="ident">diags</span>.<span class="ident">push</span>(<span class="ident">diag</span>);
+    <span class="kw">fn</span> <span class="ident">register_stages</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">pipeline</span>: <span class="kw-2">&amp;</span><span class="ident">IndexMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Stage</span><span class="op">&gt;</span>) {
+        <span class="kw">for</span> (<span class="ident">name</span>, <span class="ident">stage</span>) <span class="kw">in</span> <span class="ident">pipeline</span> {
+            <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">ids</span>.<span class="ident">next</span>();
+            <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">stages</span>.<span class="ident">insert</span>(
+                <span class="ident">id</span>,
+                <span class="ident">Node</span> {
+                    <span class="ident">stage</span>: <span class="ident">hir::Stage::from</span>(<span class="ident">stage</span>),
+                    <span class="ident">input_slots</span>: <span class="ident">Vec::new</span>(),
+                    <span class="ident">output_slots</span>: <span class="ident">Vec::new</span>(),
+                },
+            );
+            <span class="self">self</span>.<span class="ident">register_name</span>(<span class="ident">name</span>, <span class="ident">id</span>, <span class="ident">stage</span>.<span class="ident">span</span>());
+        }
     }
 
-    <span class="kw">fn</span> <span class="ident">load_runefile</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">runefile</span>: <span class="kw-2">&amp;</span><span class="ident">Runefile</span>) {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">instructions</span> <span class="op">=</span> <span class="ident">runefile</span>.<span class="ident">instructions</span>.<span class="ident">iter</span>();
+    <span class="kw">fn</span> <span class="ident">register_output_slots</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">pipeline</span>: <span class="kw-2">&amp;</span><span class="ident">IndexMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Stage</span><span class="op">&gt;</span>) {
+        <span class="kw">for</span> (<span class="ident">name</span>, <span class="ident">stage</span>) <span class="kw">in</span> <span class="ident">pipeline</span> {
+            <span class="kw">let</span> <span class="ident">node_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">get_id</span>(<span class="ident">name</span>).<span class="ident">unwrap</span>();
 
-        <span class="kw">match</span> <span class="ident">instructions</span>.<span class="ident">next</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">first_instruction</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">if</span> <span class="self">self</span>.<span class="ident">load_from</span>(<span class="ident">first_instruction</span>).<span class="ident">is_err</span>() {
-                    <span class="comment">// The first instruction was dodgy but we want to process it</span>
-                    <span class="comment">// anyway.</span>
-                    <span class="self">self</span>.<span class="ident">load_instruction</span>(<span class="ident">first_instruction</span>);
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">output_slots</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+
+            <span class="kw">for</span> <span class="ident">ty</span> <span class="kw">in</span> <span class="ident">stage</span>.<span class="ident">output_types</span>() {
+                <span class="kw">let</span> <span class="ident">element_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">intern_type</span>(<span class="ident">ty</span>);
+                <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">ids</span>.<span class="ident">next</span>();
+                <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">slots</span>.<span class="ident">insert</span>(
+                    <span class="ident">id</span>,
+                    <span class="ident">Slot</span> {
+                        <span class="ident">element_type</span>,
+                        <span class="ident">input_node</span>: <span class="ident">node_id</span>,
+                        <span class="ident">output_node</span>: <span class="ident">HirId::ERROR</span>,
+                    },
+                );
+                <span class="ident">output_slots</span>.<span class="ident">push</span>(<span class="ident">id</span>);
+            }
+
+            <span class="kw">let</span> <span class="ident">node</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">stages</span>.<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">node_id</span>).<span class="ident">unwrap</span>();
+            <span class="ident">node</span>.<span class="ident">output_slots</span> <span class="op">=</span> <span class="ident">output_slots</span>;
+        }
+    }
+
+    <span class="kw">fn</span> <span class="ident">construct_pipeline</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">pipeline</span>: <span class="kw-2">&amp;</span><span class="ident">IndexMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Stage</span><span class="op">&gt;</span>) {
+        <span class="kw">for</span> (<span class="ident">name</span>, <span class="ident">stage</span>) <span class="kw">in</span> <span class="ident">pipeline</span> {
+            <span class="kw">let</span> <span class="ident">node_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">get_id</span>(<span class="ident">name</span>).<span class="ident">unwrap</span>();
+
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">input_slots</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+
+            <span class="kw">for</span> <span class="ident">input</span> <span class="kw">in</span> <span class="ident">stage</span>.<span class="ident">inputs</span>() {
+                <span class="kw">let</span> <span class="ident">incoming_node_id</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">get_id</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>.<span class="ident">name</span>)
+                {
+                    <span class="prelude-val">Some</span>(<span class="ident">id</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">id</span>,
+                    <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="kw">let</span> <span class="ident">diag</span> <span class="op">=</span> <span class="ident">Diagnostic::error</span>().<span class="ident">with_message</span>(<span class="macro">format!</span>(
+                            <span class="string">&quot;No node associated with \&quot;{}\&quot;&quot;</span>,
+                            <span class="ident">input</span>
+                        ));
+                        <span class="self">self</span>.<span class="ident">diags</span>.<span class="ident">push</span>(<span class="ident">diag</span>);
+                        <span class="ident">input_slots</span>.<span class="ident">push</span>(<span class="ident">HirId::ERROR</span>);
+                        <span class="kw">continue</span>;
+                    },
+                };
+
+                <span class="kw">let</span> <span class="ident">incoming_node</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">stages</span>[<span class="kw-2">&amp;</span><span class="ident">incoming_node_id</span>];
+
+                <span class="kw">if</span> <span class="ident">incoming_node</span>.<span class="ident">output_slots</span>.<span class="ident">is_empty</span>() {
+                    <span class="kw">let</span> <span class="ident">diag</span> <span class="op">=</span> <span class="ident">Diagnostic::error</span>().<span class="ident">with_message</span>(<span class="macro">format!</span>(
+                            <span class="string">&quot;The \&quot;{}\&quot; stage tried to connect to \&quot;{}\&quot; but that stage doesn&#39;t have any outputs&quot;</span>,
+                            <span class="ident">name</span>,
+                            <span class="ident">input</span>
+                        ));
+                    <span class="self">self</span>.<span class="ident">diags</span>.<span class="ident">push</span>(<span class="ident">diag</span>);
+                    <span class="ident">input_slots</span>.<span class="ident">push</span>(<span class="ident">HirId::ERROR</span>);
+                    <span class="kw">continue</span>;
                 }
-            },
+
+                <span class="kw">let</span> <span class="ident">input_index</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">index</span>.<span class="ident">unwrap_or</span>(<span class="number">0</span>);
+                <span class="kw">match</span> <span class="ident">incoming_node</span>.<span class="ident">output_slots</span>.<span class="ident">get</span>(<span class="ident">input_index</span>) {
+                    <span class="prelude-val">Some</span>(<span class="ident">slot_id</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="ident">input_slots</span>.<span class="ident">push</span>(<span class="kw-2">*</span><span class="ident">slot_id</span>);
+                        <span class="kw">let</span> <span class="ident">slot</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">slots</span>.<span class="ident">get_mut</span>(<span class="ident">slot_id</span>).<span class="ident">unwrap</span>();
+                        <span class="ident">slot</span>.<span class="ident">output_node</span> <span class="op">=</span> <span class="ident">node_id</span>;
+                    },
+                    <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="kw">let</span> <span class="ident">diag</span> <span class="op">=</span> <span class="ident">Diagnostic::error</span>().<span class="ident">with_message</span>(<span class="macro">format!</span>(
+                            <span class="string">&quot;The \&quot;{}\&quot; stage tried to connect to \&quot;{}\&quot; but that stage only has {} outputs&quot;</span>,
+                            <span class="ident">name</span>,
+                            <span class="ident">input</span>,
+                            <span class="ident">incoming_node</span>.<span class="ident">output_slots</span>.<span class="ident">len</span>(),
+                        ));
+                        <span class="self">self</span>.<span class="ident">diags</span>.<span class="ident">push</span>(<span class="ident">diag</span>);
+                        <span class="ident">input_slots</span>.<span class="ident">push</span>(<span class="ident">HirId::ERROR</span>);
+                        <span class="kw">continue</span>;
+                    },
+                }
+            }
+
+            <span class="kw">let</span> <span class="ident">node</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">stages</span>.<span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="ident">node_id</span>).<span class="ident">unwrap</span>();
+            <span class="ident">node</span>.<span class="ident">input_slots</span> <span class="op">=</span> <span class="ident">input_slots</span>;
+        }
+    }
+
+    <span class="kw">fn</span> <span class="ident">intern_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HirId</span> {
+        <span class="kw">let</span> <span class="ident">underlying_type</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">primitive_type</span>(<span class="kw-2">&amp;</span><span class="ident">ty</span>.<span class="ident">name</span>) {
+            <span class="prelude-val">Some</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">p</span>,
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">self</span>.<span class="ident">error</span>(
-                    <span class="string">&quot;A Runefile must contain at least a FROM instruction&quot;</span>,
-                    <span class="ident">runefile</span>.<span class="ident">span</span>,
-                );
-            },
-        }
-
-        <span class="kw">for</span> <span class="ident">instruction</span> <span class="kw">in</span> <span class="ident">instructions</span> {
-            <span class="self">self</span>.<span class="ident">load_instruction</span>(<span class="ident">instruction</span>);
-        }
-    }
-
-    <span class="kw">fn</span> <span class="ident">load_from</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">instruction</span>: <span class="kw-2">&amp;</span><span class="ident">Instruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), ()<span class="op">&gt;</span> {
-        <span class="kw">match</span> <span class="ident">instruction</span> {
-            <span class="ident">Instruction::From</span>(<span class="ident">f</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">base_image</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">f</span>.<span class="ident">image</span>.<span class="ident">clone</span>());
-                <span class="prelude-val">Ok</span>(())
-            },
-            <span class="ident">other</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">self</span>.<span class="ident">error</span>(
-                    <span class="string">&quot;Runefiles should start with a FROM instruction&quot;</span>,
-                    <span class="ident">other</span>.<span class="ident">span</span>(),
-                );
-
-                <span class="prelude-val">Err</span>(())
-            },
-        }
-    }
-
-    <span class="kw">fn</span> <span class="ident">load_instruction</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">instruction</span>: <span class="kw-2">&amp;</span><span class="ident">Instruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HirId</span> {
-        <span class="kw">match</span> <span class="ident">instruction</span> {
-            <span class="ident">Instruction::From</span>(<span class="ident">f</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">self</span>.<span class="ident">error</span>(
-                    <span class="string">&quot;A FROM instruction can only be at the top of a Runefile&quot;</span>,
-                    <span class="ident">f</span>.<span class="ident">span</span>,
-                );
-                <span class="ident">HirId::ERROR</span>
-            },
-            <span class="ident">Instruction::Model</span>(<span class="ident">m</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">load_model</span>(<span class="ident">m</span>),
-            <span class="ident">Instruction::Capability</span>(<span class="ident">c</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">load_capability</span>(<span class="ident">c</span>),
-            <span class="ident">Instruction::Run</span>(<span class="ident">r</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">load_run</span>(<span class="ident">r</span>),
-            <span class="ident">Instruction::ProcBlock</span>(<span class="ident">p</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">load_proc_block</span>(<span class="ident">p</span>),
-            <span class="ident">Instruction::Out</span>(<span class="ident">out</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">load_out</span>(<span class="ident">out</span>),
-        }
-    }
-
-    <span class="kw">fn</span> <span class="ident">load_model</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">model</span>: <span class="kw-2">&amp;</span><span class="ident">ModelInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HirId</span> {
-        <span class="kw">let</span> (<span class="ident">id</span>, <span class="ident">node_ix</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">add_stage</span>(<span class="ident">Model</span> {
-            <span class="ident">model_file</span>: <span class="ident">PathBuf::from</span>(<span class="kw-2">&amp;</span><span class="ident">model</span>.<span class="ident">file</span>),
-        });
-
-        <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">spans</span>.<span class="ident">insert</span>(<span class="ident">id</span>, <span class="ident">model</span>.<span class="ident">span</span>);
-        <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">register</span>(<span class="kw-2">&amp;</span><span class="ident">model</span>.<span class="ident">name</span>.<span class="ident">value</span>, <span class="ident">id</span>);
-
-        <span class="kw">let</span> <span class="ident">input_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">interpret_type</span>(<span class="kw-2">&amp;</span><span class="ident">model</span>.<span class="ident">input_type</span>);
-        <span class="self">self</span>.<span class="ident">input_types</span>.<span class="ident">insert</span>(<span class="ident">node_ix</span>, <span class="ident">input_type</span>);
-        <span class="kw">let</span> <span class="ident">output_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">interpret_type</span>(<span class="kw-2">&amp;</span><span class="ident">model</span>.<span class="ident">output_type</span>);
-        <span class="self">self</span>.<span class="ident">output_types</span>.<span class="ident">insert</span>(<span class="ident">node_ix</span>, <span class="ident">output_type</span>);
-        <span class="ident">id</span>
-    }
-
-    <span class="kw">fn</span> <span class="ident">load_capability</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">capability</span>: <span class="kw-2">&amp;</span><span class="ident">CapabilityInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HirId</span> {
-        <span class="kw">let</span> <span class="ident">kind</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">capability</span>.<span class="ident">kind</span>.<span class="ident">value</span>.<span class="ident">as_str</span>() {
-            <span class="string">&quot;RAND&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SourceKind::Random</span>,
-            <span class="string">&quot;ACCEL&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SourceKind::Accelerometer</span>,
-            <span class="string">&quot;SOUND&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SourceKind::Sound</span>,
-            <span class="string">&quot;IMAGE&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SourceKind::Image</span>,
-            <span class="string">&quot;RAW&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SourceKind::Raw</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">self</span>.<span class="ident">error</span>(
-                    <span class="string">&quot;This isn&#39;t one of the builtin capabilities&quot;</span>,
-                    <span class="ident">capability</span>.<span class="ident">kind</span>.<span class="ident">span</span>,
-                );
-                <span class="kw">return</span> <span class="ident">HirId::ERROR</span>;
+                <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;Unknown type: {}&quot;</span>, <span class="ident">ty</span>.<span class="ident">name</span>);
+                <span class="kw">let</span> <span class="ident">diag</span> <span class="op">=</span> <span class="ident">Diagnostic::warning</span>().<span class="ident">with_message</span>(<span class="ident">msg</span>);
+                <span class="self">self</span>.<span class="ident">diags</span>.<span class="ident">push</span>(<span class="ident">diag</span>);
+                <span class="kw">return</span> <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">unknown_type</span>;
             },
         };
 
-        <span class="kw">let</span> (<span class="ident">id</span>, <span class="ident">node_ix</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">add_stage</span>(<span class="ident">Source</span> {
-            <span class="ident">kind</span>,
-            <span class="ident">parameters</span>: <span class="ident">args_to_parameters</span>(<span class="kw-2">&amp;</span><span class="ident">capability</span>.<span class="ident">parameters</span>),
-        });
+        <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">ty</span>.<span class="ident">dimensions</span>.<span class="ident">is_empty</span>() {
+            <span class="ident">hir::Type::Primitive</span>(<span class="ident">underlying_type</span>)
+        } <span class="kw">else</span> {
+            <span class="ident">hir::Type::Buffer</span> {
+                <span class="ident">underlying_type</span>: <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">get_id</span>(<span class="ident">underlying_type</span>),
+                <span class="ident">dimensions</span>: <span class="ident">ty</span>.<span class="ident">dimensions</span>.<span class="ident">clone</span>(),
+            }
+        };
 
-        <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">spans</span>.<span class="ident">insert</span>(<span class="ident">id</span>, <span class="ident">capability</span>.<span class="ident">span</span>);
-        <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">register</span>(<span class="kw-2">&amp;</span><span class="ident">capability</span>.<span class="ident">name</span>.<span class="ident">value</span>, <span class="ident">id</span>);
-
-        <span class="kw">let</span> <span class="ident">output_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">interpret_type</span>(<span class="kw-2">&amp;</span><span class="ident">capability</span>.<span class="ident">output_type</span>);
-        <span class="self">self</span>.<span class="ident">output_types</span>.<span class="ident">insert</span>(<span class="ident">node_ix</span>, <span class="ident">output_type</span>);
-
-        <span class="ident">id</span>
-    }
-
-    <span class="kw">fn</span> <span class="ident">interpret_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ty</span>: <span class="kw-2">&amp;</span><span class="kw">crate</span><span class="ident">::ast::Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HirId</span> {
-        <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">ty</span>.<span class="ident">kind</span> {
-            <span class="kw">crate</span><span class="ident">::ast::TypeKind::Inferred</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">unknown_type</span>,
-            <span class="kw">crate</span><span class="ident">::ast::TypeKind::Named</span>(<span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">underlying_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">primitive_type</span>(<span class="ident">name</span>);
-
-                <span class="kw">if</span> <span class="ident">underlying_type</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">string</span> {
-                    <span class="kw">return</span> <span class="ident">underlying_type</span>;
-                }
-
-                <span class="comment">// All non-string types are passed around as an array, so a</span>
-                <span class="comment">// plain `T` gets turned into a `[T; 1]`.</span>
-                <span class="self">self</span>.<span class="ident">intern_type</span>(<span class="ident">Type::Buffer</span> {
-                    <span class="ident">underlying_type</span>,
-                    <span class="ident">dimensions</span>: <span class="macro">vec!</span>[<span class="number">1</span>],
-                })
-            },
-            <span class="kw">crate</span><span class="ident">::ast::TypeKind::Buffer</span> {
-                <span class="ident">type_name</span>,
-                <span class="ident">dimensions</span>,
-            } <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> <span class="ident">underlying_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">primitive_type</span>(<span class="ident">type_name</span>);
-                <span class="self">self</span>.<span class="ident">intern_type</span>(<span class="ident">Type::Buffer</span> {
-                    <span class="ident">underlying_type</span>,
-                    <span class="ident">dimensions</span>: <span class="ident">dimensions</span>.<span class="ident">clone</span>(),
-                })
-            },
-        }
-    }
-
-    <span class="doccomment">/// Add a type to the rune, returning its [`HirId`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Adding the same type multiple times is guaranteed to return the same</span>
-    <span class="doccomment">/// [`HirId`].</span>
-    <span class="kw">fn</span> <span class="ident">intern_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ty</span>: <span class="ident">Type</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HirId</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">types</span>.<span class="ident">iter</span>().<span class="ident">find</span>(<span class="op">|</span>(<span class="kw">_</span>, <span class="ident">t</span>)<span class="op">|</span> <span class="kw-2">*</span><span class="kw-2">*</span><span class="ident">t</span> <span class="op">=</span><span class="op">=</span> <span class="ident">ty</span>) {
             <span class="prelude-val">Some</span>((<span class="ident">id</span>, <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="ident">id</span>,
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
@@ -1057,611 +955,547 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">primitive_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ident</span>: <span class="kw-2">&amp;</span><span class="ident">Ident</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HirId</span> {
-        <span class="kw">match</span> <span class="ident">ident</span>.<span class="ident">value</span>.<span class="ident">as_str</span>() {
-            <span class="string">&quot;u8&quot;</span> <span class="op">|</span> <span class="string">&quot;U8&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">u8</span>,
-            <span class="string">&quot;i8&quot;</span> <span class="op">|</span> <span class="string">&quot;I8&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">i8</span>,
-            <span class="string">&quot;u16&quot;</span> <span class="op">|</span> <span class="string">&quot;U16&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">u16</span>,
-            <span class="string">&quot;i16&quot;</span> <span class="op">|</span> <span class="string">&quot;I16&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">i16</span>,
-            <span class="string">&quot;u32&quot;</span> <span class="op">|</span> <span class="string">&quot;U32&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">u32</span>,
-            <span class="string">&quot;i32&quot;</span> <span class="op">|</span> <span class="string">&quot;I32&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">i32</span>,
-            <span class="string">&quot;u64&quot;</span> <span class="op">|</span> <span class="string">&quot;U64&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">u64</span>,
-            <span class="string">&quot;i64&quot;</span> <span class="op">|</span> <span class="string">&quot;I64&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">i64</span>,
-            <span class="string">&quot;f32&quot;</span> <span class="op">|</span> <span class="string">&quot;F32&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">f32</span>,
-            <span class="string">&quot;f64&quot;</span> <span class="op">|</span> <span class="string">&quot;F64&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">f64</span>,
-            <span class="string">&quot;utf8&quot;</span> <span class="op">|</span> <span class="string">&quot;UTF8&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">string</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">self</span>.<span class="ident">warn</span>(<span class="string">&quot;Unknown type&quot;</span>, <span class="ident">ident</span>.<span class="ident">span</span>);
-                <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">unknown_type</span>
-            },
+    <span class="kw">fn</span> <span class="ident">primitive_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Primitive</span><span class="op">&gt;</span> {
+        <span class="kw">match</span> <span class="ident">name</span> {
+            <span class="string">&quot;u8&quot;</span> <span class="op">|</span> <span class="string">&quot;U8&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Primitive::U8</span>),
+            <span class="string">&quot;i8&quot;</span> <span class="op">|</span> <span class="string">&quot;I8&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Primitive::I8</span>),
+            <span class="string">&quot;u16&quot;</span> <span class="op">|</span> <span class="string">&quot;U16&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Primitive::U16</span>),
+            <span class="string">&quot;i16&quot;</span> <span class="op">|</span> <span class="string">&quot;I16&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Primitive::I16</span>),
+            <span class="string">&quot;u32&quot;</span> <span class="op">|</span> <span class="string">&quot;U32&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Primitive::U32</span>),
+            <span class="string">&quot;i32&quot;</span> <span class="op">|</span> <span class="string">&quot;I32&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Primitive::I32</span>),
+            <span class="string">&quot;u64&quot;</span> <span class="op">|</span> <span class="string">&quot;U64&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Primitive::U64</span>),
+            <span class="string">&quot;i64&quot;</span> <span class="op">|</span> <span class="string">&quot;I64&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Primitive::I64</span>),
+            <span class="string">&quot;f32&quot;</span> <span class="op">|</span> <span class="string">&quot;F32&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Primitive::F32</span>),
+            <span class="string">&quot;f64&quot;</span> <span class="op">|</span> <span class="string">&quot;F64&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Primitive::F64</span>),
+            <span class="string">&quot;utf8&quot;</span> <span class="op">|</span> <span class="string">&quot;UTF8&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">Primitive::String</span>),
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_named</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw-2">&amp;</span><span class="ident">Ident</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HirId</span> {
-        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">get_id</span>(<span class="kw-2">&amp;</span><span class="ident">name</span>.<span class="ident">value</span>) {
-            <span class="prelude-val">Some</span>(<span class="ident">id</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">id</span>,
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">self</span>.<span class="ident">error</span>(<span class="string">&quot;Unknown name&quot;</span>, <span class="ident">name</span>.<span class="ident">span</span>);
-                <span class="ident">HirId::ERROR</span>
-            },
-        }
-    }
+    <span class="kw">fn</span> <span class="ident">check_for_loops</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">cycle</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">next_cycle</span>() {
+            <span class="kw">let</span> (<span class="ident">first</span>, <span class="ident">middle</span>) <span class="op">=</span> <span class="kw">match</span> <span class="ident">cycle</span>.<span class="ident">as_slice</span>() {
+                [<span class="ident">first</span>, <span class="ident">middle</span> @ ..] <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">first</span>, <span class="ident">middle</span>),
+                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(<span class="string">&quot;A cycle must have at least 2 items&quot;</span>),
+            };
 
-    <span class="kw">fn</span> <span class="ident">load_run</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">run</span>: <span class="kw-2">&amp;</span><span class="ident">RunInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HirId</span> {
-        <span class="kw">let</span> <span class="ident">steps</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">run</span>.<span class="ident">steps</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">name</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">get_named</span>(<span class="ident">name</span>)).<span class="ident">collect</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diag</span> <span class="op">=</span> <span class="ident">Diagnostic::error</span>().<span class="ident">with_message</span>(<span class="macro">format!</span>(
+                <span class="string">&quot;Cycle detected when checking \&quot;{}\&quot;&quot;</span>,
+                <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">get_name</span>(<span class="kw-2">*</span><span class="ident">first</span>).<span class="ident">unwrap</span>()
+            ));
 
-        <span class="kw">if</span> <span class="ident">steps</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">id</span><span class="op">|</span> <span class="ident">id</span>.<span class="ident">is_error</span>()) {
-            <span class="comment">// One of the steps was unknown so it doesn&#39;t make sense to keep</span>
-            <span class="comment">// going.</span>
-            <span class="kw">return</span> <span class="ident">HirId::ERROR</span>;
-        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">steps</span>.<span class="ident">is_empty</span>() {
-            <span class="self">self</span>.<span class="ident">error</span>(<span class="string">&quot;A RUN instruction can&#39;t be empty&quot;</span>, <span class="ident">run</span>.<span class="ident">span</span>);
-            <span class="kw">return</span> <span class="ident">HirId::ERROR</span>;
-        }
+            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">span</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">spans</span>.<span class="ident">get</span>(<span class="ident">first</span>) {
+                <span class="ident">diag</span> <span class="op">=</span> <span class="ident">diag</span>.<span class="ident">with_labels</span>(<span class="macro">vec!</span>[<span class="ident">Label::primary</span>((), <span class="kw-2">*</span><span class="ident">span</span>)]);
+            }
 
-        <span class="kw">for</span> <span class="ident">window</span> <span class="kw">in</span> <span class="ident">steps</span>.<span class="ident">windows</span>(<span class="number">2</span>) {
-            <span class="kw">let</span> <span class="ident">previous_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">hir_id_to_node_index</span>[<span class="kw-2">&amp;</span><span class="ident">window</span>[<span class="number">0</span>]];
-            <span class="kw">let</span> <span class="ident">next_id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">hir_id_to_node_index</span>[<span class="kw-2">&amp;</span><span class="ident">window</span>[<span class="number">1</span>]];
-            <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">graph</span>.<span class="ident">add_edge</span>(
-                <span class="ident">previous_id</span>,
-                <span class="ident">next_id</span>,
-                <span class="ident">Edge</span> {
-                    <span class="ident">type_id</span>: <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">unknown_type</span>,
-                },
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">notes</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
+
+            <span class="kw">for</span> <span class="ident">middle_id</span> <span class="kw">in</span> <span class="ident">middle</span> {
+                <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="macro">format!</span>(
+                    <span class="string">&quot;... which receives input from \&quot;{}\&quot;...&quot;</span>,
+                    <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">get_name</span>(<span class="kw-2">*</span><span class="ident">middle_id</span>).<span class="ident">unwrap</span>()
+                );
+                <span class="ident">notes</span>.<span class="ident">push</span>(<span class="ident">msg</span>);
+            }
+
+            <span class="kw">let</span> <span class="ident">closing_message</span> <span class="op">=</span> <span class="macro">format!</span>(
+                <span class="string">&quot;... which receives input from \&quot;{}\&quot;, completing the cycle.&quot;</span>,
+                <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">get_name</span>(<span class="kw-2">*</span><span class="ident">first</span>).<span class="ident">unwrap</span>()
             );
-        }
+            <span class="ident">notes</span>.<span class="ident">push</span>(<span class="ident">closing_message</span>);
 
-        <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">ids</span>.<span class="ident">next</span>();
-        <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">pipelines</span>.<span class="ident">insert</span>(
-            <span class="ident">id</span>,
-            <span class="ident">Pipeline</span> {
-                <span class="ident">edges</span>: <span class="ident">steps</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>(),
-            },
-        );
-
-        <span class="comment">// TODO: Update the Runefile syntax so we can name a pipeline</span>
-
-        <span class="ident">id</span>
-    }
-
-    <span class="kw">fn</span> <span class="ident">load_proc_block</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">proc_block</span>: <span class="kw-2">&amp;</span><span class="ident">ProcBlockInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HirId</span> {
-        <span class="kw">let</span> (<span class="ident">id</span>, <span class="ident">node_ix</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">add_stage</span>(<span class="ident">ProcBlock</span> {
-            <span class="ident">path</span>: <span class="ident">proc_block</span>.<span class="ident">path</span>.<span class="ident">clone</span>(),
-            <span class="ident">parameters</span>: <span class="ident">args_to_parameters</span>(<span class="kw-2">&amp;</span><span class="ident">proc_block</span>.<span class="ident">params</span>),
-        });
-        <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">register</span>(<span class="kw-2">&amp;</span><span class="ident">proc_block</span>.<span class="ident">name</span>.<span class="ident">value</span>, <span class="ident">id</span>);
-        <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">spans</span>.<span class="ident">insert</span>(<span class="ident">id</span>, <span class="ident">proc_block</span>.<span class="ident">span</span>);
-
-        <span class="kw">let</span> <span class="ident">input_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">interpret_type</span>(<span class="kw-2">&amp;</span><span class="ident">proc_block</span>.<span class="ident">input_type</span>);
-        <span class="self">self</span>.<span class="ident">input_types</span>.<span class="ident">insert</span>(<span class="ident">node_ix</span>, <span class="ident">input_type</span>);
-        <span class="kw">let</span> <span class="ident">output_type</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">interpret_type</span>(<span class="kw-2">&amp;</span><span class="ident">proc_block</span>.<span class="ident">output_type</span>);
-        <span class="self">self</span>.<span class="ident">output_types</span>.<span class="ident">insert</span>(<span class="ident">node_ix</span>, <span class="ident">output_type</span>);
-
-        <span class="ident">id</span>
-    }
-
-    <span class="kw">fn</span> <span class="ident">load_out</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">out</span>: <span class="kw-2">&amp;</span><span class="ident">OutInstruction</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HirId</span> {
-        <span class="kw">match</span> <span class="ident">out</span>.<span class="ident">out_type</span>.<span class="ident">value</span>.<span class="ident">as_str</span>() {
-            <span class="string">&quot;SERIAL&quot;</span> <span class="op">|</span> <span class="string">&quot;serial&quot;</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="kw">let</span> (<span class="ident">id</span>, <span class="ident">node_ix</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">add_stage</span>(<span class="ident">Sink</span> {
-                    <span class="ident">kind</span>: <span class="kw">crate</span><span class="ident">::hir::SinkKind::Serial</span>,
-                });
-                <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">spans</span>.<span class="ident">insert</span>(<span class="ident">id</span>, <span class="ident">out</span>.<span class="ident">span</span>);
-                <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">register</span>(<span class="string">&quot;serial&quot;</span>, <span class="ident">id</span>);
-
-                <span class="self">self</span>.<span class="ident">input_types</span>.<span class="ident">insert</span>(<span class="ident">node_ix</span>, <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">unknown_type</span>);
-
-                <span class="ident">id</span>
-            },
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="self">self</span>.<span class="ident">error</span>(<span class="string">&quot;Unknown OUT type&quot;</span>, <span class="ident">out</span>.<span class="ident">out_type</span>.<span class="ident">span</span>);
-
-                <span class="ident">HirId::ERROR</span>
-            },
+            <span class="self">self</span>.<span class="ident">diags</span>.<span class="ident">push</span>(<span class="ident">diag</span>.<span class="ident">with_notes</span>(<span class="ident">notes</span>));
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">add_stage</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">stage</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Stage</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">HirId</span>, <span class="ident">NodeIndex</span>) {
-        <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">ids</span>.<span class="ident">next</span>();
-        <span class="kw">let</span> <span class="ident">node_ix</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">graph</span>.<span class="ident">add_node</span>(<span class="ident">stage</span>.<span class="ident">into</span>());
+    <span class="kw">fn</span> <span class="ident">next_cycle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">HirId</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="comment">// https://www.geeksforgeeks.org/detect-cycle-in-a-graph/</span>
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stack</span> <span class="op">=</span> <span class="ident">VecDeque::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">visited</span> <span class="op">=</span> <span class="ident">HashSet::new</span>();
 
-        <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">node_index_to_hir_id</span>.<span class="ident">insert</span>(<span class="ident">node_ix</span>, <span class="ident">id</span>);
-        <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">hir_id_to_node_index</span>.<span class="ident">insert</span>(<span class="ident">id</span>, <span class="ident">node_ix</span>);
-
-        (<span class="ident">id</span>, <span class="ident">node_ix</span>)
-    }
-
-    <span class="kw">fn</span> <span class="ident">infer_types</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">let</span> <span class="ident">Analyser</span> {
-            <span class="ident">diags</span>,
-            <span class="ident">rune</span>: <span class="ident">Rune</span> { <span class="ident">graph</span>, <span class="ident">types</span>, .. },
-            <span class="ident">input_types</span>,
-            <span class="ident">output_types</span>,
-            ..
-        } <span class="op">=</span> <span class="self">self</span>;
-
-        <span class="kw">crate</span><span class="ident">::type_inference::infer</span>(
-            <span class="ident">graph</span>,
-            <span class="ident">input_types</span>,
-            <span class="ident">output_types</span>,
-            <span class="ident">types</span>,
-            <span class="kw-2">*</span><span class="ident">diags</span>,
-        );
-
-        <span class="self">self</span>.<span class="ident">warn_on_unknown_type</span>();
-    }
-
-    <span class="kw">fn</span> <span class="ident">warn_on_unknown_type</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
-        <span class="kw">let</span> <span class="ident">graph</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">graph</span>;
-
-        <span class="kw">let</span> <span class="ident">edges_with_incomplete_type</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">graph</span>
-            .<span class="ident">edge_references</span>()
-            .<span class="ident">filter</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">weight</span>().<span class="ident">type_id</span> <span class="op">=</span><span class="op">=</span> <span class="self">self</span>.<span class="ident">builtins</span>.<span class="ident">unknown_type</span>)
-            .<span class="ident">collect</span>();
-
-        <span class="kw">for</span> <span class="ident">edge</span> <span class="kw">in</span> <span class="ident">edges_with_incomplete_type</span> {
-            <span class="kw">let</span> (<span class="ident">prev</span>, <span class="ident">next</span>) <span class="op">=</span> <span class="ident">graph</span>.<span class="ident">edge_endpoints</span>(<span class="ident">edge</span>.<span class="ident">id</span>()).<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diag</span> <span class="op">=</span> <span class="ident">Diagnostic::warning</span>()
-                .<span class="ident">with_message</span>(<span class="string">&quot;Unable to determine the type&quot;</span>)
-                .<span class="ident">with_notes</span>(<span class="macro">vec!</span>[<span class="ident">String::from</span>(
-                    <span class="string">&quot;See &lt;https://github.com/hotg-ai/rune/issues/33&gt;&quot;</span>,
-                )]);
-
-            <span class="kw">let</span> <span class="ident">prev</span> <span class="op">=</span> <span class="ident">HirId::new</span>(<span class="ident">prev</span>.<span class="ident">index</span>());
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">span</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">spans</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">prev</span>) {
-                <span class="ident">diag</span> <span class="op">=</span> <span class="ident">diag</span>.<span class="ident">with_labels</span>(<span class="macro">vec!</span>[<span class="ident">Label::primary</span>((), <span class="kw-2">*</span><span class="ident">span</span>)
-                    .<span class="ident">with_message</span>(<span class="string">&quot;Consider specifying this output type&quot;</span>)]);
+        <span class="kw">for</span> <span class="ident">id</span> <span class="kw">in</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">stages</span>.<span class="ident">keys</span>().<span class="ident">copied</span>() {
+            <span class="kw">if</span> <span class="ident">detect_cycles</span>(<span class="ident">id</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">rune</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">visited</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">stack</span>) {
+                <span class="kw">return</span> <span class="prelude-val">Some</span>(<span class="ident">stack</span>.<span class="ident">into</span>());
             }
-
-            <span class="kw">let</span> <span class="ident">next</span> <span class="op">=</span> <span class="ident">HirId::new</span>(<span class="ident">next</span>.<span class="ident">index</span>());
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">span</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">spans</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">next</span>) {
-                <span class="ident">diag</span> <span class="op">=</span> <span class="ident">diag</span>.<span class="ident">with_labels</span>(<span class="macro">vec!</span>[<span class="ident">Label::primary</span>((), <span class="kw-2">*</span><span class="ident">span</span>)
-                    .<span class="ident">with_message</span>(<span class="string">&quot;Consider specifying this intput type&quot;</span>)]);
-            }
-
-            <span class="self">self</span>.<span class="ident">diags</span>.<span class="ident">push</span>(<span class="ident">diag</span>);
         }
+
+        <span class="prelude-val">None</span>
     }
 }
 
-<span class="kw">fn</span> <span class="ident">args_to_parameters</span>(
-    <span class="ident">parameters</span>: <span class="kw-2">&amp;</span>[<span class="ident">Argument</span>],
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">ArgumentValue</span><span class="op">&gt;</span> {
-    <span class="ident">parameters</span>
+<span class="kw">fn</span> <span class="ident">detect_cycles</span>(
+    <span class="ident">id</span>: <span class="ident">HirId</span>,
+    <span class="ident">rune</span>: <span class="kw-2">&amp;</span><span class="ident">Rune</span>,
+    <span class="ident">visited</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">HirId</span><span class="op">&gt;</span>,
+    <span class="ident">stack</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">VecDeque</span><span class="op">&lt;</span><span class="ident">HirId</span><span class="op">&gt;</span>,
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">if</span> <span class="ident">stack</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>) {
+        <span class="comment">// We&#39;ve detected a cycle, remove everything before our id so the stack</span>
+        <span class="comment">// is left just containing the cycle</span>
+        <span class="kw">while</span> <span class="ident">stack</span>.<span class="ident">front</span>() <span class="op">!</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>) {
+            <span class="ident">stack</span>.<span class="ident">pop_front</span>();
+        }
+
+        <span class="kw">return</span> <span class="bool-val">true</span>;
+    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">visited</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>) {
+        <span class="kw">return</span> <span class="bool-val">false</span>;
+    }
+
+    <span class="ident">visited</span>.<span class="ident">insert</span>(<span class="ident">id</span>);
+    <span class="ident">stack</span>.<span class="ident">push_back</span>(<span class="ident">id</span>);
+
+    <span class="kw">let</span> <span class="ident">incoming_nodes</span> <span class="op">=</span> <span class="ident">rune</span>.<span class="ident">stages</span>[<span class="kw-2">&amp;</span><span class="ident">id</span>]
+        .<span class="ident">input_slots</span>
         .<span class="ident">iter</span>()
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">arg</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">key</span> <span class="op">=</span> <span class="ident">arg</span>.<span class="ident">name</span>.<span class="ident">value</span>.<span class="ident">replace</span>(<span class="string">&quot;-&quot;</span>, <span class="string">&quot;_&quot;</span>);
-            (<span class="ident">key</span>, <span class="ident">arg</span>.<span class="ident">value</span>.<span class="ident">clone</span>())
-        })
-        .<span class="ident">collect</span>()
-}
+        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">slot_id</span><span class="op">|</span> <span class="ident">rune</span>.<span class="ident">slots</span>[<span class="ident">slot_id</span>].<span class="ident">input_node</span>);
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">HirIds</span> {
-    <span class="ident">last_id</span>: <span class="ident">HirId</span>,
-}
-
-<span class="kw">impl</span> <span class="ident">HirIds</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">HirIds</span> {
-            <span class="ident">last_id</span>: <span class="ident">HirId::ERROR</span>,
+    <span class="kw">for</span> <span class="ident">incoming_node</span> <span class="kw">in</span> <span class="ident">incoming_nodes</span> {
+        <span class="kw">if</span> <span class="ident">detect_cycles</span>(<span class="ident">incoming_node</span>, <span class="ident">rune</span>, <span class="ident">visited</span>, <span class="ident">stack</span>) {
+            <span class="kw">return</span> <span class="bool-val">true</span>;
         }
     }
 
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HirId</span> {
-        <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">last_id</span>.<span class="ident">next</span>();
-        <span class="self">self</span>.<span class="ident">last_id</span> <span class="op">=</span> <span class="ident">id</span>;
-        <span class="ident">id</span>
-    }
-}
+    <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">stack</span>.<span class="ident">pop_back</span>();
+    <span class="macro">debug_assert_eq!</span>(<span class="ident">got</span>, <span class="prelude-val">Some</span>(<span class="ident">id</span>));
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>)]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">Builtins</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">unknown_type</span>: <span class="ident">HirId</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">u8</span>: <span class="ident">HirId</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">i8</span>: <span class="ident">HirId</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">u16</span>: <span class="ident">HirId</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">i16</span>: <span class="ident">HirId</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">u32</span>: <span class="ident">HirId</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">i32</span>: <span class="ident">HirId</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">u64</span>: <span class="ident">HirId</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">i64</span>: <span class="ident">HirId</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">f32</span>: <span class="ident">HirId</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">f64</span>: <span class="ident">HirId</span>,
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">string</span>: <span class="ident">HirId</span>,
-}
-
-<span class="kw">impl</span> <span class="ident">Builtins</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">ids</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">HirIds</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="ident">Builtins</span> {
-            <span class="ident">unknown_type</span>: <span class="ident">ids</span>.<span class="ident">next</span>(),
-            <span class="ident">u8</span>: <span class="ident">ids</span>.<span class="ident">next</span>(),
-            <span class="ident">i8</span>: <span class="ident">ids</span>.<span class="ident">next</span>(),
-            <span class="ident">u16</span>: <span class="ident">ids</span>.<span class="ident">next</span>(),
-            <span class="ident">i16</span>: <span class="ident">ids</span>.<span class="ident">next</span>(),
-            <span class="ident">u32</span>: <span class="ident">ids</span>.<span class="ident">next</span>(),
-            <span class="ident">i32</span>: <span class="ident">ids</span>.<span class="ident">next</span>(),
-            <span class="ident">u64</span>: <span class="ident">ids</span>.<span class="ident">next</span>(),
-            <span class="ident">i64</span>: <span class="ident">ids</span>.<span class="ident">next</span>(),
-            <span class="ident">f32</span>: <span class="ident">ids</span>.<span class="ident">next</span>(),
-            <span class="ident">f64</span>: <span class="ident">ids</span>.<span class="ident">next</span>(),
-            <span class="ident">string</span>: <span class="ident">ids</span>.<span class="ident">next</span>(),
-        }
-    }
-
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">copy_into</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">rune</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Rune</span>) {
-        <span class="self">self</span>.<span class="ident">for_each</span>(<span class="op">|</span><span class="ident">id</span>, <span class="ident">ty</span><span class="op">|</span> {
-            <span class="ident">rune</span>.<span class="ident">types</span>.<span class="ident">insert</span>(<span class="ident">id</span>, <span class="ident">ty</span>);
-        });
-    }
-
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">for_each</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">f</span>: <span class="kw">impl</span> <span class="ident">FnMut</span>(<span class="ident">HirId</span>, <span class="ident">Type</span>)) {
-        <span class="kw">let</span> <span class="ident">Builtins</span> {
-            <span class="ident">unknown_type</span>,
-            <span class="ident">u8</span>,
-            <span class="ident">i8</span>,
-            <span class="ident">u16</span>,
-            <span class="ident">i16</span>,
-            <span class="ident">u32</span>,
-            <span class="ident">i32</span>,
-            <span class="ident">u64</span>,
-            <span class="ident">i64</span>,
-            <span class="ident">f32</span>,
-            <span class="ident">f64</span>,
-            <span class="ident">string</span>,
-        } <span class="op">=</span> <span class="kw-2">*</span><span class="self">self</span>;
-
-        <span class="ident">f</span>(<span class="ident">unknown_type</span>, <span class="ident">Type::Unknown</span>);
-        <span class="ident">f</span>(<span class="ident">u8</span>, <span class="ident">Type::Primitive</span>(<span class="ident">Primitive::U8</span>));
-        <span class="ident">f</span>(<span class="ident">i8</span>, <span class="ident">Type::Primitive</span>(<span class="ident">Primitive::I8</span>));
-        <span class="ident">f</span>(<span class="ident">u16</span>, <span class="ident">Type::Primitive</span>(<span class="ident">Primitive::U16</span>));
-        <span class="ident">f</span>(<span class="ident">i16</span>, <span class="ident">Type::Primitive</span>(<span class="ident">Primitive::I16</span>));
-        <span class="ident">f</span>(<span class="ident">u32</span>, <span class="ident">Type::Primitive</span>(<span class="ident">Primitive::U32</span>));
-        <span class="ident">f</span>(<span class="ident">i16</span>, <span class="ident">Type::Primitive</span>(<span class="ident">Primitive::I16</span>));
-        <span class="ident">f</span>(<span class="ident">i32</span>, <span class="ident">Type::Primitive</span>(<span class="ident">Primitive::I32</span>));
-        <span class="ident">f</span>(<span class="ident">u64</span>, <span class="ident">Type::Primitive</span>(<span class="ident">Primitive::U64</span>));
-        <span class="ident">f</span>(<span class="ident">i64</span>, <span class="ident">Type::Primitive</span>(<span class="ident">Primitive::I64</span>));
-        <span class="ident">f</span>(<span class="ident">f32</span>, <span class="ident">Type::Primitive</span>(<span class="ident">Primitive::F32</span>));
-        <span class="ident">f</span>(<span class="ident">f64</span>, <span class="ident">Type::Primitive</span>(<span class="ident">Primitive::F64</span>));
-        <span class="ident">f</span>(<span class="ident">string</span>, <span class="ident">Type::Primitive</span>(<span class="ident">Primitive::String</span>));
-    }
+    <span class="kw">return</span> <span class="bool-val">false</span>;
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::HashSet</span>, <span class="ident">convert::TryInto</span>};
-
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="kw">crate</span>::{
-        <span class="ident">ast</span>::{<span class="ident">Argument</span>, <span class="ident">Ident</span>, <span class="ident">Literal</span>, <span class="ident">Path</span>},
-        <span class="ident">hir::SinkKind</span>,
-    };
-    <span class="kw">use</span> <span class="ident">codespan::Span</span>;
 
-    <span class="kw">fn</span> <span class="ident">setup_analyser</span>(<span class="ident">diags</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Diagnostics</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Analyser</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-        <span class="ident">Analyser::new</span>(<span class="ident">diags</span>)
-    }
-
-    <span class="kw">fn</span> <span class="ident">setup</span>(<span class="ident">src</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Runefile</span> { <span class="kw">crate</span><span class="ident">::parse</span>(<span class="ident">src</span>).<span class="ident">unwrap</span>() }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">empty_runefile_is_error</span>() {
-        <span class="kw">let</span> <span class="ident">runefile</span> <span class="op">=</span> <span class="ident">setup</span>(<span class="string">&quot;&quot;</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
-
-        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">analyse</span>(<span class="kw-2">&amp;</span><span class="ident">runefile</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
-
-        <span class="macro">assert!</span>(<span class="ident">diags</span>.<span class="ident">has_errors</span>());
-        <span class="macro">assert!</span>(<span class="ident">got</span>.<span class="ident">base_image</span>.<span class="ident">is_none</span>());
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">runefiles_must_start_with_a_from_line</span>() {
-        <span class="kw">let</span> <span class="ident">runefile</span> <span class="op">=</span> <span class="ident">setup</span>(<span class="string">&quot;OUT serial&quot;</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
-
-        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">analyse</span>(<span class="kw-2">&amp;</span><span class="ident">runefile</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
-
-        <span class="macro">assert!</span>(<span class="ident">diags</span>.<span class="ident">has_errors</span>());
-        <span class="macro">assert!</span>(<span class="ident">got</span>.<span class="ident">base_image</span>.<span class="ident">is_none</span>());
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">valid_base_image</span>() {
-        <span class="kw">let</span> <span class="ident">runefile</span> <span class="op">=</span> <span class="ident">setup</span>(<span class="string">&quot;FROM runicos/base@1.0&quot;</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
-
-        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">analyse</span>(<span class="kw-2">&amp;</span><span class="ident">runefile</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
-
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">diags</span>.<span class="ident">has_errors</span>());
-        <span class="macro">assert_eq!</span>(
-            <span class="ident">got</span>.<span class="ident">base_image</span>,
-            <span class="prelude-val">Some</span>(<span class="ident">Path::new</span>(
-                <span class="string">&quot;runicos/base&quot;</span>,
-                <span class="prelude-val">None</span>,
-                <span class="string">&quot;1.0&quot;</span>.<span class="ident">to_string</span>(),
-                <span class="ident">Span::new</span>(<span class="number">5</span>, <span class="number">21</span>)
-            ))
-        );
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">unknown_sink_type</span>() {
-        <span class="kw">let</span> <span class="ident">runefile</span> <span class="op">=</span> <span class="ident">setup</span>(<span class="string">&quot;FROM runicos/base\nOUT asdf&quot;</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
-
-        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">analyse</span>(<span class="kw-2">&amp;</span><span class="ident">runefile</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
-
-        <span class="macro">assert!</span>(<span class="ident">diags</span>.<span class="ident">has_errors</span>());
-        <span class="macro">assert_eq!</span>(<span class="ident">got</span>.<span class="ident">graph</span>.<span class="ident">node_count</span>(), <span class="number">0</span>);
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">output_serial</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">analyser</span> <span class="op">=</span> <span class="ident">setup_analyser</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
-        <span class="kw">let</span> <span class="ident">out</span> <span class="op">=</span> <span class="ident">OutInstruction</span> {
-            <span class="ident">out_type</span>: <span class="ident">Ident::dangling</span>(<span class="string">&quot;serial&quot;</span>),
-            <span class="ident">span</span>: <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>),
+    <span class="macro">macro_rules!</span> <span class="ident">map</span> {
+        <span class="comment">// map-like</span>
+        ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">k</span>:<span class="ident">ident</span> : <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>:<span class="ident">expr</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">std::iter::Iterator::collect</span>(<span class="ident">std::array::IntoIter::new</span>([
+                $(
+                    (<span class="ident">String::from</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">k</span>)), <span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>)
+                ),<span class="op">*</span>
+            ]))
         };
-
-        <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">load_out</span>(<span class="kw-2">&amp;</span><span class="ident">out</span>);
-
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">analyser</span>.<span class="ident">diags</span>.<span class="ident">has_errors</span>());
-        <span class="kw">let</span> <span class="ident">rune</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">analyser</span>.<span class="ident">rune</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">rune</span>.<span class="ident">graph</span>.<span class="ident">node_count</span>(), <span class="number">1</span>);
-        <span class="kw">let</span> <span class="ident">node_ix</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">hir_id_to_node_index</span>[<span class="kw-2">&amp;</span><span class="ident">id</span>];
-        <span class="kw">let</span> <span class="ident">should_be</span> <span class="op">=</span> <span class="ident">Stage::Sink</span>(<span class="ident">Sink</span> {
-            <span class="ident">kind</span>: <span class="kw">crate</span><span class="ident">::hir::SinkKind::Serial</span>,
-        });
-        <span class="macro">assert_eq!</span>(<span class="ident">rune</span>.<span class="ident">graph</span>.<span class="ident">node_weight</span>(<span class="ident">node_ix</span>), <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">should_be</span>));
-        <span class="macro">assert_eq!</span>(<span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">get_name</span>(<span class="ident">id</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;serial&quot;</span>));
-        <span class="macro">assert!</span>(<span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">node_index_to_hir_id</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">node_ix</span>).<span class="ident">is_some</span>());
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add_model_to_rune</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">analyser</span> <span class="op">=</span> <span class="ident">setup_analyser</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
-        <span class="kw">let</span> <span class="ident">model</span> <span class="op">=</span> <span class="ident">ModelInstruction</span> {
-            <span class="ident">name</span>: <span class="ident">Ident::dangling</span>(<span class="string">&quot;sine&quot;</span>),
-            <span class="ident">file</span>: <span class="ident">String::from</span>(<span class="string">&quot;./sine.tflite&quot;</span>),
-            <span class="ident">input_type</span>: <span class="kw">crate</span><span class="ident">::ast::Type::inferred_dangling</span>(),
-            <span class="ident">output_type</span>: <span class="kw">crate</span><span class="ident">::ast::Type::inferred_dangling</span>(),
-            <span class="ident">parameters</span>: <span class="ident">Vec::new</span>(),
-            <span class="ident">span</span>: <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>),
+        <span class="comment">// set-like</span>
+        ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>:<span class="ident">expr</span>),<span class="op">*</span> $(,)<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">std::iter::Iterator::collect</span>(<span class="ident">std::array::IntoIter::new</span>([$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">v</span>,)<span class="kw-2">*</span>]))
         };
-
-        <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">load_model</span>(<span class="kw-2">&amp;</span><span class="ident">model</span>);
-
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">analyser</span>.<span class="ident">diags</span>.<span class="ident">has_errors</span>());
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">id</span>.<span class="ident">is_error</span>());
-        <span class="macro">assert_eq!</span>(<span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">get_name</span>(<span class="ident">id</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;sine&quot;</span>));
-        <span class="kw">let</span> <span class="ident">node_ix</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">hir_id_to_node_index</span>[<span class="kw-2">&amp;</span><span class="ident">id</span>];
-        <span class="macro">assert!</span>(<span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">graph</span>.<span class="ident">node_weight</span>(<span class="ident">node_ix</span>).<span class="ident">is_some</span>());
-        <span class="macro">assert!</span>(<span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">node_index_to_hir_id</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">node_ix</span>).<span class="ident">is_some</span>());
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add_rand_capability_to_rune</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">analyser</span> <span class="op">=</span> <span class="ident">setup_analyser</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
-        <span class="comment">// CAPABILITY&lt;_,I32&gt; RAND rand --n 1</span>
-        <span class="kw">let</span> <span class="ident">capability</span> <span class="op">=</span> <span class="ident">CapabilityInstruction</span> {
-            <span class="ident">kind</span>: <span class="ident">Ident::dangling</span>(<span class="string">&quot;RAND&quot;</span>),
-            <span class="ident">name</span>: <span class="ident">Ident::new</span>(<span class="string">&quot;rand&quot;</span>, <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>)),
-            <span class="ident">parameters</span>: <span class="macro">vec!</span>[<span class="ident">Argument::literal</span>(
-                <span class="ident">Ident::new</span>(<span class="string">&quot;n&quot;</span>, <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>)),
-                <span class="ident">Literal::new</span>(<span class="number">1</span>, <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>)),
-                <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>),
-            )]
-            .<span class="ident">into_iter</span>()
-            .<span class="ident">collect</span>(),
-            <span class="ident">output_type</span>: <span class="kw">crate</span><span class="ident">::ast::Type::named_dangling</span>(<span class="string">&quot;I32&quot;</span>),
-            <span class="ident">span</span>: <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>),
+    <span class="macro">macro_rules!</span> <span class="ident">ty</span> {
+        (<span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ident</span> [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">dim</span>:<span class="ident">expr</span>),<span class="kw-2">*</span>]) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Type</span> {
+                <span class="ident">name</span>: <span class="ident">String::from</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="kw">type</span>)),
+                <span class="macro-nonterminal">dimensions</span>: <span class="macro">vec!</span>[ $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">dim</span>),<span class="kw-2">*</span>],
+            }
         };
-
-        <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">load_capability</span>(<span class="kw-2">&amp;</span><span class="ident">capability</span>);
-
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">analyser</span>.<span class="ident">diags</span>.<span class="ident">has_errors</span>());
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">id</span>.<span class="ident">is_error</span>());
-        <span class="macro">assert_eq!</span>(<span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">get_name</span>(<span class="ident">id</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;rand&quot;</span>));
-        <span class="kw">let</span> <span class="ident">i32_by_1_type</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">intern_type</span>(<span class="ident">Type::Buffer</span> {
-            <span class="ident">underlying_type</span>: <span class="ident">analyser</span>.<span class="ident">builtins</span>.<span class="ident">i32</span>,
-            <span class="ident">dimensions</span>: <span class="macro">vec!</span>[<span class="number">1</span>],
-        });
-        <span class="kw">let</span> <span class="ident">node_ix</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">hir_id_to_node_index</span>[<span class="kw-2">&amp;</span><span class="ident">id</span>];
-        <span class="macro">assert_eq!</span>(<span class="ident">analyser</span>.<span class="ident">output_types</span>[<span class="kw-2">&amp;</span><span class="ident">node_ix</span>], <span class="ident">i32_by_1_type</span>);
-        <span class="kw">let</span> <span class="ident">should_be</span> <span class="op">=</span> <span class="ident">Stage::Source</span>(<span class="ident">Source</span> {
-            <span class="ident">kind</span>: <span class="ident">SourceKind::Random</span>,
-            <span class="ident">parameters</span>: <span class="ident">args_to_parameters</span>(<span class="kw-2">&amp;</span><span class="ident">capability</span>.<span class="ident">parameters</span>),
-        });
-        <span class="kw">let</span> <span class="ident">source</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">graph</span>.<span class="ident">node_weight</span>(<span class="ident">node_ix</span>).<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">source</span>, <span class="kw-2">&amp;</span><span class="ident">should_be</span>);
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">kebab_case_arguments_are_converted_to_snake_case</span>() {
-        <span class="kw">let</span> <span class="ident">args</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Argument</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec!</span>[
-            <span class="string">&quot;--oneword 1&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
-            <span class="string">&quot;--kebab-case 1&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
-            <span class="string">&quot;--snake_case 1&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
-        ];
-        <span class="kw">let</span> <span class="ident">should_be</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="string">&quot;oneword&quot;</span>, <span class="string">&quot;kebab_case&quot;</span>, <span class="string">&quot;snake_case&quot;</span>]
-            .<span class="ident">into_iter</span>()
-            .<span class="ident">collect</span>();
-
-        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">args_to_parameters</span>(<span class="kw-2">&amp;</span><span class="ident">args</span>);
-
-        <span class="kw">let</span> <span class="ident">argument_names</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">got</span>.<span class="ident">keys</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">as_str</span>()).<span class="ident">collect</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">argument_names</span>, <span class="ident">should_be</span>);
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">known_capabilities</span>() {
-        <span class="kw">let</span> <span class="ident">inputs</span> <span class="op">=</span> <span class="macro">vec!</span>[
-            (<span class="string">&quot;RAND&quot;</span>, <span class="ident">SourceKind::Random</span>),
-            (<span class="string">&quot;ACCEL&quot;</span>, <span class="ident">SourceKind::Accelerometer</span>),
-            (<span class="string">&quot;SOUND&quot;</span>, <span class="ident">SourceKind::Sound</span>),
-            (<span class="string">&quot;IMAGE&quot;</span>, <span class="ident">SourceKind::Image</span>),
-        ];
-
-        <span class="kw">for</span> (<span class="ident">src</span>, <span class="ident">should_be</span>) <span class="kw">in</span> <span class="ident">inputs</span> {
-            <span class="kw">let</span> <span class="ident">capability</span> <span class="op">=</span> <span class="ident">CapabilityInstruction</span> {
-                <span class="ident">kind</span>: <span class="ident">Ident::dangling</span>(<span class="ident">src</span>),
-                <span class="ident">name</span>: <span class="ident">Ident::new</span>(<span class="string">&quot;foo&quot;</span>, <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>)),
-                <span class="ident">parameters</span>: <span class="ident">Default::default</span>(),
-                <span class="ident">output_type</span>: <span class="kw">crate</span><span class="ident">::ast::Type::named_dangling</span>(<span class="string">&quot;I32&quot;</span>),
-                <span class="ident">span</span>: <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>),
-            };
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">analyser</span> <span class="op">=</span> <span class="ident">setup_analyser</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
-
-            <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">load_capability</span>(<span class="kw-2">&amp;</span><span class="ident">capability</span>);
-
-            <span class="macro">assert!</span>(<span class="ident">analyser</span>.<span class="ident">diags</span>.<span class="ident">is_empty</span>(), <span class="string">&quot;{:?}&quot;</span>, <span class="ident">analyser</span>.<span class="ident">diags</span>);
-            <span class="kw">let</span> <span class="ident">node_ix</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">hir_id_to_node_index</span>[<span class="kw-2">&amp;</span><span class="ident">id</span>];
-            <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">graph</span>[<span class="ident">node_ix</span>];
-            <span class="kw">let</span> <span class="ident">got</span>: <span class="ident">Source</span> <span class="op">=</span> <span class="ident">got</span>.<span class="ident">clone</span>().<span class="ident">try_into</span>().<span class="ident">unwrap</span>();
-            <span class="macro">assert_eq!</span>(<span class="ident">got</span>.<span class="ident">kind</span>, <span class="ident">should_be</span>);
+        (<span class="macro-nonterminal">$</span><span class="kw">type</span>:<span class="macro-nonterminal">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">Type</span> {
+                <span class="ident">name</span>: <span class="ident">String::from</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="kw">type</span>)),
+                <span class="macro-nonterminal">dimensions</span>: <span class="macro">vec!</span>[],
+            }
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">load_primitive_type</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">analyser</span> <span class="op">=</span> <span class="ident">setup_analyser</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
-        <span class="kw">let</span> <span class="ident">ident</span> <span class="op">=</span> <span class="ident">Ident::dangling</span>(<span class="string">&quot;u32&quot;</span>);
+    <span class="kw">fn</span> <span class="ident">parse_yaml_pipeline</span>() {
+        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="string">r#&quot;
+image: &quot;runicos/base&quot;
 
-        <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">primitive_type</span>(<span class="kw-2">&amp;</span><span class="ident">ident</span>);
+pipeline:
+  audio:
+    capability: SOUND
+    outputs:
+    - type: i16
+      dimensions: [16000]
+    args:
+      hz: 16000
 
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">id</span>.<span class="ident">is_error</span>());
-        <span class="macro">assert_eq!</span>(<span class="ident">id</span>, <span class="ident">analyser</span>.<span class="ident">builtins</span>.<span class="ident">u32</span>);
-        <span class="macro">assert!</span>(<span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">types</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>).<span class="ident">is_some</span>());
+  fft:
+    proc-block: &quot;hotg-ai/rune#proc_blocks/fft&quot;
+    inputs:
+    - audio
+    outputs:
+    - type: i8
+      dimensions: [1960]
+
+  model:
+    model: &quot;./model.tflite&quot;
+    inputs:
+    - fft
+    outputs:
+    - type: i8
+      dimensions: [6]
+
+  label:
+    proc-block: &quot;hotg-ai/rune#proc_blocks/ohv_label&quot;
+    inputs:
+    - model
+    outputs:
+    - type: utf8
+    args:
+      labels: [&quot;silence&quot;, &quot;unknown&quot;, &quot;up&quot;, &quot;down&quot;, &quot;left&quot;, &quot;right&quot;]
+
+  output:
+    out: SERIAL
+    inputs:
+    - label
+        &quot;#</span>;
+        <span class="kw">let</span> <span class="ident">should_be</span> <span class="op">=</span> <span class="ident">Document</span> {
+            <span class="ident">image</span>: <span class="ident">Path::new</span>(<span class="string">&quot;runicos/base&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>),
+            <span class="ident">pipeline</span>: <span class="macro">map!</span> {
+                <span class="ident">audio</span>: <span class="ident">Stage::Capability</span> {
+                    <span class="ident">capability</span>: <span class="ident">String::from</span>(<span class="string">&quot;SOUND&quot;</span>),
+                    <span class="ident">outputs</span>: <span class="macro">vec!</span>[<span class="macro">ty!</span>(<span class="ident">i16</span>[<span class="number">16000</span>])],
+                    <span class="ident">args</span>: <span class="macro">map!</span> { <span class="ident">hz</span>: <span class="ident">Value::Int</span>(<span class="number">16000</span>) },
+                },
+                <span class="ident">output</span>: <span class="ident">Stage::Out</span> {
+                    <span class="ident">out</span>: <span class="ident">String::from</span>(<span class="string">&quot;SERIAL&quot;</span>),
+                    <span class="ident">args</span>: <span class="ident">IndexMap::new</span>(),
+                    <span class="ident">inputs</span>: <span class="macro">vec!</span>[<span class="string">&quot;label&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()],
+                },
+                <span class="ident">label</span>: <span class="ident">Stage::ProcBlock</span> {
+                    <span class="ident">proc_block</span>: <span class="string">&quot;hotg-ai/rune#proc_blocks/ohv_label&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
+                    <span class="ident">inputs</span>: <span class="macro">vec!</span>[<span class="string">&quot;model&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()],
+                    <span class="ident">outputs</span>: <span class="macro">vec!</span>[<span class="ident">Type</span> { <span class="ident">name</span>: <span class="ident">String::from</span>(<span class="string">&quot;utf8&quot;</span>), <span class="ident">dimensions</span>: <span class="ident">Vec::new</span>() }],
+                    <span class="ident">args</span>: <span class="macro">map!</span> {
+                        <span class="ident">labels</span>: <span class="ident">Value::from</span>(<span class="macro">vec!</span>[
+                            <span class="ident">Value::from</span>(<span class="string">&quot;silence&quot;</span>),
+                            <span class="ident">Value::from</span>(<span class="string">&quot;unknown&quot;</span>),
+                            <span class="ident">Value::from</span>(<span class="string">&quot;up&quot;</span>),
+                            <span class="ident">Value::from</span>(<span class="string">&quot;down&quot;</span>),
+                            <span class="ident">Value::from</span>(<span class="string">&quot;left&quot;</span>),
+                            <span class="ident">Value::from</span>(<span class="string">&quot;right&quot;</span>),
+                        ]),
+                    },
+                },
+                <span class="ident">fft</span>: <span class="ident">Stage::ProcBlock</span> {
+                    <span class="ident">proc_block</span>: <span class="string">&quot;hotg-ai/rune#proc_blocks/fft&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
+                    <span class="ident">inputs</span>: <span class="macro">vec!</span>[<span class="string">&quot;audio&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()],
+                    <span class="ident">outputs</span>: <span class="macro">vec!</span>[<span class="macro">ty!</span>(<span class="ident">i8</span>[<span class="number">1960</span>])],
+                    <span class="ident">args</span>: <span class="ident">IndexMap::new</span>(),
+                },
+                <span class="ident">model</span>: <span class="ident">Stage::Model</span> {
+                    <span class="ident">model</span>: <span class="ident">String::from</span>(<span class="string">&quot;./model.tflite&quot;</span>),
+                    <span class="ident">inputs</span>: <span class="macro">vec!</span>[<span class="string">&quot;fft&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()],
+                    <span class="ident">outputs</span>: <span class="macro">vec!</span>[<span class="macro">ty!</span>(<span class="ident">i8</span>[<span class="number">6</span>])],
+                },
+            },
+        };
+
+        <span class="kw">let</span> <span class="ident">got</span>: <span class="ident">Document</span> <span class="op">=</span> <span class="ident">serde_yaml::from_str</span>(<span class="ident">src</span>).<span class="ident">unwrap</span>();
+
+        <span class="macro">assert_eq!</span>(<span class="ident">got</span>, <span class="ident">should_be</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">load_buffer_type</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">analyser</span> <span class="op">=</span> <span class="ident">setup_analyser</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
-        <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::ast::Type</span> {
-            <span class="ident">kind</span>: <span class="kw">crate</span><span class="ident">::ast::TypeKind::Buffer</span> {
-                <span class="ident">type_name</span>: <span class="ident">Ident::dangling</span>(<span class="string">&quot;U32&quot;</span>),
-                <span class="ident">dimensions</span>: <span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">2</span>],
-            },
-            <span class="ident">span</span>: <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>),
+    <span class="kw">fn</span> <span class="ident">parse_audio_block</span>() {
+        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="string">r#&quot;
+              capability: SOUND
+              outputs:
+              - type: i16
+                dimensions: [16000]
+              args:
+                hz: 16000
+        &quot;#</span>;
+        <span class="kw">let</span> <span class="ident">should_be</span> <span class="op">=</span> <span class="ident">Stage::Capability</span> {
+            <span class="ident">capability</span>: <span class="ident">String::from</span>(<span class="string">&quot;SOUND&quot;</span>),
+            <span class="ident">outputs</span>: <span class="macro">vec!</span>[<span class="ident">Type</span> {
+                <span class="ident">name</span>: <span class="ident">String::from</span>(<span class="string">&quot;i16&quot;</span>),
+                <span class="ident">dimensions</span>: <span class="macro">vec!</span>[<span class="number">16000</span>],
+            }],
+            <span class="ident">args</span>: <span class="macro">map!</span> { <span class="ident">hz</span>: <span class="ident">Value::Int</span>(<span class="number">16000</span>) },
         };
 
-        <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">interpret_type</span>(<span class="kw-2">&amp;</span><span class="ident">ty</span>);
+        <span class="kw">let</span> <span class="ident">got</span>: <span class="ident">Stage</span> <span class="op">=</span> <span class="ident">serde_yaml::from_str</span>(<span class="ident">src</span>).<span class="ident">unwrap</span>();
 
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">id</span>.<span class="ident">is_error</span>());
-        <span class="kw">let</span> <span class="ident">got_type</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">types</span>[<span class="kw-2">&amp;</span><span class="ident">id</span>];
+        <span class="macro">assert_eq!</span>(<span class="ident">got</span>, <span class="ident">should_be</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">parse_values</span>() {
+        <span class="kw">let</span> <span class="ident">inputs</span> <span class="op">=</span> <span class="macro">vec!</span>[
+            (<span class="string">&quot;42&quot;</span>, <span class="ident">Value::Int</span>(<span class="number">42</span>)),
+            (<span class="string">&quot;3.14&quot;</span>, <span class="ident">Value::Float</span>(<span class="number">3.14</span>)),
+            (<span class="string">&quot;\&quot;42\&quot;&quot;</span>, <span class="ident">Value::String</span>(<span class="ident">String::from</span>(<span class="string">&quot;42&quot;</span>))),
+            (
+                <span class="string">&quot;[1, 2.0, \&quot;asdf\&quot;]&quot;</span>,
+                <span class="ident">Value::List</span>(<span class="macro">vec!</span>[
+                    <span class="ident">Value::Int</span>(<span class="number">1</span>),
+                    <span class="ident">Value::Float</span>(<span class="number">2.0</span>),
+                    <span class="ident">Value::String</span>(<span class="ident">String::from</span>(<span class="string">&quot;asdf&quot;</span>)),
+                ]),
+            ),
+        ];
+
+        <span class="kw">for</span> (<span class="ident">src</span>, <span class="ident">should_be</span>) <span class="kw">in</span> <span class="ident">inputs</span> {
+            <span class="kw">let</span> <span class="ident">got</span>: <span class="ident">Value</span> <span class="op">=</span> <span class="ident">serde_yaml::from_str</span>(<span class="ident">src</span>).<span class="ident">unwrap</span>();
+            <span class="macro">assert_eq!</span>(<span class="ident">got</span>, <span class="ident">should_be</span>);
+        }
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">parse_paths</span>() {
+        <span class="kw">let</span> <span class="ident">inputs</span> <span class="op">=</span> <span class="macro">vec!</span>[
+            (<span class="string">&quot;asdf&quot;</span>, <span class="ident">Path::new</span>(<span class="string">&quot;asdf&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)),
+            (<span class="string">&quot;runicos/base&quot;</span>, <span class="ident">Path::new</span>(<span class="string">&quot;runicos/base&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>)),
+            (
+                <span class="string">&quot;runicos/base@0.1.2&quot;</span>,
+                <span class="ident">Path::new</span>(<span class="string">&quot;runicos/base&quot;</span>, <span class="prelude-val">None</span>, <span class="string">&quot;0.1.2&quot;</span>.<span class="ident">to_string</span>()),
+            ),
+            (
+                <span class="string">&quot;runicos/base@latest&quot;</span>,
+                <span class="ident">Path::new</span>(<span class="string">&quot;runicos/base&quot;</span>, <span class="prelude-val">None</span>, <span class="string">&quot;latest&quot;</span>.<span class="ident">to_string</span>()),
+            ),
+            (
+                <span class="string">&quot;https://github.com/hotg-ai/rune&quot;</span>,
+                <span class="ident">Path::new</span>(<span class="string">&quot;https://github.com/hotg-ai/rune&quot;</span>, <span class="prelude-val">None</span>, <span class="prelude-val">None</span>),
+            ),
+            (
+                <span class="string">&quot;https://github.com/hotg-ai/rune@2&quot;</span>,
+                <span class="ident">Path::new</span>(
+                    <span class="string">&quot;https://github.com/hotg-ai/rune&quot;</span>,
+                    <span class="prelude-val">None</span>,
+                    <span class="string">&quot;2&quot;</span>.<span class="ident">to_string</span>(),
+                ),
+            ),
+            (
+                <span class="string">&quot;hotg-ai/rune@v1.2#proc_blocks/normalize&quot;</span>,
+                <span class="ident">Path::new</span>(
+                    <span class="string">&quot;hotg-ai/rune&quot;</span>,
+                    <span class="string">&quot;proc_blocks/normalize&quot;</span>.<span class="ident">to_string</span>(),
+                    <span class="string">&quot;v1.2&quot;</span>.<span class="ident">to_string</span>(),
+                ),
+            ),
+        ];
+
+        <span class="kw">for</span> (<span class="ident">src</span>, <span class="ident">should_be</span>) <span class="kw">in</span> <span class="ident">inputs</span> {
+            <span class="kw">let</span> <span class="ident">got</span>: <span class="ident">Path</span> <span class="op">=</span> <span class="ident">src</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>();
+            <span class="macro">assert_eq!</span>(<span class="ident">got</span>, <span class="ident">should_be</span>);
+        }
+    }
+
+    <span class="kw">fn</span> <span class="ident">dummy_document</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Document</span> {
+        <span class="ident">Document</span> {
+            <span class="ident">image</span>: <span class="ident">Path::new</span>(<span class="string">&quot;runicos/base&quot;</span>.<span class="ident">to_string</span>(), <span class="prelude-val">None</span>, <span class="prelude-val">None</span>),
+            <span class="ident">pipeline</span>: <span class="macro">map!</span> {
+                <span class="ident">audio</span>: <span class="ident">Stage::Capability</span> {
+                    <span class="ident">capability</span>: <span class="ident">String::from</span>(<span class="string">&quot;SOUND&quot;</span>),
+                    <span class="ident">outputs</span>: <span class="macro">vec!</span>[
+                        <span class="macro">ty!</span>(<span class="ident">i16</span>[<span class="number">16000</span>]),
+                    ],
+                    <span class="ident">args</span>: <span class="macro">map!</span> {
+                        <span class="ident">hz</span>: <span class="ident">Value::from</span>(<span class="number">16000</span>),
+                    },
+                },
+                <span class="ident">fft</span>: <span class="ident">Stage::ProcBlock</span> {
+                    <span class="ident">proc_block</span>: <span class="string">&quot;hotg-ai/rune#proc_blocks/fft&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
+                    <span class="ident">inputs</span>: <span class="macro">vec!</span>[<span class="string">&quot;audio&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()],
+                    <span class="ident">outputs</span>: <span class="macro">vec!</span>[
+                        <span class="macro">ty!</span>(<span class="ident">i8</span>[<span class="number">1960</span>]),
+                    ],
+                    <span class="ident">args</span>: <span class="ident">IndexMap::new</span>(),
+                },
+                <span class="ident">model</span>: <span class="ident">Stage::Model</span> {
+                    <span class="ident">model</span>: <span class="ident">String::from</span>(<span class="string">&quot;./model.tflite&quot;</span>),
+                    <span class="ident">inputs</span>: <span class="macro">vec!</span>[<span class="string">&quot;fft&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()],
+                    <span class="ident">outputs</span>: <span class="macro">vec!</span>[
+                        <span class="macro">ty!</span>(<span class="ident">i8</span>[<span class="number">6</span>]),
+                    ],
+                },
+                <span class="ident">label</span>: <span class="ident">Stage::ProcBlock</span> {
+                    <span class="ident">proc_block</span>: <span class="string">&quot;hotg-ai/rune#proc_blocks/ohv_label&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
+                    <span class="ident">inputs</span>: <span class="macro">vec!</span>[<span class="string">&quot;model&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()],
+                    <span class="ident">outputs</span>: <span class="macro">vec!</span>[
+                        <span class="macro">ty!</span>(<span class="ident">utf8</span>),
+                    ],
+                    <span class="ident">args</span>: <span class="macro">map!</span> {
+                        <span class="ident">labels</span>: <span class="ident">Value::List</span>(<span class="macro">vec!</span>[
+                            <span class="ident">Value::from</span>(<span class="string">&quot;silence&quot;</span>),
+                            <span class="ident">Value::from</span>(<span class="string">&quot;unknown&quot;</span>),
+                            <span class="ident">Value::from</span>(<span class="string">&quot;up&quot;</span>),
+                        ]),
+                    },
+                },
+                <span class="ident">output</span>: <span class="ident">Stage::Out</span> {
+                    <span class="ident">out</span>: <span class="ident">String::from</span>(<span class="string">&quot;SERIAL&quot;</span>),
+                    <span class="ident">inputs</span>: <span class="macro">vec!</span>[<span class="string">&quot;label&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>()],
+                    <span class="ident">args</span>: <span class="ident">IndexMap::default</span>(),
+                }
+            },
+        }
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">register_all_stages</span>() {
+        <span class="kw">let</span> <span class="ident">doc</span> <span class="op">=</span> <span class="ident">dummy_document</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
+        <span class="kw">let</span> <span class="ident">stages</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="string">&quot;audio&quot;</span>, <span class="string">&quot;fft&quot;</span>, <span class="string">&quot;model&quot;</span>, <span class="string">&quot;label&quot;</span>, <span class="string">&quot;output&quot;</span>];
+
+        <span class="ident">ctx</span>.<span class="ident">register_stages</span>(<span class="kw-2">&amp;</span><span class="ident">doc</span>.<span class="ident">pipeline</span>);
+
+        <span class="kw">for</span> <span class="ident">stage_name</span> <span class="kw">in</span> <span class="ident">stages</span> {
+            <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">get_id</span>(<span class="ident">stage_name</span>).<span class="ident">unwrap</span>();
+            <span class="macro">assert!</span>(<span class="ident">ctx</span>.<span class="ident">rune</span>.<span class="ident">stages</span>.<span class="ident">contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>));
+        }
+
+        <span class="macro">assert!</span>(<span class="ident">diags</span>.<span class="ident">is_empty</span>());
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">construct_the_pipeline</span>() {
+        <span class="kw">let</span> <span class="ident">doc</span> <span class="op">=</span> <span class="ident">dummy_document</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">ctx</span> <span class="op">=</span> <span class="ident">Context::new</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
+        <span class="ident">ctx</span>.<span class="ident">register_stages</span>(<span class="kw-2">&amp;</span><span class="ident">doc</span>.<span class="ident">pipeline</span>);
+        <span class="ident">ctx</span>.<span class="ident">register_output_slots</span>(<span class="kw-2">&amp;</span><span class="ident">doc</span>.<span class="ident">pipeline</span>);
+        <span class="kw">let</span> <span class="ident">edges</span> <span class="op">=</span> <span class="macro">vec!</span>[
+            (<span class="string">&quot;audio&quot;</span>, <span class="string">&quot;fft&quot;</span>),
+            (<span class="string">&quot;fft&quot;</span>, <span class="string">&quot;model&quot;</span>),
+            (<span class="string">&quot;model&quot;</span>, <span class="string">&quot;label&quot;</span>),
+            (<span class="string">&quot;label&quot;</span>, <span class="string">&quot;output&quot;</span>),
+        ];
+
+        <span class="ident">ctx</span>.<span class="ident">construct_pipeline</span>(<span class="kw-2">&amp;</span><span class="ident">doc</span>.<span class="ident">pipeline</span>);
+
+        <span class="macro">assert!</span>(<span class="ident">ctx</span>.<span class="ident">diags</span>.<span class="ident">is_empty</span>(), <span class="string">&quot;{:?}&quot;</span>, <span class="ident">ctx</span>.<span class="ident">diags</span>);
+        <span class="kw">for</span> (<span class="ident">from</span>, <span class="ident">to</span>) <span class="kw">in</span> <span class="ident">edges</span> {
+            <span class="macro">println!</span>(<span class="string">&quot;{:?} =&gt; {:?}&quot;</span>, <span class="ident">from</span>, <span class="ident">to</span>);
+            <span class="kw">let</span> <span class="ident">from_id</span> <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">get_id</span>(<span class="ident">from</span>).<span class="ident">unwrap</span>();
+            <span class="kw">let</span> <span class="ident">to_id</span> <span class="op">=</span> <span class="ident">ctx</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">get_id</span>(<span class="ident">to</span>).<span class="ident">unwrap</span>();
+
+            <span class="macro">assert!</span>(<span class="ident">ctx</span>.<span class="ident">rune</span>.<span class="ident">has_connection</span>(<span class="ident">from_id</span>, <span class="ident">to_id</span>));
+        }
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">construct_pipeline_graph_with_multiple_inputs_and_outputs</span>() {
+        <span class="kw">let</span> <span class="ident">doc</span> <span class="op">=</span> <span class="ident">Document</span> {
+            <span class="ident">image</span>: <span class="string">&quot;runicos/base@latest&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
+            <span class="ident">pipeline</span>: <span class="macro">map!</span> {
+                <span class="ident">audio</span>: <span class="ident">Stage::Capability</span> {
+                    <span class="ident">capability</span>: <span class="ident">String::from</span>(<span class="string">&quot;SOUND&quot;</span>),
+                    <span class="ident">outputs</span>: <span class="macro">vec!</span>[
+                        <span class="macro">ty!</span>(<span class="ident">i16</span>[<span class="number">16000</span>]),
+                    ],
+                    <span class="ident">args</span>: <span class="macro">map!</span> {
+                        <span class="ident">hz</span>: <span class="ident">Value::from</span>(<span class="number">16000</span>),
+                    },
+                },
+                <span class="ident">fft</span>: <span class="ident">Stage::ProcBlock</span> {
+                    <span class="ident">proc_block</span>: <span class="string">&quot;hotg-ai/rune#proc_blocks/fft&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
+                    <span class="ident">inputs</span>: <span class="macro">vec!</span>[
+                        <span class="string">&quot;audio&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
+                        <span class="string">&quot;audio&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
+                        <span class="string">&quot;audio&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
+                        ],
+                    <span class="ident">outputs</span>: <span class="macro">vec!</span>[
+                        <span class="macro">ty!</span>(<span class="ident">i8</span>[<span class="number">1960</span>]),
+                        <span class="macro">ty!</span>(<span class="ident">i8</span>[<span class="number">1960</span>]),
+                        <span class="macro">ty!</span>(<span class="ident">i8</span>[<span class="number">1960</span>]),
+                    ],
+                    <span class="ident">args</span>: <span class="ident">IndexMap::new</span>(),
+                },
+                <span class="ident">serial</span>: <span class="ident">Stage::Out</span> {
+                    <span class="ident">out</span>: <span class="ident">String::from</span>(<span class="string">&quot;SERIAL&quot;</span>),
+                    <span class="ident">inputs</span>: <span class="macro">vec!</span>[
+                        <span class="string">&quot;fft.0&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
+                        <span class="string">&quot;fft.1&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
+                        <span class="string">&quot;fft.2&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>(),
+                    ],
+                    <span class="ident">args</span>: <span class="ident">IndexMap::new</span>(),
+                },
+            },
+        };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
+
+        <span class="kw">let</span> <span class="ident">rune</span> <span class="op">=</span> <span class="ident">analyse</span>(<span class="kw-2">&amp;</span><span class="ident">doc</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
+
+        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">diags</span>.<span class="ident">has_errors</span>() <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">diags</span>.<span class="ident">has_warnings</span>(), <span class="string">&quot;{:#?}&quot;</span>, <span class="ident">diags</span>);
+
+        <span class="kw">let</span> <span class="ident">audio_id</span> <span class="op">=</span> <span class="ident">rune</span>.<span class="ident">names</span>[<span class="string">&quot;audio&quot;</span>];
+        <span class="kw">let</span> <span class="ident">audio_node</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">rune</span>.<span class="ident">stages</span>[<span class="kw-2">&amp;</span><span class="ident">audio_id</span>];
+        <span class="macro">assert!</span>(<span class="ident">audio_node</span>.<span class="ident">input_slots</span>.<span class="ident">is_empty</span>());
+        <span class="macro">assert_eq!</span>(<span class="ident">audio_node</span>.<span class="ident">output_slots</span>.<span class="ident">len</span>(), <span class="number">1</span>);
+        <span class="kw">let</span> <span class="ident">audio_output</span> <span class="op">=</span> <span class="ident">audio_node</span>.<span class="ident">output_slots</span>[<span class="number">0</span>];
+
+        <span class="kw">let</span> <span class="ident">fft_id</span> <span class="op">=</span> <span class="ident">rune</span>.<span class="ident">names</span>[<span class="string">&quot;fft&quot;</span>];
+        <span class="kw">let</span> <span class="ident">fft_node</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">rune</span>.<span class="ident">stages</span>[<span class="kw-2">&amp;</span><span class="ident">fft_id</span>];
         <span class="macro">assert_eq!</span>(
-            <span class="ident">got_type</span>,
-            <span class="kw-2">&amp;</span><span class="ident">Type::Buffer</span> {
-                <span class="ident">underlying_type</span>: <span class="ident">analyser</span>.<span class="ident">builtins</span>.<span class="ident">u32</span>,
-                <span class="ident">dimensions</span>: <span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">2</span>],
-            }
+            <span class="ident">fft_node</span>.<span class="ident">input_slots</span>,
+            <span class="kw-2">&amp;</span>[<span class="ident">audio_output</span>, <span class="ident">audio_output</span>, <span class="ident">audio_output</span>]
         );
-        <span class="macro">assert!</span>(<span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">types</span>.<span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="ident">id</span>).<span class="ident">is_some</span>());
+
+        <span class="kw">let</span> <span class="ident">output_id</span> <span class="op">=</span> <span class="ident">rune</span>.<span class="ident">names</span>[<span class="string">&quot;serial&quot;</span>];
+        <span class="kw">let</span> <span class="ident">output_node</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">rune</span>.<span class="ident">stages</span>[<span class="kw-2">&amp;</span><span class="ident">output_id</span>];
+        <span class="macro">assert_eq!</span>(<span class="ident">fft_node</span>.<span class="ident">output_slots</span>, <span class="ident">output_node</span>.<span class="ident">input_slots</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">all_types_are_memoised</span>() {
+    <span class="kw">fn</span> <span class="ident">topological_sorting</span>() {
+        <span class="kw">let</span> <span class="ident">doc</span> <span class="op">=</span> <span class="ident">dummy_document</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">analyser</span> <span class="op">=</span> <span class="ident">setup_analyser</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
-        <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::ast::Type</span> {
-            <span class="ident">kind</span>: <span class="kw">crate</span><span class="ident">::ast::TypeKind::Buffer</span> {
-                <span class="ident">type_name</span>: <span class="ident">Ident::dangling</span>(<span class="string">&quot;U32&quot;</span>),
-                <span class="ident">dimensions</span>: <span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">2</span>],
-            },
-            <span class="ident">span</span>: <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>),
-        };
+        <span class="kw">let</span> <span class="ident">rune</span> <span class="op">=</span> <span class="ident">analyse</span>(<span class="kw-2">&amp;</span><span class="ident">doc</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
+        <span class="kw">let</span> <span class="ident">should_be</span> <span class="op">=</span> [<span class="string">&quot;audio&quot;</span>, <span class="string">&quot;fft&quot;</span>, <span class="string">&quot;model&quot;</span>, <span class="string">&quot;label&quot;</span>, <span class="string">&quot;output&quot;</span>];
 
-        <span class="kw">let</span> <span class="ident">first</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">interpret_type</span>(<span class="kw-2">&amp;</span><span class="ident">ty</span>);
-        <span class="kw">let</span> <span class="ident">second</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">interpret_type</span>(<span class="kw-2">&amp;</span><span class="ident">ty</span>);
-        <span class="kw">let</span> <span class="ident">third</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">interpret_type</span>(<span class="kw-2">&amp;</span><span class="ident">ty</span>);
+        <span class="kw">let</span> <span class="ident">got</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">rune</span>.<span class="ident">sorted_pipeline</span>().<span class="ident">collect</span>();
 
-        <span class="macro">assert_eq!</span>(<span class="ident">first</span>, <span class="ident">second</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">second</span>, <span class="ident">third</span>);
+        <span class="kw">let</span> <span class="ident">should_be</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">should_be</span>
+            .<span class="ident">iter</span>()
+            .<span class="ident">copied</span>()
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">name</span><span class="op">|</span> <span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">get_id</span>(<span class="ident">name</span>).<span class="ident">unwrap</span>())
+            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">id</span><span class="op">|</span> (<span class="ident">id</span>, <span class="kw-2">&amp;</span><span class="ident">rune</span>.<span class="ident">stages</span>[<span class="kw-2">&amp;</span><span class="ident">id</span>]))
+            .<span class="ident">collect</span>();
+        <span class="macro">assert_eq!</span>(<span class="ident">got</span>, <span class="ident">should_be</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">different_buffer_sizes_have_different_types</span>() {
+    <span class="kw">fn</span> <span class="ident">detect_pipeline_cycle</span>() {
+        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="string">r#&quot;
+image: runicos/base
+
+pipeline:
+  audio:
+    proc-block: &quot;hotg-ai/rune#proc_blocks/fft&quot;
+    inputs:
+    - model
+    outputs:
+    - type: i16
+      dimensions: [16000]
+
+  fft:
+    proc-block: &quot;hotg-ai/rune#proc_blocks/fft&quot;
+    inputs:
+    - audio
+    outputs:
+    - type: i8
+      dimensions: [1960]
+
+  model:
+    model: &quot;./model.tflite&quot;
+    inputs:
+    - fft
+    outputs:
+    - type: i8
+      dimensions: [6]
+            &quot;#</span>;
+        <span class="kw">let</span> <span class="ident">doc</span> <span class="op">=</span> <span class="ident">Document::parse</span>(<span class="ident">src</span>).<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">analyser</span> <span class="op">=</span> <span class="ident">setup_analyser</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
-        <span class="kw">let</span> <span class="ident">type_1</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::ast::Type</span> {
-            <span class="ident">kind</span>: <span class="kw">crate</span><span class="ident">::ast::TypeKind::Buffer</span> {
-                <span class="ident">type_name</span>: <span class="ident">Ident::dangling</span>(<span class="string">&quot;U32&quot;</span>),
-                <span class="ident">dimensions</span>: <span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">2</span>],
-            },
-            <span class="ident">span</span>: <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>),
-        };
-        <span class="kw">let</span> <span class="ident">type_2</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::ast::Type</span> {
-            <span class="ident">kind</span>: <span class="kw">crate</span><span class="ident">::ast::TypeKind::Buffer</span> {
-                <span class="ident">type_name</span>: <span class="ident">Ident::dangling</span>(<span class="string">&quot;U32&quot;</span>),
-                <span class="ident">dimensions</span>: <span class="macro">vec!</span>[<span class="number">1</span>],
-            },
-            <span class="ident">span</span>: <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>),
-        };
 
-        <span class="kw">let</span> <span class="ident">first</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">interpret_type</span>(<span class="kw-2">&amp;</span><span class="ident">type_1</span>);
-        <span class="kw">let</span> <span class="ident">second</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">interpret_type</span>(<span class="kw-2">&amp;</span><span class="ident">type_2</span>);
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">analyse</span>(<span class="kw-2">&amp;</span><span class="ident">doc</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
 
-        <span class="macro">assert_ne!</span>(<span class="ident">first</span>, <span class="ident">second</span>);
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">strings_dont_get_wrapped_in_a_buffer</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">analyser</span> <span class="op">=</span> <span class="ident">setup_analyser</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
-        <span class="kw">let</span> <span class="ident">ty</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::ast::Type</span> {
-            <span class="ident">kind</span>: <span class="kw">crate</span><span class="ident">::ast::TypeKind::Named</span>(<span class="ident">Ident::dangling</span>(<span class="string">&quot;UTF8&quot;</span>)),
-            <span class="ident">span</span>: <span class="ident">Span::new</span>(<span class="number">0</span>, <span class="number">0</span>),
-        };
-
-        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">interpret_type</span>(<span class="kw-2">&amp;</span><span class="ident">ty</span>);
-
-        <span class="macro">assert_eq!</span>(<span class="ident">got</span>, <span class="ident">analyser</span>.<span class="ident">builtins</span>.<span class="ident">string</span>);
+        <span class="macro">assert!</span>(<span class="ident">diags</span>.<span class="ident">has_errors</span>());
+        <span class="kw">let</span> <span class="ident">errors</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">diags</span>
+            .<span class="ident">iter_severity</span>(<span class="ident">codespan_reporting::diagnostic::Severity::Error</span>)
+            .<span class="ident">collect</span>();
+        <span class="macro">assert_eq!</span>(<span class="ident">errors</span>.<span class="ident">len</span>(), <span class="number">1</span>);
+        <span class="kw">let</span> <span class="ident">diag</span> <span class="op">=</span> <span class="ident">errors</span>[<span class="number">0</span>];
+        <span class="macro">assert_eq!</span>(<span class="ident">diag</span>.<span class="ident">message</span>, <span class="string">&quot;Cycle detected when checking \&quot;audio\&quot;&quot;</span>);
+        <span class="macro">assert!</span>(<span class="ident">diag</span>.<span class="ident">notes</span>[<span class="number">0</span>].<span class="ident">contains</span>(<span class="string">&quot;model&quot;</span>));
+        <span class="macro">assert!</span>(<span class="ident">diag</span>.<span class="ident">notes</span>[<span class="number">1</span>].<span class="ident">contains</span>(<span class="string">&quot;fft&quot;</span>));
         <span class="macro">assert_eq!</span>(
-            <span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">types</span>[<span class="kw-2">&amp;</span><span class="ident">got</span>],
-            <span class="ident">Type::Primitive</span>(<span class="ident">Primitive::String</span>),
+            <span class="ident">diag</span>.<span class="ident">notes</span>[<span class="number">2</span>],
+            <span class="string">&quot;... which receives input from \&quot;audio\&quot;, completing the cycle.&quot;</span>
         );
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">one_linear_pipeline</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">diags</span> <span class="op">=</span> <span class="ident">Diagnostics::new</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">analyser</span> <span class="op">=</span> <span class="ident">setup_analyser</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">diags</span>);
-        <span class="comment">// Make sure we already know about our stages</span>
-        <span class="kw">let</span> (<span class="ident">first_id</span>, <span class="ident">first_ix</span>) <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">add_stage</span>(<span class="ident">Source</span> {
-            <span class="ident">kind</span>: <span class="ident">SourceKind::Random</span>,
-            <span class="ident">parameters</span>: <span class="ident">HashMap::new</span>(),
-        });
-        <span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">register</span>(<span class="string">&quot;first&quot;</span>, <span class="ident">first_id</span>);
-        <span class="kw">let</span> (<span class="ident">second_id</span>, <span class="ident">second_ix</span>) <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">add_stage</span>(<span class="ident">Sink</span> {
-            <span class="ident">kind</span>: <span class="ident">SinkKind::Serial</span>,
-        });
-        <span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">names</span>.<span class="ident">register</span>(<span class="string">&quot;second&quot;</span>, <span class="ident">second_id</span>);
-        <span class="comment">// the instruction</span>
-        <span class="kw">let</span> <span class="ident">run</span> <span class="op">=</span> <span class="ident">RunInstruction</span> {
-            <span class="ident">steps</span>: <span class="macro">vec!</span>[<span class="ident">Ident::dangling</span>(<span class="string">&quot;first&quot;</span>), <span class="ident">Ident::dangling</span>(<span class="string">&quot;second&quot;</span>)],
-            <span class="ident">span</span>: <span class="ident">Span::default</span>(),
-        };
-
-        <span class="kw">let</span> <span class="ident">pipeline_id</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">load_run</span>(<span class="kw-2">&amp;</span><span class="ident">run</span>);
-
-        <span class="comment">// it should have added a new edge to our graph</span>
-        <span class="kw">let</span> <span class="ident">edge_ix</span> <span class="op">=</span>
-            <span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">graph</span>.<span class="ident">find_edge</span>(<span class="ident">first_ix</span>, <span class="ident">second_ix</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">edge</span> <span class="op">=</span> <span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">graph</span>.<span class="ident">edge_weight</span>(<span class="ident">edge_ix</span>).<span class="ident">unwrap</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">edge</span>.<span class="ident">type_id</span>, <span class="ident">analyser</span>.<span class="ident">builtins</span>.<span class="ident">unknown_type</span>);
-        <span class="comment">// and also registered a pipeline</span>
-        <span class="kw">let</span> <span class="ident">pipeline</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">analyser</span>.<span class="ident">rune</span>.<span class="ident">pipelines</span>[<span class="kw-2">&amp;</span><span class="ident">pipeline_id</span>];
-        <span class="macro">assert!</span>(<span class="ident">pipeline</span>.<span class="ident">edges</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">first_id</span>));
-        <span class="macro">assert!</span>(<span class="ident">pipeline</span>.<span class="ident">edges</span>.<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">second_id</span>));
     }
 }
 </pre></div>
