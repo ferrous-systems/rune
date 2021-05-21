@@ -94,6 +94,11 @@
 <span id="91">91</span>
 <span id="92">92</span>
 <span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="attribute">#[<span class="ident">macro_use</span>]</span>
@@ -141,7 +146,12 @@
     <span class="ident">c</span>: <span class="ident">Compilation</span>,
     <span class="ident">env</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="kw">dyn</span> <span class="ident">Environment</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">manifest</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::manifest::generate</span>(<span class="kw-2">&amp;</span><span class="ident">c</span>.<span class="ident">rune</span>, <span class="kw-2">&amp;</span><span class="ident">c</span>.<span class="ident">name</span>, <span class="kw-2">&amp;</span><span class="ident">c</span>.<span class="ident">rune_project</span>);
+    <span class="kw">let</span> <span class="ident">manifest</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::manifest::generate</span>(
+        <span class="kw-2">&amp;</span><span class="ident">c</span>.<span class="ident">rune</span>,
+        <span class="kw-2">&amp;</span><span class="ident">c</span>.<span class="ident">name</span>,
+        <span class="kw-2">&amp;</span><span class="ident">c</span>.<span class="ident">rune_project</span>,
+        <span class="kw-2">&amp;</span><span class="ident">c</span>.<span class="ident">current_directory</span>,
+    );
     <span class="kw">let</span> <span class="ident">config</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::config::generate</span>(<span class="ident">c</span>.<span class="ident">optimized</span>)
         .<span class="ident">context</span>(<span class="string">&quot;Unable to construct the \&quot;config.toml\&quot; file&quot;</span>)<span class="question-mark">?</span>;
     <span class="kw">let</span> <span class="ident">models</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::models::load</span>(<span class="kw-2">&amp;</span><span class="ident">c</span>.<span class="ident">rune</span>, <span class="ident">env</span>)
