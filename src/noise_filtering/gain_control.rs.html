@@ -432,8 +432,8 @@
     <span class="doccomment">/// https://github.com/tensorflow/tensorflow/blob/0f6d728b920e9b0286171bdfec9917d8486ac08b/tensorflow/lite/experimental/microfrontend/lib/pcan_gain_control_test.cc#L43-L63</span>
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_pcan_gain_control</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">gain_control</span> <span class="op">=</span>
-            <span class="ident">GainControl::default</span>().<span class="ident">with_strength</span>(<span class="number">0.95</span>).<span class="ident">with_offset</span>(<span class="number">80.0</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">gain_control</span> <span class="op">=</span> <span class="ident">GainControl::default</span>();
+        <span class="ident">gain_control</span>.<span class="ident">set_strength</span>(<span class="number">0.95</span>).<span class="ident">set_offset</span>(<span class="number">80.0</span>);
         <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">Tensor::new_vector</span>(<span class="macro">vec!</span>[<span class="number">241137</span>, <span class="number">478104</span>]);
         <span class="comment">// Note: we get this from a the noise reduction step</span>
         <span class="kw">let</span> <span class="ident">noise_estimate</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">6321887</span>, <span class="number">31248341</span>];
