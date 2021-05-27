@@ -207,6 +207,109 @@
 <span id="204">204</span>
 <span id="205">205</span>
 <span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fs::File</span>, <span class="ident">path::PathBuf</span>, <span class="ident">str::FromStr</span>};
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="ident">Error</span>};
@@ -223,7 +326,8 @@
     <span class="doccomment">/// The number of times to execute this rune</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span>, <span class="ident">long</span>, <span class="ident">default_value</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="ident">repeats</span>: <span class="ident">usize</span>,
-    <span class="doccomment">/// Pass information to a capability as `key:value` pairs.</span>
+    <span class="doccomment">/// Initialize capabilities based on `key:value` pairs. Prefer to use</span>
+    <span class="doccomment">/// aliases like &quot;--image&quot; and &quot;--sound&quot; when the capability is builtin.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For example:</span>
     <span class="doccomment">///</span>
@@ -244,6 +348,38 @@
     <span class="doccomment">/// - `raw:data.bin` is a file who&#39;s bytes will be used as-is</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span>, <span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;capability&quot;</span>)]</span>
     <span class="ident">capabilities</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Capability</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">structopt</span>(
+        <span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;accelerometer&quot;</span>,
+        <span class="ident">aliases</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;accel&quot;</span>]</span>,
+        <span class="ident">parse</span>(<span class="ident">from_os_str</span>),
+        <span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;A CSV file containing [X, Y, Z] vectors to be returned by the ACCEL capability&quot;</span>
+    )]
+    <span class="ident">accelerometer</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">structopt</span>(
+        <span class="ident">long</span>,
+        <span class="ident">parse</span>(<span class="ident">from_os_str</span>),
+        <span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;A WAV file containing samples returned by the SOUND capability&quot;</span>
+    )]</span>
+    <span class="ident">sound</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">structopt</span>(
+        <span class="ident">long</span>,
+        <span class="ident">aliases</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;img&quot;</span>]</span>,
+        <span class="ident">parse</span>(<span class="ident">from_os_str</span>),
+        <span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;An image to be returned by the IMAGE capability&quot;</span>
+    )]
+    <span class="ident">image</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">structopt</span>(
+        <span class="ident">long</span>,
+        <span class="ident">parse</span>(<span class="ident">from_os_str</span>),
+        <span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;A file who&#39;s bytes will be returned as-is by the RAW capability&quot;</span>
+    )]</span>
+    <span class="ident">raw</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">structopt</span>(
+        <span class="ident">long</span>,
+        <span class="ident">aliases</span> <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;rand&quot;</span>]</span>,
+        <span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;Seed the runtime&#39;s Random Number Generator&quot;</span>
+    )]
+    <span class="ident">random</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Run</span> {
@@ -254,7 +390,9 @@
             <span class="macro">format!</span>(<span class="string">&quot;Unable to read \&quot;{}\&quot;&quot;</span>, <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">display</span>())
         })<span class="question-mark">?</span>;
 
-        <span class="kw">let</span> <span class="ident">env</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">env</span>().<span class="ident">context</span>(<span class="string">&quot;Unable to initialize the environment&quot;</span>)<span class="question-mark">?</span>;
+        <span class="kw">let</span> <span class="ident">capabilities</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">all_capabilities</span>();
+        <span class="kw">let</span> <span class="ident">env</span> <span class="op">=</span> <span class="ident">initialize_image</span>(<span class="kw-2">&amp;</span><span class="ident">capabilities</span>)
+            .<span class="ident">context</span>(<span class="string">&quot;Unable to initialize the environment&quot;</span>)<span class="question-mark">?</span>;
 
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">runtime</span> <span class="op">=</span> <span class="ident">Runtime::load</span>(<span class="kw-2">&amp;</span><span class="ident">rune</span>, <span class="ident">env</span>)
             .<span class="ident">context</span>(<span class="string">&quot;Unable to initialize the virtual machine&quot;</span>)<span class="question-mark">?</span>;
@@ -269,8 +407,50 @@
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="kw">fn</span> <span class="ident">env</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">BaseImage</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-        <span class="ident">initialize_image</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">capabilities</span>)
+    <span class="kw">fn</span> <span class="ident">all_capabilities</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Capability</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">Run</span> {
+            <span class="ident">capabilities</span>,
+            <span class="ident">accelerometer</span>,
+            <span class="ident">sound</span>,
+            <span class="ident">image</span>,
+            <span class="ident">raw</span>,
+            <span class="ident">random</span>,
+            <span class="ident">rune</span>: <span class="kw">_</span>,
+            <span class="ident">repeats</span>: <span class="kw">_</span>,
+        } <span class="op">=</span> <span class="self">self</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">caps</span> <span class="op">=</span> <span class="ident">capabilities</span>.<span class="ident">clone</span>();
+
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">accel</span>) <span class="op">=</span> <span class="ident">accelerometer</span> {
+            <span class="ident">extend_caps</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">caps</span>, <span class="ident">accel</span>, <span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">Capability::accel</span>(<span class="ident">p</span>));
+        }
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">sound</span>) <span class="op">=</span> <span class="ident">sound</span> {
+            <span class="ident">extend_caps</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">caps</span>, <span class="ident">sound</span>, <span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">Capability::sound</span>(<span class="ident">p</span>));
+        }
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">raw</span>) <span class="op">=</span> <span class="ident">raw</span> {
+            <span class="ident">extend_caps</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">caps</span>, <span class="ident">raw</span>, <span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">Capability::raw</span>(<span class="ident">p</span>));
+        }
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">image</span>) <span class="op">=</span> <span class="ident">image</span> {
+            <span class="ident">extend_caps</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">caps</span>, <span class="ident">image</span>, <span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">Capability::image</span>(<span class="ident">p</span>));
+        }
+        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">random</span>) <span class="op">=</span> <span class="ident">random</span> {
+            <span class="ident">caps</span>.<span class="ident">push</span>(<span class="ident">Capability::RandomSeed</span> { <span class="ident">seed</span>: <span class="kw-2">*</span><span class="ident">random</span> });
+        }
+
+        <span class="ident">caps</span>
+    }
+}
+
+<span class="kw">fn</span> <span class="ident">extend_caps</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">I</span>, <span class="ident">F</span>, <span class="ident">T</span><span class="op">&gt;</span>(
+    <span class="ident">capabilities</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Capability</span><span class="op">&gt;</span>,
+    <span class="ident">items</span>: <span class="ident">I</span>,
+    <span class="kw-2">mut</span> <span class="ident">map</span>: <span class="ident">F</span>,
+) <span class="kw">where</span>
+    <span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;a</span>,
+    <span class="ident">T</span>: <span class="lifetime">&#39;a</span>,
+    <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Capability</span>,
+{
+    <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="ident">items</span> {
+        <span class="ident">capabilities</span>.<span class="ident">push</span>(<span class="ident">map</span>(<span class="ident">item</span>));
     }
 }
 
@@ -374,6 +554,32 @@
     <span class="ident">Image</span> { <span class="ident">filename</span>: <span class="ident">PathBuf</span> },
     <span class="ident">Sound</span> { <span class="ident">filename</span>: <span class="ident">PathBuf</span> },
     <span class="ident">Raw</span> { <span class="ident">filename</span>: <span class="ident">PathBuf</span> },
+}
+
+<span class="kw">impl</span> <span class="ident">Capability</span> {
+    <span class="kw">fn</span> <span class="ident">accel</span>(<span class="ident">filename</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">Capability::Accelerometer</span> {
+            <span class="ident">filename</span>: <span class="ident">filename</span>.<span class="ident">into</span>(),
+        }
+    }
+
+    <span class="kw">fn</span> <span class="ident">image</span>(<span class="ident">filename</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">Capability::Image</span> {
+            <span class="ident">filename</span>: <span class="ident">filename</span>.<span class="ident">into</span>(),
+        }
+    }
+
+    <span class="kw">fn</span> <span class="ident">sound</span>(<span class="ident">filename</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">Capability::Sound</span> {
+            <span class="ident">filename</span>: <span class="ident">filename</span>.<span class="ident">into</span>(),
+        }
+    }
+
+    <span class="kw">fn</span> <span class="ident">raw</span>(<span class="ident">filename</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">Capability::Raw</span> {
+            <span class="ident">filename</span>: <span class="ident">filename</span>.<span class="ident">into</span>(),
+        }
+    }
 }
 
 <span class="kw">impl</span> <span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">Capability</span> {
