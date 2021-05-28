@@ -1,1 +1,1 @@
-initSidebarItems({"constant":[["DEFAULT_RUST_LOG",""]],"enum":[["Cmd",""],["ColorChoice",""],["Format",""]],"fn":[["main",""]],"mod":[["build",""],["inspect",""],["model_info",""],["run",""],["version",""]],"struct":[["Args",""]]});
+initSidebarItems({"constant":[["DEFAULT_RUST_LOG",""]],"enum":[["Cmd",""],["ColorChoice",""],["Format",""]],"fn":[["main",""]],"mod":[["build",""],["graph","Generate a DOT graph using a poor man’s graph generator."],["inspect",""],["model_info",""],["run",""],["version",""]],"struct":[["Args",""]]});

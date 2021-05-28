@@ -142,11 +142,9 @@
 <span id="139">139</span>
 <span id="140">140</span>
 <span id="141">141</span>
-<span id="142">142</span>
-<span id="143">143</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">mod</span> <span class="ident">build</span>;
-<span class="comment">// mod graph;</span>
+<span class="kw">mod</span> <span class="ident">graph</span>;
 <span class="kw">mod</span> <span class="ident">inspect</span>;
 <span class="kw">mod</span> <span class="ident">model_info</span>;
 <span class="kw">mod</span> <span class="ident">run</span>;
@@ -158,12 +156,8 @@
 <span class="kw">use</span> <span class="ident">structopt</span>::{<span class="ident">clap::AppSettings</span>, <span class="ident">StructOpt</span>};
 <span class="kw">use</span> <span class="ident">env_logger</span>::{<span class="ident">Env</span>, <span class="ident">WriteStyle</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{
-    <span class="comment">// graph::Graph,</span>
-    <span class="ident">model_info::ModelInfo</span>,
-    <span class="ident">inspect::Inspect</span>,
-    <span class="ident">run::Run</span>,
-    <span class="ident">build::Build</span>,
-    <span class="ident">version::Version</span>,
+    <span class="ident">graph::Graph</span>, <span class="ident">model_info::ModelInfo</span>, <span class="ident">inspect::Inspect</span>, <span class="ident">run::Run</span>,
+    <span class="ident">build::Build</span>, <span class="ident">version::Version</span>,
 };
 
 <span class="kw">const</span> <span class="ident">DEFAULT_RUST_LOG</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="macro">concat!</span>(
@@ -193,7 +187,7 @@
     <span class="kw">match</span> <span class="ident">cmd</span> {
         <span class="prelude-val">Some</span>(<span class="ident">Cmd::Build</span>(<span class="ident">build</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">build</span>.<span class="ident">execute</span>(<span class="ident">colour</span>.<span class="ident">into</span>()),
         <span class="prelude-val">Some</span>(<span class="ident">Cmd::Run</span>(<span class="ident">run</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">run</span>.<span class="ident">execute</span>(),
-        <span class="comment">// Some(Cmd::Graph(graph)) =&gt; graph.execute(colour.into()),</span>
+        <span class="prelude-val">Some</span>(<span class="ident">Cmd::Graph</span>(<span class="ident">graph</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">graph</span>.<span class="ident">execute</span>(<span class="ident">colour</span>.<span class="ident">into</span>()),
         <span class="prelude-val">Some</span>(<span class="ident">Cmd::Version</span>(<span class="kw-2">mut</span> <span class="ident">version</span>)) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="ident">version</span>.<span class="ident">verbose</span> <span class="op">|</span><span class="op">=</span> <span class="ident">verbose</span>;
             <span class="ident">version</span>.<span class="ident">execute</span>()
@@ -278,6 +272,8 @@
     <span class="ident">ModelInfo</span>(<span class="ident">ModelInfo</span>),
     <span class="doccomment">/// Inspect a Rune.</span>
     <span class="ident">Inspect</span>(<span class="ident">Inspect</span>),
+    <span class="doccomment">/// Visualise a Rune&#39;s pipeline graph.</span>
+    <span class="ident">Graph</span>(<span class="ident">Graph</span>),
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(

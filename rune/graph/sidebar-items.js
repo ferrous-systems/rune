@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["WASM_MAGIC_BYTES",""]],"fn":[["declare_edges",""],["declare_input_edges",""],["declare_nodes",""],["format_node_label",""],["generate_graph",""],["type_name",""]],"struct":[["Graph",""]]});

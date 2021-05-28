@@ -254,6 +254,11 @@
 <span id="251">251</span>
 <span id="252">252</span>
 <span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections</span>::{<span class="ident">BTreeMap</span>, <span class="ident">HashMap</span>},
@@ -290,7 +295,7 @@
         <span class="kw">let</span> <span class="ident">wasm</span> <span class="op">=</span> <span class="ident">std::fs::read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">rune</span>).<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> {
             <span class="macro">format!</span>(<span class="string">&quot;Unable to read \&quot;{}\&quot;&quot;</span>, <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">display</span>())
         })<span class="question-mark">?</span>;
-        <span class="kw">let</span> <span class="ident">meta</span> <span class="op">=</span> <span class="ident">Metadata::from_custom_sections</span>(<span class="ident">wasm_custom_sections</span>(<span class="kw-2">&amp;</span><span class="ident">wasm</span>));
+        <span class="kw">let</span> <span class="ident">meta</span> <span class="op">=</span> <span class="ident">Metadata::from_wasm_binary</span>(<span class="kw-2">&amp;</span><span class="ident">wasm</span>);
 
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">format</span> {
             <span class="ident">Format::Json</span> <span class="op">=</span><span class="op">&gt;</span> {
@@ -323,7 +328,7 @@
         );
     }
 
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">SimplifiedRune</span> { <span class="ident">capabilities</span> }) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">meta</span>.<span class="ident">rune</span> {
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">SimplifiedRune</span> { <span class="ident">capabilities</span> }) <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">meta</span>.<span class="ident">simplified_rune</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="ident">capabilities</span>.<span class="ident">is_empty</span>() {
             <span class="ident">print_capabilities</span>(<span class="kw-2">&amp;</span><span class="ident">capabilities</span>);
         }
@@ -357,25 +362,31 @@
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">serde::Serialize</span>)]</span>
-<span class="kw">struct</span> <span class="ident">Metadata</span> {
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">Clone</span>, <span class="ident">serde::Serialize</span>)]</span>
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">Metadata</span> {
     <span class="ident">rune_cli_build_info</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BuildInfo</span><span class="op">&gt;</span>,
-    <span class="ident">rune</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SimplifiedRune</span><span class="op">&gt;</span>,
+    <span class="ident">rune</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Rune</span><span class="op">&gt;</span>,
+    <span class="ident">simplified_rune</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SimplifiedRune</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Metadata</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_wasm_binary</span>(<span class="ident">wasm</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">Metadata::from_custom_sections</span>(<span class="ident">wasm_custom_sections</span>(<span class="ident">wasm</span>))
+    }
+
     <span class="kw">fn</span> <span class="ident">from_custom_sections</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(
         <span class="ident">sections</span>: <span class="kw">impl</span> <span class="ident">Iterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">CustomSection</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     ) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">rune_cli_build_info</span> <span class="op">=</span> <span class="prelude-val">None</span>;
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">graph</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">meta</span> <span class="op">=</span> <span class="ident">Metadata::default</span>();
 
         <span class="kw">for</span> <span class="ident">section</span> <span class="kw">in</span> <span class="ident">sections</span> {
             <span class="kw">match</span> <span class="ident">section</span>.<span class="ident">name</span> {
                 <span class="ident">rune_codegen::GRAPH_CUSTOM_SECTION</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">match</span> <span class="ident">serde_json::from_slice</span>(<span class="ident">section</span>.<span class="ident">data</span>) {
                         <span class="prelude-val">Ok</span>(<span class="ident">rune</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                            <span class="ident">graph</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">SimplifiedRune::from_rune</span>(<span class="ident">rune</span>));
+                            <span class="ident">meta</span>.<span class="ident">simplified_rune</span> <span class="op">=</span>
+                                <span class="prelude-val">Some</span>(<span class="ident">SimplifiedRune::from_rune</span>(<span class="kw-2">&amp;</span><span class="ident">rune</span>));
+                            <span class="ident">meta</span>.<span class="ident">rune</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">rune</span>);
                         },
                         <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                             <span class="macro">log::warn!</span>(
@@ -388,7 +399,7 @@
                 <span class="ident">rune_codegen::VERSION_CUSTOM_SECTION</span> <span class="op">=</span><span class="op">&gt;</span> {
                     <span class="kw">match</span> <span class="ident">serde_json::from_slice</span>(<span class="ident">section</span>.<span class="ident">data</span>) {
                         <span class="prelude-val">Ok</span>(<span class="ident">v</span>) <span class="op">=</span><span class="op">&gt;</span> {
-                            <span class="ident">rune_cli_build_info</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>);
+                            <span class="ident">meta</span>.<span class="ident">rune_cli_build_info</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">v</span>);
                         },
                         <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> {
                             <span class="macro">log::warn!</span>(
@@ -402,11 +413,10 @@
             }
         }
 
-        <span class="ident">Metadata</span> {
-            <span class="ident">rune_cli_build_info</span>,
-            <span class="ident">rune</span>: <span class="ident">graph</span>,
-        }
+        <span class="ident">meta</span>
     }
+
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">take_rune</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Rune</span><span class="op">&gt;</span> { <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">take</span>() }
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">serde::Serialize</span>)]</span>
@@ -415,7 +425,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">SimplifiedRune</span> {
-    <span class="kw">fn</span> <span class="ident">from_rune</span>(<span class="ident">rune</span>: <span class="ident">Rune</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_rune</span>(<span class="ident">rune</span>: <span class="kw-2">&amp;</span><span class="ident">Rune</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">capabilities</span> <span class="op">=</span> <span class="ident">BTreeMap::new</span>();
 
         <span class="kw">for</span> (<span class="kw-2">&amp;</span><span class="ident">id</span>, <span class="ident">node</span>) <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">rune</span>.<span class="ident">stages</span> {
