@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["GitSpecifier",""],["RuneProject",""]],"fn":[["generate",""],["generate_with_env",""]],"mod":[["rustup",""]],"struct":[["Compilation",""],["DefaultEnvironment",""],["Project",""]],"trait":[["Environment",""]]});
+initSidebarItems({"constant":[["GRAPH_CUSTOM_SECTION",""],["VERSION_CUSTOM_SECTION",""]],"enum":[["GitSpecifier",""],["RuneProject",""]],"fn":[["generate",""],["generate_with_env",""]],"mod":[["rustup",""]],"struct":[["Compilation",""],["DefaultEnvironment",""],["Project",""]],"trait":[["Environment",""]]});

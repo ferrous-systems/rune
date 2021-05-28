@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Format",""]],"fn":[["print_json",""],["print_text",""],["version",""]],"struct":[["Version",""],["VersionInfo",""]]});
+initSidebarItems({"fn":[["print_json",""],["print_text",""],["version",""]],"struct":[["Version",""],["VersionInfo",""]]});

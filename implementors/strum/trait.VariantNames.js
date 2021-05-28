@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["rune"] = [{"text":"impl <a class=\"trait\" href=\"strum/trait.VariantNames.html\" title=\"trait strum::VariantNames\">VariantNames</a> for <a class=\"enum\" href=\"rune/enum.ColorChoice.html\" title=\"enum rune::ColorChoice\">ColorChoice</a>","synthetic":false,"types":["rune::ColorChoice"]},{"text":"impl <a class=\"trait\" href=\"strum/trait.VariantNames.html\" title=\"trait strum::VariantNames\">VariantNames</a> for <a class=\"enum\" href=\"rune/enum.Format.html\" title=\"enum rune::Format\">Format</a>","synthetic":false,"types":["rune::Format"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

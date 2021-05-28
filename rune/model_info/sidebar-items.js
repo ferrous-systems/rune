@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Format",""]],"fn":[["load_model",""],["model_info",""],["parse_info",""],["print_info",""]],"struct":[["ModelDescription",""],["ModelInfo",""],["TensorInfo",""]]});
+initSidebarItems({"fn":[["load_model",""],["model_info",""],["parse_info",""],["print_info",""]],"struct":[["ModelDescription",""],["ModelInfo",""],["TensorInfo",""]]});

@@ -520,12 +520,23 @@
 <span id="517">517</span>
 <span id="518">518</span>
 <span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! The *High-level Internal Representation*.</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>},
     <span class="ident">convert</span>::{<span class="ident">TryFrom</span>},
+    <span class="ident">fmt</span>::{<span class="self">self</span>, <span class="ident">Display</span>, <span class="ident">Formatter</span>},
     <span class="ident">hash::Hash</span>,
     <span class="ident">io</span>::{<span class="ident">Error</span>, <span class="ident">ErrorKind</span>, <span class="ident">Write</span>},
     <span class="ident">ops::Index</span>,
@@ -988,6 +999,15 @@
             <span class="string">&quot;image&quot;</span> <span class="op">|</span> <span class="string">&quot;IMAGE&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SourceKind::Image</span>,
             <span class="string">&quot;raw&quot;</span> <span class="op">|</span> <span class="string">&quot;RAW&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SourceKind::Raw</span>,
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SourceKind::Other</span>(<span class="ident">s</span>.<span class="ident">to_string</span>()),
+        }
+    }
+}
+
+<span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">SourceKind</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        <span class="kw">match</span> <span class="self">self</span> {
+            <span class="ident">SourceKind::Other</span>(<span class="ident">custom</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Display::fmt</span>(<span class="ident">custom</span>, <span class="ident">f</span>),
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;{:?}&quot;</span>, <span class="self">self</span>),
         }
     }
 }
