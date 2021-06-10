@@ -501,6 +501,29 @@
 <span id="498">498</span>
 <span id="499">499</span>
 <span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">borrow::Cow</span>,
@@ -521,9 +544,13 @@
 };
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">serde::Serialize</span>, <span class="ident">serde::Deserialize</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Document</span> {
-    <span class="kw">pub</span> <span class="ident">image</span>: <span class="ident">Path</span>,
-    <span class="kw">pub</span> <span class="ident">pipeline</span>: <span class="ident">IndexMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Stage</span><span class="op">&gt;</span>,
+<span class="attribute">#[<span class="ident">serde</span>(<span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;version&quot;</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Document</span> {
+    <span class="attribute">#[<span class="ident">serde</span>(<span class="ident">rename</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="ident">V1</span> {
+        <span class="ident">image</span>: <span class="ident">Path</span>,
+        <span class="ident">pipeline</span>: <span class="ident">IndexMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Stage</span><span class="op">&gt;</span>,
+    },
 }
 
 <span class="kw">impl</span> <span class="ident">Document</span> {
@@ -1000,6 +1027,25 @@
             <span class="kw">let</span> <span class="ident">got</span>: <span class="ident">Path</span> <span class="op">=</span> <span class="ident">src</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>();
             <span class="macro">assert_eq!</span>(<span class="ident">got</span>, <span class="ident">should_be</span>, <span class="string">&quot;{}&quot;</span>, <span class="ident">src</span>);
         }
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">parse_v1</span>() {
+        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="string">&quot;version: 1\nimage: asdf\npipeline: {}&quot;</span>;
+
+        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">Document::parse</span>(<span class="ident">src</span>).<span class="ident">unwrap</span>();
+
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(<span class="ident">got</span>, <span class="ident">Document::V1</span> { .. }));
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="attribute">#[<span class="ident">should_panic</span> <span class="op">=</span> <span class="string">&quot;unknown variant `2`&quot;</span>]</span>
+    <span class="kw">fn</span> <span class="ident">other_versions_are_an_error</span>() {
+        <span class="kw">let</span> <span class="ident">src</span> <span class="op">=</span> <span class="string">&quot;image: asdf\nversion: 2\npipeline:&quot;</span>;
+
+        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">Document::parse</span>(<span class="ident">src</span>).<span class="ident">unwrap</span>();
+
+        <span class="macro">assert!</span>(<span class="macro">matches!</span>(<span class="ident">got</span>, <span class="ident">Document::V1</span> { .. }));
     }
 }
 </pre></div>

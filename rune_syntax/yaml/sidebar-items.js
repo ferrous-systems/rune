@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Stage",""],["Value",""]],"fn":[["document_from_runefile",""]],"struct":[["Document",""],["Input",""],["Path","A specification for finding a dependency."],["PathParseError",""],["Type",""]]});
+initSidebarItems({"enum":[["Document",""],["Stage",""],["Value",""]],"fn":[["document_from_runefile",""]],"struct":[["Input",""],["Path","A specification for finding a dependency."],["PathParseError",""],["Type",""]]});
