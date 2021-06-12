@@ -104,15 +104,6 @@
 <span id="101">101</span>
 <span id="102">102</span>
 <span id="103">103</span>
-<span id="104">104</span>
-<span id="105">105</span>
-<span id="106">106</span>
-<span id="107">107</span>
-<span id="108">108</span>
-<span id="109">109</span>
-<span id="110">110</span>
-<span id="111">111</span>
-<span id="112">112</span>
 </pre><pre class="rust">
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 
@@ -121,7 +112,7 @@
 <span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">convert::TryInto</span>, <span class="ident">fmt::Debug</span>};
 
 <span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
-<span class="kw">use</span> <span class="ident">runic_types</span>::{<span class="ident">HasOutputs</span>, <span class="ident">Tensor</span>, <span class="ident">Transform</span>};
+<span class="kw">use</span> <span class="ident">rune_pb_core</span>::{<span class="ident">HasOutputs</span>, <span class="ident">Tensor</span>, <span class="ident">Transform</span>, <span class="ident">ProcBlock</span>};
 
 <span class="doccomment">/// A proc block which, when given a set of indices, will return their</span>
 <span class="doccomment">/// associated labels.</span>
@@ -129,28 +120,19 @@
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">/// ```rust</span>
 <span class="doccomment">/// # use label::Label;</span>
-<span class="doccomment">/// # use runic_types::{Tensor, Transform};</span>
+<span class="doccomment">/// # use runic_types::Tensor;</span>
+<span class="doccomment">/// # use rune_pb_core::Transform;</span>
 <span class="doccomment">/// let mut proc_block = Label::default();</span>
-<span class="doccomment">/// proc_block.set_labels(&amp;[&quot;zero&quot;, &quot;one&quot;, &quot;two&quot;, &quot;three&quot;]);</span>
+<span class="doccomment">/// proc_block.set_labels([&quot;zero&quot;, &quot;one&quot;, &quot;two&quot;, &quot;three&quot;]);</span>
 <span class="doccomment">/// let input = Tensor::new_vector(vec![3, 1, 2]);</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// let got = proc_block.transform(input);</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// assert_eq!(got.elements(), &amp;[&quot;three&quot;, &quot;one&quot;, &quot;two&quot;]);</span>
 <span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">ProcBlock</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Label</span> {
     <span class="ident">labels</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span><span class="op">&gt;</span>,
-}
-
-<span class="kw">impl</span> <span class="ident">Label</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_labels</span>(
-        <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-        <span class="ident">labels</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">str</span>]<span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">labels</span> <span class="op">=</span> <span class="ident">labels</span>.<span class="ident">as_ref</span>().<span class="ident">to_vec</span>();
-        <span class="self">self</span>
-    }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Transform</span><span class="op">&lt;</span><span class="ident">Tensor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Label</span>
@@ -208,7 +190,7 @@
     <span class="attribute">#[<span class="ident">should_panic</span> <span class="op">=</span> <span class="string">&quot;Index out of bounds: there are 2 labels but label 42 was requested&quot;</span>]</span>
     <span class="kw">fn</span> <span class="ident">label_index_out_of_bounds</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proc_block</span> <span class="op">=</span> <span class="ident">Label::default</span>();
-        <span class="ident">proc_block</span>.<span class="ident">set_labels</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;first&quot;</span>, <span class="string">&quot;second&quot;</span>]);
+        <span class="ident">proc_block</span>.<span class="ident">set_labels</span>([<span class="string">&quot;first&quot;</span>, <span class="string">&quot;second&quot;</span>]);
         <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">Tensor::new_vector</span>(<span class="macro">alloc::vec!</span>[<span class="number">0_usize</span>, <span class="number">42</span>]);
 
         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">proc_block</span>.<span class="ident">transform</span>(<span class="ident">input</span>);
@@ -217,7 +199,7 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">get_the_correct_labels</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">proc_block</span> <span class="op">=</span> <span class="ident">Label::default</span>();
-        <span class="ident">proc_block</span>.<span class="ident">set_labels</span>(<span class="kw-2">&amp;</span>[<span class="string">&quot;zero&quot;</span>, <span class="string">&quot;one&quot;</span>, <span class="string">&quot;two&quot;</span>, <span class="string">&quot;three&quot;</span>]);
+        <span class="ident">proc_block</span>.<span class="ident">set_labels</span>([<span class="string">&quot;zero&quot;</span>, <span class="string">&quot;one&quot;</span>, <span class="string">&quot;two&quot;</span>, <span class="string">&quot;three&quot;</span>]);
         <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">Tensor::new_vector</span>(<span class="macro">alloc::vec!</span>[<span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>]);
         <span class="kw">let</span> <span class="ident">should_be</span> <span class="op">=</span> <span class="ident">Tensor::new_vector</span>(<span class="macro">alloc::vec!</span>[<span class="string">&quot;three&quot;</span>, <span class="string">&quot;one&quot;</span>, <span class="string">&quot;two&quot;</span>]);
 

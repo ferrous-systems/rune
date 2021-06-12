@@ -68,6 +68,9 @@
 <span id="65">65</span>
 <span id="66">66</span>
 <span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
 </pre><pre class="rust">
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 
@@ -82,11 +85,14 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">noise_reduction::NoiseReduction</span>;
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">gain_control::GainControl</span>;
 
-<span class="kw">use</span> <span class="ident">runic_types</span>::{<span class="ident">HasOutputs</span>, <span class="ident">Tensor</span>, <span class="ident">Transform</span>};
+<span class="kw">use</span> <span class="ident">runic_types</span>::{<span class="ident">HasOutputs</span>, <span class="ident">Tensor</span>};
+<span class="kw">use</span> <span class="ident">rune_pb_core</span>::{<span class="ident">ProcBlock</span>, <span class="ident">Transform</span>};
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>)]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">ProcBlock</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NoiseFiltering</span> {
+    <span class="attribute">#[<span class="ident">proc_block</span>(<span class="ident">skip</span>)]</span>
     <span class="ident">gain_control</span>: <span class="ident">GainControl</span>,
+    <span class="attribute">#[<span class="ident">proc_block</span>(<span class="ident">skip</span>)]</span>
     <span class="ident">noise_reduction</span>: <span class="ident">NoiseReduction</span>,
 }
 

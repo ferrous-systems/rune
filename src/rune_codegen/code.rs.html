@@ -817,6 +817,24 @@
 <span id="814">814</span>
 <span id="815">815</span>
 <span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Error</span>, <span class="ident">Context</span>};
@@ -837,8 +855,9 @@
     <span class="ident">rune</span>: <span class="kw-2">&amp;</span><span class="ident">Rune</span>,
     <span class="ident">build_info</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">serde_json::Value</span><span class="op">&gt;</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">let</span> <span class="ident">image_crate</span> <span class="op">=</span> <span class="macro">quote!</span>(<span class="ident">runicos_base_wasm</span>);
     <span class="kw">let</span> <span class="ident">preamble</span> <span class="op">=</span> <span class="ident">preamble</span>(<span class="ident">rune</span>, <span class="ident">build_info</span>)<span class="question-mark">?</span>;
-    <span class="kw">let</span> <span class="ident">manifest</span> <span class="op">=</span> <span class="ident">manifest_function</span>(<span class="ident">rune</span>);
+    <span class="kw">let</span> <span class="ident">manifest</span> <span class="op">=</span> <span class="ident">manifest_function</span>(<span class="ident">rune</span>, <span class="kw-2">&amp;</span><span class="ident">image_crate</span>);
     <span class="kw">let</span> <span class="ident">call</span> <span class="op">=</span> <span class="ident">call</span>();
 
     <span class="kw">let</span> <span class="ident">tokens</span> <span class="op">=</span> <span class="macro">quote!</span> {
@@ -850,13 +869,13 @@
     <span class="prelude-val">Ok</span>(<span class="ident">tokens</span>.<span class="ident">to_token_stream</span>().<span class="ident">to_string</span>())
 }
 
-<span class="kw">fn</span> <span class="ident">manifest_function</span>(<span class="ident">rune</span>: <span class="kw-2">&amp;</span><span class="ident">Rune</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">ToTokens</span> {
+<span class="kw">fn</span> <span class="ident">manifest_function</span>(<span class="ident">rune</span>: <span class="kw-2">&amp;</span><span class="ident">Rune</span>, <span class="ident">image_crate</span>: <span class="kw-2">&amp;</span><span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">impl</span> <span class="ident">ToTokens</span> {
     <span class="kw">let</span> <span class="ident">sorted_pipeline</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">rune</span>.<span class="ident">sorted_pipeline</span>().<span class="ident">collect</span>();
 
     <span class="kw">let</span> <span class="ident">initialized_node</span> <span class="op">=</span> <span class="ident">sorted_pipeline</span>
         .<span class="ident">iter</span>()
         .<span class="ident">copied</span>()
-        .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">id</span>, <span class="ident">node</span>)<span class="op">|</span> <span class="ident">initialize_node</span>(<span class="ident">rune</span>, <span class="ident">id</span>, <span class="ident">node</span>));
+        .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">id</span>, <span class="ident">node</span>)<span class="op">|</span> <span class="ident">initialize_node</span>(<span class="ident">rune</span>, <span class="ident">id</span>, <span class="ident">node</span>, <span class="ident">image_crate</span>));
 
     <span class="kw">let</span> <span class="ident">set_output_dimensions</span> <span class="op">=</span> <span class="ident">sorted_pipeline</span>
         .<span class="ident">iter</span>()
@@ -871,14 +890,14 @@
     <span class="macro">quote!</span> {
         <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
         <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">_manifest</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
-            <span class="kw">let</span> <span class="ident">_setup</span> <span class="op">=</span> <span class="ident">runic_types::wasm32::SetupGuard::default</span>();
+            <span class="kw">let</span> <span class="ident">_setup</span> <span class="op">=</span> #<span class="ident">image_crate::SetupGuard::default</span>();
 
             #( #<span class="ident">initialized_node</span> )<span class="op">*</span>
 
             #( #<span class="ident">set_output_dimensions</span> )<span class="op">*</span>
 
             <span class="kw">let</span> <span class="ident">pipeline</span> <span class="op">=</span> <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-                <span class="kw">let</span> <span class="ident">_guard</span> <span class="op">=</span> <span class="ident">runic_types::wasm32::PipelineGuard::default</span>();
+                <span class="kw">let</span> <span class="ident">_guard</span> <span class="op">=</span> #<span class="ident">image_crate::PipelineGuard::default</span>();
 
                 #( #<span class="ident">transform</span> )<span class="op">*</span>
             };
@@ -1070,16 +1089,21 @@
     }
 }
 
-<span class="kw">fn</span> <span class="ident">initialize_node</span>(<span class="ident">rune</span>: <span class="kw-2">&amp;</span><span class="ident">Rune</span>, <span class="ident">id</span>: <span class="ident">HirId</span>, <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="ident">Node</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">fn</span> <span class="ident">initialize_node</span>(
+    <span class="ident">rune</span>: <span class="kw-2">&amp;</span><span class="ident">Rune</span>,
+    <span class="ident">id</span>: <span class="ident">HirId</span>,
+    <span class="ident">node</span>: <span class="kw-2">&amp;</span><span class="ident">Node</span>,
+    <span class="ident">image_crate</span>: <span class="kw-2">&amp;</span><span class="ident">TokenStream</span>,
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">rune</span>.<span class="ident">names</span>[<span class="ident">id</span>].<span class="ident">replace</span>(<span class="string">&quot;-&quot;</span>, <span class="string">&quot;_&quot;</span>);
     <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">Ident::new</span>(<span class="kw-2">&amp;</span><span class="ident">name</span>, <span class="ident">Span::call_site</span>());
 
     <span class="kw">match</span> <span class="kw-2">&amp;</span><span class="ident">node</span>.<span class="ident">stage</span> {
         <span class="ident">Stage::Source</span>(<span class="ident">Source</span> { <span class="ident">kind</span>, <span class="ident">parameters</span> }) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="ident">initialize_source</span>(<span class="ident">name</span>, <span class="ident">kind</span>, <span class="ident">parameters</span>)
+            <span class="ident">initialize_source</span>(<span class="ident">name</span>, <span class="ident">kind</span>, <span class="ident">parameters</span>, <span class="ident">image_crate</span>)
         },
         <span class="ident">Stage::Sink</span>(<span class="ident">Sink</span> { <span class="ident">kind</span> }) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="kw">let</span> <span class="ident">type_name</span> <span class="op">=</span> <span class="ident">sink_type_name</span>(<span class="ident">kind</span>);
+            <span class="kw">let</span> <span class="ident">type_name</span> <span class="op">=</span> <span class="ident">sink_type_name</span>(<span class="ident">kind</span>, <span class="ident">image_crate</span>);
 
             <span class="macro">quote!</span> {
                 <span class="kw">let</span> <span class="kw-2">mut</span> #<span class="ident">name</span> <span class="op">=</span> #<span class="ident">type_name::default</span>();
@@ -1088,7 +1112,7 @@
         <span class="ident">Stage::Model</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">model_file</span> <span class="op">=</span> <span class="macro">format!</span>(<span class="string">&quot;{}.tflite&quot;</span>, <span class="ident">name</span>);
             <span class="macro">quote!</span> {
-                <span class="kw">let</span> <span class="kw-2">mut</span> #<span class="ident">name</span> <span class="op">=</span> <span class="ident">runic_types::wasm32::Model::load</span>(<span class="macro">include_bytes!</span>(#<span class="ident">model_file</span>));
+                <span class="kw">let</span> <span class="kw-2">mut</span> #<span class="ident">name</span> <span class="op">=</span> #<span class="ident">image_crate::Model::load</span>(<span class="macro">include_bytes!</span>(#<span class="ident">model_file</span>));
             }
         },
         <span class="ident">Stage::ProcBlock</span>(<span class="ident">proc_block</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">initialize_proc_block</span>(<span class="ident">name</span>, <span class="ident">proc_block</span>),
@@ -1122,9 +1146,9 @@
     <span class="macro">quote!</span>(#<span class="ident">module_name</span>::#<span class="ident">type_name</span>)
 }
 
-<span class="kw">fn</span> <span class="ident">sink_type_name</span>(<span class="ident">kind</span>: <span class="kw-2">&amp;</span><span class="ident">SinkKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+<span class="kw">fn</span> <span class="ident">sink_type_name</span>(<span class="ident">kind</span>: <span class="kw-2">&amp;</span><span class="ident">SinkKind</span>, <span class="ident">image_crate</span>: <span class="kw-2">&amp;</span><span class="ident">TokenStream</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
     <span class="kw">match</span> <span class="ident">kind</span> {
-        <span class="ident">SinkKind::Serial</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote!</span>(<span class="ident">runic_types::wasm32::Serial</span>),
+        <span class="ident">SinkKind::Serial</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote!</span>(#<span class="ident">image_crate::Serial</span>),
         <span class="ident">SinkKind::Other</span>(<span class="ident">other</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ident</span>(<span class="ident">other</span>),
     }
 }
@@ -1133,8 +1157,9 @@
     <span class="ident">name</span>: <span class="ident">Ident</span>,
     <span class="ident">kind</span>: <span class="kw-2">&amp;</span><span class="ident">SourceKind</span>,
     <span class="ident">parameters</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">String</span>, <span class="ident">Value</span><span class="op">&gt;</span>,
+    <span class="ident">image_crate</span>: <span class="kw-2">&amp;</span><span class="ident">TokenStream</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
-    <span class="kw">let</span> <span class="ident">type_name</span> <span class="op">=</span> <span class="ident">source_type_name</span>(<span class="ident">kind</span>);
+    <span class="kw">let</span> <span class="ident">type_name</span> <span class="op">=</span> <span class="ident">source_type_name</span>(<span class="ident">kind</span>, <span class="ident">image_crate</span>);
     <span class="kw">let</span> <span class="ident">setters</span> <span class="op">=</span> <span class="ident">parameters</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">key</span>, <span class="ident">value</span>)<span class="op">|</span> {
         <span class="kw">let</span> <span class="ident">arg</span> <span class="op">=</span> <span class="ident">quote_value</span>(<span class="ident">value</span>);
         <span class="macro">quote!</span> { #<span class="ident">name</span>.<span class="ident">set_parameter</span>(#<span class="ident">key</span>, #<span class="ident">arg</span>); }
@@ -1170,17 +1195,18 @@
     }
 }
 
-<span class="kw">fn</span> <span class="ident">source_type_name</span>(<span class="ident">kind</span>: <span class="kw-2">&amp;</span><span class="ident">SourceKind</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
-    <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">kind</span> {
-        <span class="ident">SourceKind::Random</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;runic_types::wasm32::Random&quot;</span>,
-        <span class="ident">SourceKind::Accelerometer</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;runic_types::wasm32::Accelerometer&quot;</span>,
-        <span class="ident">SourceKind::Sound</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;runic_types::wasm32::Sound&quot;</span>,
-        <span class="ident">SourceKind::Image</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;runic_types::wasm32::Image&quot;</span>,
-        <span class="ident">SourceKind::Raw</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;runic_types::wasm32::Raw&quot;</span>,
-        <span class="ident">SourceKind::Other</span>(<span class="ident">other</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">other</span>.<span class="ident">as_str</span>(),
-    };
-
-    <span class="ident">ident</span>(<span class="ident">name</span>)
+<span class="kw">fn</span> <span class="ident">source_type_name</span>(
+    <span class="ident">kind</span>: <span class="kw-2">&amp;</span><span class="ident">SourceKind</span>,
+    <span class="ident">image_crate</span>: <span class="kw-2">&amp;</span><span class="ident">TokenStream</span>,
+) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
+    <span class="kw">match</span> <span class="ident">kind</span> {
+        <span class="ident">SourceKind::Random</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote!</span>(#<span class="ident">image_crate::Random</span>),
+        <span class="ident">SourceKind::Accelerometer</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote!</span>(#<span class="ident">image_crate::Accelerometer</span>),
+        <span class="ident">SourceKind::Sound</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote!</span>(#<span class="ident">image_crate::Sound</span>),
+        <span class="ident">SourceKind::Image</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote!</span>(#<span class="ident">image_crate::Image</span>),
+        <span class="ident">SourceKind::Raw</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">quote!</span>(#<span class="ident">image_crate::Raw</span>),
+        <span class="ident">SourceKind::Other</span>(<span class="ident">other</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">ident</span>(<span class="ident">other</span>),
+    }
 }
 
 <span class="kw">fn</span> <span class="ident">ident</span>(<span class="ident">fully_qualified_path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TokenStream</span> {
@@ -1232,8 +1258,9 @@
 
         <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">alloc</span>;
 
-        <span class="kw">use</span> <span class="ident">runic_types</span>::<span class="kw-2">*</span>;
         <span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
+        <span class="kw">use</span> <span class="ident">runic_types</span>::<span class="kw-2">*</span>;
+        <span class="kw">use</span> <span class="ident">rune_pb_core</span>::<span class="kw-2">*</span>;
 
         #<span class="ident">rune_graph</span>
         #<span class="ident">build_info</span>
@@ -1335,20 +1362,21 @@
               dimensions: [18000]
         &quot;#</span>,
         );
+        <span class="kw">let</span> <span class="ident">image_crate</span> <span class="op">=</span> <span class="macro">quote!</span>(<span class="ident">runicos_base_wasm</span>);
 
-        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">manifest_function</span>(<span class="kw-2">&amp;</span><span class="ident">rune</span>).<span class="ident">to_token_stream</span>();
+        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">manifest_function</span>(<span class="kw-2">&amp;</span><span class="ident">rune</span>, <span class="kw-2">&amp;</span><span class="ident">image_crate</span>).<span class="ident">to_token_stream</span>();
 
         <span class="kw">let</span> <span class="ident">should_be</span> <span class="op">=</span> <span class="macro">quote!</span> {
             <span class="attribute">#[<span class="ident">no_mangle</span>]</span>
             <span class="kw">pub</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">_manifest</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
-                <span class="kw">let</span> <span class="ident">_setup</span> <span class="op">=</span> <span class="ident">runic_types::wasm32::SetupGuard::default</span>();
-                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">audio</span> <span class="op">=</span> <span class="ident">runic_types::wasm32::Sound::default</span>();
+                <span class="kw">let</span> <span class="ident">_setup</span> <span class="op">=</span> <span class="ident">runicos_base_wasm::SetupGuard::default</span>();
+                <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">audio</span> <span class="op">=</span> <span class="ident">runicos_base_wasm::Sound::default</span>();
                 <span class="ident">audio</span>.<span class="ident">set_parameter</span>(<span class="string">&quot;hz&quot;</span>, <span class="number">16000i32</span>);
 
                 <span class="ident">audio</span>.<span class="ident">set_output_dimensions</span>(<span class="kw-2">&amp;</span>[<span class="number">18000usize</span>]);
 
                 <span class="kw">let</span> <span class="ident">pipeline</span> <span class="op">=</span> <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-                    <span class="kw">let</span> <span class="ident">_guard</span> <span class="op">=</span> <span class="ident">runic_types::wasm32::PipelineGuard::default</span>();
+                    <span class="kw">let</span> <span class="ident">_guard</span> <span class="op">=</span> <span class="ident">runicos_base_wasm::PipelineGuard::default</span>();
                     <span class="kw">let</span> <span class="ident">audio_out_0</span>: <span class="ident">Tensor</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">audio</span>.<span class="ident">generate</span>();
                 };
 
@@ -1377,11 +1405,13 @@
         );
         <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">rune</span>.<span class="ident">names</span>[<span class="string">&quot;audio&quot;</span>];
         <span class="kw">let</span> <span class="ident">node</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">rune</span>.<span class="ident">stages</span>[<span class="kw-2">&amp;</span><span class="ident">id</span>];
+        <span class="kw">let</span> <span class="ident">image_crate</span> <span class="op">=</span> <span class="macro">quote!</span>(<span class="ident">runicos_base_wasm</span>);
 
-        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">initialize_node</span>(<span class="kw-2">&amp;</span><span class="ident">rune</span>, <span class="ident">id</span>, <span class="ident">node</span>).<span class="ident">to_token_stream</span>();
+        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span>
+            <span class="ident">initialize_node</span>(<span class="kw-2">&amp;</span><span class="ident">rune</span>, <span class="ident">id</span>, <span class="ident">node</span>, <span class="kw-2">&amp;</span><span class="ident">image_crate</span>).<span class="ident">to_token_stream</span>();
 
         <span class="kw">let</span> <span class="ident">should_be</span> <span class="op">=</span> <span class="macro">quote!</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">audio</span> <span class="op">=</span> <span class="ident">runic_types::wasm32::Sound::default</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">audio</span> <span class="op">=</span> <span class="ident">runicos_base_wasm::Sound::default</span>();
             <span class="ident">audio</span>.<span class="ident">set_parameter</span>(<span class="string">&quot;hz&quot;</span>, <span class="number">16000i32</span>);
         };
         <span class="macro">assert_quote_eq!</span>(<span class="ident">got</span>, <span class="ident">should_be</span>);
@@ -1401,11 +1431,13 @@
         );
         <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">rune</span>.<span class="ident">names</span>[<span class="string">&quot;sine&quot;</span>];
         <span class="kw">let</span> <span class="ident">node</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">rune</span>.<span class="ident">stages</span>[<span class="kw-2">&amp;</span><span class="ident">id</span>];
+        <span class="kw">let</span> <span class="ident">image_crate</span> <span class="op">=</span> <span class="macro">quote!</span>(<span class="ident">runicos_base_wasm</span>);
 
-        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">initialize_node</span>(<span class="kw-2">&amp;</span><span class="ident">rune</span>, <span class="ident">id</span>, <span class="ident">node</span>).<span class="ident">to_token_stream</span>();
+        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span>
+            <span class="ident">initialize_node</span>(<span class="kw-2">&amp;</span><span class="ident">rune</span>, <span class="ident">id</span>, <span class="ident">node</span>, <span class="kw-2">&amp;</span><span class="ident">image_crate</span>).<span class="ident">to_token_stream</span>();
 
         <span class="kw">let</span> <span class="ident">should_be</span> <span class="op">=</span> <span class="macro">quote!</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sine</span> <span class="op">=</span> <span class="ident">runic_types::wasm32::Model::load</span>(<span class="macro">include_bytes!</span>(<span class="string">&quot;sine.tflite&quot;</span>));
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sine</span> <span class="op">=</span> <span class="ident">runicos_base_wasm::Model::load</span>(<span class="macro">include_bytes!</span>(<span class="string">&quot;sine.tflite&quot;</span>));
         };
         <span class="macro">assert_quote_eq!</span>(<span class="ident">got</span>, <span class="ident">should_be</span>);
     }
@@ -1424,11 +1456,13 @@
         );
         <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">rune</span>.<span class="ident">names</span>[<span class="string">&quot;serial&quot;</span>];
         <span class="kw">let</span> <span class="ident">node</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">rune</span>.<span class="ident">stages</span>[<span class="kw-2">&amp;</span><span class="ident">id</span>];
+        <span class="kw">let</span> <span class="ident">image_crate</span> <span class="op">=</span> <span class="macro">quote!</span>(<span class="ident">runicos_base_wasm</span>);
 
-        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">initialize_node</span>(<span class="kw-2">&amp;</span><span class="ident">rune</span>, <span class="ident">id</span>, <span class="ident">node</span>).<span class="ident">to_token_stream</span>();
+        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span>
+            <span class="ident">initialize_node</span>(<span class="kw-2">&amp;</span><span class="ident">rune</span>, <span class="ident">id</span>, <span class="ident">node</span>, <span class="kw-2">&amp;</span><span class="ident">image_crate</span>).<span class="ident">to_token_stream</span>();
 
         <span class="kw">let</span> <span class="ident">should_be</span> <span class="op">=</span> <span class="macro">quote!</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">serial</span> <span class="op">=</span> <span class="ident">runic_types::wasm32::Serial::default</span>();
+            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">serial</span> <span class="op">=</span> <span class="ident">runicos_base_wasm::Serial::default</span>();
         };
         <span class="macro">assert_quote_eq!</span>(<span class="ident">got</span>, <span class="ident">should_be</span>);
     }
@@ -1462,8 +1496,10 @@
         );
         <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">rune</span>.<span class="ident">names</span>[<span class="string">&quot;normalize&quot;</span>];
         <span class="kw">let</span> <span class="ident">node</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">rune</span>.<span class="ident">stages</span>[<span class="kw-2">&amp;</span><span class="ident">id</span>];
+        <span class="kw">let</span> <span class="ident">image_crate</span> <span class="op">=</span> <span class="macro">quote!</span>(<span class="ident">runicos_base_wasm</span>);
 
-        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">initialize_node</span>(<span class="kw-2">&amp;</span><span class="ident">rune</span>, <span class="ident">id</span>, <span class="ident">node</span>).<span class="ident">to_token_stream</span>();
+        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span>
+            <span class="ident">initialize_node</span>(<span class="kw-2">&amp;</span><span class="ident">rune</span>, <span class="ident">id</span>, <span class="ident">node</span>, <span class="kw-2">&amp;</span><span class="ident">image_crate</span>).<span class="ident">to_token_stream</span>();
 
         <span class="kw">let</span> <span class="ident">should_be</span> <span class="op">=</span> <span class="macro">quote!</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">normalize</span> <span class="op">=</span> <span class="ident">label::Label::default</span>();

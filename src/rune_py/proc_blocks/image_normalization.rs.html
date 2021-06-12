@@ -176,6 +176,7 @@
 <span id="173">173</span>
 <span id="174">174</span>
 <span id="175">175</span>
+<span id="176">176</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std::convert::TryFrom</span>;
 
@@ -186,7 +187,8 @@
     <span class="ident">exceptions</span>::{<span class="ident">PyAssertionError</span>, <span class="ident">PyTypeError</span>},
     <span class="ident">prelude</span>::{<span class="ident">FromPyObject</span>, <span class="ident">pyclass</span>, <span class="ident">pymethods</span>, <span class="ident">pyproto</span>},
 };
-<span class="kw">use</span> <span class="ident">runic_types</span>::{<span class="ident">Tensor</span>, <span class="ident">Transform</span>};
+<span class="kw">use</span> <span class="ident">runic_types::Tensor</span>;
+<span class="kw">use</span> <span class="ident">rune_pb_core::Transform</span>;
 
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::proc_blocks::utils</span>;
 

@@ -63,99 +63,52 @@
 <span id="60">60</span>
 <span id="61">61</span>
 <span id="62">62</span>
-<span id="63">63</span>
-<span id="64">64</span>
-<span id="65">65</span>
-<span id="66">66</span>
-<span id="67">67</span>
-<span id="68">68</span>
-<span id="69">69</span>
-<span id="70">70</span>
-<span id="71">71</span>
-<span id="72">72</span>
-<span id="73">73</span>
-<span id="74">74</span>
-<span id="75">75</span>
-<span id="76">76</span>
-<span id="77">77</span>
-<span id="78">78</span>
-<span id="79">79</span>
-<span id="80">80</span>
-<span id="81">81</span>
-<span id="82">82</span>
-<span id="83">83</span>
-<span id="84">84</span>
-<span id="85">85</span>
 </pre><pre class="rust">
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 
-<span class="kw">use</span> <span class="ident">core::ops::Rem</span>;
-<span class="kw">use</span> <span class="ident">num_traits::One</span>;
-<span class="kw">use</span> <span class="ident">runic_types</span>::{<span class="ident">HasOutputs</span>, <span class="ident">Tensor</span>, <span class="ident">Transform</span>};
+<span class="kw">use</span> <span class="ident">num_traits</span>::{<span class="ident">FromPrimitive</span>, <span class="ident">ToPrimitive</span>};
+<span class="kw">use</span> <span class="ident">rune_pb_core</span>::{<span class="ident">HasOutputs</span>, <span class="ident">Tensor</span>, <span class="ident">Transform</span>, <span class="ident">ProcBlock</span>};
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">modulo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">modulus</span>: <span class="ident">T</span>, <span class="ident">values</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>])
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">modulo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">modulus</span>: <span class="ident">f32</span>, <span class="ident">values</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">T</span>])
 <span class="kw">where</span>
-    <span class="ident">T</span>: <span class="ident">Rem</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span>,
+    <span class="ident">T</span>: <span class="ident">ToPrimitive</span> <span class="op">+</span> <span class="ident">FromPrimitive</span>,
 {
     <span class="kw">for</span> <span class="ident">item</span> <span class="kw">in</span> <span class="ident">values</span> {
-        <span class="kw-2">*</span><span class="ident">item</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">clone</span>() <span class="op">%</span> <span class="ident">modulus</span>.<span class="ident">clone</span>();
+        <span class="kw">let</span> <span class="ident">float</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">to_f32</span>().<span class="ident">unwrap</span>();
+        <span class="kw-2">*</span><span class="ident">item</span> <span class="op">=</span> <span class="ident">T::from_f32</span>(<span class="ident">float</span> <span class="op">%</span> <span class="ident">modulus</span>).<span class="ident">unwrap</span>();
     }
 }
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Modulo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="ident">modulus</span>: <span class="ident">T</span>,
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">PartialEq</span>, <span class="ident">ProcBlock</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Modulo</span> {
+    <span class="ident">modulus</span>: <span class="ident">f32</span>,
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">One</span><span class="op">&gt;</span> <span class="ident">Modulo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">Modulo</span> { <span class="ident">modulus</span>: <span class="ident">T::one</span>() } }
+<span class="kw">impl</span> <span class="ident">Modulo</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">Modulo</span> { <span class="ident">modulus</span>: <span class="number">1.0</span> } }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Modulo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_modulus</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">modulus</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span> {
-        <span class="self">self</span>.<span class="ident">modulus</span> <span class="op">=</span> <span class="ident">modulus</span>;
-        <span class="self">self</span>
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">One</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Modulo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Modulo</span> {
     <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> { <span class="ident">Modulo::new</span>() }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Transform</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Modulo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Transform</span><span class="op">&lt;</span><span class="ident">Tensor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Modulo</span>
 <span class="kw">where</span>
-    <span class="ident">T</span>: <span class="ident">Rem</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span>,
-{
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">T</span>;
-
-    <span class="kw">fn</span> <span class="ident">transform</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">input</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> { <span class="ident">input</span> <span class="op">%</span> <span class="self">self</span>.<span class="ident">modulus</span>.<span class="ident">clone</span>() }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="kw">const</span> <span class="ident">N</span>: <span class="ident">usize</span><span class="op">&gt;</span> <span class="ident">Transform</span><span class="op">&lt;</span>[<span class="ident">T</span>; <span class="ident">N</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Modulo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">T</span>: <span class="ident">Rem</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span>,
-{
-    <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> [<span class="ident">T</span>; <span class="ident">N</span>];
-
-    <span class="kw">fn</span> <span class="ident">transform</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">input</span>: [<span class="ident">T</span>; <span class="ident">N</span>]) <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">T</span>; <span class="ident">N</span>] {
-        <span class="ident">modulo</span>(<span class="self">self</span>.<span class="ident">modulus</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">input</span>);
-        <span class="ident">input</span>
-    }
-}
-
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Transform</span><span class="op">&lt;</span><span class="ident">Tensor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Modulo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">T</span>: <span class="ident">Rem</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span>,
+    <span class="ident">T</span>: <span class="ident">ToPrimitive</span> <span class="op">+</span> <span class="ident">FromPrimitive</span>,
 {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">Tensor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>;
 
-    <span class="kw">fn</span> <span class="ident">transform</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">input</span>: <span class="ident">Tensor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Tensor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-        <span class="ident">modulo</span>(<span class="self">self</span>.<span class="ident">modulus</span>.<span class="ident">clone</span>(), <span class="ident">input</span>.<span class="ident">make_elements_mut</span>());
-        <span class="ident">input</span>
+    <span class="kw">fn</span> <span class="ident">transform</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">input</span>: <span class="ident">Tensor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Tensor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">modulus</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">modulus</span>;
+
+        <span class="ident">input</span>.<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span>, <span class="ident">item</span><span class="op">|</span> {
+            <span class="kw">let</span> <span class="ident">float</span> <span class="op">=</span> <span class="ident">item</span>.<span class="ident">to_f32</span>().<span class="ident">unwrap</span>();
+            <span class="ident">T::from_f32</span>(<span class="ident">float</span> <span class="op">%</span> <span class="ident">modulus</span>).<span class="ident">unwrap</span>()
+        })
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">HasOutputs</span> <span class="kw">for</span> <span class="ident">Modulo</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {}
+<span class="kw">impl</span> <span class="ident">HasOutputs</span> <span class="kw">for</span> <span class="ident">Modulo</span> {}
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
 <span class="kw">mod</span> <span class="ident">tests</span> {
@@ -165,11 +118,12 @@
     <span class="kw">fn</span> <span class="ident">mod_360</span>() {
         <span class="kw">let</span> <span class="ident">number</span> <span class="op">=</span> <span class="number">42</span> <span class="op">+</span> <span class="number">360</span>;
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">m</span> <span class="op">=</span> <span class="ident">Modulo::new</span>();
-        <span class="ident">m</span>.<span class="ident">set_modulus</span>(<span class="number">360</span>);
+        <span class="ident">m</span>.<span class="ident">set_modulus</span>(<span class="number">360.0</span>);
+        <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="ident">Tensor::single</span>(<span class="ident">number</span>);
 
-        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">m</span>.<span class="ident">transform</span>(<span class="ident">number</span>);
+        <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">m</span>.<span class="ident">transform</span>(<span class="ident">input</span>);
 
-        <span class="macro">assert_eq!</span>(<span class="ident">got</span>, <span class="number">42_i64</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">got</span>, <span class="ident">Tensor::single</span>(<span class="number">42_i64</span>));
     }
 }
 </pre></div>
