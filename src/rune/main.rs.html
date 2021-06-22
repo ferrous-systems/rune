@@ -137,11 +137,6 @@
 <span id="134">134</span>
 <span id="135">135</span>
 <span id="136">136</span>
-<span id="137">137</span>
-<span id="138">138</span>
-<span id="139">139</span>
-<span id="140">140</span>
-<span id="141">141</span>
 </pre><pre class="rust">
 <span class="kw">mod</span> <span class="ident">build</span>;
 <span class="kw">mod</span> <span class="ident">graph</span>;
@@ -173,7 +168,6 @@
         <span class="ident">colour</span>,
         <span class="ident">cmd</span>,
         <span class="ident">version</span>,
-        <span class="ident">verbose</span>,
     } <span class="op">=</span> <span class="ident">Args::from_args</span>();
 
     <span class="kw">let</span> <span class="ident">env</span> <span class="op">=</span> <span class="ident">Env::new</span>().<span class="ident">default_filter_or</span>(<span class="ident">DEFAULT_RUST_LOG</span>);
@@ -188,16 +182,13 @@
         <span class="prelude-val">Some</span>(<span class="ident">Cmd::Build</span>(<span class="ident">build</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">build</span>.<span class="ident">execute</span>(<span class="ident">colour</span>.<span class="ident">into</span>()),
         <span class="prelude-val">Some</span>(<span class="ident">Cmd::Run</span>(<span class="ident">run</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">run</span>.<span class="ident">execute</span>(),
         <span class="prelude-val">Some</span>(<span class="ident">Cmd::Graph</span>(<span class="ident">graph</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">graph</span>.<span class="ident">execute</span>(<span class="ident">colour</span>.<span class="ident">into</span>()),
-        <span class="prelude-val">Some</span>(<span class="ident">Cmd::Version</span>(<span class="kw-2">mut</span> <span class="ident">version</span>)) <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="ident">version</span>.<span class="ident">verbose</span> <span class="op">|</span><span class="op">=</span> <span class="ident">verbose</span>;
-            <span class="ident">version</span>.<span class="ident">execute</span>()
-        },
+        <span class="prelude-val">Some</span>(<span class="ident">Cmd::Version</span>(<span class="ident">version</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">version</span>.<span class="ident">execute</span>(),
         <span class="prelude-val">Some</span>(<span class="ident">Cmd::ModelInfo</span>(<span class="ident">m</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">model_info::model_info</span>(<span class="ident">m</span>),
         <span class="prelude-val">Some</span>(<span class="ident">Cmd::Inspect</span>(<span class="ident">i</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">i</span>.<span class="ident">execute</span>(),
         <span class="prelude-val">None</span> <span class="kw">if</span> <span class="ident">version</span> <span class="op">=</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">Version</span> {
                 <span class="ident">format</span>: <span class="ident">Format::Text</span>,
-                <span class="ident">verbose</span>,
+                <span class="ident">verbose</span>: <span class="bool-val">false</span>,
             };
             <span class="ident">v</span>.<span class="ident">execute</span>()
         },
@@ -220,10 +211,9 @@
         <span class="ident">possible_values</span> <span class="op">=</span> <span class="ident">ColorChoice::VARIANTS</span>)
     ]
     <span class="ident">colour</span>: <span class="ident">ColorChoice</span>,
-    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span> <span class="op">=</span> <span class="string">&quot;V&quot;</span>, <span class="ident">long</span>, <span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;Print out version information&quot;</span>)]</span>
+    <span class="doccomment">/// Prints out version information.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span> <span class="op">=</span> <span class="string">&quot;V&quot;</span>, <span class="ident">long</span>)]</span>
     <span class="ident">version</span>: <span class="ident">bool</span>,
-    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span>, <span class="ident">long</span>, <span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;Prints even more detailed information&quot;</span>)]</span>
-    <span class="ident">verbose</span>: <span class="ident">bool</span>,
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">subcommand</span>)]</span>
     <span class="ident">cmd</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Cmd</span><span class="op">&gt;</span>,
 }

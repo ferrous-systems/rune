@@ -186,13 +186,30 @@
 <span id="183">183</span>
 <span id="184">184</span>
 <span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">codespan_reporting</span>::{
     <span class="ident">files::SimpleFile</span>,
     <span class="ident">term</span>::{<span class="ident">termcolor::StandardStream</span>, <span class="ident">Config</span>, <span class="ident">termcolor::ColorChoice</span>},
 };
-<span class="kw">use</span> <span class="ident">rune_codegen</span>::{<span class="ident">Compilation</span>, <span class="ident">DefaultEnvironment</span>, <span class="ident">GitSpecifier</span>, <span class="ident">RuneProject</span>};
+<span class="kw">use</span> <span class="ident">rune_codegen</span>::{
+    <span class="ident">Compilation</span>, <span class="ident">DefaultEnvironment</span>, <span class="ident">GitSpecifier</span>, <span class="ident">RuneProject</span>, <span class="ident">Verbosity</span>,
+};
 <span class="kw">use</span> <span class="ident">rune_syntax</span>::{<span class="ident">hir::Rune</span>, <span class="ident">yaml::Document</span>, <span class="ident">Diagnostics</span>};
 <span class="kw">use</span> <span class="ident">std::path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>};
 <span class="kw">use</span> <span class="ident">once_cell::sync::Lazy</span>;
@@ -215,6 +232,12 @@
     <span class="doccomment">/// The name of the Rune (defaults to the Runefile directory&#39;s name).</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span>, <span class="ident">long</span>)]</span>
     <span class="ident">name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Hide output from tools that rune may call.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span>, <span class="ident">long</span>, <span class="ident">conflicts_with</span> <span class="op">=</span> <span class="string">&quot;verbose&quot;</span>)]</span>
+    <span class="ident">quiet</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Prints even more detailed information.</span>
+    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">short</span>, <span class="ident">long</span>, <span class="ident">conflicts_with</span> <span class="op">=</span> <span class="string">&quot;quiet&quot;</span>)]</span>
+    <span class="ident">verbose</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// Compile the Rune without optimisations.</span>
     <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">long</span>)]</span>
     <span class="ident">debug</span>: <span class="ident">bool</span>,
@@ -222,6 +245,12 @@
 
 <span class="kw">impl</span> <span class="ident">Build</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">execute</span>(<span class="self">self</span>, <span class="ident">color</span>: <span class="ident">ColorChoice</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
+        <span class="kw">let</span> <span class="ident">verbosity</span> <span class="op">=</span>
+            <span class="ident">Verbosity::from_quiet_and_verbose</span>(<span class="self">self</span>.<span class="ident">quiet</span>, <span class="self">self</span>.<span class="ident">verbose</span>)
+                .<span class="ident">context</span>(
+                    <span class="string">&quot;The --verbose and --quiet flags can&#39;t be used together&quot;</span>,
+                )<span class="question-mark">?</span>;
+
         <span class="kw">let</span> <span class="ident">rune</span> <span class="op">=</span> <span class="ident">analyze</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">runefile</span>, <span class="ident">color</span>)<span class="question-mark">?</span>;
 
         <span class="kw">let</span> <span class="ident">current_directory</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">current_directory</span>()<span class="question-mark">?</span>;
@@ -261,6 +290,7 @@
             <span class="ident">rune_project</span>,
             <span class="ident">current_directory</span>,
             <span class="ident">working_directory</span>,
+            <span class="ident">verbosity</span>,
             <span class="ident">optimized</span>: <span class="op">!</span><span class="self">self</span>.<span class="ident">debug</span>,
         };
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">env</span> <span class="op">=</span> <span class="ident">DefaultEnvironment::for_compilation</span>(<span class="kw-2">&amp;</span><span class="ident">compilation</span>)
