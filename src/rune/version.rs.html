@@ -118,6 +118,17 @@
 <span id="115">115</span>
 <span id="116">116</span>
 <span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">anyhow::Error</span>;
 <span class="kw">use</span> <span class="ident">build_info</span>::{
@@ -144,14 +155,14 @@
         <span class="kw">let</span> <span class="ident">executable</span> <span class="op">=</span> <span class="ident">Path::new</span>(<span class="kw-2">&amp;</span><span class="ident">binary</span>).<span class="ident">file_name</span>().<span class="ident">unwrap_or</span>(<span class="kw-2">&amp;</span><span class="ident">binary</span>);
 
         <span class="kw">let</span> <span class="ident">version</span> <span class="op">=</span> <span class="ident">version</span>();
-        <span class="kw">let</span> <span class="ident">git</span> <span class="op">=</span> <span class="ident">version</span>.<span class="ident">version_control</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">git</span>().<span class="ident">unwrap</span>();
+        <span class="kw">let</span> <span class="ident">git</span> <span class="op">=</span> <span class="ident">version</span>.<span class="ident">version_control</span>.<span class="ident">as_ref</span>().<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">git</span>());
 
         <span class="kw">let</span> <span class="ident">info</span> <span class="op">=</span> <span class="ident">VersionInfo</span> {
             <span class="ident">executable</span>: <span class="ident">executable</span>.<span class="ident">to_string_lossy</span>(),
             <span class="ident">rune_version</span>: <span class="ident">version</span>.<span class="ident">crate_info</span>.<span class="ident">version</span>.<span class="ident">to_string</span>(),
-            <span class="ident">commit_hash</span>: <span class="kw-2">&amp;</span><span class="ident">git</span>.<span class="ident">commit_id</span>,
-            <span class="ident">commit_short_hash</span>: <span class="kw-2">&amp;</span><span class="ident">git</span>.<span class="ident">commit_short_id</span>,
-            <span class="ident">commit_timestamp</span>: <span class="ident">git</span>.<span class="ident">commit_timestamp</span>,
+            <span class="ident">commit_hash</span>: <span class="ident">git</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">g</span><span class="op">|</span> <span class="ident">g</span>.<span class="ident">commit_id</span>.<span class="ident">as_str</span>()),
+            <span class="ident">commit_short_hash</span>: <span class="ident">git</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">g</span><span class="op">|</span> <span class="ident">g</span>.<span class="ident">commit_short_id</span>.<span class="ident">as_str</span>()),
+            <span class="ident">commit_timestamp</span>: <span class="ident">git</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">g</span><span class="op">|</span> <span class="ident">g</span>.<span class="ident">commit_timestamp</span>),
             <span class="ident">host</span>: <span class="kw-2">&amp;</span><span class="ident">version</span>.<span class="ident">compiler</span>.<span class="ident">target_triple</span>,
             <span class="ident">rustc_version</span>: <span class="ident">version</span>.<span class="ident">compiler</span>.<span class="ident">version</span>.<span class="ident">to_string</span>(),
             <span class="ident">rustc_commit_hash</span>: <span class="ident">version</span>.<span class="ident">compiler</span>.<span class="ident">commit_id</span>.<span class="ident">as_deref</span>(),
@@ -187,9 +198,9 @@
 <span class="kw">struct</span> <span class="ident">VersionInfo</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="ident">executable</span>: <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">str</span><span class="op">&gt;</span>,
     <span class="ident">rune_version</span>: <span class="ident">String</span>,
-    <span class="ident">commit_short_hash</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-    <span class="ident">commit_hash</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
-    <span class="ident">commit_timestamp</span>: <span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span>,
+    <span class="ident">commit_short_hash</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span>,
+    <span class="ident">commit_hash</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span>,
+    <span class="ident">commit_timestamp</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DateTime</span><span class="op">&lt;</span><span class="ident">Utc</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     <span class="ident">host</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>,
     <span class="ident">rustc_version</span>: <span class="ident">String</span>,
     <span class="ident">rustc_commit_hash</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span>,
@@ -209,15 +220,22 @@
         <span class="ident">rustc_commit_date</span>,
     } <span class="op">=</span> <span class="ident">info</span>;
 
-    <span class="comment">// We want to copy rustc</span>
+    <span class="comment">// We want to copy rustc but need to take into account times when git info</span>
+    <span class="comment">// doesn&#39;t exist...</span>
     <span class="comment">// rustc 1.53.0-nightly (5a4ab2645 2021-04-18)</span>
-    <span class="macro">println!</span>(
-        <span class="string">&quot;{} {} ({} {})&quot;</span>,
-        <span class="ident">executable</span>,
-        <span class="ident">rune_version</span>,
+    <span class="kw">match</span> (
         <span class="ident">commit_short_hash</span>,
-        <span class="ident">commit_timestamp</span>.<span class="ident">format</span>(<span class="string">&quot;%Y-%m-%d&quot;</span>),
-    );
+        <span class="ident">commit_timestamp</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">ts</span><span class="op">|</span> <span class="ident">ts</span>.<span class="ident">format</span>(<span class="string">&quot;%Y-%m-%d&quot;</span>)),
+    ) {
+        (<span class="prelude-val">Some</span>(<span class="ident">h</span>), <span class="prelude-val">Some</span>(<span class="ident">ts</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="macro">println!</span>(<span class="string">&quot;{} {} ({} {})&quot;</span>, <span class="ident">executable</span>, <span class="ident">rune_version</span>, <span class="ident">h</span>, <span class="ident">ts</span>,)
+        },
+        (<span class="prelude-val">Some</span>(<span class="ident">h</span>), <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">println!</span>(<span class="string">&quot;{} {} ({})&quot;</span>, <span class="ident">executable</span>, <span class="ident">rune_version</span>, <span class="ident">h</span>),
+        (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="ident">ts</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="macro">println!</span>(<span class="string">&quot;{} {} ({})&quot;</span>, <span class="ident">executable</span>, <span class="ident">rune_version</span>, <span class="ident">ts</span>)
+        },
+        (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">println!</span>(<span class="string">&quot;{} {}&quot;</span>, <span class="ident">executable</span>, <span class="ident">rune_version</span>),
+    }
 
     <span class="kw">if</span> <span class="op">!</span><span class="ident">verbose</span> {
         <span class="kw">return</span>;
@@ -225,8 +243,12 @@
 
     <span class="macro">println!</span>(<span class="string">&quot;binary: {}&quot;</span>, <span class="ident">executable</span>);
     <span class="macro">println!</span>(<span class="string">&quot;rune-version: {}&quot;</span>, <span class="ident">rune_version</span>);
-    <span class="macro">println!</span>(<span class="string">&quot;commit-hash: {}&quot;</span>, <span class="ident">commit_hash</span>);
-    <span class="macro">println!</span>(<span class="string">&quot;commit-date: {}&quot;</span>, <span class="ident">commit_timestamp</span>.<span class="ident">to_rfc3339</span>());
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">commit_hash</span>) <span class="op">=</span> <span class="ident">commit_hash</span> {
+        <span class="macro">println!</span>(<span class="string">&quot;commit-hash: {}&quot;</span>, <span class="ident">commit_hash</span>);
+    }
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">commit_timestamp</span>) <span class="op">=</span> <span class="ident">commit_timestamp</span> {
+        <span class="macro">println!</span>(<span class="string">&quot;commit-date: {}&quot;</span>, <span class="ident">commit_timestamp</span>.<span class="ident">to_rfc3339</span>());
+    }
     <span class="macro">println!</span>(<span class="string">&quot;host: {}&quot;</span>, <span class="ident">host</span>);
     <span class="macro">println!</span>(<span class="string">&quot;rustc-version: {}&quot;</span>, <span class="ident">rustc_version</span>);
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">commit_hash</span>) <span class="op">=</span> <span class="ident">rustc_commit_hash</span> {
