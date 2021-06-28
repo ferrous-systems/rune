@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["runic_types"] = [{"text":"impl&lt;'buf&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/fmt/trait.Write.html\" title=\"trait core::fmt::Write\">Write</a> for <a class=\"struct\" href=\"runic_types/struct.BufWriter.html\" title=\"struct runic_types::BufWriter\">BufWriter</a>&lt;'buf&gt;","synthetic":false,"types":["runic_types::buf_writer::BufWriter"]}];
+implementors["rune_core"] = [{"text":"impl&lt;'buf&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/fmt/trait.Write.html\" title=\"trait core::fmt::Write\">Write</a> for <a class=\"struct\" href=\"rune_core/struct.BufWriter.html\" title=\"struct rune_core::BufWriter\">BufWriter</a>&lt;'buf&gt;","synthetic":false,"types":["rune_core::buf_writer::BufWriter"]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
