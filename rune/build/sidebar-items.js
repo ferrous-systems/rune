@@ -1,1 +1,0 @@
-initSidebarItems({"fn":[["analyze",""],["rune_repo_root",""]],"static":[["DEFAULT_CACHE_DIR",""]],"struct":[["Build",""]]});

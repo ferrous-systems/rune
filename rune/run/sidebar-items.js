@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Capability",""]],"fn":[["extend_caps",""],["initialize_image",""]],"struct":[["Run",""]]});
