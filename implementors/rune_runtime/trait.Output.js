@@ -1,3 +1,0 @@
-(function() {var implementors = {};
-implementors["rune"] = [{"text":"impl <a class=\"trait\" href=\"rune_runtime/trait.Output.html\" title=\"trait rune_runtime::Output\">Output</a> for <a class=\"struct\" href=\"rune/struct.Output.html\" title=\"struct rune::Output\">Output</a>","synthetic":false,"types":["rune::output::Output"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
