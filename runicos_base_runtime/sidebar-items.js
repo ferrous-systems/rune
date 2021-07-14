@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["BaseImage",""]],"trait":[["Model",""]]});
+initSidebarItems({"struct":[["BaseImage",""]],"trait":[["CapabilityFactory",""],["Model",""],["ModelFactory",""],["OutputFactory",""]]});

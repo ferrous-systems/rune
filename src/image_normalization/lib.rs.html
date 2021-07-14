@@ -113,6 +113,13 @@
 <span id="110">110</span>
 <span id="111">111</span>
 <span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
 </pre><pre class="rust">
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 
@@ -126,7 +133,7 @@
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Default</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">ProcBlock</span>)]</span>
 <span class="attribute">#[<span class="ident">non_exhaustive</span>]</span>
-<span class="attribute">#[<span class="ident">transform</span>(<span class="ident">input</span> <span class="op">=</span> [<span class="ident">u8</span>; <span class="number">3</span>]</span>, <span class="ident">output</span> <span class="op">=</span> [<span class="ident">f32</span>; <span class="number">3</span>])]
+<span class="attribute">#[<span class="ident">transform</span>(<span class="ident">input</span> <span class="op">=</span> [<span class="ident">u8</span>; <span class="number">4</span>]</span>, <span class="ident">output</span> <span class="op">=</span> [<span class="ident">f32</span>; <span class="number">4</span>])]
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ImageNormalization</span> {
     <span class="kw">pub</span> <span class="ident">red</span>: <span class="ident">Distribution</span>,
     <span class="kw">pub</span> <span class="ident">green</span>: <span class="ident">Distribution</span>,
@@ -162,19 +169,21 @@
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">Tensor</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>;
 
     <span class="kw">fn</span> <span class="ident">transform</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="kw-2">mut</span> <span class="ident">input</span>: <span class="ident">Tensor</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::Output</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">view</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">view_mut</span>::<span class="op">&lt;</span><span class="number">3</span><span class="op">&gt;</span>()
-            .<span class="ident">expect</span>(<span class="string">&quot;The image normalization proc block only supports outputs of the form [channels, rows, columns]&quot;</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">view</span> <span class="op">=</span> <span class="ident">input</span>.<span class="ident">view_mut</span>::<span class="op">&lt;</span><span class="number">4</span><span class="op">&gt;</span>()
+            .<span class="ident">expect</span>(<span class="string">&quot;The image normalization proc block only supports outputs of the form [frames, rows, columns, channels]&quot;</span>);
 
-        <span class="kw">let</span> [<span class="ident">channels</span>, <span class="kw">_</span>, <span class="kw">_</span>] <span class="op">=</span> <span class="ident">view</span>.<span class="ident">dimensions</span>();
+        <span class="kw">let</span> [<span class="ident">frames</span>, <span class="ident">_rows</span>, <span class="ident">_columns</span>, <span class="ident">channels</span>] <span class="op">=</span> <span class="ident">view</span>.<span class="ident">dimensions</span>();
 
-        <span class="macro">assert_eq!</span>(
-            <span class="ident">channels</span>, <span class="number">3</span>,
-            <span class="string">&quot;The image must have 3 channels - red, green, and blue&quot;</span>
+        <span class="macro">assert_eq!</span>(<span class="ident">channels</span>, <span class="number">3</span>,
+                <span class="string">&quot;the image normalization proc block only supports images with 3 channels, but there are {} channels in a {}&quot;</span>,
+                <span class="ident">channels</span>,  <span class="ident">input</span>.<span class="ident">shape</span>(),
         );
 
-        <span class="ident">transform</span>(<span class="self">self</span>.<span class="ident">red</span>, <span class="number">0</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">view</span>);
-        <span class="ident">transform</span>(<span class="self">self</span>.<span class="ident">green</span>, <span class="number">1</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">view</span>);
-        <span class="ident">transform</span>(<span class="self">self</span>.<span class="ident">blue</span>, <span class="number">2</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">view</span>);
+        <span class="kw">for</span> <span class="ident">frame</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">frames</span> {
+            <span class="ident">transform</span>(<span class="self">self</span>.<span class="ident">red</span>, <span class="ident">frame</span>, <span class="number">0</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">view</span>);
+            <span class="ident">transform</span>(<span class="self">self</span>.<span class="ident">green</span>, <span class="ident">frame</span>, <span class="number">1</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">view</span>);
+            <span class="ident">transform</span>(<span class="self">self</span>.<span class="ident">blue</span>, <span class="ident">frame</span>, <span class="number">2</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">view</span>);
+        }
 
         <span class="ident">input</span>
     }
@@ -182,14 +191,15 @@
 
 <span class="kw">fn</span> <span class="ident">transform</span>(
     <span class="ident">d</span>: <span class="ident">Distribution</span>,
+    <span class="ident">frame</span>: <span class="ident">usize</span>,
     <span class="ident">channel</span>: <span class="ident">usize</span>,
-    <span class="ident">view</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TensorViewMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">f32</span>, <span class="number">3</span><span class="op">&gt;</span>,
+    <span class="ident">view</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">TensorViewMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">f32</span>, <span class="number">4</span><span class="op">&gt;</span>,
 ) {
-    <span class="kw">let</span> [<span class="kw">_</span>, <span class="ident">rows</span>, <span class="ident">columns</span>] <span class="op">=</span> <span class="ident">view</span>.<span class="ident">dimensions</span>();
+    <span class="kw">let</span> [<span class="ident">_frames</span>, <span class="ident">rows</span>, <span class="ident">columns</span>, <span class="ident">_channels</span>] <span class="op">=</span> <span class="ident">view</span>.<span class="ident">dimensions</span>();
 
     <span class="kw">for</span> <span class="ident">row</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">rows</span> {
         <span class="kw">for</span> <span class="ident">column</span> <span class="kw">in</span> <span class="number">0</span>..<span class="ident">columns</span> {
-            <span class="kw">let</span> <span class="ident">ix</span> <span class="op">=</span> [<span class="ident">channel</span>, <span class="ident">row</span>, <span class="ident">column</span>];
+            <span class="kw">let</span> <span class="ident">ix</span> <span class="op">=</span> [<span class="ident">frame</span>, <span class="ident">row</span>, <span class="ident">column</span>, <span class="ident">channel</span>];
             <span class="kw">let</span> <span class="ident">current_value</span> <span class="op">=</span> <span class="ident">view</span>[<span class="ident">ix</span>];
             <span class="ident">view</span>[<span class="ident">ix</span>] <span class="op">=</span> <span class="ident">d</span>.<span class="ident">z_score</span>(<span class="ident">current_value</span>);
         }
@@ -199,12 +209,12 @@
 <span class="kw">impl</span> <span class="ident">HasOutputs</span> <span class="kw">for</span> <span class="ident">ImageNormalization</span> {
     <span class="kw">fn</span> <span class="ident">set_output_dimensions</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">dimensions</span>: <span class="kw-2">&amp;</span>[<span class="ident">usize</span>]) {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">dimensions</span> {
-            [<span class="number">1</span>, <span class="kw">_</span>, <span class="kw">_</span>] <span class="op">|</span> [<span class="number">3</span>, <span class="kw">_</span>, <span class="kw">_</span>] <span class="op">=</span><span class="op">&gt;</span> {},
-            [<span class="ident">channels</span>, <span class="kw">_</span>, <span class="kw">_</span>] <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(
+            [<span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="number">3</span>] <span class="op">=</span><span class="op">&gt;</span> {},
+            [<span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="ident">channels</span>] <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(
                 <span class="string">&quot;The number of channels should be either 1 or 3, found {}&quot;</span>,
                 <span class="ident">channels</span>
             ),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;The image normalization proc block only supports outputs of the form [channels, rows, columns], found {:?}&quot;</span>, <span class="ident">dimensions</span>),
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;The image normalization proc block only supports outputs of the form [frames, rows, columns, channels], found {:?}&quot;</span>, <span class="ident">dimensions</span>),
         }
     }
 }
@@ -215,10 +225,14 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">normalizing_with_default_distribution_is_noop</span>() {
-        <span class="kw">let</span> <span class="ident">red</span> <span class="op">=</span> [[<span class="number">1.0</span>], [<span class="number">4.0</span>], [<span class="number">7.0</span>], [<span class="number">10.0</span>]];
-        <span class="kw">let</span> <span class="ident">green</span> <span class="op">=</span> [[<span class="number">2.0</span>], [<span class="number">5.0</span>], [<span class="number">8.0</span>], [<span class="number">11.0</span>]];
-        <span class="kw">let</span> <span class="ident">blue</span> <span class="op">=</span> [[<span class="number">3.0</span>], [<span class="number">6.0</span>], [<span class="number">9.0</span>], [<span class="number">12.0</span>]];
-        <span class="kw">let</span> <span class="ident">image</span>: <span class="ident">Tensor</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Tensor::from</span>([<span class="ident">red</span>, <span class="ident">green</span>, <span class="ident">blue</span>]);
+        <span class="kw">let</span> <span class="ident">pixel_11</span> <span class="op">=</span> [<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>];
+        <span class="kw">let</span> <span class="ident">pixel_12</span> <span class="op">=</span> [<span class="number">4.0</span>, <span class="number">5.0</span>, <span class="number">6.0</span>];
+        <span class="kw">let</span> <span class="ident">first_row</span> <span class="op">=</span> [<span class="ident">pixel_11</span>, <span class="ident">pixel_12</span>];
+        <span class="kw">let</span> <span class="ident">pixel_21</span> <span class="op">=</span> [<span class="number">7.0</span>, <span class="number">8.0</span>, <span class="number">9.0</span>];
+        <span class="kw">let</span> <span class="ident">pixel_22</span> <span class="op">=</span> [<span class="number">10.0</span>, <span class="number">11.0</span>, <span class="number">12.0</span>];
+        <span class="kw">let</span> <span class="ident">second_row</span> <span class="op">=</span> [<span class="ident">pixel_21</span>, <span class="ident">pixel_22</span>];
+        <span class="kw">let</span> <span class="ident">frame</span> <span class="op">=</span> [<span class="ident">first_row</span>, <span class="ident">second_row</span>];
+        <span class="kw">let</span> <span class="ident">image</span>: <span class="ident">Tensor</span><span class="op">&lt;</span><span class="ident">f32</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Tensor::from</span>([<span class="ident">frame</span>]);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">norm</span> <span class="op">=</span> <span class="ident">ImageNormalization::default</span>();
 
         <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">norm</span>.<span class="ident">transform</span>(<span class="ident">image</span>.<span class="ident">clone</span>());

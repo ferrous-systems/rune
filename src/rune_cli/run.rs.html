@@ -310,12 +310,32 @@
 <span id="307">307</span>
 <span id="308">308</span>
 <span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fs::File</span>, <span class="ident">path::PathBuf</span>, <span class="ident">str::FromStr</span>};
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">hound::WavReader</span>;
 <span class="kw">use</span> <span class="ident">log</span>;
-<span class="kw">use</span> <span class="ident">rune_runtime::common_capabilities</span>::{<span class="ident">Accelerometer</span>, <span class="ident">Image</span>, <span class="ident">Random</span>, <span class="ident">Raw</span>, <span class="ident">Sound</span>};
+<span class="kw">use</span> <span class="ident">rune_core::capabilities</span>;
+<span class="kw">use</span> <span class="ident">rune_runtime</span>::{
+    <span class="ident">common_capabilities</span>::{<span class="ident">Accelerometer</span>, <span class="ident">Image</span>, <span class="ident">Random</span>, <span class="ident">Raw</span>, <span class="ident">Sound</span>},
+};
 <span class="kw">use</span> <span class="ident">rune_wasmer_runtime::Runtime</span>;
 <span class="kw">use</span> <span class="ident">runicos_base_runtime::BaseImage</span>;
 
@@ -455,14 +475,17 @@
 }
 
 <span class="kw">fn</span> <span class="ident">initialize_image</span>(<span class="ident">capabilities</span>: <span class="kw-2">&amp;</span>[<span class="ident">Capability</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">BaseImage</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">env</span> <span class="op">=</span> <span class="ident">BaseImage::default</span>();
+    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">env</span> <span class="op">=</span> <span class="ident">BaseImage::with_defaults</span>();
 
     <span class="kw">for</span> <span class="ident">cap</span> <span class="kw">in</span> <span class="ident">capabilities</span> {
         <span class="kw">match</span> <span class="ident">cap</span> {
             <span class="ident">Capability::RandomSeed</span> { <span class="ident">seed</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">log::debug!</span>(<span class="string">&quot;Setting the RNG&#39;s seed to {}&quot;</span>, <span class="ident">seed</span>);
                 <span class="kw">let</span> <span class="ident">seed</span> <span class="op">=</span> <span class="kw-2">*</span><span class="ident">seed</span>;
-                <span class="ident">env</span>.<span class="ident">with_rand</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">Random::seeded</span>(<span class="ident">seed</span>))));
+                <span class="ident">env</span>.<span class="ident">register_capability</span>(<span class="ident">capabilities::RAND</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+                    <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">Random::seeded</span>(<span class="ident">seed</span>))
+                        <span class="kw">as</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">rune_runtime::Capability</span><span class="op">&gt;</span>)
+                });
             },
             <span class="ident">Capability::RandomData</span> { <span class="ident">filename</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">log::debug!</span>(
@@ -480,10 +503,11 @@
                     <span class="op">!</span><span class="ident">random_bytes</span>.<span class="ident">is_empty</span>(),
                     <span class="string">&quot;The random data file was empty&quot;</span>
                 );
-                <span class="ident">env</span>.<span class="ident">with_rand</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+                <span class="ident">env</span>.<span class="ident">register_capability</span>(<span class="ident">capabilities::RAND</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
                     <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">Random::with_repeated_data</span>(
                         <span class="ident">random_bytes</span>.<span class="ident">clone</span>(),
-                    )))
+                    ))
+                        <span class="kw">as</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">rune_runtime::Capability</span><span class="op">&gt;</span>)
                 });
             },
             <span class="ident">Capability::Accelerometer</span> { <span class="ident">filename</span> } <span class="op">=</span><span class="op">&gt;</span> {
@@ -503,14 +527,20 @@
                     <span class="ident">acc</span>.<span class="ident">samples</span>().<span class="ident">len</span>(),
                     <span class="ident">filename</span>.<span class="ident">display</span>()
                 );
-                <span class="ident">env</span>.<span class="ident">with_accelerometer</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">acc</span>.<span class="ident">clone</span>())));
+                <span class="ident">env</span>.<span class="ident">register_capability</span>(<span class="ident">capabilities::ACCEL</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+                    <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">acc</span>.<span class="ident">clone</span>())
+                        <span class="kw">as</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">rune_runtime::Capability</span><span class="op">&gt;</span>)
+                });
             },
             <span class="ident">Capability::Image</span> { <span class="ident">filename</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="macro">log::debug!</span>(<span class="string">&quot;Loading an image from \&quot;{}\&quot;&quot;</span>, <span class="ident">filename</span>.<span class="ident">display</span>());
                 <span class="kw">let</span> <span class="ident">img</span> <span class="op">=</span> <span class="ident">image::open</span>(<span class="ident">filename</span>).<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> {
                     <span class="macro">format!</span>(<span class="string">&quot;Unable to load \&quot;{}\&quot;&quot;</span>, <span class="ident">filename</span>.<span class="ident">display</span>())
                 })<span class="question-mark">?</span>;
-                <span class="ident">env</span>.<span class="ident">with_image</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">Image::new</span>(<span class="ident">img</span>.<span class="ident">clone</span>()))));
+                <span class="ident">env</span>.<span class="ident">register_capability</span>(<span class="ident">capabilities::IMAGE</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+                    <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">Image::new</span>(<span class="ident">img</span>.<span class="ident">clone</span>()))
+                        <span class="kw">as</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">rune_runtime::Capability</span><span class="op">&gt;</span>)
+                });
             },
             <span class="ident">Capability::Sound</span> { <span class="ident">filename</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">f</span> <span class="op">=</span> <span class="ident">File::open</span>(<span class="ident">filename</span>).<span class="ident">with_context</span>(<span class="op">|</span><span class="op">|</span> {
@@ -527,8 +557,9 @@
                     .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>, <span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>()
                     .<span class="ident">context</span>(<span class="string">&quot;Unable to parse the WAV file&#39;s samples&quot;</span>)<span class="question-mark">?</span>;
 
-                <span class="ident">env</span>.<span class="ident">with_sound</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
-                    <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">Sound::new</span>(<span class="ident">samples</span>.<span class="ident">clone</span>())))
+                <span class="ident">env</span>.<span class="ident">register_capability</span>(<span class="ident">capabilities::SOUND</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+                    <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">Sound::new</span>(<span class="ident">samples</span>.<span class="ident">clone</span>()))
+                        <span class="kw">as</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">rune_runtime::Capability</span><span class="op">&gt;</span>)
                 });
             },
             <span class="ident">Capability::Raw</span> { <span class="ident">filename</span> } <span class="op">=</span><span class="op">&gt;</span> {
@@ -538,7 +569,10 @@
                         <span class="ident">filename</span>.<span class="ident">display</span>()
                     )
                 })<span class="question-mark">?</span>;
-                <span class="ident">env</span>.<span class="ident">with_raw</span>(<span class="kw">move</span> <span class="op">|</span><span class="op">|</span> <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">Raw::new</span>(<span class="ident">bytes</span>.<span class="ident">clone</span>()))));
+                <span class="ident">env</span>.<span class="ident">register_capability</span>(<span class="ident">capabilities::RAW</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {
+                    <span class="prelude-val">Ok</span>(<span class="ident">Box::new</span>(<span class="ident">Raw::new</span>(<span class="ident">bytes</span>.<span class="ident">clone</span>()))
+                        <span class="kw">as</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">rune_runtime::Capability</span><span class="op">&gt;</span>)
+                });
             },
         }
     }

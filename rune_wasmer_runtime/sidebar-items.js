@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Runtime",""]]});
+initSidebarItems({"struct":[["Registrar",""],["Runtime",""]]});
