@@ -1425,7 +1425,7 @@
     <span class="ident">model_id</span>: <span class="ident">u32</span>,
     <span class="ident">inputs</span>: <span class="ident">WasmPtr</span><span class="op">&lt;</span><span class="ident">WasmPtr</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">Array</span><span class="op">&gt;</span>, <span class="ident">Array</span><span class="op">&gt;</span>,
     <span class="ident">outputs</span>: <span class="ident">WasmPtr</span><span class="op">&lt;</span><span class="ident">WasmPtr</span><span class="op">&lt;</span><span class="ident">u8</span>, <span class="ident">Array</span><span class="op">&gt;</span>, <span class="ident">Array</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">RuntimeError</span><span class="op">&gt;</span> {
+) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u32</span>, <span class="ident">RuntimeError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">memory</span> <span class="op">=</span> <span class="ident">env</span>
         .<span class="ident">memory</span>
         .<span class="ident">get_ref</span>()
@@ -1450,7 +1450,7 @@
         .<span class="ident">context</span>(<span class="string">&quot;Inference failed&quot;</span>)
         .<span class="ident">map_err</span>(<span class="ident">runtime_error</span>)<span class="question-mark">?</span>;
 
-    <span class="prelude-val">Ok</span>(())
+    <span class="prelude-val">Ok</span>(<span class="number">0</span>)
 }
 
 <span class="kw">fn</span> <span class="ident">vector_of_tensors</span><span class="op">&lt;</span><span class="lifetime">&#39;vm</span><span class="op">&gt;</span>(
