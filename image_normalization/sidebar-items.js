@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["DistributionConversionError",""]],"struct":[["Distribution","A normal distribution."],["ImageNormalization",""]]});
+initSidebarItems({"struct":[["ImageNormalization","A normalization routine which takes some tensor of integers and fits their values to the range `[0, 1]` as `f32`’s."]]});
