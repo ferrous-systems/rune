@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Accelerometer",""],["Image",""],["Random","A [`Capability`] that defers to a random number generator."],["Raw",""],["Sound",""]]});
+initSidebarItems({"struct":[["Random","A [`Capability`] that defers to a random number generator."]]});
