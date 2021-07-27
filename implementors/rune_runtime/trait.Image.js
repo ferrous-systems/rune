@@ -1,3 +1,0 @@
-(function() {var implementors = {};
-implementors["runicos_base_runtime"] = [{"text":"impl&lt;'vm&gt; <a class=\"trait\" href=\"rune_runtime/trait.Image.html\" title=\"trait rune_runtime::Image\">Image</a>&lt;<a class=\"struct\" href=\"rune_wasmer_runtime/struct.Registrar.html\" title=\"struct rune_wasmer_runtime::Registrar\">Registrar</a>&lt;'vm&gt;&gt; for <a class=\"struct\" href=\"runicos_base_runtime/struct.BaseImage.html\" title=\"struct runicos_base_runtime::BaseImage\">BaseImage</a>","synthetic":false,"types":["runicos_base_runtime::image::BaseImage"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -112,7 +112,7 @@
 <span class="kw">use</span> <span class="ident">core</span>::{<span class="ident">convert::TryInto</span>, <span class="ident">fmt::Debug</span>};
 
 <span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
-<span class="kw">use</span> <span class="ident">rune_proc_blocks</span>::{<span class="ident">HasOutputs</span>, <span class="ident">Tensor</span>, <span class="ident">Transform</span>, <span class="ident">ProcBlock</span>};
+<span class="kw">use</span> <span class="ident">hotg_rune_proc_blocks</span>::{<span class="ident">HasOutputs</span>, <span class="ident">Tensor</span>, <span class="ident">Transform</span>, <span class="ident">ProcBlock</span>};
 
 <span class="doccomment">/// A proc block which, when given a set of indices, will return their</span>
 <span class="doccomment">/// associated labels.</span>
@@ -120,8 +120,8 @@
 <span class="doccomment">/// # Examples</span>
 <span class="doccomment">/// ```rust</span>
 <span class="doccomment">/// # use label::Label;</span>
-<span class="doccomment">/// # use rune_core::Tensor;</span>
-<span class="doccomment">/// # use rune_proc_blocks::Transform;</span>
+<span class="doccomment">/// # use hotg_rune_core::Tensor;</span>
+<span class="doccomment">/// # use hotg_rune_proc_blocks::Transform;</span>
 <span class="doccomment">/// let mut proc_block = Label::default();</span>
 <span class="doccomment">/// proc_block.set_labels([&quot;zero&quot;, &quot;one&quot;, &quot;two&quot;, &quot;three&quot;]);</span>
 <span class="doccomment">/// let input = Tensor::new_vector(vec![3, 1, 2]);</span>
