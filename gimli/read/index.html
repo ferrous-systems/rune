@@ -245,8 +245,6 @@ found in the <code>.debug_types</code> section.</p>
 handling found in the <code>.eh_frame</code> section.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.EhFrameHdr.html" title="gimli::read::EhFrameHdr struct">EhFrameHdr</a></td><td class="docblock-short"><p><code>EhFrameHdr</code> contains the information about the <code>.eh_frame_hdr</code> section.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.EhHdrTable.html" title="gimli::read::EhHdrTable struct">EhHdrTable</a></td><td class="docblock-short"><p>The CFI binary search table that is an optional part of the <code>.eh_frame_hdr</code> section.</p>
-</td></tr><tr class="module-item"><td><a class="struct" href="struct.EndianReader.html" title="gimli::read::EndianReader struct">EndianReader</a></td><td class="docblock-short"><p>An easy way to define a custom <code>Reader</code> implementation with a reference to a
-generic buffer of bytes and an associated endianity.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.EndianSlice.html" title="gimli::read::EndianSlice struct">EndianSlice</a></td><td class="docblock-short"><p>A <code>&amp;[u8]</code> slice with endianity metadata.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.EntriesCursor.html" title="gimli::read::EntriesCursor struct">EntriesCursor</a></td><td class="docblock-short"><p>A cursor into the Debugging Information Entries tree for a compilation unit.</p>
 </td></tr><tr class="module-item"><td><a class="struct" href="struct.EntriesRaw.html" title="gimli::read::EntriesRaw struct">EntriesRaw</a></td><td class="docblock-short"><p>A raw reader of the data that defines the Debugging Information Entries.</p>
@@ -340,12 +338,8 @@ used like:</p>
 <a href="./struct.EhFrame.html"><code>EhFrame</code></a> respectively.</p>
 </td></tr></table><h2 id="types" class="section-header"><a href="#types">Type Definitions</a></h2>
 <table><tr class="module-item"><td><a class="type" href="type.CompleteLineNumberProgram.html" title="gimli::read::CompleteLineNumberProgram type">CompleteLineNumberProgram</a></td><td class="docblock-short"><span class="stab deprecated" title="">Deprecated</span><p>Deprecated. <code>CompleteLineNumberProgram</code> has been renamed to <code>CompleteLineProgram</code>.</p>
-</td></tr><tr class="module-item"><td><a class="type" href="type.EndianArcSlice.html" title="gimli::read::EndianArcSlice type">EndianArcSlice</a></td><td class="docblock-short"><p>An atomically reference counted, thread-safe slice of bytes and associated
-endianity.</p>
 </td></tr><tr class="module-item"><td><a class="type" href="type.EndianBuf.html" title="gimli::read::EndianBuf type">EndianBuf</a></td><td class="docblock-short"><span class="stab deprecated" title="">Deprecated</span><p><code>EndianBuf</code> has been renamed to <code>EndianSlice</code>. For ease of upgrading across
 <code>gimli</code> versions, we export this type alias.</p>
-</td></tr><tr class="module-item"><td><a class="type" href="type.EndianRcSlice.html" title="gimli::read::EndianRcSlice type">EndianRcSlice</a></td><td class="docblock-short"><p>A reference counted, non-thread-safe slice of bytes and associated
-endianity.</p>
 </td></tr><tr class="module-item"><td><a class="type" href="type.IncompleteLineNumberProgram.html" title="gimli::read::IncompleteLineNumberProgram type">IncompleteLineNumberProgram</a></td><td class="docblock-short"><span class="stab deprecated" title="">Deprecated</span><p>Deprecated. <code>IncompleteLineNumberProgram</code> has been renamed to <code>IncompleteLineProgram</code>.</p>
 </td></tr><tr class="module-item"><td><a class="type" href="type.LineNumberProgram.html" title="gimli::read::LineNumberProgram type">LineNumberProgram</a></td><td class="docblock-short"><span class="stab deprecated" title="">Deprecated</span><p>Deprecated. <code>LineNumberProgram</code> has been renamed to <code>LineProgram</code>.</p>
 </td></tr><tr class="module-item"><td><a class="type" href="type.LineNumberProgramHeader.html" title="gimli::read::LineNumberProgramHeader type">LineNumberProgramHeader</a></td><td class="docblock-short"><span class="stab deprecated" title="">Deprecated</span><p>Deprecated. <code>LineNumberProgramHeader</code> has been renamed to <code>LineProgramHeader</code>.</p>

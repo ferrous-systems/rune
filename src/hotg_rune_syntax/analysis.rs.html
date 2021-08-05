@@ -758,7 +758,6 @@
 <span id="755">755</span>
 <span id="756">756</span>
 <span id="757">757</span>
-<span id="758">758</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std::collections</span>::{<span class="ident">HashSet</span>, <span class="ident">VecDeque</span>};
 
@@ -779,7 +778,6 @@
 
     <span class="kw">match</span> <span class="ident">doc</span> {
         <span class="ident">Document::V1</span> { <span class="ident">image</span>, <span class="ident">pipeline</span> } <span class="op">=</span><span class="op">&gt;</span> {
-            <span class="kw">let</span> <span class="ident">image</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="ident">image</span>;
             <span class="ident">ctx</span>.<span class="ident">rune</span>.<span class="ident">base_image</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">image</span>.<span class="ident">clone</span>().<span class="ident">into</span>());
 
             <span class="ident">ctx</span>.<span class="ident">register_stages</span>(<span class="kw-2">&amp;</span><span class="ident">pipeline</span>);
@@ -844,7 +842,7 @@
             <span class="self">self</span>.<span class="ident">rune</span>.<span class="ident">stages</span>.<span class="ident">insert</span>(
                 <span class="ident">id</span>,
                 <span class="ident">Node</span> {
-                    <span class="ident">stage</span>: <span class="ident">hir::Stage::from</span>(<span class="ident">stage</span>),
+                    <span class="ident">stage</span>: <span class="ident">stage</span>.<span class="ident">clone</span>().<span class="ident">into</span>(),
                     <span class="ident">input_slots</span>: <span class="ident">Vec::new</span>(),
                     <span class="ident">output_slots</span>: <span class="ident">Vec::new</span>(),
                 },
@@ -1072,7 +1070,7 @@
     <span class="kw">let</span> <span class="ident">got</span> <span class="op">=</span> <span class="ident">stack</span>.<span class="ident">pop_back</span>();
     <span class="macro">debug_assert_eq!</span>(<span class="ident">got</span>, <span class="prelude-val">Some</span>(<span class="ident">id</span>));
 
-    <span class="kw">return</span> <span class="bool-val">false</span>;
+    <span class="bool-val">false</span>
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>

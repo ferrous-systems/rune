@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["Random","A [`Capability`] that defers to a random number generator."]]});

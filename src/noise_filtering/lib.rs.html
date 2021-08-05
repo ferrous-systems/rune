@@ -70,7 +70,6 @@
 <span id="67">67</span>
 <span id="68">68</span>
 <span id="69">69</span>
-<span id="70">70</span>
 </pre><pre class="rust">
 <span class="attribute">#![<span class="ident">no_std</span>]</span>
 
@@ -131,11 +130,10 @@
             .<span class="ident">iter</span>()
             .<span class="ident">fold</span>(<span class="ident">f64::NEG_INFINITY</span>, <span class="op">|</span><span class="ident">a</span>, <span class="kw-2">&amp;</span><span class="ident">b</span><span class="op">|</span> <span class="ident">a</span>.<span class="ident">max</span>(<span class="ident">b</span>));
 
-        <span class="kw">let</span> <span class="ident">scaled</span> <span class="op">=</span> <span class="ident">amplified</span>.<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span>, <span class="ident">energy</span><span class="op">|</span> {
+        <span class="ident">amplified</span>.<span class="ident">map</span>(<span class="op">|</span><span class="kw">_</span>, <span class="ident">energy</span><span class="op">|</span> {
             ((<span class="number">255.0</span> <span class="op">*</span> (<span class="ident">energy</span> <span class="op">-</span> <span class="ident">min_value</span>) <span class="op">/</span> (<span class="ident">max_value</span> <span class="op">-</span> <span class="ident">min_value</span>)) <span class="op">-</span> <span class="number">128.0</span>)
                 <span class="kw">as</span> <span class="ident">i8</span>
-        });
-        <span class="ident">scaled</span>
+        })
     }
 }
 

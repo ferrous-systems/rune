@@ -806,7 +806,7 @@
         .<span class="ident">lines</span>()
         .<span class="ident">filter_map</span>(<span class="op">|</span><span class="ident">line</span><span class="op">|</span> {
             <span class="kw">if</span> <span class="ident">line</span>.<span class="ident">contains</span>(<span class="string">&quot;host&quot;</span>) {
-                <span class="ident">line</span>.<span class="ident">split</span>(<span class="string">&quot; &quot;</span>).<span class="ident">skip</span>(<span class="number">1</span>).<span class="ident">next</span>()
+                <span class="ident">line</span>.<span class="ident">split</span>(<span class="string">&#39; &#39;</span>).<span class="ident">nth</span>(<span class="number">1</span>)
             } <span class="kw">else</span> {
                 <span class="prelude-val">None</span>
             }

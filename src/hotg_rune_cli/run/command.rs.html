@@ -243,18 +243,19 @@
 <span id="240">240</span>
 <span id="241">241</span>
 <span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">path::PathBuf</span>, <span class="ident">str::FromStr</span>};
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">log</span>;
 <span class="kw">use</span> <span class="ident">hotg_rune_core::capabilities</span>;
-<span class="kw">use</span> <span class="ident">hotg_rune_runtime::common_capabilities::Random</span>;
 <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::run</span>::{
     <span class="ident">Accelerometer</span>, <span class="ident">Image</span>, <span class="ident">Raw</span>, <span class="ident">Sound</span>, <span class="ident">accelerometer::Samples</span>,
-    <span class="ident">image::ImageSource</span>, <span class="ident">new_multiplexer</span>, <span class="ident">sound::AudioClip</span>,
+    <span class="ident">image::ImageSource</span>, <span class="ident">new_multiplexer</span>, <span class="ident">runecoral_inference</span>, <span class="ident">sound::AudioClip</span>,
 };
 <span class="kw">use</span> <span class="ident">hotg_rune_wasmer_runtime::Runtime</span>;
-<span class="kw">use</span> <span class="ident">hotg_runicos_base_runtime::BaseImage</span>;
+<span class="kw">use</span> <span class="ident">hotg_runicos_base_runtime</span>::{<span class="ident">BaseImage</span>, <span class="ident">Random</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">structopt::StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Run</span> {
@@ -426,6 +427,9 @@
             <span class="ident">new_multiplexer</span>::<span class="op">&lt;</span><span class="ident">Accelerometer</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">accelerometer</span>),
         )
         .<span class="ident">register_capability</span>(<span class="ident">capabilities::RAW</span>, <span class="ident">new_multiplexer</span>::<span class="op">&lt;</span><span class="ident">Raw</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">raw</span>));
+
+        <span class="ident">runecoral_inference::override_model_handler</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">img</span>)
+            .<span class="ident">context</span>(<span class="string">&quot;Unable to register the librunecoral inference backend&quot;</span>)<span class="question-mark">?</span>;
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">seed</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="ident">random</span> {
             <span class="ident">img</span>.<span class="ident">register_capability</span>(<span class="ident">capabilities::RAND</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {

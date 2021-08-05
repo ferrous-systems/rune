@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["ParameterError",""],["WasmType",""],["WasmValue","A primitive type that can be passed between host and WebAssembly guest."]],"mod":[["common_capabilities",""],["common_outputs",""]],"trait":[["Capability",""],["Image",""],["Output","Something a Rune can send output to."]]});
+initSidebarItems({"enum":[["ParameterError",""],["WasmType",""],["WasmValue","A primitive type that can be passed between host and WebAssembly guest."]],"mod":[["common_outputs",""]],"trait":[["Capability",""],["Image",""],["Output","Something a Rune can send output to."]]});

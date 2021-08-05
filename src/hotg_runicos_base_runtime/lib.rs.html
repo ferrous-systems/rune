@@ -4,10 +4,18 @@
                 <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
 </pre><pre class="rust">
 <span class="kw">mod</span> <span class="ident">image</span>;
+<span class="kw">mod</span> <span class="ident">random</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">image</span>::{<span class="ident">BaseImage</span>, <span class="ident">Model</span>, <span class="ident">ModelFactory</span>, <span class="ident">CapabilityFactory</span>, <span class="ident">OutputFactory</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="kw">crate</span>::{
+    <span class="ident">image</span>::{<span class="ident">BaseImage</span>, <span class="ident">Model</span>, <span class="ident">ModelFactory</span>, <span class="ident">CapabilityFactory</span>, <span class="ident">OutputFactory</span>},
+    <span class="ident">random::Random</span>,
+};
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="hotg_runicos_base_runtime" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>
