@@ -15,6 +15,9 @@
 <span id="12">12</span>
 <span id="13">13</span>
 <span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::HashMap</span>, <span class="ident">path::PathBuf</span>};
 <span class="kw">use</span> <span class="ident">cargo_toml::Manifest</span>;
@@ -26,6 +29,9 @@
     <span class="kw">pub</span> <span class="ident">manifest</span>: <span class="ident">Manifest</span>,
     <span class="kw">pub</span> <span class="ident">config</span>: <span class="ident">toml::Value</span>,
     <span class="kw">pub</span> <span class="ident">lib_rs</span>: <span class="ident">String</span>,
+    <span class="doccomment">/// The `rust-toolchain.toml` file used to specify which version of Rust</span>
+    <span class="doccomment">/// to use.</span>
+    <span class="kw">pub</span> <span class="ident">rust_toolchain_toml</span>: <span class="ident">String</span>,
     <span class="doccomment">/// TensorFlow Lite binaries that should be included in the generated</span>
     <span class="doccomment">/// project, with paths relative to the project root.</span>
     <span class="kw">pub</span> <span class="ident">models</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">PathBuf</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span>,

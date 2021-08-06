@@ -1,1 +1,0 @@
-initSidebarItems({"static":[["NIGHTLY_VERSION","The version of Rust that the `rune` project is pinned to."]],"struct":[["OverrideFile","Serialized form of `rust-toolchain.toml`."],["ToolchainSection","The section of the [`OverrideFile`] specifying the compiler toolchain."]]});

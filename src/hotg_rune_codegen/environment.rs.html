@@ -222,7 +222,6 @@
 <span id="219">219</span>
 <span id="220">220</span>
 <span id="221">221</span>
-<span id="222">222</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">path</span>::{<span class="ident">Path</span>, <span class="ident">PathBuf</span>},
@@ -251,7 +250,6 @@
     <span class="ident">working_directory</span>: <span class="ident">PathBuf</span>,
     <span class="ident">current_directory</span>: <span class="ident">PathBuf</span>,
     <span class="ident">optimize</span>: <span class="ident">bool</span>,
-    <span class="ident">rust_version</span>: <span class="ident">String</span>,
     <span class="ident">verbosity</span>: <span class="ident">Verbosity</span>,
     <span class="ident">build_info</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">BuildInfo</span><span class="op">&gt;</span>,
 }
@@ -262,7 +260,6 @@
             <span class="ident">working_directory</span>: <span class="ident">c</span>.<span class="ident">working_directory</span>.<span class="ident">clone</span>(),
             <span class="ident">current_directory</span>: <span class="ident">c</span>.<span class="ident">current_directory</span>.<span class="ident">clone</span>(),
             <span class="ident">optimize</span>: <span class="ident">c</span>.<span class="ident">optimized</span>,
-            <span class="ident">rust_version</span>: <span class="kw">crate</span><span class="ident">::rustup::NIGHTLY_VERSION</span>.<span class="ident">clone</span>(),
             <span class="ident">verbosity</span>: <span class="ident">c</span>.<span class="ident">verbosity</span>,
             <span class="ident">build_info</span>: <span class="prelude-val">None</span>,
         }
@@ -315,14 +312,15 @@
         <span class="kw">let</span> <span class="ident">lib_rs</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">working_directory</span>.<span class="ident">join</span>(<span class="string">&quot;lib.rs&quot;</span>);
         <span class="ident">write</span>(<span class="ident">lib_rs</span>, <span class="ident">project</span>.<span class="ident">lib_rs</span>.<span class="ident">as_bytes</span>())<span class="question-mark">?</span>;
 
+        <span class="kw">let</span> <span class="ident">toolchain_file</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">working_directory</span>.<span class="ident">join</span>(<span class="string">&quot;rust-toolchain.toml&quot;</span>);
+        <span class="ident">write</span>(<span class="ident">toolchain_file</span>, <span class="ident">project</span>.<span class="ident">rust_toolchain_toml</span>.<span class="ident">as_bytes</span>())<span class="question-mark">?</span>;
+
         <span class="prelude-val">Ok</span>(())
     }
 
     <span class="kw">fn</span> <span class="ident">cargo_build</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cmd</span> <span class="op">=</span> <span class="ident">Command::new</span>(<span class="string">&quot;cargo&quot;</span>);
-        <span class="ident">cmd</span>.<span class="ident">arg</span>(<span class="macro">format!</span>(<span class="string">&quot;+{}&quot;</span>, <span class="self">self</span>.<span class="ident">rust_version</span>))
-            .<span class="ident">arg</span>(<span class="string">&quot;build&quot;</span>)
-            .<span class="ident">arg</span>(<span class="string">&quot;--target=wasm32-unknown-unknown&quot;</span>);
+        <span class="ident">cmd</span>.<span class="ident">arg</span>(<span class="string">&quot;build&quot;</span>).<span class="ident">arg</span>(<span class="string">&quot;--target=wasm32-unknown-unknown&quot;</span>);
 
         <span class="self">self</span>.<span class="ident">verbosity</span>.<span class="ident">add_flags</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">cmd</span>);
         <span class="ident">cmd</span>.<span class="ident">current_dir</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">working_directory</span>);
