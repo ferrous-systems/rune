@@ -245,6 +245,15 @@
 <span id="242">242</span>
 <span id="243">243</span>
 <span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">path::PathBuf</span>, <span class="ident">str::FromStr</span>};
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="ident">Error</span>};
@@ -318,6 +327,12 @@
         <span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;Seed the runtime&#39;s Random Number Generator&quot;</span>
     )]
     <span class="ident">random</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>,
+    <span class="attribute">#[<span class="ident">structopt</span>(
+        <span class="ident">long</span>,
+        <span class="ident">env</span>,
+        <span class="ident">help</span> <span class="op">=</span> <span class="string">&quot;The librunecoral.so library to use for hardware acceleration&quot;</span>
+    )]</span>
+    <span class="ident">librunecoral</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PathBuf</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Run</span> {
@@ -428,8 +443,11 @@
         )
         .<span class="ident">register_capability</span>(<span class="ident">capabilities::RAW</span>, <span class="ident">new_multiplexer</span>::<span class="op">&lt;</span><span class="ident">Raw</span>, <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident">raw</span>));
 
-        <span class="ident">runecoral_inference::override_model_handler</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">img</span>)
-            .<span class="ident">context</span>(<span class="string">&quot;Unable to register the librunecoral inference backend&quot;</span>)<span class="question-mark">?</span>;
+        <span class="ident">runecoral_inference::override_model_handler</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">img</span>,
+            <span class="self">self</span>.<span class="ident">librunecoral</span>.<span class="ident">as_deref</span>(),
+        )
+        .<span class="ident">context</span>(<span class="string">&quot;Unable to register the librunecoral inference backend&quot;</span>)<span class="question-mark">?</span>;
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">seed</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="ident">random</span> {
             <span class="ident">img</span>.<span class="ident">register_capability</span>(<span class="ident">capabilities::RAND</span>, <span class="kw">move</span> <span class="op">|</span><span class="op">|</span> {

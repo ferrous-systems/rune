@@ -377,6 +377,11 @@
 <span id="374">374</span>
 <span id="375">375</span>
 <span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">std</span>::{
     <span class="ident">collections::HashMap</span>,
@@ -388,11 +393,11 @@
 <span class="kw">use</span> <span class="ident">cargo_toml</span>::{<span class="ident">Manifest</span>, <span class="ident">Package</span>, <span class="ident">Publish</span>};
 <span class="kw">use</span> <span class="ident">walkdir::WalkDir</span>;
 
-<span class="kw">const</span> <span class="ident">AUTHORS</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;The Rune Developers &lt;admin@hotg.ai&gt;&quot;</span>];
+<span class="kw">const</span> <span class="ident">AUTHORS</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;The Rune Developers &lt;developers@hotg.ai&gt;&quot;</span>];
 <span class="kw">const</span> <span class="ident">LICENSE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;MIT OR Apache-2.0&quot;</span>;
 <span class="kw">const</span> <span class="ident">HOMEPAGE</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;https://hotg.dev/&quot;</span>;
 <span class="kw">const</span> <span class="ident">REPOSITORY</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;https://github.com/hotg-ai/rune&quot;</span>;
-<span class="kw">const</span> <span class="ident">NAME_PREFIX</span>: <span class="kw-2">&amp;</span><span class="ident">str</span> <span class="op">=</span> <span class="string">&quot;hotg-run&quot;</span>;
+<span class="kw">const</span> <span class="ident">NAME_PREFIXES</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>] <span class="op">=</span> <span class="kw-2">&amp;</span>[<span class="string">&quot;hotg-rune&quot;</span>, <span class="string">&quot;hotg-runic&quot;</span>, <span class="string">&quot;hotg-pb&quot;</span>];
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">structopt::StructOpt</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CheckManifests</span> {
@@ -519,7 +524,9 @@
     <span class="ident">expect</span>
         .<span class="ident">array_field</span>(<span class="string">&quot;Keywords&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">keywords</span>)
         .<span class="ident">length_less_than</span>(<span class="number">5</span>);
-    <span class="ident">expect</span>.<span class="ident">field</span>(<span class="string">&quot;Name&quot;</span>, <span class="prelude-val">Some</span>(<span class="ident">name</span>)).<span class="ident">starts_with</span>(<span class="ident">NAME_PREFIX</span>);
+    <span class="ident">expect</span>
+        .<span class="ident">field</span>(<span class="string">&quot;Name&quot;</span>, <span class="prelude-val">Some</span>(<span class="ident">name</span>))
+        .<span class="ident">starts_with_one_of</span>(<span class="ident">NAME_PREFIXES</span>);
     <span class="ident">expect</span>.<span class="ident">field</span>(<span class="string">&quot;Description&quot;</span>, <span class="ident">description</span>.<span class="ident">as_deref</span>()).<span class="ident">is_set</span>();
     <span class="ident">expect</span>
         .<span class="ident">field</span>(<span class="string">&quot;README&quot;</span>, <span class="ident">readme</span>.<span class="ident">as_deref</span>())
@@ -711,12 +718,15 @@
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">starts_with</span>(<span class="self">self</span>, <span class="ident">prefix</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
+    <span class="kw">fn</span> <span class="ident">starts_with_one_of</span>(<span class="self">self</span>, <span class="ident">prefixes</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>]) {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">actual</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="kw">if</span> <span class="ident">s</span>.<span class="ident">starts_with</span>(<span class="ident">prefix</span>) <span class="op">=</span><span class="op">&gt;</span> {},
+            <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="kw">if</span> <span class="ident">prefixes</span>.<span class="ident">iter</span>().<span class="ident">any</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">starts_with</span>(<span class="ident">p</span>)) <span class="op">=</span><span class="op">&gt;</span> {},
             <span class="prelude-val">Some</span>(<span class="ident">s</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">diags</span>.<span class="ident">push</span>(
                 <span class="self">self</span>.<span class="ident">field</span>,
-                <span class="macro">format!</span>(<span class="string">&quot;should start with \&quot;{}\&quot;, found \&quot;{}\&quot;&quot;</span>, <span class="ident">prefix</span>, <span class="ident">s</span>),
+                <span class="macro">format!</span>(
+                    <span class="string">&quot;should start with one of {:?}, found \&quot;{}\&quot;&quot;</span>,
+                    <span class="ident">prefixes</span>, <span class="ident">s</span>
+                ),
             ),
             <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">diags</span>.<span class="ident">push</span>(<span class="self">self</span>.<span class="ident">field</span>, <span class="string">&quot;should be set&quot;</span>),
         }
