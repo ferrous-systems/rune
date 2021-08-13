@@ -1,7 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/cranelift-codegen-0.74.0/src/isa/aarch64/abi.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>abi.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../cranelift_codegen/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button">?</button>
-                <a id="settings-menu" href="../../../../settings.html"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;cranelift-codegen-0.74.0&#x2F;src&#x2F;isa&#x2F;aarch64&#x2F;abi.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>abi.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../cranelift_codegen/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1205,17 +1202,17 @@
 </pre><pre class="rust">
 <span class="doccomment">//! Implementation of a standard AArch64 ABI.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::types</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::types</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::MemFlags</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir::Opcode</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">ExternalName</span>, <span class="ident">LibCall</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::aarch64</span>::{<span class="ident">inst::EmitState</span>, <span class="ident">inst</span>::<span class="kw-2">*</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::unwind::UnwindInst</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::machinst</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::settings</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ir</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ir::types</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ir::types</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ir::MemFlags</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ir::Opcode</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ir</span>::{<span class="ident">ExternalName</span>, <span class="ident">LibCall</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::isa</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::isa::aarch64</span>::{<span class="ident">inst::EmitState</span>, <span class="ident">inst</span>::<span class="kw-2">*</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::isa::unwind::UnwindInst</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::machinst</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::settings</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">CodegenError</span>, <span class="ident">CodegenResult</span>};
 <span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
 <span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
@@ -1795,7 +1792,7 @@
         <span class="ident">insts</span>
     }
 
-    <span class="kw">fn</span> <span class="ident">gen_probestack</span>(<span class="kw">_</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SmallInstVec</span><span class="op">&lt;</span><span class="self">Self</span><span class="ident">::I</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">gen_probestack</span>(<span class="kw">_</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SmallInstVec</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::I</span><span class="op">&gt;</span> {
         <span class="comment">// TODO: implement if we ever require stack probes on an AArch64 host</span>
         <span class="comment">// (unlikely unless Lucet is ported)</span>
         <span class="macro">smallvec!</span>[]
@@ -2014,7 +2011,7 @@
 
         <span class="comment">// Allocate the fixed frame below the clobbers if necessary.</span>
         <span class="kw">if</span> <span class="ident">fixed_frame_storage_size</span> <span class="op">&gt;</span> <span class="number">0</span> {
-            <span class="ident">insts</span>.<span class="ident">extend</span>(<span class="self">Self</span><span class="ident">::gen_sp_reg_adjust</span>(<span class="op">-</span>(<span class="ident">fixed_frame_storage_size</span> <span class="kw">as</span> <span class="ident">i32</span>)));
+            <span class="ident">insts</span>.<span class="ident">extend</span>(<span class="ident"><span class="self">Self</span>::gen_sp_reg_adjust</span>(<span class="op">-</span>(<span class="ident">fixed_frame_storage_size</span> <span class="kw">as</span> <span class="ident">i32</span>)));
         }
 
         (<span class="ident">total_save_bytes</span> <span class="kw">as</span> <span class="ident">u64</span>, <span class="ident">insts</span>)
@@ -2032,7 +2029,7 @@
 
         <span class="comment">// Free the fixed frame if necessary.</span>
         <span class="kw">if</span> <span class="ident">fixed_frame_storage_size</span> <span class="op">&gt;</span> <span class="number">0</span> {
-            <span class="ident">insts</span>.<span class="ident">extend</span>(<span class="self">Self</span><span class="ident">::gen_sp_reg_adjust</span>(<span class="ident">fixed_frame_storage_size</span> <span class="kw">as</span> <span class="ident">i32</span>));
+            <span class="ident">insts</span>.<span class="ident">extend</span>(<span class="ident"><span class="self">Self</span>::gen_sp_reg_adjust</span>(<span class="ident">fixed_frame_storage_size</span> <span class="kw">as</span> <span class="ident">i32</span>));
         }
 
         <span class="kw">let</span> <span class="ident">load_vec_reg</span> <span class="op">=</span> <span class="op">|</span><span class="ident">rd</span><span class="op">|</span> {
@@ -2138,7 +2135,7 @@
         <span class="comment">// register. We may have allocated it for something else and clobbered</span>
         <span class="comment">// it, but the ABI expects us to leave the TLS register unchanged.</span>
         <span class="kw">if</span> <span class="ident">call_conv</span> <span class="op">=</span><span class="op">=</span> <span class="ident">isa::CallConv::Baldrdash2020</span> {
-            <span class="kw">let</span> <span class="ident">off</span> <span class="op">=</span> <span class="ident">BALDRDASH_CALLEE_TLS_OFFSET</span> <span class="op">+</span> <span class="self">Self</span><span class="ident">::fp_to_arg_offset</span>(<span class="ident">call_conv</span>, <span class="ident">flags</span>);
+            <span class="kw">let</span> <span class="ident">off</span> <span class="op">=</span> <span class="ident">BALDRDASH_CALLEE_TLS_OFFSET</span> <span class="op">+</span> <span class="ident"><span class="self">Self</span>::fp_to_arg_offset</span>(<span class="ident">call_conv</span>, <span class="ident">flags</span>);
             <span class="ident">insts</span>.<span class="ident">push</span>(<span class="ident">Inst::gen_load</span>(
                 <span class="ident">writable_xreg</span>(<span class="ident">BALDRDASH_TLS_REG</span>),
                 <span class="ident">AMode::UnsignedOffset</span>(<span class="ident">fp_reg</span>(), <span class="ident">UImm12Scaled::maybe_from_i64</span>(<span class="ident">off</span>, <span class="ident">I64</span>).<span class="ident">unwrap</span>()),
@@ -2220,7 +2217,7 @@
         <span class="ident">dst</span>: <span class="ident">Reg</span>,
         <span class="ident">src</span>: <span class="ident">Reg</span>,
         <span class="ident">size</span>: <span class="ident">usize</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SmallVec</span><span class="op">&lt;</span>[<span class="self">Self</span><span class="ident">::I</span>; <span class="number">8</span>]<span class="op">&gt;</span> {
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SmallVec</span><span class="op">&lt;</span>[<span class="ident"><span class="self">Self</span>::I</span>; <span class="number">8</span>]<span class="op">&gt;</span> {
         <span class="comment">// Baldrdash should not use struct args.</span>
         <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">call_conv</span>.<span class="ident">extends_baldrdash</span>());
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">insts</span> <span class="op">=</span> <span class="ident">SmallVec::new</span>();
@@ -2234,7 +2231,7 @@
             <span class="ident">info</span>: <span class="ident">Box::new</span>(<span class="ident">CallInfo</span> {
                 <span class="ident">dest</span>: <span class="ident">ExternalName::LibCall</span>(<span class="ident">LibCall::Memcpy</span>),
                 <span class="ident">uses</span>: <span class="macro">vec!</span>[<span class="ident">arg0</span>.<span class="ident">to_reg</span>(), <span class="ident">arg1</span>.<span class="ident">to_reg</span>(), <span class="ident">arg2</span>.<span class="ident">to_reg</span>()],
-                <span class="ident">defs</span>: <span class="self">Self</span><span class="ident">::get_regs_clobbered_by_call</span>(<span class="ident">call_conv</span>),
+                <span class="ident">defs</span>: <span class="ident"><span class="self">Self</span>::get_regs_clobbered_by_call</span>(<span class="ident">call_conv</span>),
                 <span class="ident">opcode</span>: <span class="ident">Opcode::Call</span>,
                 <span class="ident">caller_callconv</span>: <span class="ident">call_conv</span>,
                 <span class="ident">callee_callconv</span>: <span class="ident">call_conv</span>,
@@ -2406,4 +2403,5 @@
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="cranelift_codegen" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
-    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

@@ -1,7 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/cranelift-codegen-0.74.0/src/isa/x64/inst/mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../../storage.js"></script><script src="../../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../cranelift_codegen/index.html'><div class='logo-container rust-logo'><img src='../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button">?</button>
-                <a id="settings-menu" href="../../../../../settings.html"><img src="../../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;cranelift-codegen-0.74.0&#x2F;src&#x2F;isa&#x2F;x64&#x2F;inst&#x2F;mod.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>mod.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../../storage.js"></script><script src="../../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../../favicon.svg"><link rel="alternate icon" type="image/png" href="../../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../../cranelift_codegen/index.html'><div class='logo-container rust-logo'><img src='../../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -3001,13 +2998,13 @@
 </pre><pre class="rust">
 <span class="doccomment">//! This module defines x86_64-specific machine instruction types.</span>
 
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::binemit</span>::{<span class="ident">CodeOffset</span>, <span class="ident">StackMap</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::ir</span>::{<span class="ident">types</span>, <span class="ident">ExternalName</span>, <span class="ident">Opcode</span>, <span class="ident">SourceLoc</span>, <span class="ident">TrapCode</span>, <span class="ident">Type</span>, <span class="ident">ValueLabel</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::unwind::UnwindInst</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::x64::abi::X64ABIMachineSpec</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::x64::settings</span> <span class="kw">as</span> <span class="ident">x64_settings</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::isa::CallConv</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::machinst</span>::<span class="kw-2">*</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::binemit</span>::{<span class="ident">CodeOffset</span>, <span class="ident">StackMap</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ir</span>::{<span class="ident">types</span>, <span class="ident">ExternalName</span>, <span class="ident">Opcode</span>, <span class="ident">SourceLoc</span>, <span class="ident">TrapCode</span>, <span class="ident">Type</span>, <span class="ident">ValueLabel</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::isa::unwind::UnwindInst</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::isa::x64::abi::X64ABIMachineSpec</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::isa::x64::settings</span> <span class="kw">as</span> <span class="ident">x64_settings</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::isa::CallConv</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::machinst</span>::<span class="kw-2">*</span>;
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">settings</span>, <span class="ident">settings::Flags</span>, <span class="ident">CodegenError</span>, <span class="ident">CodegenResult</span>};
 <span class="kw">use</span> <span class="ident">alloc::boxed::Box</span>;
 <span class="kw">use</span> <span class="ident">alloc::vec::Vec</span>;
@@ -3595,7 +3592,7 @@
 <span class="kw">impl</span> <span class="ident">Inst</span> {
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">nop</span>(<span class="ident">len</span>: <span class="ident">u8</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="macro">debug_assert!</span>(<span class="ident">len</span> <span class="op">&lt;</span><span class="op">=</span> <span class="number">15</span>);
-        <span class="self">Self</span><span class="ident">::Nop</span> { <span class="ident">len</span> }
+        <span class="ident"><span class="self">Self</span>::Nop</span> { <span class="ident">len</span> }
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">alu_rmi_r</span>(
@@ -3607,7 +3604,7 @@
         <span class="macro">debug_assert!</span>(<span class="ident">size</span>.<span class="ident">is_one_of</span>(<span class="kw-2">&amp;</span>[<span class="ident">OperandSize::Size32</span>, <span class="ident">OperandSize::Size64</span>]));
         <span class="ident">src</span>.<span class="ident">assert_regclass_is</span>(<span class="ident">RegClass::I64</span>);
         <span class="macro">debug_assert!</span>(<span class="ident">dst</span>.<span class="ident">to_reg</span>().<span class="ident">get_class</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">RegClass::I64</span>);
-        <span class="self">Self</span><span class="ident">::AluRmiR</span> { <span class="ident">size</span>, <span class="ident">op</span>, <span class="ident">src</span>, <span class="ident">dst</span> }
+        <span class="ident"><span class="self">Self</span>::AluRmiR</span> { <span class="ident">size</span>, <span class="ident">op</span>, <span class="ident">src</span>, <span class="ident">dst</span> }
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">unary_rm_r</span>(
@@ -3623,7 +3620,7 @@
             <span class="ident">OperandSize::Size32</span>,
             <span class="ident">OperandSize::Size64</span>
         ]));
-        <span class="self">Self</span><span class="ident">::UnaryRmR</span> { <span class="ident">size</span>, <span class="ident">op</span>, <span class="ident">src</span>, <span class="ident">dst</span> }
+        <span class="ident"><span class="self">Self</span>::UnaryRmR</span> { <span class="ident">size</span>, <span class="ident">op</span>, <span class="ident">src</span>, <span class="ident">dst</span> }
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">not</span>(<span class="ident">size</span>: <span class="ident">OperandSize</span>, <span class="ident">src</span>: <span class="ident">Writable</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Inst</span> {
@@ -3940,8 +3937,8 @@
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">mov64_rm_r</span>(<span class="ident">src</span>: <span class="ident">RegMem</span>, <span class="ident">dst</span>: <span class="ident">Writable</span><span class="op">&lt;</span><span class="ident">Reg</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Inst</span> {
         <span class="ident">src</span>.<span class="ident">assert_regclass_is</span>(<span class="ident">RegClass::I64</span>);
         <span class="kw">match</span> <span class="ident">src</span> {
-            <span class="ident">RegMem::Reg</span> { <span class="ident">reg</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::mov_r_r</span>(<span class="ident">OperandSize::Size64</span>, <span class="ident">reg</span>, <span class="ident">dst</span>),
-            <span class="ident">RegMem::Mem</span> { <span class="ident">addr</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="self">Self</span><span class="ident">::mov64_m_r</span>(<span class="ident">addr</span>, <span class="ident">dst</span>),
+            <span class="ident">RegMem::Reg</span> { <span class="ident">reg</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::mov_r_r</span>(<span class="ident">OperandSize::Size64</span>, <span class="ident">reg</span>, <span class="ident">dst</span>),
+            <span class="ident">RegMem::Mem</span> { <span class="ident">addr</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::mov64_m_r</span>(<span class="ident">addr</span>, <span class="ident">dst</span>),
         }
     }
 
@@ -4194,12 +4191,12 @@
     <span class="doccomment">/// same as the first register (already handled).</span>
     <span class="kw">fn</span> <span class="ident">produces_const</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span><span class="ident">::AluRmiR</span> { <span class="ident">op</span>, <span class="ident">src</span>, <span class="ident">dst</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident"><span class="self">Self</span>::AluRmiR</span> { <span class="ident">op</span>, <span class="ident">src</span>, <span class="ident">dst</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">src</span>.<span class="ident">to_reg</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">dst</span>.<span class="ident">to_reg</span>())
                     <span class="op">&amp;&amp;</span> (<span class="kw-2">*</span><span class="ident">op</span> <span class="op">=</span><span class="op">=</span> <span class="ident">AluRmiROpcode::Xor</span> <span class="op">|</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">op</span> <span class="op">=</span><span class="op">=</span> <span class="ident">AluRmiROpcode::Sub</span>)
             }
 
-            <span class="self">Self</span><span class="ident">::XmmRmR</span> { <span class="ident">op</span>, <span class="ident">src</span>, <span class="ident">dst</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident"><span class="self">Self</span>::XmmRmR</span> { <span class="ident">op</span>, <span class="ident">src</span>, <span class="ident">dst</span>, .. } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">src</span>.<span class="ident">to_reg</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">dst</span>.<span class="ident">to_reg</span>())
                     <span class="op">&amp;&amp;</span> (<span class="kw-2">*</span><span class="ident">op</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SseOpcode::Xorps</span>
                         <span class="op">|</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">op</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SseOpcode::Xorpd</span>
@@ -4210,7 +4207,7 @@
                         <span class="op">|</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">op</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SseOpcode::Pcmpeqq</span>)
             }
 
-            <span class="self">Self</span><span class="ident">::XmmRmRImm</span> {
+            <span class="ident"><span class="self">Self</span>::XmmRmRImm</span> {
                 <span class="ident">op</span>, <span class="ident">src</span>, <span class="ident">dst</span>, <span class="ident">imm</span>, ..
             } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="ident">src</span>.<span class="ident">to_reg</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">dst</span>.<span class="ident">to_reg</span>())
@@ -5221,10 +5218,10 @@
 
     <span class="kw">fn</span> <span class="ident">map_as_def</span><span class="op">&lt;</span><span class="ident">RUM</span>: <span class="ident">RegUsageMapper</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">mapper</span>: <span class="kw-2">&amp;</span><span class="ident">RUM</span>) {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span><span class="ident">::Reg</span> { <span class="ident">reg</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident"><span class="self">Self</span>::Reg</span> { <span class="ident">reg</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writable_src</span> <span class="op">=</span> <span class="ident">Writable::from_reg</span>(<span class="kw-2">*</span><span class="ident">reg</span>);
                 <span class="ident">map_def</span>(<span class="ident">mapper</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writable_src</span>);
-                <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::reg</span>(<span class="ident">writable_src</span>.<span class="ident">to_reg</span>());
+                <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::reg</span>(<span class="ident">writable_src</span>.<span class="ident">to_reg</span>());
             }
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;unexpected RegMemImm kind in map_src_reg_as_def&quot;</span>),
         }
@@ -5241,10 +5238,10 @@
 
     <span class="kw">fn</span> <span class="ident">map_as_def</span><span class="op">&lt;</span><span class="ident">RUM</span>: <span class="ident">RegUsageMapper</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">mapper</span>: <span class="kw-2">&amp;</span><span class="ident">RUM</span>) {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span><span class="ident">::Reg</span> { <span class="ident">reg</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident"><span class="self">Self</span>::Reg</span> { <span class="ident">reg</span> } <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">writable_src</span> <span class="op">=</span> <span class="ident">Writable::from_reg</span>(<span class="kw-2">*</span><span class="ident">reg</span>);
                 <span class="ident">map_def</span>(<span class="ident">mapper</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">writable_src</span>);
-                <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="self">Self</span><span class="ident">::reg</span>(<span class="ident">writable_src</span>.<span class="ident">to_reg</span>());
+                <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::reg</span>(<span class="ident">writable_src</span>.<span class="ident">to_reg</span>());
             }
             <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;unexpected RegMem kind in map_src_reg_as_def&quot;</span>),
         }
@@ -5588,14 +5585,14 @@
             <span class="comment">// out the upper 32 bits of the destination.  For example, we could</span>
             <span class="comment">// conceivably use `movl %reg, %reg` to zero out the top 32 bits of</span>
             <span class="comment">// %reg.</span>
-            <span class="self">Self</span><span class="ident">::MovRR</span> { <span class="ident">size</span>, <span class="ident">src</span>, <span class="ident">dst</span>, .. } <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">size</span> <span class="op">=</span><span class="op">=</span> <span class="ident">OperandSize::Size64</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident"><span class="self">Self</span>::MovRR</span> { <span class="ident">size</span>, <span class="ident">src</span>, <span class="ident">dst</span>, .. } <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">size</span> <span class="op">=</span><span class="op">=</span> <span class="ident">OperandSize::Size64</span> <span class="op">=</span><span class="op">&gt;</span> {
                 <span class="prelude-val">Some</span>((<span class="kw-2">*</span><span class="ident">dst</span>, <span class="kw-2">*</span><span class="ident">src</span>))
             }
             <span class="comment">// Note as well that MOVS[S|D] when used in the `XmmUnaryRmR` context are pure moves of</span>
             <span class="comment">// scalar floating-point values (and annotate `dst` as `def`s to the register allocator)</span>
             <span class="comment">// whereas the same operation in a packed context, e.g. `XMM_RM_R`, is used to merge a</span>
             <span class="comment">// value into the lowest lane of a vector (not a move).</span>
-            <span class="self">Self</span><span class="ident">::XmmUnaryRmR</span> { <span class="ident">op</span>, <span class="ident">src</span>, <span class="ident">dst</span>, .. }
+            <span class="ident"><span class="self">Self</span>::XmmUnaryRmR</span> { <span class="ident">op</span>, <span class="ident">src</span>, <span class="ident">dst</span>, .. }
                 <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">op</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SseOpcode::Movss</span>
                     <span class="op">|</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">op</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SseOpcode::Movsd</span>
                     <span class="op">|</span><span class="op">|</span> <span class="kw-2">*</span><span class="ident">op</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SseOpcode::Movaps</span>
@@ -5616,7 +5613,7 @@
     }
 
     <span class="kw">fn</span> <span class="ident">is_epilogue_placeholder</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="self">Self</span><span class="ident">::EpiloguePlaceholder</span> <span class="op">=</span> <span class="self">self</span> {
+        <span class="kw">if</span> <span class="kw">let</span> <span class="ident"><span class="self">Self</span>::EpiloguePlaceholder</span> <span class="op">=</span> <span class="self">self</span> {
             <span class="bool-val">true</span>
         } <span class="kw">else</span> {
             <span class="bool-val">false</span>
@@ -5626,12 +5623,12 @@
     <span class="kw">fn</span> <span class="ident">is_term</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MachTerminator</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
             <span class="comment">// Interesting cases.</span>
-            <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Ret</span> <span class="op">|</span> <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::EpiloguePlaceholder</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MachTerminator::Ret</span>,
-            <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::JmpKnown</span> { <span class="ident">dst</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MachTerminator::Uncond</span>(<span class="ident">dst</span>),
-            <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::JmpCond</span> {
+            <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Ret</span> <span class="op">|</span> <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::EpiloguePlaceholder</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MachTerminator::Ret</span>,
+            <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::JmpKnown</span> { <span class="ident">dst</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MachTerminator::Uncond</span>(<span class="ident">dst</span>),
+            <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::JmpCond</span> {
                 <span class="ident">taken</span>, <span class="ident">not_taken</span>, ..
             } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MachTerminator::Cond</span>(<span class="ident">taken</span>, <span class="ident">not_taken</span>),
-            <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::JmpTableSeq</span> {
+            <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::JmpTableSeq</span> {
                 <span class="kw-2">ref</span> <span class="ident">targets_for_term</span>,
                 ..
             } <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MachTerminator::Indirect</span>(<span class="kw-2">&amp;</span><span class="ident">targets_for_term</span>[..]),
@@ -5642,13 +5639,13 @@
 
     <span class="kw">fn</span> <span class="ident">stack_op_info</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MachInstStackOpInfo</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="self">Self</span><span class="ident">::VirtualSPOffsetAdj</span> { <span class="ident">offset</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">MachInstStackOpInfo::NomSPAdj</span>(<span class="kw-2">*</span><span class="ident">offset</span>)),
-            <span class="self">Self</span><span class="ident">::MovRM</span> {
+            <span class="ident"><span class="self">Self</span>::VirtualSPOffsetAdj</span> { <span class="ident">offset</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">MachInstStackOpInfo::NomSPAdj</span>(<span class="kw-2">*</span><span class="ident">offset</span>)),
+            <span class="ident"><span class="self">Self</span>::MovRM</span> {
                 <span class="ident">size</span>: <span class="ident">OperandSize::Size8</span>,
                 <span class="ident">src</span>,
                 <span class="ident">dst</span>: <span class="ident">SyntheticAmode::NominalSPOffset</span> { <span class="ident">simm32</span> },
             } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">MachInstStackOpInfo::StoreNomSPOff</span>(<span class="kw-2">*</span><span class="ident">src</span>, <span class="kw-2">*</span><span class="ident">simm32</span> <span class="kw">as</span> <span class="ident">i64</span>)),
-            <span class="self">Self</span><span class="ident">::Mov64MR</span> {
+            <span class="ident"><span class="self">Self</span>::Mov64MR</span> {
                 <span class="ident">src</span>: <span class="ident">SyntheticAmode::NominalSPOffset</span> { <span class="ident">simm32</span> },
                 <span class="ident">dst</span>,
             } <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">MachInstStackOpInfo::LoadNomSPOff</span>(
@@ -5881,11 +5878,11 @@
     <span class="kw">type</span> <span class="ident">State</span> <span class="op">=</span> <span class="ident">EmitState</span>;
     <span class="kw">type</span> <span class="ident">Info</span> <span class="op">=</span> <span class="ident">EmitInfo</span>;
 
-    <span class="kw">fn</span> <span class="ident">emit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">sink</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MachBuffer</span><span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span>, <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="self">Self</span><span class="ident">::Info</span>, <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::State</span>) {
+    <span class="kw">fn</span> <span class="ident">emit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">sink</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">MachBuffer</span><span class="op">&lt;</span><span class="ident">Inst</span><span class="op">&gt;</span>, <span class="ident">info</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Info</span>, <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident"><span class="self">Self</span>::State</span>) {
         <span class="ident">emit::emit</span>(<span class="self">self</span>, <span class="ident">sink</span>, <span class="ident">info</span>, <span class="ident">state</span>);
     }
 
-    <span class="kw">fn</span> <span class="ident">pretty_print</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">mb_rru</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">RealRegUniverse</span><span class="op">&gt;</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::State</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">pretty_print</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">mb_rru</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">RealRegUniverse</span><span class="op">&gt;</span>, <span class="kw">_</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident"><span class="self">Self</span>::State</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
         <span class="self">self</span>.<span class="ident">show_rru</span>(<span class="ident">mb_rru</span>)
     }
 }
@@ -5998,4 +5995,5 @@
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../../" data-current-crate="cranelift_codegen" data-search-index-js="../../../../../search-index.js" data-search-js="../../../../../search.js"></div>
-    <script src="../../../../../main.js"></script><script src="../../../../../source-script.js"></script><script src="../../../../../source-files.js"></script></body></html>
+    <script src="../../../../../main.js"></script><script src="../../../../../source-script.js"></script><script src="../../../../../source-files.js"></script>
+</body></html>

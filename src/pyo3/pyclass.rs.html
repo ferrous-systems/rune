@@ -1,7 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `/home/runner/.cargo/registry/src/github.com-1ecc6299db9ec823/pyo3-0.13.2/src/pyclass.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pyclass.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../pyo3/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button">?</button>
-                <a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `&#x2F;home&#x2F;runner&#x2F;.cargo&#x2F;registry&#x2F;src&#x2F;github.com-1ecc6299db9ec823&#x2F;pyo3-0.13.2&#x2F;src&#x2F;pyclass.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pyclass.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../pyo3/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -529,11 +526,11 @@
 <span id="526">526</span>
 </pre><pre class="rust">
 <span class="doccomment">//! `PyClass` and related traits.</span>
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::class::methods</span>::{<span class="ident">PyClassAttributeDef</span>, <span class="ident">PyMethodDefType</span>, <span class="ident">PyMethods</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::class::proto_methods::PyProtoMethods</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::derive_utils::PyBaseTypeUtils</span>;
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::pyclass_slots</span>::{<span class="ident">PyClassDict</span>, <span class="ident">PyClassWeakRef</span>};
-<span class="kw">use</span> <span class="kw">crate</span><span class="ident">::type_object</span>::{<span class="ident">type_flags</span>, <span class="ident">PyLayout</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::class::methods</span>::{<span class="ident">PyClassAttributeDef</span>, <span class="ident">PyMethodDefType</span>, <span class="ident">PyMethods</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::class::proto_methods::PyProtoMethods</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::derive_utils::PyBaseTypeUtils</span>;
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::pyclass_slots</span>::{<span class="ident">PyClassDict</span>, <span class="ident">PyClassWeakRef</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::type_object</span>::{<span class="ident">type_flags</span>, <span class="ident">PyLayout</span>};
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">ffi</span>, <span class="ident">PyCell</span>, <span class="ident">PyErr</span>, <span class="ident">PyNativeType</span>, <span class="ident">PyResult</span>, <span class="ident">PyTypeInfo</span>, <span class="ident">Python</span>};
 <span class="kw">use</span> <span class="ident">std::convert::TryInto</span>;
 <span class="kw">use</span> <span class="ident">std::ffi::CString</span>;
@@ -559,7 +556,7 @@
     {
         <span class="comment">// Must check version at runtime for abi3 wheels - they could run against a higher version</span>
         <span class="comment">// than the build config suggests.</span>
-        <span class="kw">use</span> <span class="kw">crate</span><span class="ident">::once_cell::GILOnceCell</span>;
+        <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::once_cell::GILOnceCell</span>;
         <span class="kw">static</span> <span class="ident">IS_PYTHON_3_8</span>: <span class="ident">GILOnceCell</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">GILOnceCell::new</span>();
 
         <span class="kw">if</span> <span class="kw-2">*</span><span class="ident">IS_PYTHON_3_8</span>.<span class="ident">get_or_init</span>(<span class="ident">_py</span>, <span class="op">|</span><span class="op">|</span> <span class="ident">_py</span>.<span class="ident">version_info</span>() <span class="op">&gt;</span><span class="op">=</span> (<span class="number">3</span>, <span class="number">8</span>)) {
@@ -607,7 +604,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">/// This function must return a valid pointer to the Python heap.</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">py</span>: <span class="ident">Python</span>, <span class="ident">subtype</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyTypeObject</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Layout</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">py</span>: <span class="ident">Python</span>, <span class="ident">subtype</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyTypeObject</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident"><span class="self">Self</span>::Layout</span> {
         <span class="ident">default_new</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>(<span class="ident">py</span>, <span class="ident">subtype</span>) <span class="kw">as</span> <span class="kw">_</span>
     }
 
@@ -616,7 +613,7 @@
     <span class="doccomment">/// # Safety</span>
     <span class="doccomment">/// `self_` must be a valid pointer to the Python heap.</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::clippy::collapsible_if</span>)]</span> <span class="comment">// for if cfg!</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">dealloc</span>(<span class="ident">py</span>: <span class="ident">Python</span>, <span class="ident">self_</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="self">Self</span><span class="ident">::Layout</span>) {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">dealloc</span>(<span class="ident">py</span>: <span class="ident">Python</span>, <span class="ident">self_</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident"><span class="self">Self</span>::Layout</span>) {
         (<span class="kw-2">*</span><span class="ident">self_</span>).<span class="ident">py_drop</span>(<span class="ident">py</span>);
         <span class="kw">let</span> <span class="ident">obj</span> <span class="op">=</span> <span class="ident">self_</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>;
 
@@ -636,7 +633,7 @@
 <span class="kw">where</span>
     <span class="ident">T</span>: <span class="ident">PyClassAlloc</span>,
 {
-    <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::GILPool::new</span>();
+    <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::GILPool::new</span>();
     <span class="kw">let</span> <span class="ident">py</span> <span class="op">=</span> <span class="ident">pool</span>.<span class="ident">python</span>();
     <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">PyClassAlloc</span><span class="op">&gt;</span><span class="ident">::dealloc</span>(<span class="ident">py</span>, (<span class="ident">obj</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">T::Layout</span>) <span class="kw">as</span> <span class="kw">_</span>)
 }
@@ -846,8 +843,8 @@
     <span class="ident">_args</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
     <span class="ident">_kwds</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span>,
 ) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">ffi::PyObject</span> {
-    <span class="kw">crate</span><span class="macro">::callback_body!</span>(<span class="ident">py</span>, {
-        <span class="prelude-val">Err</span>::<span class="op">&lt;</span>(), <span class="kw">_</span><span class="op">&gt;</span>(<span class="kw">crate</span><span class="ident">::exceptions::PyTypeError::new_err</span>(
+    <span class="macro">crate::callback_body!</span>(<span class="ident">py</span>, {
+        <span class="prelude-val">Err</span>::<span class="op">&lt;</span>(), <span class="kw">_</span><span class="op">&gt;</span>(<span class="ident"><span class="kw">crate</span>::exceptions::PyTypeError::new_err</span>(
             <span class="string">&quot;No constructor defined&quot;</span>,
         ))
     })
@@ -1012,7 +1009,7 @@
     <span class="macro">private_impl!</span> {}
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">PyNativeType</span><span class="op">&gt;</span> <span class="ident">PyClassThreadChecker</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ThreadCheckerStub</span><span class="op">&lt;</span><span class="kw">crate</span><span class="ident">::PyObject</span><span class="op">&gt;</span> {
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">PyNativeType</span><span class="op">&gt;</span> <span class="ident">PyClassThreadChecker</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ThreadCheckerStub</span><span class="op">&lt;</span><span class="ident"><span class="kw">crate</span>::PyObject</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">ensure</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {}
     <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="ident">ThreadCheckerStub</span>(<span class="ident">PhantomData</span>)
@@ -1056,4 +1053,5 @@
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="pyo3" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
-    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
+</body></html>
