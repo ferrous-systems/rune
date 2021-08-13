@@ -212,6 +212,24 @@
 <span id="209">209</span>
 <span id="210">210</span>
 <span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">anyhow</span>::{<span class="ident">Context</span>, <span class="ident">Error</span>};
 <span class="kw">use</span> <span class="ident">codespan_reporting</span>::{
@@ -279,31 +297,17 @@
             <span class="ident">name</span>,
             <span class="ident">working_directory</span>.<span class="ident">display</span>()
         );
-        <span class="kw">let</span> <span class="ident">rune_project</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">rune_repo_root</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident">root_dir</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">RuneProject::Disk</span>(<span class="ident">root_dir</span>),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
-                <span class="comment">// looks like we aren&#39;t into a checked out rune dir</span>
-                <span class="kw">let</span> <span class="ident">build_info</span> <span class="op">=</span> <span class="kw">crate</span><span class="ident">::version::version</span>();
-                <span class="kw">let</span> <span class="ident">git</span> <span class="op">=</span> <span class="ident">build_info</span>
-                    .<span class="ident">version_control</span>
-                    .<span class="ident">as_ref</span>()
-                    .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">git</span>())
-                    .<span class="ident">context</span>(<span class="string">&quot;Unable to determine the rune project dir&quot;</span>)<span class="question-mark">?</span>;
-                <span class="ident">RuneProject::Git</span> {
-                    <span class="ident">repo</span>: <span class="ident">RuneProject::GITHUB_REPO</span>.<span class="ident">into</span>(),
-                    <span class="ident">specifier</span>: <span class="ident">GitSpecifier::Commit</span>(<span class="ident">git</span>.<span class="ident">commit_id</span>.<span class="ident">clone</span>()),
-                }
-            },
-        };
+
         <span class="kw">let</span> <span class="ident">compilation</span> <span class="op">=</span> <span class="ident">Compilation</span> {
             <span class="ident">name</span>,
             <span class="ident">rune</span>,
-            <span class="ident">rune_project</span>,
             <span class="ident">current_directory</span>,
             <span class="ident">working_directory</span>,
             <span class="ident">verbosity</span>,
+            <span class="ident">rune_project</span>: <span class="ident">locate_rune_dependencies</span>(),
             <span class="ident">optimized</span>: <span class="op">!</span><span class="self">self</span>.<span class="ident">debug</span>,
         };
+
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">env</span> <span class="op">=</span> <span class="ident">DefaultEnvironment::for_compilation</span>(<span class="kw-2">&amp;</span><span class="ident">compilation</span>)
             .<span class="ident">with_build_info</span>(<span class="kw">crate</span><span class="ident">::version::version</span>().<span class="ident">clone</span>());
         <span class="kw">let</span> <span class="ident">blob</span> <span class="op">=</span> <span class="ident">hotg_rune_codegen::generate_with_env</span>(<span class="ident">compilation</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">env</span>)
@@ -356,6 +360,38 @@
         }
 
         <span class="prelude-val">Err</span>(<span class="ident">Error::msg</span>(<span class="string">&quot;Unable to determine the Rune&#39;s name&quot;</span>))
+    }
+}
+
+<span class="kw">fn</span> <span class="ident">locate_rune_dependencies</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RuneProject</span> {
+    <span class="comment">// We need to figure out where to pull dependencies from when building the</span>
+    <span class="comment">// Rune.</span>
+
+    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">root_dir</span>) <span class="op">=</span> <span class="ident">rune_repo_root</span>() {
+        <span class="comment">// We are inside the Rune repository. Let&#39;s use &quot;path&quot; dependencies</span>
+        <span class="comment">// so you can iterate without needing to nake a new release every</span>
+        <span class="comment">// time.</span>
+        <span class="ident">RuneProject::Disk</span>(<span class="ident">root_dir</span>)
+    } <span class="kw">else</span> <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">git</span>) <span class="op">=</span> <span class="kw">crate</span><span class="ident">::version::version</span>()
+        .<span class="ident">version_control</span>
+        .<span class="ident">as_ref</span>()
+        .<span class="ident">and_then</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">v</span>.<span class="ident">git</span>())
+    {
+        <span class="comment">// We were installed using git (e.g. &quot;cargo install --git ...&quot;) so</span>
+        <span class="comment">// let&#39;s use that git commit.</span>
+        <span class="ident">RuneProject::Git</span> {
+            <span class="ident">repo</span>: <span class="ident">RuneProject::GITHUB_REPO</span>.<span class="ident">into</span>(),
+            <span class="ident">specifier</span>: <span class="ident">GitSpecifier::Commit</span>(<span class="ident">git</span>.<span class="ident">commit_id</span>.<span class="ident">clone</span>()),
+        }
+    } <span class="kw">else</span> {
+        <span class="comment">// Otherwise, fall back to the latest nightly.</span>
+        <span class="comment">//</span>
+        <span class="comment">// Note: This is the path we&#39;ll take when installed via crates.io</span>
+        <span class="comment">// because crates.io doesn&#39;t bundle any git information.</span>
+        <span class="ident">RuneProject::Git</span> {
+            <span class="ident">repo</span>: <span class="ident">RuneProject::GITHUB_REPO</span>.<span class="ident">into</span>(),
+            <span class="ident">specifier</span>: <span class="ident">GitSpecifier::Tag</span>(<span class="ident">String::from</span>(<span class="string">&quot;nightly&quot;</span>)),
+        }
     }
 }
 
